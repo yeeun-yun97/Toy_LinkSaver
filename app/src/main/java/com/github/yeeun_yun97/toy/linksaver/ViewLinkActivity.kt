@@ -2,6 +2,7 @@ package com.github.yeeun_yun97.toy.linksaver
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class ViewLinkActivity : AppCompatActivity() {
@@ -10,8 +11,10 @@ class ViewLinkActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_link)
-        var links = createDatas();
-
+        val links = createDatas()
+        val adapter = LinksAdapter(links)
+        recyclerView.adapter=adapter;
+        recyclerView.layoutManager=LinearLayoutManager(this)
     }
 
     private fun createDatas(): ArrayList<SjLink>{

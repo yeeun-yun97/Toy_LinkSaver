@@ -6,11 +6,11 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/linksItem_rootTextView"
+        android:id="@+id/linksItem_domainTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text='루트'
+        android:text="도메인"
         app:layout_constraintBottom_toBottomOf="@+id/linksItem_nameTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/linksItem_nameTextView"
