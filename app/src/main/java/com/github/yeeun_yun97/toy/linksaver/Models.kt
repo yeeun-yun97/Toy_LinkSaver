@@ -10,7 +10,13 @@ data class SjLink(
     val domain: SjDomain,
     var url: String,
     val tags: SjTag
-)
+) {
+    companion object {
+        fun getFullUrl(link: SjLink): String {
+            return "${link.domain.url}${link.url}"
+        }
+    }
+}
 
 data class SjTag(
     var name: String
