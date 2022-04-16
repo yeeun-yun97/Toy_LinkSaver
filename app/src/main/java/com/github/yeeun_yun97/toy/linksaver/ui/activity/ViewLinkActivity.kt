@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver
+package com.github.yeeun_yun97.toy.linksaver.ui.activity
 
 import android.content.Intent
 import android.net.Uri
@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.yeeun_yun97.toy.linksaver.*
 
 class ViewLinkActivity : AppCompatActivity() {
     private val recyclerView: RecyclerView by lazy { findViewById(R.id.ViewLinkActivity_recyclerView) }

@@ -35,7 +35,7 @@ class LinksViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         this.item = item
         domainTextView.setText(item.domain.name)
         nameTextView.setText(item.name)
-        webButton.setOnClickListener { openOperation(SjLink.getFullUrl(item)) }
+        webButton.setOnClickListener { openOperation(item.fullUrl) }
         editButton.setOnClickListener { editLink() }
         deleteButton.setOnClickListener { deleteLink() }
     }
