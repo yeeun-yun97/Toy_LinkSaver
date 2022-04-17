@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.yeeun_yun97.toy.linksaver.*
+import com.github.yeeun_yun97.toy.linksaver.ui.adapter.LinksAdapter
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.ViewLinkViewModel
 
 class ViewLinkActivity : AppCompatActivity() {

@@ -1,12 +1,10 @@
-package com.github.yeeun_yun97.toy.linksaver
+package com.github.yeeun_yun97.toy.linksaver.ui.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
 import com.github.yeeun_yun97.toy.linksaver.databinding.ItemLinksBinding
 
 class LinksAdapter(private val itemList: LiveData<ArrayList<SjLink>>, private val openOperation: (String)->Unit) :

@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver
+package com.github.yeeun_yun97.toy.linksaver.data.model
 
 data class SjDomain(
     var name: String,
