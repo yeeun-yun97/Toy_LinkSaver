@@ -11,6 +11,7 @@
 
         <TextView
             android:id="@+id/domainTextView"
+            style="@style/header4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"
@@ -22,26 +23,40 @@
         <Spinner
             android:id="@+id/domainSpinner"
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="50dp"
+            android:paddingVertical="5dp"
             app:layout_constraintEnd_toEndOf="@+id/domainTextView"
             app:layout_constraintStart_toStartOf="@+id/domainTextView"
             app:layout_constraintTop_toBottomOf="@+id/domainTextView" />
 
         <TextView
-            android:id="@+id/linkTextView"
+            android:id="@+id/textView"
+            style="@style/header5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="세부링크"
+            android:text="도메인 정보"
             app:layout_constraintEnd_toEndOf="@+id/domainSpinner"
             app:layout_constraintStart_toStartOf="@+id/domainSpinner"
             app:layout_constraintTop_toBottomOf="@+id/domainSpinner" />
 
+        <TextView
+            android:id="@+id/linkTextView"
+            android:layout_width="0dp"
+            style="@style/header4"
+            android:layout_height="wrap_content"
+            android:text="세부링크"
+            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
         <EditText
             android:id="@+id/linkEditText"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:ems="10"
+            android:hint="세부링크"
             android:inputType="textPersonName"
+            android:paddingVertical="5dp"
             app:layout_constraintEnd_toEndOf="@+id/domainSpinner"
             app:layout_constraintStart_toStartOf="@+id/domainSpinner"
             app:layout_constraintTop_toBottomOf="@+id/linkTextView" />
@@ -49,6 +64,7 @@
         <TextView
             android:id="@+id/tagTextView"
             android:layout_width="0dp"
+            style="@style/header4"
             android:layout_height="wrap_content"
             android:text="태그"
             app:layout_constraintEnd_toEndOf="@+id/linkEditText"
@@ -58,7 +74,7 @@
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/tagChipGroup"
             android:layout_width="0dp"
-            android:layout_height="90dp"
+            android:layout_height="100dp"
             app:layout_constraintEnd_toEndOf="@+id/tagTextView"
             app:layout_constraintStart_toStartOf="@+id/tagTextView"
             app:layout_constraintTop_toBottomOf="@+id/tagTextView">

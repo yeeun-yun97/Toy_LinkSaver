@@ -7,9 +7,16 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.github.yeeun_yun97.toy.linksaver.R
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditLinkBinding
 
 class EditLinkFragment : Fragment() {
+
+    companion object{
+        fun newInstance(link: SjLink){
+
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
