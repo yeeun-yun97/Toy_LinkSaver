@@ -27,9 +27,9 @@ class LinksViewHolder(private val binding:ItemLinksBinding) : RecyclerView.ViewH
 
     fun setLink(item: SjLink, openOperation: (String) -> Unit) {
         this.item = item
-        binding.linksItemDomainTextView.setText(item.domain.name)
+        //binding.linksItemDomainTextView.setText(item.domain.name)
         binding.linksItemNameTextView.setText(item.name)
-        binding.linksItemWebButton.setOnClickListener { openOperation(item.fullUrl) }
+        //binding.linksItemWebButton.setOnClickListener { openOperation(item.fullUrl) }
         binding.linksItemEditButton.setOnClickListener { editLink() }
         binding.linksItemDeleteButton.setOnClickListener { deleteLink() }
     }

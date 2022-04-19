@@ -3,6 +3,7 @@
     package="com.github.yeeun_yun97.toy.linksaver">
 
     <application
+        android:name=".application.SjActivity"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
