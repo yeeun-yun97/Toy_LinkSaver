@@ -5,9 +5,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinkWithTags
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinkWithTagsAndDomain
 import com.github.yeeun_yun97.toy.linksaver.databinding.ItemLinksBinding
 
-class LinksAdapter(private val itemList: LiveData<ArrayList<SjLink>>, private val openOperation: (String)->Unit) :
+class LinksAdapter(private val itemList: LiveData<ArrayList<SjLinkWithTagsAndDomain>>, private val openOperation: (String)->Unit) :
     RecyclerView.Adapter<LinksViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LinksViewHolder {
@@ -23,13 +25,13 @@ class LinksAdapter(private val itemList: LiveData<ArrayList<SjLink>>, private va
 }
 
 class LinksViewHolder(private val binding:ItemLinksBinding) : RecyclerView.ViewHolder(binding.root) {
-    private lateinit var item: SjLink
+    private lateinit var item: SjLinkWithTagsAndDomain
 
-    fun setLink(item: SjLink, openOperation: (String) -> Unit) {
+    fun setLink(item: SjLinkWithTagsAndDomain, openOperation: (String) -> Unit) {
         this.item = item
-        //binding.linksItemDomainTextView.setText(item.domain.name)
-        binding.linksItemNameTextView.setText(item.name)
-        //binding.linksItemWebButton.setOnClickListener { openOperation(item.fullUrl) }
+        binding.linksItemDomainTextView.setText(item.domain.name)
+        binding.linksItemNameTextView.setText(item.link.name)
+        binding.linksItemWebButton.setOnClickListener { openOperation("${item.domain.url}${item.link.url}") }
         binding.linksItemEditButton.setOnClickListener { editLink() }
         binding.linksItemDeleteButton.setOnClickListener { deleteLink() }
     }

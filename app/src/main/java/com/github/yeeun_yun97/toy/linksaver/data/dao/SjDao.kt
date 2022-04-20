@@ -1,13 +1,7 @@
 package com.github.yeeun_yun97.toy.linksaver.data.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import com.github.yeeun_yun97.toy.linksaver.data.model.LinkTagCrossRef
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
+import androidx.room.*
+import com.github.yeeun_yun97.toy.linksaver.data.model.*
 
 @Dao
 interface SjDao {
@@ -19,6 +13,14 @@ interface SjDao {
 
     @Query("SELECT * FROM SjTag")
     fun getTags(): List<SjTag>
+
+    @Transaction
+    @Query("SELECT * FROM SjLink")
+    fun getLinksWithTags(): List<SjLinkWithTags>
+
+    @Transaction
+    @Query("SELECT * FROM SjLink")
+    fun getLinksWithTagsAndDomain():List<SjLinkWithTagsAndDomain>
 
     @Insert
     fun insertDomain(newDomain: SjDomain)

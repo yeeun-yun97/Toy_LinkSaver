@@ -23,6 +23,20 @@ data class SjTag(
     @ColumnInfo(name = "name") var name: String
 )
 
+data class SjLinkWithTagsAndDomain(
+    @Embedded val link: SjLink,
+    @Relation(
+        parentColumn = "lid",
+        entityColumn = "tid",
+        associateBy = Junction(LinkTagCrossRef::class)
+    ) val tags: List<SjTag>,
+    @Relation(
+        parentColumn = "did",
+        entityColumn = "did"
+    ) val domain: SjDomain
+)
+
+
 //1 by n relation ::
 //하나의 도메인은 여러 개의 링크를 가진다.
 //하나의 링크는 하나의 도메인을 가진다.

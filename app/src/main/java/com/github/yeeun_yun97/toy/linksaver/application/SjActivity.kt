@@ -13,7 +13,7 @@ class SjActivity :Application(){
         val db = Room.databaseBuilder(applicationContext, SjDatabase::class.java,"sj_database").build()
         SjDatabase.db=db
         GlobalScope.launch(Dispatchers.IO){
-            SjDatabase.insertFirstData()
+            //SjDatabase.insertFirstData()
         }
     }
 }
