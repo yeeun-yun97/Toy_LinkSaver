@@ -11,7 +11,7 @@ class LinksAdapter(
     private val openOperation: (String) -> Unit
 ) :
     RecyclerView.Adapter<LinksViewHolder>() {
-    var itemList = ArrayList<SjLinkAndDomain>()
+    private var itemList = ArrayList<SjLinkAndDomain>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LinksViewHolder {
         val binding = ItemLinksBinding.inflate(LayoutInflater.from(parent.context))
@@ -32,6 +32,7 @@ class LinksViewHolder(private val binding: ItemLinksBinding) :
 
     fun setLink(item: SjLinkAndDomain, openOperation: (String) -> Unit) {
         this.item = item
+        Log.d("아이템 내용", item.toString())
         binding.linksItemDomainTextView.setText(item.domain.name)
         binding.linksItemNameTextView.setText(item.link.name)
         binding.linksItemWebButton.setOnClickListener { openOperation("${item.domain.url}${item.link.url}") }
