@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.yeeun_yun97.toy.linksaver.*
@@ -19,8 +20,15 @@ class ViewLinkActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_link)
 
-        val adapter = LinksAdapter(viewModel, ::startWebBrowser)
-        recyclerView.adapter = adapter;
+        val adapter = LinksAdapter(::startWebBrowser)
+        viewModel.linkList.observe(this,
+            Observer {
+                adapter.itemList = it
+                adapter.notifyDataSetChanged()
+            }
+        )
+        viewModel.loadDatas()
+        recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
