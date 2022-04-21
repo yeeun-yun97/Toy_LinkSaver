@@ -11,7 +11,7 @@ class LinksAdapter(
     private val openOperation: (String) -> Unit
 ) :
     RecyclerView.Adapter<LinksViewHolder>() {
-    private var itemList = ArrayList<SjLinkAndDomain>()
+    var itemList = ArrayList<SjLinkAndDomain>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LinksViewHolder {
         val binding = ItemLinksBinding.inflate(LayoutInflater.from(parent.context))
