@@ -23,8 +23,9 @@ data class SjTag(
     @ColumnInfo(name = "name") var name: String
 )
 
+/*
 data class SjLinkWithTagsAndDomain(
-    @Embedded val link: SjLink,
+    @Embedded val domain: SjDomain,
     @Relation(
         parentColumn = "lid",
         entityColumn = "tid",
@@ -33,13 +34,22 @@ data class SjLinkWithTagsAndDomain(
     @Relation(
         parentColumn = "did",
         entityColumn = "did"
-    ) val domain: SjDomain
-)
+    ) val link: SjLink
+)*/
 
 
 //1 by n relation ::
 //하나의 도메인은 여러 개의 링크를 가진다.
 //하나의 링크는 하나의 도메인을 가진다.
+data class SjLinkAndDomain(
+    @Embedded val link: SjLink,
+    @Relation(
+        parentColumn = "did",
+        entityColumn = "did"
+    )
+    val domain: SjDomain
+)
+
 data class SjDomainWithLinks(
     @Embedded val domain: SjDomain,
     @Relation(

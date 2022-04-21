@@ -20,7 +20,11 @@ interface SjDao {
 
     @Transaction
     @Query("SELECT * FROM SjLink")
-    fun getLinksWithTagsAndDomain():List<SjLinkWithTagsAndDomain>
+    fun getLinksAndDomain(): List<SjLinkAndDomain>
+
+//    @Transaction
+//    @Query("SELECT * FROM SjLink")
+//    fun getLinksWithTagsAndDomain():List<SjLinkWithTagsAndDomain>
 
     @Insert
     fun insertDomain(newDomain: SjDomain)

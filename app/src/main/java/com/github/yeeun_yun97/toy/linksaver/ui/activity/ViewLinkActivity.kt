@@ -14,11 +14,12 @@ import com.github.yeeun_yun97.toy.linksaver.viewmodel.ViewLinkViewModel
 class ViewLinkActivity : AppCompatActivity() {
     private val recyclerView: RecyclerView by lazy { findViewById(R.id.ViewLinkActivity_recyclerView) }
     private val viewModel: ViewLinkViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_link)
-        viewModel.loadDatas()
-        val adapter = LinksAdapter(viewModel.linkList, ::startWebBrowser)
+
+        val adapter = LinksAdapter(viewModel, ::startWebBrowser)
         recyclerView.adapter = adapter;
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
