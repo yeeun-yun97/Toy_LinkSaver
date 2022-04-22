@@ -7,7 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class SjActivity :Application(){
+class LinkSaverApplication :Application(){
     override fun onCreate() {
         super.onCreate()
         val db = Room.databaseBuilder(applicationContext, SjDatabase::class.java,"sj_database").build()
