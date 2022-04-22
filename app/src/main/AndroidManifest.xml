@@ -11,7 +11,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LinkSaver">
         <activity
+            android:name=".ui.activity.ShareLinkActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.ViewLinkActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.EditLinkActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.MainActivity"

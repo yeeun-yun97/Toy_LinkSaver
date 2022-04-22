@@ -14,6 +14,8 @@ import com.github.yeeun_yun97.toy.linksaver.viewmodel.ViewLinkViewModel
 
 class ViewLinkActivity : AppCompatActivity() {
     private val recyclerView: RecyclerView by lazy { findViewById(R.id.ViewLinkActivity_recyclerView) }
+    private val floatingButton: RecyclerView by lazy { findViewById(R.id.ViewLinkActivity_floatingActionButton) }
+
     private val viewModel: ViewLinkViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +32,12 @@ class ViewLinkActivity : AppCompatActivity() {
         viewModel.loadDatas()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        floatingButton.setOnClickListener { startEditActivity() }
+    }
+
+    private fun startEditActivity(){
+        startActivity(Intent(this, EditLinkActivity::class.java))
     }
 
     fun startWebBrowser(url: String) {
