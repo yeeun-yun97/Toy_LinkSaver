@@ -5,6 +5,7 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.*
 
 @Dao
 interface SjDao {
+    //////Test Passed Methods///////
     @Query("SELECT * FROM SjDomain")
     fun getDomains(): List<SjDomain>
 
@@ -22,12 +23,6 @@ interface SjDao {
     @Query("SELECT * FROM SjLink")
     fun getLinksAndDomain(): List<SjLinkAndDomain>
 
-//    @Transaction
-//    @Query("SELECT * FROM SjLink")
-//    fun getLinksWithTagsAndDomain():List<SjLinkWithTagsAndDomain>
-
-
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertDomain(newDomain: SjDomain)
 
@@ -39,6 +34,13 @@ interface SjDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLinkTagCrossRef(newCrossRef: LinkTagCrossRef)
+
+
+    /////NOT YET TESTED//////
+
+//    @Transaction
+//    @Query("SELECT * FROM SjLink")
+//    fun getLinksWithTagsAndDomain():List<SjLinkWithTagsAndDomain>
 
     @Delete
     fun deleteDomain(newDomain: SjDomain)
