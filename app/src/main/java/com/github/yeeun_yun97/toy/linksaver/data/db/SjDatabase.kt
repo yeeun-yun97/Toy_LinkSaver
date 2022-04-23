@@ -13,6 +13,9 @@ abstract class SjDatabase : RoomDatabase() {
     companion object {
         lateinit var db: SjDatabase
 
+
+
+
         fun insertFirstData() {
             val dao = db.getDao()
 

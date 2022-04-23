@@ -1,17 +1,21 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.activity
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import com.github.yeeun_yun97.toy.linksaver.R
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
-import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditLinkBinding
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.EditLinkViewModel
+
 
 class EditLinkActivity : AppCompatActivity() {
+    private val viewModel: EditLinkViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
+
+
+
 
 
 

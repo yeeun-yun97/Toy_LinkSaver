@@ -1,6 +1,5 @@
 package com.github.yeeun_yun97.toy.linksaver.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,8 +16,7 @@ class ViewLinkViewModel : ViewModel() {
     fun loadDatas() {
         viewModelScope.launch(Dispatchers.IO){
             val dao = SjDatabase.db.getDao()
-            val links : ArrayList<SjLinkAndDomain> =  ArrayList(dao.getLinksAndDomain())
-            Log.i("info", links.get(0).toString())
+            val links : ArrayList<SjLinkAndDomain> =  dao.getLinksAndDomain() as ArrayList<SjLinkAndDomain>
             _linkList.postValue(links)
         }
     }

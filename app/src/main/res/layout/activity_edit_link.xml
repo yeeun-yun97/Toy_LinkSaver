@@ -2,6 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.EditLinkViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -28,7 +33,7 @@
             app:layout_constraintTop_toBottomOf="@+id/domainTextView" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/domainDetailTextView"
             style="@style/header5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -43,9 +48,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="세부링크"
-            app:layout_constraintEnd_toEndOf="@+id/textView"
-            app:layout_constraintStart_toStartOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintEnd_toEndOf="@+id/domainDetailTextView"
+            app:layout_constraintStart_toStartOf="@+id/domainDetailTextView"
+            app:layout_constraintTop_toBottomOf="@+id/domainDetailTextView" />
 
         <EditText
             android:id="@+id/linkEditText"

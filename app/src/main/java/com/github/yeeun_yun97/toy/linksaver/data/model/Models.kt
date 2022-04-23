@@ -4,14 +4,14 @@ import androidx.room.*
 
 @Entity
 data class SjDomain(
-    @PrimaryKey val did: Int,
+    @PrimaryKey(autoGenerate = true) val did: Int,
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "url") var url: String
 )
 
 @Entity
 data class SjLink(
-    @PrimaryKey val lid: Int,
+    @PrimaryKey(autoGenerate = true) val lid: Int,
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "did") val did: Int,
     @ColumnInfo(name = "url") var url: String,
@@ -19,7 +19,7 @@ data class SjLink(
 
 @Entity
 data class SjTag(
-    @PrimaryKey val tid: Int,
+    @PrimaryKey(autoGenerate = true) val tid: Int,
     @ColumnInfo(name = "name") var name: String
 )
 

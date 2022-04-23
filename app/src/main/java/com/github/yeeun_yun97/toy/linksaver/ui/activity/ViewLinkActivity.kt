@@ -11,10 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.yeeun_yun97.toy.linksaver.*
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.LinksAdapter
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.ViewLinkViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ViewLinkActivity : AppCompatActivity() {
     private val recyclerView: RecyclerView by lazy { findViewById(R.id.ViewLinkActivity_recyclerView) }
-    private val floatingButton: RecyclerView by lazy { findViewById(R.id.ViewLinkActivity_floatingActionButton) }
+    private val floatingButton: FloatingActionButton by lazy { findViewById(R.id.ViewLinkActivity_floatingActionButton) }
 
     private val viewModel: ViewLinkViewModel by viewModels()
 
