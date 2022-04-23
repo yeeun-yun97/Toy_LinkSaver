@@ -2,16 +2,18 @@ package com.github.yeeun_yun97.toy.linksaver.data.model
 
 import androidx.room.*
 
+
+
 @Entity
 data class SjDomain(
-    @PrimaryKey(autoGenerate = true) val did: Int,
+    @PrimaryKey(autoGenerate = true) val did: Int=0,
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "url") var url: String
 )
 
 @Entity
 data class SjLink(
-    @PrimaryKey(autoGenerate = true) val lid: Int,
+    @PrimaryKey(autoGenerate = true) val lid: Int=0,
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "did") val did: Int,
     @ColumnInfo(name = "url") var url: String,
@@ -19,7 +21,7 @@ data class SjLink(
 
 @Entity
 data class SjTag(
-    @PrimaryKey(autoGenerate = true) val tid: Int,
+    @PrimaryKey(autoGenerate = true) val tid: Int=0,
     @ColumnInfo(name = "name") var name: String
 )
 
@@ -65,8 +67,8 @@ data class SjDomainWithLinks(
 //하나의 태그는 여러 개의 링크를 가진다.
 @Entity(primaryKeys = ["tid", "lid"])
 data class LinkTagCrossRef(
-    val tid: Int,
-    val lid: Int
+    val lid: Int,
+    val tid: Int
 )
 
 data class SjLinkWithTags(

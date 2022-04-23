@@ -26,17 +26,19 @@ interface SjDao {
 //    @Query("SELECT * FROM SjLink")
 //    fun getLinksWithTagsAndDomain():List<SjLinkWithTagsAndDomain>
 
-    @Insert
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertDomain(newDomain: SjDomain)
 
-    @Insert
-    fun insertLinkTagCrossRef(newCrossRef: LinkTagCrossRef)
-
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLink(newLink:SjLink)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTag(newTag:SjTag)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertLinkTagCrossRef(newCrossRef: LinkTagCrossRef)
 
     @Delete
     fun deleteDomain(newDomain: SjDomain)

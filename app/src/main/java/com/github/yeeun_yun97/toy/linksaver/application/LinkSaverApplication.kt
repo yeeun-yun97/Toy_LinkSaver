@@ -15,7 +15,7 @@ class LinkSaverApplication : Application() {
 
         //insert initial Data
         GlobalScope.launch(Dispatchers.IO) {
-            SjDatabase.insertFirstData()
+            //SjDatabase.insertFirstData()
         }
     }
 

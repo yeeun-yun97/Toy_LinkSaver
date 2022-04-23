@@ -19,7 +19,7 @@ class EditLinkViewModel(val link: SjLink) : ViewModel() {
 
     fun loadDataFromDB() {
         viewModelScope.launch(Dispatchers.IO) {
-            val dao = SjDatabase.db.getDao()
+            val dao = SjDatabase.getDao()
             _tags.postValue(dao.getTags())
             _domains.postValue(dao.getDomains())
         }
