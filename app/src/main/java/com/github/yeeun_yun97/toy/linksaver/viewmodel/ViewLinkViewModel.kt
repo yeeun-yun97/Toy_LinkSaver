@@ -42,7 +42,7 @@ class ViewLinkViewModel : ViewModel() {
             val nameList: MutableList<String> = mutableListOf()
 
             for (domain in domainList) {
-                nameList.add(0, domain.name)
+                nameList.add( domain.name)
             }
             _domains.postValue(domainList.toMutableList())
             _domainNames.postValue(nameList)

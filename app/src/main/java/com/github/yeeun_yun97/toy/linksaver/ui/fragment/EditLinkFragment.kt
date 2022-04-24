@@ -22,6 +22,13 @@ class EditLinkFragment : ViewBindingBasicFragment<FragmentEditLinkBinding>() {
     private val viewModel: ViewLinkViewModel by activityViewModels()
     override fun layoutId(): Int = R.layout.fragment_edit_link
 
+    fun setDomainDetailTextView() {
+        val builder = StringBuilder()
+        builder.append(viewModel.getDomainUrlByPosition(binding.domainSpinner.selectedItemPosition))
+        builder.append(binding.linkEditText.text.toString())
+        binding.domainDetailTextView.setText(builder.toString())
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         //replace lifecycleOwner to this(fragment) to viewLifecycleOwner
         //because fragment lives longer after its view was destroyed.
@@ -44,11 +51,10 @@ class EditLinkFragment : ViewBindingBasicFragment<FragmentEditLinkBinding>() {
                     position: Int,
                     p3: Long
                 ) {
-                    binding.domainDetailTextView.setText(
-                        viewModel.getDomainUrlByPosition(
-                            position
-                        )
-                    )
+                    val builder = StringBuilder()
+                    builder.append(viewModel.getDomainUrlByPosition(binding.domainSpinner.selectedItemPosition))
+                    builder.append(binding.linkEditText.text.toString())
+                    binding.domainDetailTextView.setText(builder.toString())
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -60,15 +66,13 @@ class EditLinkFragment : ViewBindingBasicFragment<FragmentEditLinkBinding>() {
         viewModel.loadTags()
 
 
+
         binding.linkEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                val builder = StringBuilder()
-                builder.append(viewModel.getDomainUrlByPosition(binding.domainSpinner.selectedItemPosition))
-                builder.append(binding.linkEditText.text.toString())
-                binding.domainDetailTextView.setText(builder.toString())
+                setDomainDetailTextView()
             }
 
             override fun afterTextChanged(p0: Editable?) {
@@ -76,11 +80,14 @@ class EditLinkFragment : ViewBindingBasicFragment<FragmentEditLinkBinding>() {
 
         })
         binding.saveButton.setOnClickListener {
-           viewModel.insertLinks(SjLink(
-                did = viewModel.getDomainIdByPosition(binding.domainSpinner.selectedItemPosition),
-                name = binding.nameEditText.text.toString(),
-                url = binding.linkEditText.text.toString()
-            ), binding.tagChipGroup.checkedChipIds)
+            viewModel.insertLinks(
+                SjLink(
+                    did = viewModel.getDomainIdByPosition(binding.domainSpinner.selectedItemPosition),
+                    name = binding.nameEditText.text.toString(),
+                    url = binding.linkEditText.text.toString()
+                ), binding.tagChipGroup.checkedChipIds
+            )
+            requireActivity().finish()
         }
     }
 

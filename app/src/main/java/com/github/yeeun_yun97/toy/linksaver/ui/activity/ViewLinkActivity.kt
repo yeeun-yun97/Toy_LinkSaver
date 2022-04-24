@@ -30,14 +30,20 @@ class ViewLinkActivity : AppCompatActivity() {
                 adapter.notifyDataSetChanged()
             }
         )
-        viewModel.loadDatas()
+
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         floatingButton.setOnClickListener { startEditActivity() }
     }
 
-    private fun startEditActivity(){
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadDatas()
+    }
+
+    private fun startEditActivity() {
         startActivity(Intent(this, EditLinkActivity::class.java))
     }
 

@@ -20,7 +20,7 @@ import org.junit.runner.RunWith
 class RoomTest {
     private lateinit var dao: SjDao
 
-    private val domain = SjDomain(did = 10, name = "TestDomain", url = "https:www.naver.com/")
+    private val domain = SjDomain(did = 11, name = "Daum", url = "https:www.daum.net/")
     private val link = SjLink(lid = 20, name = "TestLink", did = 10, url = "#")
     private val tag = SjTag(tid = 30, name="TestTag")
     private val crossRef=LinkTagCrossRef(lid=20, tid=30)
@@ -28,6 +28,7 @@ class RoomTest {
     @Before
     fun createDB() {
         val applicationContext = ApplicationProvider.getApplicationContext<Context>()
+        //SjDatabase.openDatabase(applicationContext)
         SjDatabase.openDatabaseForTest(applicationContext)
         this.dao = SjDatabase.getDao()
     }
