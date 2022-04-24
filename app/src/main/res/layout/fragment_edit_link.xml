@@ -13,15 +13,36 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/domainTextView"
+            android:id="@+id/nameTextView"
             style="@style/header4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"
-            android:text="도메인"
+            android:text="이름"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/nameEditText"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="@+id/nameTextView"
+            app:layout_constraintStart_toStartOf="@+id/nameTextView"
+            app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
+
+        <TextView
+            android:id="@+id/domainTextView"
+            style="@style/header4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="도메인"
+            app:layout_constraintEnd_toEndOf="@+id/domainDetailTextView"
+            app:layout_constraintStart_toStartOf="@+id/domainDetailTextView"
+            app:layout_constraintTop_toBottomOf="@+id/domainDetailTextView" />
 
         <Spinner
             android:id="@+id/domainSpinner"
@@ -38,19 +59,20 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="도메인 정보"
-            app:layout_constraintEnd_toEndOf="@+id/domainSpinner"
-            app:layout_constraintStart_toStartOf="@+id/domainSpinner"
-            app:layout_constraintTop_toBottomOf="@+id/domainSpinner" />
+            app:layout_constraintEnd_toEndOf="@+id/nameEditText"
+            app:layout_constraintStart_toStartOf="@+id/nameEditText"
+            app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
 
         <TextView
             android:id="@+id/linkTextView"
             style="@style/header4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="세부링크"
-            app:layout_constraintEnd_toEndOf="@+id/domainDetailTextView"
-            app:layout_constraintStart_toStartOf="@+id/domainDetailTextView"
-            app:layout_constraintTop_toBottomOf="@+id/domainDetailTextView" />
+            app:layout_constraintEnd_toEndOf="@+id/domainSpinner"
+            app:layout_constraintStart_toStartOf="@+id/domainSpinner"
+            app:layout_constraintTop_toBottomOf="@+id/domainSpinner" />
 
         <EditText
             android:id="@+id/linkEditText"
@@ -60,8 +82,8 @@
             android:hint="세부링크"
             android:inputType="textPersonName"
             android:paddingVertical="5dp"
-            app:layout_constraintEnd_toEndOf="@+id/domainSpinner"
-            app:layout_constraintStart_toStartOf="@+id/domainSpinner"
+            app:layout_constraintEnd_toEndOf="@+id/linkTextView"
+            app:layout_constraintStart_toStartOf="@+id/linkTextView"
             app:layout_constraintTop_toBottomOf="@+id/linkTextView" />
 
         <TextView
@@ -69,6 +91,7 @@
             style="@style/header4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="태그"
             app:layout_constraintEnd_toEndOf="@+id/linkEditText"
             app:layout_constraintStart_toStartOf="@+id/linkEditText"
@@ -83,6 +106,16 @@
             app:layout_constraintTop_toBottomOf="@+id/tagTextView">
 
         </com.google.android.material.chip.ChipGroup>
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="저장하기"
+            app:layout_constraintEnd_toEndOf="@+id/tagChipGroup"
+            app:layout_constraintStart_toStartOf="@+id/tagChipGroup"
+            app:layout_constraintTop_toBottomOf="@+id/tagChipGroup" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 

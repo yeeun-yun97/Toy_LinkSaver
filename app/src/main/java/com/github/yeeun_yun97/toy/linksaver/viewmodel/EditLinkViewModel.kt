@@ -13,8 +13,8 @@ import kotlinx.coroutines.launch
 
 class EditLinkViewModel(val link: SjLink) : ViewModel() {
     private var _tags = MutableLiveData<List<SjTag>>()
-    private var _domains = MutableLiveData<List<SjDomain>>()
     val tags: LiveData<List<SjTag>> get() = _tags
+    private var _domains = MutableLiveData<List<SjDomain>>()
     val domains: LiveData<List<SjDomain>> get() = _domains
 
     fun loadDataFromDB() {

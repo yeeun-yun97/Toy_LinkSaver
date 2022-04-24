@@ -26,8 +26,8 @@ interface SjDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertDomain(newDomain: SjDomain)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertLink(newLink:SjLink)
+    @Insert
+    fun insertLink(newLink:SjLink):Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTag(newTag:SjTag)

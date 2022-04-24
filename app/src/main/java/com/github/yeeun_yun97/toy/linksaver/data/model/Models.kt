@@ -2,7 +2,9 @@ package com.github.yeeun_yun97.toy.linksaver.data.model
 
 import androidx.room.*
 
-
+data class NameOnly(
+    @ColumnInfo(name = "name") var name: String
+)
 
 @Entity
 data class SjDomain(

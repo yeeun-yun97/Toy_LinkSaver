@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import com.github.yeeun_yun97.toy.linksaver.R
-import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditLinkBinding
 
 abstract class ViewBindingBasicFragment<T : ViewDataBinding> : Fragment() {
 
@@ -28,5 +26,9 @@ abstract class ViewBindingBasicFragment<T : ViewDataBinding> : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun getClassName(): String{
+        return this.javaClass.canonicalName
     }
 }
