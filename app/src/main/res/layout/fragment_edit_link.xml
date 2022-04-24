@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.EditLinkViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/domainTextView"
+            style="@style/header4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:text="도메인"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/domainSpinner"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:paddingVertical="5dp"
+            app:layout_constraintEnd_toEndOf="@+id/domainTextView"
+            app:layout_constraintStart_toStartOf="@+id/domainTextView"
+            app:layout_constraintTop_toBottomOf="@+id/domainTextView" />
+
+        <TextView
+            android:id="@+id/domainDetailTextView"
+            style="@style/header5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="도메인 정보"
+            app:layout_constraintEnd_toEndOf="@+id/domainSpinner"
+            app:layout_constraintStart_toStartOf="@+id/domainSpinner"
+            app:layout_constraintTop_toBottomOf="@+id/domainSpinner" />
+
+        <TextView
+            android:id="@+id/linkTextView"
+            style="@style/header4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="세부링크"
+            app:layout_constraintEnd_toEndOf="@+id/domainDetailTextView"
+            app:layout_constraintStart_toStartOf="@+id/domainDetailTextView"
+            app:layout_constraintTop_toBottomOf="@+id/domainDetailTextView" />
+
+        <EditText
+            android:id="@+id/linkEditText"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:hint="세부링크"
+            android:inputType="textPersonName"
+            android:paddingVertical="5dp"
+            app:layout_constraintEnd_toEndOf="@+id/domainSpinner"
+            app:layout_constraintStart_toStartOf="@+id/domainSpinner"
+            app:layout_constraintTop_toBottomOf="@+id/linkTextView" />
+
+        <TextView
+            android:id="@+id/tagTextView"
+            style="@style/header4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="태그"
+            app:layout_constraintEnd_toEndOf="@+id/linkEditText"
+            app:layout_constraintStart_toStartOf="@+id/linkEditText"
+            app:layout_constraintTop_toBottomOf="@+id/linkEditText" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/tagChipGroup"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            app:layout_constraintEnd_toEndOf="@+id/tagTextView"
+            app:layout_constraintStart_toStartOf="@+id/tagTextView"
+            app:layout_constraintTop_toBottomOf="@+id/tagTextView">
+
+        </com.google.android.material.chip.ChipGroup>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+
