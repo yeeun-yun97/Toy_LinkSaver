@@ -17,7 +17,7 @@ data class SjDomain(
 data class SjLink(
     @PrimaryKey(autoGenerate = true) val lid: Int=0,
     @ColumnInfo(name = "name") var name: String,
-    @ColumnInfo(name = "did") val did: Int,
+    @ColumnInfo(name = "did") var did: Int,
     @ColumnInfo(name = "url") var url: String,
 )
 

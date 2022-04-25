@@ -1,19 +1,21 @@
 package com.github.yeeun_yun97.toy.linksaver.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.github.yeeun_yun97.toy.linksaver.data.model.*
 
 @Dao
 interface SjDao {
+
     //////Test Passed Methods///////
     @Query("SELECT * FROM SjDomain")
-    fun getDomains(): List<SjDomain>
+    fun getAllDomains(): LiveData<List<SjDomain>>
 
     @Query("SELECT * FROM SjLink")
-    fun getLinks(): List<SjLink>
+    fun getAllLinks(): LiveData<List<SjLink>>
 
     @Query("SELECT * FROM SjTag")
-    fun getTags(): List<SjTag>
+    fun getAllTags(): LiveData<List<SjTag>>
 
     @Transaction
     @Query("SELECT * FROM SjLink")
@@ -21,16 +23,20 @@ interface SjDao {
 
     @Transaction
     @Query("SELECT * FROM SjLink")
-    fun getLinksAndDomain(): List<SjLinkAndDomain>
+    fun getLinksAndDomain(): LiveData<List<SjLinkAndDomain>>
+
+
+
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertDomain(newDomain: SjDomain)
 
     @Insert
-    fun insertLink(newLink:SjLink):Long
+    fun insertLink(newLink: SjLink): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTag(newTag:SjTag)
+    fun insertTag(newTag: SjTag)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLinkTagCrossRef(newCrossRef: LinkTagCrossRef)
@@ -46,9 +52,9 @@ interface SjDao {
     fun deleteDomain(newDomain: SjDomain)
 
     @Delete
-    fun deleteLink(newLink:SjLink)
+    fun deleteLink(newLink: SjLink)
 
     @Delete
-    fun deleteTag(newTag:SjTag)
+    fun deleteTag(newTag: SjTag)
 
 }

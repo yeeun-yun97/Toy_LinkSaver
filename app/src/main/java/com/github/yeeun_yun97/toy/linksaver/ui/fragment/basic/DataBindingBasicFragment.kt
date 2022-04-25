@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 
-abstract class ViewBindingBasicFragment<T : ViewDataBinding> : Fragment() {
+abstract class DataBindingBasicFragment<T : ViewDataBinding> : Fragment() {
 
     private var _binding: T? = null
     protected val binding: T get() = _binding!!

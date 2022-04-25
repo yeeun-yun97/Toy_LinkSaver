@@ -42,7 +42,7 @@ class RoomTest {
     fun insertDomainTest(){
         dao.insertDomain(domain)
 
-        val domainList= dao.getDomains()
+        val domainList= dao.getAllDomains()
         assertThat(domainList[0], equalTo(domain))
     }
 
@@ -51,7 +51,7 @@ class RoomTest {
     fun insertTagTest(){
         dao.insertTag(tag)
 
-        val tagList= dao.getTags()
+        val tagList= dao.getAllTags()
         assertThat(tagList[0], equalTo(tag))
     }
 
@@ -62,10 +62,10 @@ class RoomTest {
         dao.insertLink(link)
         dao.insertLinkTagCrossRef(crossRef)
 
-        val domains= dao.getDomains()
+        val domains= dao.getAllDomains()
         val linksAndDomain = dao.getLinksAndDomain()
         val linksWithTags = dao.getLinksWithTags()
-        val tags = dao.getTags()
+        val tags = dao.getAllTags()
 
         assertThat(domains[0],equalTo(domain))
 

@@ -12,16 +12,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class EditLinkViewModel(val link: SjLink) : ViewModel() {
-    private var _tags = MutableLiveData<List<SjTag>>()
-    val tags: LiveData<List<SjTag>> get() = _tags
+    //private var _tags = MutableLiveData<List<SjTag>>()
+    val tags: LiveData<List<SjTag>> get() = SjDatabase.getDao().getAllTags()
     private var _domains = MutableLiveData<List<SjDomain>>()
     val domains: LiveData<List<SjDomain>> get() = _domains
 
     fun loadDataFromDB() {
         viewModelScope.launch(Dispatchers.IO) {
             val dao = SjDatabase.getDao()
-            _tags.postValue(dao.getTags())
-            _domains.postValue(dao.getDomains())
+            //_tags.postValue(dao.getAllTags())
+            //_domains.postValue(dao.getAllDomains())
         }
     }
 

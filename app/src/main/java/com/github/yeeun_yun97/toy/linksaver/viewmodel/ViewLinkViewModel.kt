@@ -12,13 +12,11 @@ import kotlinx.coroutines.launch
 class ViewLinkViewModel : ViewModel() {
     private val _linkList = MutableLiveData(ArrayList<SjLinkAndDomain>())
     private val _domainNames = MutableLiveData<MutableList<String>>()
-    private val _domains = MutableLiveData<MutableList<SjDomain>>()
-    private val _tags = MutableLiveData<List<SjTag>>()
 
-    val tags: LiveData<List<SjTag>> get() = _tags
+    val tags: LiveData<List<SjTag>> = SjDatabase.getDao().getAllTags()
+    val domains get() = SjDatabase.getDao().getAllDomains()
     val linkList: LiveData<ArrayList<SjLinkAndDomain>> get() = _linkList
     val domainNames: LiveData<MutableList<String>> get() = _domainNames
-    val domains: LiveData<MutableList<SjDomain>> get() = _domains
 
     fun loadDatas() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -30,21 +28,18 @@ class ViewLinkViewModel : ViewModel() {
     }
 
     fun loadTags() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _tags.postValue(SjDatabase.getDao().getTags())
-        }
     }
 
     fun loadDomainNamesAndUrls() {
         viewModelScope.launch(Dispatchers.IO) {
-            val domainList = SjDatabase.getDao().getDomains()
+            val domainList = SjDatabase.getDao().getAllDomains()
 
             val nameList: MutableList<String> = mutableListOf()
 
-            for (domain in domainList) {
-                nameList.add( domain.name)
-            }
-            _domains.postValue(domainList.toMutableList())
+            //for (domain in domainList) {
+            //    nameList.add( domain.name)
+            //}
+            //_domains.postValue(domainList.toMutableList())
             _domainNames.postValue(nameList)
         }
     }
