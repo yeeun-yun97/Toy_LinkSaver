@@ -13,6 +13,26 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/addDomainTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="bottom"
+            android:text="추가"
+            app:layout_constraintBottom_toBottomOf="@+id/domainTextView"
+            app:layout_constraintEnd_toEndOf="@+id/domainTextView"
+            app:layout_constraintTop_toTopOf="@+id/domainTextView" />
+
+        <TextView
+            android:id="@+id/addTagTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="bottom"
+            android:text="추가"
+            app:layout_constraintBottom_toBottomOf="@+id/tagTextView"
+            app:layout_constraintEnd_toEndOf="@+id/tagTextView"
+            app:layout_constraintTop_toTopOf="@+id/tagTextView" />
+
+        <TextView
             android:id="@+id/nameTextView"
             style="@style/header4"
             android:layout_width="0dp"
@@ -28,6 +48,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:ems="10"
+            android:hint="이름을 입력하세요"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="@+id/nameTextView"
             app:layout_constraintStart_toStartOf="@+id/nameTextView"

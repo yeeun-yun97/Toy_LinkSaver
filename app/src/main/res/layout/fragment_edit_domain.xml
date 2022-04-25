@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/urlTextView"
+            style="@style/header4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="주소"
+            app:layout_constraintEnd_toEndOf="@+id/nameEdtiText"
+            app:layout_constraintStart_toStartOf="@+id/nameEdtiText"
+            app:layout_constraintTop_toBottomOf="@+id/nameEdtiText" />
+
+        <EditText
+            android:id="@+id/urlEditText"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:hint="http://www..."
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="@+id/urlTextView"
+            app:layout_constraintStart_toStartOf="@+id/urlTextView"
+            app:layout_constraintTop_toBottomOf="@+id/urlTextView" />
+
+        <TextView
+            android:id="@+id/nameTextView"
+            style="@style/header4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:text="이름"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/nameEdtiText"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:hint="이름을 입력해주세요"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="@+id/nameTextView"
+            app:layout_constraintStart_toStartOf="@+id/nameTextView"
+            app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="저장하기"
+            app:layout_constraintEnd_toEndOf="@+id/urlEditText"
+            app:layout_constraintStart_toStartOf="@+id/urlEditText"
+            app:layout_constraintTop_toBottomOf="@+id/urlEditText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

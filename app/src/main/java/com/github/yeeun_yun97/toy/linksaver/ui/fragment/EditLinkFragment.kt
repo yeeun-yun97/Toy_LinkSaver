@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.commit
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
@@ -73,9 +74,8 @@ class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
 
             override fun afterTextChanged(p0: Editable?) {}
         })
-        binding.saveButton.setOnClickListener {
-            onSaveButtonClicked()
-        }
+        binding.saveButton.setOnClickListener { onSaveButtonClicked() }
+        binding.addDomainTextView.setOnClickListener{moveToEditDomainFragment()}
     }
 
     private fun addTagsToChipGroupChildren(it: List<SjTag>) {
@@ -84,6 +84,13 @@ class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
             val chip = SjTagChip(context!!, tag)
             binding.tagChipGroup.addView(chip)
         }
+    }
+
+    private fun moveToEditTagFragment(){
+
+    }
+    private fun moveToEditDomainFragment(){
+        moveToOtherFragment(EditDomainFragment())
     }
 
     private fun onSaveButtonClicked() {

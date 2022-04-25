@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import com.github.yeeun_yun97.toy.linksaver.R
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.EditDomainFragment
 
 abstract class DataBindingBasicFragment<T : ViewDataBinding> : Fragment() {
 
@@ -30,6 +33,14 @@ abstract class DataBindingBasicFragment<T : ViewDataBinding> : Fragment() {
 
     fun getClassName(): String{
         return this.javaClass.canonicalName
+    }
+
+    fun moveToOtherFragment(fragment:Fragment){
+        parentFragmentManager.commit{
+            replace(R.id.fragmentContainer, fragment)
+            setReorderingAllowed(true)
+            addToBackStack("editTag")
+        }
     }
 
 }
