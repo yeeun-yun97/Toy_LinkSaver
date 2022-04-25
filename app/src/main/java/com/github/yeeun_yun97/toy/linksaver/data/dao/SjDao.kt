@@ -17,6 +17,9 @@ interface SjDao {
     @Query("SELECT * FROM SjTag")
     fun getAllTags(): LiveData<List<SjTag>>
 
+    @Query("SELECT name FROM SjDomain")
+    fun getAllDomainNames(): LiveData<List<String>>
+
     @Transaction
     @Query("SELECT * FROM SjLink")
     fun getLinksWithTags(): List<SjLinkWithTags>
@@ -24,9 +27,6 @@ interface SjDao {
     @Transaction
     @Query("SELECT * FROM SjLink")
     fun getLinksAndDomain(): LiveData<List<SjLinkAndDomain>>
-
-
-
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

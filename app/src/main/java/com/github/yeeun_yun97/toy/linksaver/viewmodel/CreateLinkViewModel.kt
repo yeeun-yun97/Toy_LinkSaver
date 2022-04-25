@@ -8,10 +8,10 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.data.repository.SjRepository
 
 class CreateLinkViewModel : ViewModel() {
-
-    val repository = SjRepository()
+    private val repository = SjRepository()
     val domains: LiveData<List<SjDomain>> get() = repository.domains
     val tags: LiveData<List<SjTag>> get() = repository.tags
+    val domainNames get() = repository.domainNames
 
     val selectedTags= mutableListOf<SjTag>()
     lateinit var selectedDomain: SjDomain

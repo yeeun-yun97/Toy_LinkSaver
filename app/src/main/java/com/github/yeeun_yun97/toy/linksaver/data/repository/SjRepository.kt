@@ -16,6 +16,7 @@ class SjRepository {
     val links: LiveData<List<SjLink>> = dao.getAllLinks()
     val linksWithDomains = SjDatabase.getDao().getLinksAndDomain()
     val tags: LiveData<List<SjTag>> = dao.getAllTags()
+    val domainNames: LiveData<List<String>> = dao.getAllDomainNames()
 
     fun insertDomain(newDomain: SjDomain) {
         CoroutineScope(Dispatchers.IO).launch {

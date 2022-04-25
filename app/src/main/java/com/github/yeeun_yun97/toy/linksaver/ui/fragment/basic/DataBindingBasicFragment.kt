@@ -31,4 +31,5 @@ abstract class DataBindingBasicFragment<T : ViewDataBinding> : Fragment() {
     fun getClassName(): String{
         return this.javaClass.canonicalName
     }
+
 }
