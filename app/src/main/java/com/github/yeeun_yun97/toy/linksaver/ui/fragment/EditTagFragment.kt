@@ -6,15 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.github.yeeun_yun97.toy.linksaver.R
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
-import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditDomainBinding
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
+import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditTagBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.DataBindingBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.CreateDomainViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.CreateTagViewModel
 
-class EditDomainFragment : DataBindingBasicFragment<FragmentEditDomainBinding>() {
-    val viewModel: CreateDomainViewModel by viewModels()
+class EditTagFragment : DataBindingBasicFragment<FragmentEditTagBinding>() {
+    val viewModel: CreateTagViewModel by viewModels()
 
-    override fun layoutId(): Int = R.layout.fragment_edit_domain
+    override fun layoutId(): Int = R.layout.fragment_edit_tag
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,19 +24,15 @@ class EditDomainFragment : DataBindingBasicFragment<FragmentEditDomainBinding>()
         super.onCreateView(inflater, container, savedInstanceState)
 
         binding.saveButton.setOnClickListener {
-            saveDomain()
+            insertTag()
         }
+
+
         return binding.root
     }
 
-
-    private fun saveDomain() {
-        viewModel.insertDomain(
-            SjDomain(
-                name = binding.nameEdtiText.text.toString(),
-                url = binding.urlEditText.text.toString()
-            )
-        )
+    private fun insertTag() {
+        viewModel.insertTag(SjTag(name = binding.nameEdtiText.text.toString()))
         popBack()
     }
 }

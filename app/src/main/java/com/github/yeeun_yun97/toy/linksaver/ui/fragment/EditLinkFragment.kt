@@ -75,7 +75,8 @@ class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
             override fun afterTextChanged(p0: Editable?) {}
         })
         binding.saveButton.setOnClickListener { onSaveButtonClicked() }
-        binding.addDomainTextView.setOnClickListener{moveToEditDomainFragment()}
+        binding.addDomainTextView.setOnClickListener { moveToEditDomainFragment() }
+        binding.addTagTextView.setOnClickListener { moveToEditTagFragment() }
     }
 
     private fun addTagsToChipGroupChildren(it: List<SjTag>) {
@@ -86,10 +87,11 @@ class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
         }
     }
 
-    private fun moveToEditTagFragment(){
-
+    private fun moveToEditTagFragment() {
+        moveToOtherFragment(EditTagFragment())
     }
-    private fun moveToEditDomainFragment(){
+
+    private fun moveToEditDomainFragment() {
         moveToOtherFragment(EditDomainFragment())
     }
 

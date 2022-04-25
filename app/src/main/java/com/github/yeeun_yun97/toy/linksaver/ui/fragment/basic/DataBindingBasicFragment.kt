@@ -43,4 +43,9 @@ abstract class DataBindingBasicFragment<T : ViewDataBinding> : Fragment() {
         }
     }
 
+    fun popBack(){
+        parentFragmentManager.popBackStack()
+    }
+
+
 }
