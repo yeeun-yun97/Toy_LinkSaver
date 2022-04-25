@@ -4,11 +4,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinkAndDomain
 import com.github.yeeun_yun97.toy.linksaver.databinding.ItemLinksBinding
 
 class LinksAdapter(
-    private val openOperation: (String) -> Unit
+    private val openOperation: (String) -> Unit,
+    private val deleteOperation: (SjLink) -> Unit
 ) :
     RecyclerView.Adapter<LinksViewHolder>() {
     var itemList: List<SjLinkAndDomain> = listOf()
@@ -19,7 +21,7 @@ class LinksAdapter(
     }
 
     override fun onBindViewHolder(holder: LinksViewHolder, position: Int) {
-        holder.setLink(itemList[position], openOperation)
+        holder.setLink(itemList[position], openOperation, deleteOperation)
     }
 
     override fun getItemCount(): Int = itemList.size
@@ -30,21 +32,22 @@ class LinksViewHolder(private val binding: ItemLinksBinding) :
     RecyclerView.ViewHolder(binding.root) {
     private lateinit var item: SjLinkAndDomain
 
-    fun setLink(item: SjLinkAndDomain, openOperation: (String) -> Unit) {
+    fun setLink(
+        item: SjLinkAndDomain,
+        openOperation: (String) -> Unit,
+        deleteOperation: (SjLink) -> Unit
+    ) {
         this.item = item
         Log.d("아이템 내용", item.toString())
         binding.linksItemDomainTextView.setText(item.domain.name)
         binding.linksItemNameTextView.setText(item.link.name)
         binding.linksItemWebButton.setOnClickListener { openOperation("${item.domain.url}${item.link.url}") }
         binding.linksItemEditButton.setOnClickListener { editLink() }
-        binding.linksItemDeleteButton.setOnClickListener { deleteLink() }
+        binding.linksItemDeleteButton.setOnClickListener { deleteOperation(item.link) }
     }
 
     private fun editLink() {
 
     }
 
-    private fun deleteLink() {
-
-    }
 }

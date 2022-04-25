@@ -77,6 +77,7 @@ class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
         binding.saveButton.setOnClickListener { onSaveButtonClicked() }
         binding.addDomainTextView.setOnClickListener { moveToEditDomainFragment() }
         binding.addTagTextView.setOnClickListener { moveToEditTagFragment() }
+
     }
 
     private fun addTagsToChipGroupChildren(it: List<SjTag>) {

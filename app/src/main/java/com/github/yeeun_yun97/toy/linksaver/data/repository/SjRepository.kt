@@ -1,5 +1,6 @@
 package com.github.yeeun_yun97.toy.linksaver.data.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDao
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabase
@@ -55,9 +56,14 @@ class SjRepository {
 
     fun deleteLink(link: SjLink) {
         CoroutineScope(Dispatchers.IO).launch {
-            dao.deleteLink(link)
-            //링크와 태그 크로스 레프 객체에서 참조하고 있을 수 있으니,
-            //마찬가지로 확인하고, 있으면 지우지 말고 알리기
+            val count = dao.countLinkTagCrossRefByLid(link.lid)
+
+            if (count == 0) {
+                dao.deleteLink(link)
+            } else {
+                //UI에 표시하면 좋을 것 같다.
+                Log.i(javaClass.canonicalName, "link is referenced by TagCrossRef")
+            }
         }
     }
 

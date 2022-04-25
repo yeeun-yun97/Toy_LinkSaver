@@ -28,6 +28,9 @@ interface SjDao {
     @Query("SELECT * FROM SjLink")
     fun getLinksAndDomain(): LiveData<List<SjLinkAndDomain>>
 
+    @Query("SELECT Count(*) FROM LinkTagCrossRef WHERE lid=:lid")
+    fun countLinkTagCrossRefByLid(lid:Int): Int
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertDomain(newDomain: SjDomain)

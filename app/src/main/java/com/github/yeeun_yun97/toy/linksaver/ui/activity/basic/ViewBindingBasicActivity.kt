@@ -16,15 +16,15 @@ abstract class ViewBindingBasicActivity<T : ViewBinding> : AppCompatActivity() {
         //view binding
         binding = viewBindingInflate(layoutInflater)
         setContentView(binding.root)
+        setHomeFragment()
+    }
 
+    fun setHomeFragment() {
         supportFragmentManager.commit {
             add(R.id.fragmentContainer, homeFragment())
             setReorderingAllowed(true)
         }
     }
-
     abstract fun viewBindingInflate(inflater: LayoutInflater): T
-    abstract fun homeFragment():Fragment
-
-
+    abstract fun homeFragment(): Fragment
 }

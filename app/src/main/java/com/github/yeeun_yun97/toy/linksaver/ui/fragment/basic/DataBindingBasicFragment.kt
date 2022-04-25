@@ -8,14 +8,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.EditDomainFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.EmptyFragment
 
 abstract class DataBindingBasicFragment<T : ViewDataBinding> : Fragment() {
 
     private var _binding: T? = null
     protected val binding: T get() = _binding!!
-    protected abstract fun layoutId(): Int
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +40,7 @@ abstract class DataBindingBasicFragment<T : ViewDataBinding> : Fragment() {
         parentFragmentManager.commit{
             replace(R.id.fragmentContainer, fragment)
             setReorderingAllowed(true)
-            addToBackStack("editTag")
+            addToBackStack(fragment.javaClass.canonicalName)
         }
     }
 
@@ -47,5 +48,6 @@ abstract class DataBindingBasicFragment<T : ViewDataBinding> : Fragment() {
         parentFragmentManager.popBackStack()
     }
 
+    protected abstract fun layoutId(): Int
 
 }
