@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentViewLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.LinksAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.DataBindingBasicFragment
@@ -27,8 +28,8 @@ class ViewLinkFragment : DataBindingBasicFragment<FragmentViewLinkBinding>() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        val adapter = LinksAdapter(::startWebBrowser,::deleteLink)
-        viewModel.linksWithDomains.observe(this,
+        val adapter = LinksAdapter(::startWebBrowser, ::deleteLink)
+        viewModel.linkList.observe(this,
             {
                 adapter.itemList = it
                 adapter.notifyDataSetChanged()
@@ -41,13 +42,13 @@ class ViewLinkFragment : DataBindingBasicFragment<FragmentViewLinkBinding>() {
         return binding.root
     }
 
-    private fun deleteLink(link: SjLink){
-        viewModel.deleteLink(link)
+    private fun deleteLink(link: SjLink, tags: List<SjTag>) {
+        viewModel.deleteLink(link, tags)
     }
 
-    private fun editLink(){}
+    private fun editLink() {}
 
-    private fun shareLink(){}
+    private fun shareLink() {}
 
     private fun startWebBrowser(url: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))

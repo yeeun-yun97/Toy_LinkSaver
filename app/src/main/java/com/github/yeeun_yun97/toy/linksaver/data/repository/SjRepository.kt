@@ -13,18 +13,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class SjRepository private constructor(){
+class SjRepository private constructor() {
     val dao: SjDao = SjDatabase.getDao()
     val domains: LiveData<List<SjDomain>> = dao.getAllDomains()
-    val links: LiveData<List<SjLink>> = dao.getAllLinks()
-    val linksWithDomains = SjDatabase.getDao().getLinksAndDomain()
     val tags: LiveData<List<SjTag>> = dao.getAllTags()
+    val linkList = SjDatabase.getDao().getLinksAndDomainsWithTags()
     val domainNames: LiveData<List<String>> = dao.getAllDomainNames()
 
-    companion object{
+    companion object {
         private val repo: SjRepository = SjRepository()
 
-        fun getInstance():SjRepository=repo
+        fun getInstance(): SjRepository = repo
 
     }
 
@@ -60,7 +59,7 @@ class SjRepository private constructor(){
         val linkTagCrossRefs = mutableListOf<LinkTagCrossRef>()
         for (tag in tags) {
             linkTagCrossRefs.add(LinkTagCrossRef(lid = lid, tid = tag.tid))
-            Log.d(javaClass.canonicalName,"added link cross ref lid = ${lid}, tid = ${tag.tid}")
+            Log.d(javaClass.canonicalName, "added link cross ref lid = ${lid}, tid = ${tag.tid}")
         }
         dao.insertLinkTagCrossRefs(*linkTagCrossRefs.toTypedArray())
     }
@@ -74,17 +73,18 @@ class SjRepository private constructor(){
         }
     }
 
-    fun deleteLink(link: SjLink) {
+    fun deleteLink(link: SjLink, tags: List<SjTag>) =
         CoroutineScope(Dispatchers.IO).launch {
-            val count = dao.countLinkTagCrossRefByLid(link.lid)
-            if (count == 0) {
-                dao.deleteLink(link)
-            } else {
-                //UI에 표시하면 좋을 것 같다.
-                Log.i(javaClass.canonicalName, "link is referenced by TagCrossRef")
+
+            if (tags.isNotEmpty()) {
+                val deleteRefs = launch {
+                    dao.deleteTags(*tags.toTypedArray())
+                }
+                deleteRefs.join()
             }
+            dao.deleteLink(link)
+
         }
-    }
 
     fun deleteTag(tag: SjTag) {
         CoroutineScope(Dispatchers.IO).launch {

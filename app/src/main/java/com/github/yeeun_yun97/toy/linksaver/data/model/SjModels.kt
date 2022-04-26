@@ -8,14 +8,14 @@ data class NameOnly(
 
 @Entity
 data class SjDomain(
-    @PrimaryKey(autoGenerate = true) val did: Int=0,
+    @PrimaryKey(autoGenerate = true) val did: Int = 0,
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "url") var url: String
 )
 
 @Entity
 data class SjLink(
-    @PrimaryKey(autoGenerate = true) val lid: Int=0,
+    @PrimaryKey(autoGenerate = true) val lid: Int = 0,
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "did") var did: Int,
     @ColumnInfo(name = "url") var url: String,
@@ -23,23 +23,23 @@ data class SjLink(
 
 @Entity
 data class SjTag(
-    @PrimaryKey(autoGenerate = true) val tid: Int=0,
+    @PrimaryKey(autoGenerate = true) val tid: Int = 0,
     @ColumnInfo(name = "name") var name: String
 )
 
-/*
-data class SjLinkWithTagsAndDomain(
-    @Embedded val domain: SjDomain,
+
+data class SjLinksAndDomainsWithTags(
+    @Embedded val link: SjLink,
+    @Relation(
+        parentColumn = "did",
+        entityColumn = "did"
+    ) val domain: SjDomain,
     @Relation(
         parentColumn = "lid",
         entityColumn = "tid",
         associateBy = Junction(LinkTagCrossRef::class)
-    ) val tags: List<SjTag>,
-    @Relation(
-        parentColumn = "did",
-        entityColumn = "did"
-    ) val link: SjLink
-)*/
+    ) val tags: List<SjTag>
+)
 
 
 //1 by n relation ::

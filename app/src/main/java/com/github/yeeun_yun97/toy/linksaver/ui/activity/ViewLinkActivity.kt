@@ -23,7 +23,7 @@ class ViewLinkActivity : ViewBindingBasicActivity<ActivityViewLinkBinding>() {
         super.onCreate(savedInstanceState)
 
         binding.floatingActionView.setOnClickListener { startEditActivity() }
-        viewModel.linksWithDomains.observe(this,{
+        viewModel.linkList.observe(this,{
             if(it.isEmpty()){
                 setHomeFragment(emptyFragment)
             }else{
