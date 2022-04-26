@@ -60,6 +60,7 @@ class SjRepository private constructor(){
         val linkTagCrossRefs = mutableListOf<LinkTagCrossRef>()
         for (tag in tags) {
             linkTagCrossRefs.add(LinkTagCrossRef(lid = lid, tid = tag.tid))
+            Log.d(javaClass.canonicalName,"added link cross ref lid = ${lid}, tid = ${tag.tid}")
         }
         dao.insertLinkTagCrossRefs(*linkTagCrossRefs.toTypedArray())
     }

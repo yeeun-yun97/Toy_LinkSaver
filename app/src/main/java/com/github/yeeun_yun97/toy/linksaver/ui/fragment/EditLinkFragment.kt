@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.CompoundButton
 import androidx.fragment.app.activityViewModels
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
@@ -83,8 +84,18 @@ class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
 
     private fun addTagsToChipGroupChildren(it: List<SjTag>) {
         binding.tagChipGroup.removeAllViews()
+        val onCheckListener = CompoundButton.OnCheckedChangeListener { btn, isChecked ->
+            val chip = btn as SjTagChip
+                if(isChecked){
+                    viewModel.selectedTags.add(chip.tag)
+                }else{
+                    viewModel.selectedTags.remove(chip.tag)
+                }
+        }
+
         for (tag in it) {
             val chip = SjTagChip(context!!, tag)
+            chip.setOnCheckedChangeListener(onCheckListener)
             binding.tagChipGroup.addView(chip)
         }
     }
