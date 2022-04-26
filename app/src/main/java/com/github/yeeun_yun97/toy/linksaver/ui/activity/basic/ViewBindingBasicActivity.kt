@@ -9,19 +9,19 @@ import androidx.viewbinding.ViewBinding
 import com.github.yeeun_yun97.toy.linksaver.R
 
 abstract class ViewBindingBasicActivity<T : ViewBinding> : AppCompatActivity() {
-    private lateinit var binding: T
+    protected lateinit var binding: T
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //view binding
         binding = viewBindingInflate(layoutInflater)
         setContentView(binding.root)
-        setHomeFragment()
+        setHomeFragment(homeFragment())
     }
 
-    fun setHomeFragment() {
+    protected fun setHomeFragment(fragment:Fragment) {
         supportFragmentManager.commit {
-            add(R.id.fragmentContainer, homeFragment())
+            replace(R.id.fragmentContainer, fragment)
             setReorderingAllowed(true)
         }
     }

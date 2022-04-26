@@ -39,21 +39,15 @@ class ViewLinkFragment : DataBindingBasicFragment<FragmentViewLinkBinding>() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
 
-        binding.floatingActionView.setOnClickListener { startEditActivity() }
-
         return binding.root
     }
 
     private fun deleteLink(link: SjLink){
         viewModel.deleteLink(link)
     }
+
     private fun editLink(){}
     private fun shareLink(){}
-
-    private fun startEditActivity() {
-        val intent = Intent(context, EditLinkActivity::class.java)
-        startActivity(intent)
-    }
 
     fun startWebBrowser(url: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
