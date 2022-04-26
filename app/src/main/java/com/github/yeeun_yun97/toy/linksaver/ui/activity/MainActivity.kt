@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.github.yeeun_yun97.toy.linksaver.R
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -15,4 +16,5 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, ViewLinkActivity::class.java))
         }
     }
+
 }

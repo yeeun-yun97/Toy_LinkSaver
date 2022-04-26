@@ -13,8 +13,8 @@ import com.github.yeeun_yun97.toy.linksaver.viewmodel.ReadLinkViewModel
 
 class ViewLinkActivity : ViewBindingBasicActivity<ActivityViewLinkBinding>() {
     val viewModel : ReadLinkViewModel by viewModels()
-    val homeFragment = ViewLinkFragment()
-    val emptyFragment = EmptyFragment()
+    private val homeFragment = ViewLinkFragment()
+    private val emptyFragment = EmptyFragment()
 
     override fun viewBindingInflate(inflater: LayoutInflater): ActivityViewLinkBinding
     = ActivityViewLinkBinding.inflate(inflater)
@@ -38,4 +38,5 @@ class ViewLinkActivity : ViewBindingBasicActivity<ActivityViewLinkBinding>() {
     }
 
     override fun homeFragment(): Fragment = homeFragment
+
 }

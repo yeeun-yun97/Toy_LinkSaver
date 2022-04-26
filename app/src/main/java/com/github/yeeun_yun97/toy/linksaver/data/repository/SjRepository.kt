@@ -13,13 +13,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class SjRepository {
+class SjRepository private constructor(){
     val dao: SjDao = SjDatabase.getDao()
     val domains: LiveData<List<SjDomain>> = dao.getAllDomains()
     val links: LiveData<List<SjLink>> = dao.getAllLinks()
     val linksWithDomains = SjDatabase.getDao().getLinksAndDomain()
     val tags: LiveData<List<SjTag>> = dao.getAllTags()
     val domainNames: LiveData<List<String>> = dao.getAllDomainNames()
+
+    companion object{
+        private val repo: SjRepository = SjRepository()
+
+        fun getInstance():SjRepository=repo
+
+    }
 
     fun insertDomain(newDomain: SjDomain) =
         CoroutineScope(Dispatchers.IO).launch {
@@ -57,7 +64,6 @@ class SjRepository {
         dao.insertLinkTagCrossRefs(*linkTagCrossRefs.toTypedArray())
     }
 
-
     fun deleteDomain(domain: SjDomain) {
         CoroutineScope(Dispatchers.IO).launch {
             dao.deleteDomain(domain)
@@ -86,4 +92,5 @@ class SjRepository {
             //마찬가지로 확인하고, 있으면 지우지 말고 알리기
         }
     }
+
 }

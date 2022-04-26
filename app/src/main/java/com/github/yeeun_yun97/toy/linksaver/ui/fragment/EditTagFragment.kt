@@ -35,4 +35,5 @@ class EditTagFragment : DataBindingBasicFragment<FragmentEditTagBinding>() {
         viewModel.insertTag(SjTag(name = binding.nameEdtiText.text.toString()))
         popBack()
     }
+
 }

@@ -1,16 +1,13 @@
 package com.github.yeeun_yun97.toy.linksaver.viewmodel
 
-import androidx.lifecycle.ViewModel
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
-import com.github.yeeun_yun97.toy.linksaver.data.repository.SjRepository
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.BasicViewModelWithRepository
 
-class ReadLinkViewModel : ViewModel() {
-    val repository: SjRepository = SjRepository()
+class ReadLinkViewModel : BasicViewModelWithRepository(){
     val linksWithDomains get() = repository.linksWithDomains
 
     fun deleteLink(link: SjLink) {
         repository.deleteLink(link)
     }
-
 
 }

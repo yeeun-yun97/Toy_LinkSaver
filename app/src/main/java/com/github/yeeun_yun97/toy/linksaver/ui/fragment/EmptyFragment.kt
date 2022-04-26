@@ -16,4 +16,5 @@ class EmptyFragment :Fragment(){
     ): View? {
         return FragmentEmptyBinding.inflate(inflater).root
     }
+
 }

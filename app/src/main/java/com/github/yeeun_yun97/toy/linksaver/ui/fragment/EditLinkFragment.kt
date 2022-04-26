@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.commit
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
@@ -48,6 +47,7 @@ class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
         viewModel.domains.observe(viewLifecycleOwner, {
             binding.domainSpinner.onItemSelectedListener =
                 object : AdapterView.OnItemSelectedListener {
+
                     override fun onItemSelected(
                         p0: AdapterView<*>?,
                         p1: View?,
@@ -62,10 +62,11 @@ class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
                         Log.i(getClassName(), "domainSpinner select is null")
                         binding.domainSpinner.setSelection(0)
                     }
+
                 }
         })
 
-
+        //textChangeListeners= 에딧텍스트 수정할 때 textView에 표시해주는.
         binding.linkEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -74,10 +75,10 @@ class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
 
             override fun afterTextChanged(p0: Editable?) {}
         })
-        binding.saveButton.setOnClickListener { onSaveButtonClicked() }
+
+        binding.saveButton.setOnClickListener { saveLink() }
         binding.addDomainTextView.setOnClickListener { moveToEditDomainFragment() }
         binding.addTagTextView.setOnClickListener { moveToEditTagFragment() }
-
     }
 
     private fun addTagsToChipGroupChildren(it: List<SjTag>) {
@@ -96,7 +97,7 @@ class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
         moveToOtherFragment(EditDomainFragment())
     }
 
-    private fun onSaveButtonClicked() {
+    private fun saveLink() {
         viewModel.insertLink(
             SjLink(
                 did = -1,
@@ -106,6 +107,5 @@ class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
         )
         this.requireActivity().finish()
     }
-
 
 }
