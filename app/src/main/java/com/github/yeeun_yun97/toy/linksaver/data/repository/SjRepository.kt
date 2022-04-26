@@ -78,7 +78,11 @@ class SjRepository private constructor() {
 
             if (tags.isNotEmpty()) {
                 val deleteRefs = launch {
-                    dao.deleteTags(*tags.toTypedArray())
+                    val linkTagCrossRefs = mutableListOf<LinkTagCrossRef>()
+                    for(tag in tags){
+                        linkTagCrossRefs.add(LinkTagCrossRef(lid=link.lid,tid=tag.tid))
+                    }
+                    dao.deleteLinkTagCrossRefs(*linkTagCrossRefs.toTypedArray())
                 }
                 deleteRefs.join()
             }

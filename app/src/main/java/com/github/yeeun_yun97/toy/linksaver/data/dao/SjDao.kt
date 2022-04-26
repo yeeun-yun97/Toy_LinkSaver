@@ -61,4 +61,7 @@ interface SjDao {
     @Delete
     suspend fun deleteTags(vararg tag: SjTag)
 
+    @Delete
+    suspend fun deleteLinkTagCrossRefs(vararg ref : LinkTagCrossRef)
+
 }
