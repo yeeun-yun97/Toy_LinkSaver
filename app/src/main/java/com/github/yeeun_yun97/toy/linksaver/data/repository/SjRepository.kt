@@ -4,11 +4,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDao
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabase
+import com.github.yeeun_yun97.toy.linksaver.data.model.LinkTagCrossRef
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class SjRepository {
@@ -19,29 +21,40 @@ class SjRepository {
     val tags: LiveData<List<SjTag>> = dao.getAllTags()
     val domainNames: LiveData<List<String>> = dao.getAllDomainNames()
 
-    fun insertDomain(newDomain: SjDomain) {
+    fun insertDomain(newDomain: SjDomain) =
         CoroutineScope(Dispatchers.IO).launch {
             dao.insertDomain(newDomain)
         }
-    }
 
-    fun insertLink(domain: SjDomain, newLink: SjLink, tags: List<SjTag>) {
+    fun insertTag(newTag: SjTag) =
+        CoroutineScope(Dispatchers.IO).launch {
+            dao.insertTag(newTag)
+        }
+
+    fun insertLink(domain: SjDomain, newLink: SjLink, tags: List<SjTag>) =
         CoroutineScope(Dispatchers.IO).launch {
             //set link domain
             newLink.did = domain.did
 
             //insert newLink
-            dao.insertLink(newLink)
+            val lid = async {
+                insertLink(newLink)
+            }
 
-            //and insert link-tag-cross-ref
-            //later.
+            //insert crossRef after newLink insert
+            insertLinkTagCrossRefs(lid.await(), tags)
         }
+
+    private suspend fun insertLink(newLink: SjLink): Int {
+        return dao.insertLink(newLink).toInt()
     }
 
-    fun insertTag(newTag: SjTag) {
-        CoroutineScope(Dispatchers.IO).launch {
-            dao.insertTag(newTag)
+    private suspend fun insertLinkTagCrossRefs(lid: Int, tags: List<SjTag>) {
+        val linkTagCrossRefs = mutableListOf<LinkTagCrossRef>()
+        for (tag in tags) {
+            linkTagCrossRefs.add(LinkTagCrossRef(lid = lid, tid = tag.tid))
         }
+        dao.insertLinkTagCrossRefs(*linkTagCrossRefs.toTypedArray())
     }
 
 
@@ -57,7 +70,6 @@ class SjRepository {
     fun deleteLink(link: SjLink) {
         CoroutineScope(Dispatchers.IO).launch {
             val count = dao.countLinkTagCrossRefByLid(link.lid)
-
             if (count == 0) {
                 dao.deleteLink(link)
             } else {
