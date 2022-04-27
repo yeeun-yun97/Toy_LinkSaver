@@ -2,12 +2,10 @@ package com.github.yeeun_yun97.toy.linksaver.data.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDao
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabase
-import com.github.yeeun_yun97.toy.linksaver.data.model.LinkTagCrossRef
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
+import com.github.yeeun_yun97.toy.linksaver.data.model.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -17,14 +15,19 @@ class SjRepository private constructor() {
     val dao: SjDao = SjDatabase.getDao()
     val domains: LiveData<List<SjDomain>> = dao.getAllDomains()
     val tags: LiveData<List<SjTag>> = dao.getAllTags()
-    val linkList = SjDatabase.getDao().getLinksAndDomainsWithTags()
+    val linkList:LiveData<List<SjLinksAndDomainsWithTags>> = dao.getLinksAndDomainsWithTags()
     val domainNames: LiveData<List<String>> = dao.getAllDomainNames()
 
     companion object {
         private val repo: SjRepository = SjRepository()
 
         fun getInstance(): SjRepository = repo
+    }
 
+    fun searchLinksByLinkName(linkName: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            dao.searchLinksAndDomainsWithTagsByLinkName("*$linkName*")
+        }
     }
 
     fun insertDomain(newDomain: SjDomain) =
@@ -79,8 +82,8 @@ class SjRepository private constructor() {
             if (tags.isNotEmpty()) {
                 val deleteRefs = launch {
                     val linkTagCrossRefs = mutableListOf<LinkTagCrossRef>()
-                    for(tag in tags){
-                        linkTagCrossRefs.add(LinkTagCrossRef(lid=link.lid,tid=tag.tid))
+                    for (tag in tags) {
+                        linkTagCrossRefs.add(LinkTagCrossRef(lid = link.lid, tid = tag.tid))
                     }
                     dao.deleteLinkTagCrossRefs(*linkTagCrossRefs.toTypedArray())
                 }

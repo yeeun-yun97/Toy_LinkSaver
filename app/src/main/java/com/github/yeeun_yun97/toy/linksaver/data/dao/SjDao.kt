@@ -18,17 +18,13 @@ interface SjDao {
     fun getAllDomainNames(): LiveData<List<String>>
 
     @Transaction
-    @Query("SELECT * FROM SjLink")
-    fun getLinksWithTags(): List<SjLinkWithTags>
+    @Query("SELECT * FROM SjLink WHERE name LIKE :linkName")
+    fun searchLinksAndDomainsWithTagsByLinkName(linkName: String): LiveData<List<SjLinksAndDomainsWithTags>>
 
     @Transaction
-    @Query("SELECT * FROM SjLink")
-    fun getLinksAndDomain(): LiveData<List<SjLinkAndDomain>>
-
-
-    @Transaction
-    @Query("SELECT * FROM SjLink")
+    @Query("SELECT * FROM SjLink ORDER BY lid DESC")
     fun getLinksAndDomainsWithTags(): LiveData<List<SjLinksAndDomainsWithTags>>
+
 
     //insert suspend functions
     @Insert(onConflict = OnConflictStrategy.REPLACE)

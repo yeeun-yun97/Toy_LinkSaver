@@ -2,7 +2,9 @@ package com.github.yeeun_yun97.toy.linksaver.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
+import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import com.github.yeeun_yun97.toy.linksaver.databinding.ActivityViewLinkBinding
@@ -30,6 +32,16 @@ class ViewLinkActivity : ViewBindingBasicActivity<ActivityViewLinkBinding>() {
                 setHomeFragment(homeFragment)
             }
         })
+
+        /*binding.searchEditText.setOnKeyListener(object:View.OnKeyListener{
+            override fun onKey(p0: View?, p1: Int, p2: KeyEvent?): Boolean {
+               viewModel.searchLinkByLinkName(binding.searchEditText.text.toString())
+                return false
+            }
+
+        })
+
+         */
     }
 
     private fun startEditActivity() {

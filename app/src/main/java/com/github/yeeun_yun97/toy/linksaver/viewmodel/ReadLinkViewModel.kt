@@ -11,4 +11,8 @@ class ReadLinkViewModel : BasicViewModelWithRepository(){
         repository.deleteLink(link,tags)
     }
 
+    fun searchLinkByLinkName(linkName: String){
+        repository.searchLinksByLinkName(linkName)
+    }
+
 }
