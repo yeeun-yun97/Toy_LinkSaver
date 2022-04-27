@@ -14,6 +14,7 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentViewLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.LinksAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.DataBindingBasicFragment
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.ListMode
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.ReadLinkViewModel
 
 class ViewLinkFragment : DataBindingBasicFragment<FragmentViewLinkBinding>() {
@@ -31,8 +32,19 @@ class ViewLinkFragment : DataBindingBasicFragment<FragmentViewLinkBinding>() {
         val adapter = LinksAdapter(::startWebBrowser, ::deleteLink)
         viewModel.linkList.observe(this,
             {
-                adapter.itemList = it
-                adapter.notifyDataSetChanged()
+                if (viewModel.mode == ListMode.MODE_ALL) {
+                    adapter.itemList = it
+                    adapter.notifyDataSetChanged()
+                }
+            }
+        )
+
+        viewModel.searchLinkList.observe(this,
+            {
+                if (viewModel.mode == ListMode.MODE_SEARCH) {
+                    adapter.itemList = it
+                    adapter.notifyDataSetChanged()
+                }
             }
         )
 

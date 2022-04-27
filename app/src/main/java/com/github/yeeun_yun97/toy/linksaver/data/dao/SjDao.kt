@@ -3,6 +3,7 @@ package com.github.yeeun_yun97.toy.linksaver.data.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.github.yeeun_yun97.toy.linksaver.data.model.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SjDao {
@@ -19,11 +20,13 @@ interface SjDao {
 
     @Transaction
     @Query("SELECT * FROM SjLink WHERE name LIKE :linkName")
-    fun searchLinksAndDomainsWithTagsByLinkName(linkName: String): LiveData<List<SjLinksAndDomainsWithTags>>
+    fun searchLinksAndDomainsWithTagsByLinkName(linkName: String)
+            : List<SjLinksAndDomainsWithTags>
 
     @Transaction
     @Query("SELECT * FROM SjLink ORDER BY lid DESC")
-    fun getLinksAndDomainsWithTags(): LiveData<List<SjLinksAndDomainsWithTags>>
+    fun getAllLinksAndDomainsWithTags()
+            : LiveData<List<SjLinksAndDomainsWithTags>>
 
 
     //insert suspend functions
@@ -58,6 +61,6 @@ interface SjDao {
     suspend fun deleteTags(vararg tag: SjTag)
 
     @Delete
-    suspend fun deleteLinkTagCrossRefs(vararg ref : LinkTagCrossRef)
+    suspend fun deleteLinkTagCrossRefs(vararg ref: LinkTagCrossRef)
 
 }

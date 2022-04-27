@@ -9,13 +9,17 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class SjRepository private constructor() {
-    val dao: SjDao = SjDatabase.getDao()
+    private val dao: SjDao = SjDatabase.getDao()
+    private var _searchLinkList= MutableLiveData<List<SjLinksAndDomainsWithTags>>()
+
     val domains: LiveData<List<SjDomain>> = dao.getAllDomains()
     val tags: LiveData<List<SjTag>> = dao.getAllTags()
-    val linkList:LiveData<List<SjLinksAndDomainsWithTags>> = dao.getLinksAndDomainsWithTags()
+    val linkList:LiveData<List<SjLinksAndDomainsWithTags>> = dao.getAllLinksAndDomainsWithTags()
+    val searchLinkList:LiveData<List<SjLinksAndDomainsWithTags>> get()= _searchLinkList
     val domainNames: LiveData<List<String>> = dao.getAllDomainNames()
 
     companion object {
@@ -26,7 +30,7 @@ class SjRepository private constructor() {
 
     fun searchLinksByLinkName(linkName: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            dao.searchLinksAndDomainsWithTagsByLinkName("*$linkName*")
+            _searchLinkList.postValue(dao.searchLinksAndDomainsWithTagsByLinkName("%$linkName%"))
         }
     }
 
