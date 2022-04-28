@@ -1,5 +1,6 @@
 package com.github.yeeun_yun97.toy.linksaver.viewmodel
 
+import android.util.Log
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.BasicViewModelWithRepository
@@ -15,6 +16,7 @@ class ReadLinkViewModel : BasicViewModelWithRepository() {
 
     fun searchLinkByLinkName(linkName: String) {
         this.mode = ListMode.MODE_SEARCH
+        Log.i("mode changed",mode.name)
         repository.searchLinksByLinkName(linkName)
     }
 }

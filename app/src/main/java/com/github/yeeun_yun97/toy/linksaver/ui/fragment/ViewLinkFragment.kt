@@ -3,6 +3,7 @@ package com.github.yeeun_yun97.toy.linksaver.ui.fragment
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentViewLinkBinding
+import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.LinksAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.DataBindingBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.ListMode
@@ -22,6 +24,11 @@ class ViewLinkFragment : DataBindingBasicFragment<FragmentViewLinkBinding>() {
 
     override fun layoutId(): Int = R.layout.fragment_view_link
 
+    override fun onStart() {
+        super.onStart()
+        Log.i("viewModel mode",viewModel.mode.name)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,7 +37,7 @@ class ViewLinkFragment : DataBindingBasicFragment<FragmentViewLinkBinding>() {
         super.onCreateView(inflater, container, savedInstanceState)
 
         val adapter = LinksAdapter(::startWebBrowser, ::deleteLink)
-        viewModel.linkList.observe(this,
+        viewModel.linkList.observe(viewLifecycleOwner,
             {
                 if (viewModel.mode == ListMode.MODE_ALL) {
                     adapter.itemList = it
@@ -38,6 +45,33 @@ class ViewLinkFragment : DataBindingBasicFragment<FragmentViewLinkBinding>() {
                 }
             }
         )
+
+        viewModel.linkList.observe(viewLifecycleOwner, {
+            if (viewModel.mode == ListMode.MODE_ALL) {
+                if (it.isEmpty()) {
+                    binding.include.emptyView.visibility=View.VISIBLE
+                    binding.recyclerView.visibility=View.GONE
+                } else {
+                    binding.include.emptyView.visibility=View.GONE
+                    binding.recyclerView.visibility=View.VISIBLE
+                }
+            }
+        })
+
+        viewModel.searchLinkList.observe(viewLifecycleOwner, {
+            if (viewModel.mode == ListMode.MODE_SEARCH) {
+                if (it.isEmpty()) {
+                    binding.include.emptyView.visibility=View.VISIBLE
+                    binding.recyclerView.visibility=View.GONE
+                } else {
+                    binding.include.emptyView.visibility=View.GONE
+                    binding.recyclerView.visibility=View.VISIBLE
+                }
+            }
+        })
+
+        binding.floatingActionView.setOnClickListener { startEditActivity() }
+
 
         viewModel.searchLinkList.observe(this,
             {
@@ -47,6 +81,10 @@ class ViewLinkFragment : DataBindingBasicFragment<FragmentViewLinkBinding>() {
                 }
             }
         )
+
+        binding.searchEditText.setOnClickListener {
+            this.moveToSearchFragment()
+        }
 
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
@@ -62,8 +100,16 @@ class ViewLinkFragment : DataBindingBasicFragment<FragmentViewLinkBinding>() {
 
     private fun shareLink() {}
 
+    private fun moveToSearchFragment(){
+        moveToOtherFragment(SearchFragment())
+    }
+
     private fun startWebBrowser(url: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
+    }
+    private fun startEditActivity() {
+        val intent = Intent(requireContext(), EditLinkActivity::class.java)
         startActivity(intent)
     }
 

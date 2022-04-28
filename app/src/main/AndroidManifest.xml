@@ -20,6 +20,9 @@
             android:name=".ui.activity.EditLinkActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.activity.SearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true">
             <intent-filter>
