@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjSearch
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSearchBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.SearchesAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
@@ -61,8 +62,7 @@ class SearchFragment : DataBindingBasicFragment<FragmentSearchBinding>() {
                 keyEvent: KeyEvent?
             ): Boolean {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    search()
-
+                    search(binding.searchEditText.text.toString())
                 }
                 return false
             }
@@ -71,7 +71,7 @@ class SearchFragment : DataBindingBasicFragment<FragmentSearchBinding>() {
 
 
         binding.recentSearchedRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = SearchesAdapter()
+        val adapter = SearchesAdapter(::setSearch)
         binding.recentSearchedRecyclerView.adapter = adapter
         viewModel.searchList.observe(viewLifecycleOwner,
             {
@@ -83,8 +83,14 @@ class SearchFragment : DataBindingBasicFragment<FragmentSearchBinding>() {
         return binding.root
     }
 
-    fun search() {
-        val keyword = binding.searchEditText.text.toString()
+    private fun setSearch(keyword: String, tags: List<SjTag>) {
+        viewModel.selectedTags.clear()
+        binding.tagChipGroup.clearCheck()
+        viewModel.selectedTags.addAll(tags)
+        this.search(keyword)
+    }
+
+    private fun search(keyword: String) {
         readLinkViewModel.searchLinkByLinkName(keyword)
         viewModel.saveSearch(SjSearch(keyword = keyword))
         popBack()
