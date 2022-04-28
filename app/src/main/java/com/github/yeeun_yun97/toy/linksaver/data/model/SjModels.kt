@@ -27,6 +27,26 @@ data class SjTag(
     @ColumnInfo(name = "name") var name: String
 )
 
+@Entity
+data class SjSearch(
+    @PrimaryKey(autoGenerate = true) val sid: Int = 0,
+    @ColumnInfo(name = "keyword") var keyword: String
+)
+
+@Entity(primaryKeys = ["sid", "tid"])
+data class SearchTagCrossRef(
+    val sid: Int,
+    val tid: Int
+)
+
+data class SjSearchWithTags(
+    @Embedded val search: SjSearch,
+    @Relation(
+        parentColumn = "sid",
+        entityColumn = "tid",
+        associateBy = Junction(SearchTagCrossRef::class)
+    ) val tags: List<SjTag>
+)
 
 data class SjLinksAndDomainsWithTags(
     @Embedded val link: SjLink,
@@ -67,7 +87,7 @@ data class SjDomainWithLinks(
 //n by m relation ::
 //하나의 링크는 여러 개의 태그를 가진다.
 //하나의 태그는 여러 개의 링크를 가진다.
-@Entity(primaryKeys = ["tid", "lid"])
+@Entity(primaryKeys = ["lid", "tid"])
 data class LinkTagCrossRef(
     val lid: Int,
     val tid: Int

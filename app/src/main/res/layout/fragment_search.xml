@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data />
 
@@ -80,6 +80,7 @@
             style="@style/header4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:text="태그"
             app:layout_constraintStart_toStartOf="@+id/recentSearchedRecyclerView"
             app:layout_constraintTop_toBottomOf="@+id/recentSearchedRecyclerView" />
@@ -92,6 +93,6 @@
             app:layout_constraintStart_toStartOf="@+id/recentSearchWordTextView"
             app:layout_constraintTop_toBottomOf="@+id/recentSearchWordTextView"
             tools:itemCount="3"
-            tools:listitem="@layout/layout_search_set" />
+            tools:listitem="@layout/item_search_set" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

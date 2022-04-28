@@ -6,13 +6,17 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDao
-import com.github.yeeun_yun97.toy.linksaver.data.model.LinkTagCrossRef
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
+import com.github.yeeun_yun97.toy.linksaver.data.model.*
 
 @Database(
-    entities = [SjTag::class, SjLink::class, SjDomain::class, LinkTagCrossRef::class],
+    entities = [
+        SjTag::class,
+        SjLink::class,
+        SjDomain::class,
+        LinkTagCrossRef::class,
+        SjSearch::class,
+        SearchTagCrossRef::class
+    ],
     version = 1
 )
 abstract class SjDatabase : RoomDatabase() {
@@ -44,7 +48,7 @@ abstract class SjDatabase : RoomDatabase() {
 
         fun getDao(): SjDao {
             if (!this::db.isInitialized) {
-                    throw Exception("Database is not yet initialized")
+                throw Exception("Database is not yet initialized")
             }
             return this.db.getDao()
         }

@@ -13,9 +13,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class SjRepository private constructor() {
+
     private val dao: SjDao = SjDatabase.getDao()
     private var _searchLinkList= MutableLiveData<List<SjLinksAndDomainsWithTags>>()
 
+    val searches:LiveData<List<SjSearchWithTags>> =  dao.getAllSearch()
     val domains: LiveData<List<SjDomain>> = dao.getAllDomains()
     val tags: LiveData<List<SjTag>> = dao.getAllTags()
     val linkList:LiveData<List<SjLinksAndDomainsWithTags>> = dao.getAllLinksAndDomainsWithTags()
@@ -103,6 +105,26 @@ class SjRepository private constructor() {
             //링크와 태그 크로스 레프 객체에서 참조하고 있을 수 있으니,
             //마찬가지로 확인하고, 있으면 지우지 말고 알리기
         }
+    }
+
+    fun saveSearchAndTags(newSearch: SjSearch, selectedTags: MutableList<SjTag>) {
+        CoroutineScope(Dispatchers.IO).launch{
+            val sid = async{insertSearch(newSearch)}
+            insertSearchTagCrossReff(sid.await(),selectedTags)
+        }
+    }
+
+    private suspend fun insertSearch(newSearch:SjSearch):Int{
+        return dao.insertSearch(newSearch).toInt()
+    }
+
+    private suspend fun insertSearchTagCrossReff(sid:Int, tags: MutableList<SjTag>){
+        val searchTagCrossRefs = mutableListOf<SearchTagCrossRef>()
+        for (tag in tags) {
+            searchTagCrossRefs.add(SearchTagCrossRef(sid = sid, tid = tag.tid))
+            Log.d(javaClass.canonicalName, "added link cross ref sid = ${sid}, tid = ${tag.tid}")
+        }
+        dao.insertSearchTagCrossRefs(*searchTagCrossRefs.toTypedArray())
     }
 
 }

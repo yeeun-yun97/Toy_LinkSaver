@@ -23,6 +23,7 @@ class EditTagFragment : DataBindingBasicFragment<FragmentEditTagBinding>() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
+        binding.nameEdtiText.requestFocus()
         binding.saveButton.setOnClickListener {
             insertTag()
         }
