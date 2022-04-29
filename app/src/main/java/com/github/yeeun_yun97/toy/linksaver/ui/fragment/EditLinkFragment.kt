@@ -23,7 +23,7 @@ class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
     override fun layoutId(): Int = R.layout.fragment_edit_link
 
     fun setDomainDetailTextView() {
-        val builder = StringBuilder(viewModel.selectedDomain.url)
+        val builder = StringBuilder(viewModel.getSelectedDomainName())
         builder.append(binding.linkEditText.text.toString())
         binding.domainDetailTextView.setText(builder.toString())
         builder.clear()
@@ -60,8 +60,8 @@ class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
                     }
 
                     override fun onNothingSelected(p0: AdapterView<*>?) {
-                        Log.i(getClassName(), "domainSpinner select is null")
-                        binding.domainSpinner.setSelection(0)
+//                        Log.i(getClassName(), "domainSpinner select is null")
+//                        binding.domainSpinner.setSelection(0)
                     }
 
                 }
