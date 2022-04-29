@@ -80,7 +80,14 @@ class SearchFragment : DataBindingBasicFragment<FragmentSearchBinding>() {
             }
         )
 
+
+        binding.deleteImageView.setOnClickListener { deleteAllSearch() }
+        binding.deleteTextView.setOnClickListener { deleteAllSearch() }
         return binding.root
+    }
+
+    private fun deleteAllSearch(){
+        viewModel.deleteAllSearch()
     }
 
     private fun setSearch(keyword: String, tags: List<SjTag>) {

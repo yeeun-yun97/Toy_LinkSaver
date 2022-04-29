@@ -99,6 +99,14 @@ class SjRepository private constructor() {
 
         }
 
+    fun deleteSearch() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val job = launch{dao.deleteAllSearchTagCrossRefs()}
+            job.join()
+            dao.deleteAllSearch()
+        }
+    }
+
     fun deleteTag(tag: SjTag) {
         CoroutineScope(Dispatchers.IO).launch {
             dao.deleteTag(tag)
@@ -126,5 +134,7 @@ class SjRepository private constructor() {
         }
         dao.insertSearchTagCrossRefs(*searchTagCrossRefs.toTypedArray())
     }
+
+
 
 }

@@ -14,4 +14,8 @@ class SearchViewModel : BasicViewModelWithRepository() {
         repository.saveSearchAndTags(newSearch,selectedTags)
     }
 
+    fun deleteAllSearch(){
+        repository.deleteSearch()
+    }
+
 }

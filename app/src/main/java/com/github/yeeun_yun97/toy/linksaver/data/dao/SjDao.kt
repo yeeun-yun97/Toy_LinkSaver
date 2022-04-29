@@ -74,7 +74,11 @@ interface SjDao {
     @Delete
     suspend fun deleteLinkTagCrossRefs(vararg ref: LinkTagCrossRef)
 
+    @Query("Delete FROM SearchTagCrossRef")
+    fun deleteAllSearchTagCrossRefs()
 
+    @Query("Delete FROM SjSearch")
+    fun deleteAllSearch()
 
 
 }
