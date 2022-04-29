@@ -9,7 +9,6 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class SjRepository private constructor() {

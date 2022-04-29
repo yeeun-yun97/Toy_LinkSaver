@@ -1,14 +1,10 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinksAndDomainsWithTags
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjSearchWithTags
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
-import com.github.yeeun_yun97.toy.linksaver.databinding.ItemLinksBinding
 import com.github.yeeun_yun97.toy.linksaver.databinding.ItemSearchSetBinding
 
 class SearchesAdapter(private val clickOperation :(String,List<SjTag>)->Unit) :

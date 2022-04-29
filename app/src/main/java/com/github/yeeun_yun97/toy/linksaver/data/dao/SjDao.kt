@@ -3,7 +3,6 @@ package com.github.yeeun_yun97.toy.linksaver.data.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.github.yeeun_yun97.toy.linksaver.data.model.*
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SjDao {
