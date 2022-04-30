@@ -20,6 +20,7 @@ abstract class DataBindingBasicFragment<T : ViewDataBinding> : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = DataBindingUtil.inflate(inflater, layoutId(), container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
