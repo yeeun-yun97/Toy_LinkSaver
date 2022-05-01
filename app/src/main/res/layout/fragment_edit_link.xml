@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.github.yeeun_yun97.toy.linksaver.viewmodel.CreateLinkViewModel" />
@@ -38,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
-                android:text="새로운 링크"
+                android:text="저장될 링크"
                 app:layout_constraintBottom_toBottomOf="@id/alinkImageView"
                 app:layout_constraintStart_toEndOf="@id/alinkImageView"
                 app:layout_constraintTop_toTopOf="@id/alinkImageView" />
@@ -51,7 +50,7 @@
                 android:layout_marginTop="5dp"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
-                android:text="@{viewModel.newLinkName}"
+                android:text="@{viewModel.linkName}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -111,7 +110,7 @@
             android:ems="10"
             android:hint="이름을 입력해 주세요"
             android:inputType="text"
-            android:text="@={viewModel.newLinkName}"
+            android:text="@={viewModel.linkName}"
             app:layout_constraintEnd_toEndOf="@id/nameTextView"
             app:layout_constraintStart_toStartOf="@id/nameTextView"
             app:layout_constraintTop_toBottomOf="@id/nameTextView" />
@@ -153,8 +152,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:ems="10"
-            android:text="@={viewModel.detailUrl}"
-            android:inputType="textPersonName"
+            android:text="@={viewModel.linkUrl}"
             android:paddingVertical="5dp"
             app:layout_constraintEnd_toEndOf="@id/linkTextView"
             app:layout_constraintStart_toStartOf="@id/linkTextView"

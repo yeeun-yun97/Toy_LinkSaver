@@ -21,7 +21,6 @@ class SjRepository private constructor() {
     val tags: LiveData<List<SjTag>> = dao.getAllTags()
     val linkList:LiveData<List<SjLinksAndDomainsWithTags>> = dao.getAllLinksAndDomainsWithTags()
     val searchLinkList:LiveData<List<SjLinksAndDomainsWithTags>> get()= _searchLinkList
-    val domainNames: LiveData<List<String>> = dao.getAllDomainNames()
 
     companion object {
         private val repo: SjRepository = SjRepository()
@@ -44,6 +43,21 @@ class SjRepository private constructor() {
         CoroutineScope(Dispatchers.IO).launch {
             dao.insertTag(newTag)
         }
+
+
+    fun updateLink(domain: SjDomain, link: SjLink, tags: List<SjTag>){
+        CoroutineScope(Dispatchers.IO).launch{
+            //update link
+            link.did=domain.did
+            dao.updateLink(link)
+
+            //delete all crossRef
+            dao.deleteLinkTagCrossRefsByLid(link.lid)
+
+            //insert all crossRef
+            insertLinkTagCrossRefs(link.lid,tags)
+        }
+    }
 
     fun insertLink(domain: SjDomain, newLink: SjLink, tags: List<SjTag>) =
         CoroutineScope(Dispatchers.IO).launch {
@@ -132,6 +146,10 @@ class SjRepository private constructor() {
             Log.d(javaClass.canonicalName, "added link cross ref sid = ${sid}, tid = ${tag.tid}")
         }
         dao.insertSearchTagCrossRefs(*searchTagCrossRefs.toTypedArray())
+    }
+
+    fun getLinkAndDomainWithTagsByLid(lid: Int) :SjLinksAndDomainsWithTags{
+        return dao.getLinkAndDomainWithTagsByLid(lid);
     }
 
 

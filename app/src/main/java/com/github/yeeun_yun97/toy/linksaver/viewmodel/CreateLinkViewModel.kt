@@ -2,72 +2,124 @@ package com.github.yeeun_yun97.toy.linksaver.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinksAndDomainsWithTags
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.data.repository.SjNetworkRepository
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.BasicViewModelWithRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
-enum class NameMode{
+enum class NameMode {
     MODE_USER, MODE_LOAD;
 }
 
 class CreateLinkViewModel : BasicViewModelWithRepository() {
-
-    //networkRepo
+    /**repo*/
     private val networkRepository = SjNetworkRepository.newInstance()
     private val siteTitle = networkRepository.siteTitle
-
-    //roomRepo
     val domains: LiveData<List<SjDomain>> get() = repository.domains
     val tags: LiveData<List<SjTag>> get() = repository.tags
 
-    //local
-    var mode = NameMode.MODE_LOAD                                //mode saves if new link named by auto or user input
-    private val selectedDomain = MutableLiveData<SjDomain>()
+    /**mode*/
+    var mode = NameMode.MODE_LOAD  //saves link named by auto or user input
+
+    /**data binding live data*/
     private val _fullUrl = MutableLiveData<String>()
-    val selectedTags = mutableListOf<SjTag>()
-    val newLinkName = MutableLiveData<String>()                 //public mutable because
-    val detailUrl = MutableLiveData<String>()                   //two way data binding.
-    val fullUrl:LiveData<String> get()= _fullUrl
+    val fullUrl: LiveData<String> get() = _fullUrl
+    val linkName = MutableLiveData<String>()
+    val linkUrl = MutableLiveData<String>()
+
+    /**Model to Save*/
+    private var targetLink = SjLink(did = -1, name = "", url = "")
+    private var targetDomain = SjDomain(name = "", url = "")
+    val targetTagList = mutableListOf<SjTag>()
+    val targetDomainData = MutableLiveData(targetDomain)
 
     init {
-        //주소가 바뀌었을 때, 이름이 사용자가 입력한 값이 아니면,
-        //이름을 사이트 주소로 설정한다.
-        siteTitle.observeForever{
-            if(newLinkName.value.isNullOrEmpty()||mode==NameMode.MODE_LOAD){
-                newLinkName.postValue(it)
+        /** auto name link by html title */
+        siteTitle.observeForever {
+            if (linkName.value.isNullOrEmpty() || mode == NameMode.MODE_LOAD) {
+                linkName.postValue(it)
             }
         }
-        detailUrl.observeForever {
-            val url =
-                if (selectedDomain.value != null) selectedDomain.value!!.url
-                else ""
-            _fullUrl.postValue(StringBuilder(url).append(it).toString())
-        }
-        selectedDomain.observeForever {
-            val url = detailUrl.value ?: ""
-            _fullUrl.postValue(StringBuilder(it.url).append(url).toString())
-        }
-        fullUrl.observeForever{
+        fullUrl.observeForever {
             loadTitleOf(it)
         }
+
+        /** handle user change data */
+        linkName.observeForever {
+            targetLink.apply { name = it }
+        }
+        linkUrl.observeForever {
+            targetLink.apply { url = it }
+        }
+
+        /** change full url (domain.url+link.url) */
+        linkUrl.observeForever {
+            val url = targetDomain.url
+            _fullUrl.postValue(StringBuilder(url).append(it).toString())
+        }
+        targetDomainData.observeForever {
+            val url = targetLink.url
+            _fullUrl.postValue(StringBuilder(it.url).append(url).toString())
+        }
+    }
+
+    fun setLink(lid: Int) {
+        viewModelScope.launch(Dispatchers.IO){
+           val link =  async{repository.getLinkAndDomainWithTagsByLid(lid)}
+            setLink(link.await())
+        }
+    }
+    private fun setLink(link:SjLinksAndDomainsWithTags){
+        selectLink(link.link)
+        selectDomain(link.domain)
+        targetTagList.clear()
+        targetTagList.addAll(link.tags)
+    }
+
+    fun getSelectedDomain():SjDomain{
+        return this.targetDomain;
+    }
+
+    fun selectTag(tag: SjTag) {
+        targetTagList.add(tag)
+    }
+
+    fun unselectTag(tag: SjTag) {
+        targetTagList.remove(tag)
     }
 
     fun selectDomain(position: Int) {
-        selectedDomain.postValue(domains.value!![position])
+       val domain =domains.value!![position]
+        selectDomain(domain)
+    }
+    private fun selectDomain(domain:SjDomain){
+        targetDomain = domain
+        targetDomainData.postValue(targetDomain)
     }
 
     fun insertLink() {
-        val link = SjLink(
-            did = selectedDomain.value!!.did,
-            url = detailUrl.value!!,
-            name = newLinkName.value!!
-        )
-        repository.insertLink(selectedDomain.value!!, link, selectedTags)
+        if(targetLink.lid!=0){
+            repository.updateLink(targetDomain,targetLink,targetTagList)
+        }else{
+            repository.insertLink(targetDomain, targetLink, targetTagList)
+        }
+
     }
 
-    private fun loadTitleOf(url:String) {
-            networkRepository.getTitleOf(url)
+    private fun loadTitleOf(url: String) {
+        networkRepository.getTitleOf(url)
+    }
+
+    private fun selectLink(link:SjLink){
+        mode=NameMode.MODE_USER
+        targetLink=link;
+        linkName.postValue(link.name)
+        linkUrl.postValue(link.url)
     }
 }

@@ -17,21 +17,39 @@ import com.github.yeeun_yun97.toy.linksaver.viewmodel.NameMode
 class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
     private val viewModel: CreateLinkViewModel by activityViewModels()
 
+    companion object {
+        fun newInstance(lid: Int): EditLinkFragment {
+            val bundle = Bundle().apply {
+                putInt("lid", lid)
+            }
+            val fragment = EditLinkFragment().apply {
+                arguments = bundle
+            }
+            return fragment
+        }
+    }
+
+
     override fun layoutId(): Int = R.layout.fragment_edit_link
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        if (arguments != null) {
+            val lid = requireArguments().getInt("lid")
+            viewModel.setLink(lid)
+        }
+
         //set data binding variable
-        binding.viewModel=viewModel
+        binding.viewModel = viewModel
 
         //add tag chips
         viewModel.tags.observe(viewLifecycleOwner, { addTagsToChipGroupChildren(it) })
 
-        //when selected domain changes
+        //when domain list changes
         viewModel.domains.observe(viewLifecycleOwner, {
             //set spinner adapter
-            binding.domainSpinner.adapter=
-                DomainAdapter(context=requireContext(),list=it)
+            binding.domainSpinner.adapter =
+                DomainAdapter(context = requireContext(), list = it)
 
             //set spinner select listener
             binding.domainSpinner.onItemSelectedListener =
@@ -48,13 +66,21 @@ class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
 
                     override fun onNothingSelected(p0: AdapterView<*>?) {}
                 }
+
+            //set selection if there is selected Domain
+            val domain = viewModel.getSelectedDomain()
+            if (domain.did != 0) {
+                val index = it!!.indexOf(domain)
+                binding.domainSpinner.setSelection(index)
+            }
         })
+
+
 
         binding.nameEditText.setOnKeyListener { p0, p1, p2 ->
             viewModel.mode = NameMode.MODE_USER
             false
         }
-
 
         //onClickListeners
         binding.saveButton.setOnClickListener { saveLink() }
@@ -66,15 +92,17 @@ class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
         binding.tagChipGroup.removeAllViews()
         val onCheckListener = CompoundButton.OnCheckedChangeListener { btn, isChecked ->
             val chip = btn as SjTagChip
-                if(isChecked){
-                    viewModel.selectedTags.add(chip.tag)
-                }else{
-                    viewModel.selectedTags.remove(chip.tag)
-                }
+            if (isChecked) {
+                viewModel.selectTag(chip.tag)
+            } else {
+                viewModel.unselectTag(chip.tag)
+            }
         }
 
         for (tag in it) {
             val chip = SjTagChip(context!!, tag)
+            if (viewModel.targetTagList.contains(tag))
+                chip.isChecked = true
             chip.setOnCheckedChangeListener(onCheckListener)
             binding.tagChipGroup.addView(chip)
         }

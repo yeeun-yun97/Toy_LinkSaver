@@ -28,6 +28,7 @@ class SjNetworkRepository private constructor() {
 
 
     fun getTitleOf(url: String) {
+        if(url.isEmpty()||!url.startsWith("http"))return;
         CoroutineScope(Dispatchers.IO).launch {
             Log.d("loadTitle", "start")
 

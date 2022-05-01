@@ -36,7 +36,7 @@ class ViewLinkFragment : DataBindingBasicFragment<FragmentViewLinkBinding>() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        val adapter = LinksAdapter(::startWebBrowser, ::deleteLink)
+        val adapter = LinksAdapter(::startWebBrowser,::startEditActivityToUpdate, ::deleteLink)
         viewModel.linkList.observe(viewLifecycleOwner,
             {
                 if (viewModel.mode == ListMode.MODE_ALL) {
@@ -110,6 +110,11 @@ class ViewLinkFragment : DataBindingBasicFragment<FragmentViewLinkBinding>() {
     }
     private fun startEditActivity() {
         val intent = Intent(requireContext(), EditLinkActivity::class.java)
+        startActivity(intent)
+    }
+    private fun startEditActivityToUpdate(lid:Int){
+        val intent = Intent(requireContext(), EditLinkActivity::class.java)
+        intent.putExtra("lid",lid)
         startActivity(intent)
     }
 

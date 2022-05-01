@@ -19,7 +19,7 @@ abstract class ViewBindingBasicActivity<T : ViewBinding> : AppCompatActivity() {
         setHomeFragment(homeFragment())
     }
 
-    protected fun setHomeFragment(fragment:Fragment) {
+    private fun setHomeFragment(fragment:Fragment) {
         supportFragmentManager.commit {
             replace(R.id.fragmentContainer, fragment)
             setReorderingAllowed(true)

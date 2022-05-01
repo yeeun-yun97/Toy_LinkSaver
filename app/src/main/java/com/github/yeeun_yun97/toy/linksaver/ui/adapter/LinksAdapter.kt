@@ -11,6 +11,7 @@ import com.github.yeeun_yun97.toy.linksaver.databinding.ItemLinksBinding
 
 class LinksAdapter(
     private val openOperation: (String) -> Unit,
+    private val updateOperation:(Int)->Unit,
     private val deleteOperation: (SjLink,List<SjTag>) -> Unit
 ) :
     RecyclerView.Adapter<LinksViewHolder>() {
@@ -22,7 +23,7 @@ class LinksAdapter(
     }
 
     override fun onBindViewHolder(holder: LinksViewHolder, position: Int) {
-        holder.setLink(itemList[position], openOperation, deleteOperation)
+        holder.setLink(itemList[position], openOperation,updateOperation, deleteOperation)
     }
 
     override fun getItemCount(): Int = itemList.size
@@ -36,6 +37,7 @@ class LinksViewHolder(private val binding: ItemLinksBinding) :
     fun setLink(
         item: SjLinksAndDomainsWithTags,
         openOperation: (String) -> Unit,
+        updateOperation:(Int)->Unit,
         deleteOperation: (SjLink,List<SjTag>) -> Unit
     ) {
         this.item = item
@@ -43,7 +45,7 @@ class LinksViewHolder(private val binding: ItemLinksBinding) :
         binding.linksItemDomainTextView.setText(item.domain.name)
         binding.linksItemNameTextView.setText(item.link.name)
         binding.linksItemWebButton.setOnClickListener { openOperation("${item.domain.url}${item.link.url}") }
-        binding.linksItemEditButton.setOnClickListener { editLink() }
+        binding.linksItemEditButton.setOnClickListener { updateOperation(item.link.lid)}
         binding.linksItemDeleteButton.setOnClickListener { deleteOperation(item.link,item.tags) }
     }
 
