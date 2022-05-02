@@ -13,52 +13,46 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
+// enum to save mode name value
 enum class NameMode {
     MODE_USER, MODE_LOAD;
 }
 
-class CreateLinkViewModel : BasicViewModelWithRepository() {
-    /**repo*/
+class LinkViewModel : BasicViewModelWithRepository() {
     private val networkRepository = SjNetworkRepository.newInstance()
     private val siteTitle = networkRepository.siteTitle
-    val domains: LiveData<List<SjDomain>> get() = repository.domains
-    val tags: LiveData<List<SjTag>> get() = repository.tags
+    val domains: LiveData<List<SjDomain>> = repository.domains
+    val tags: LiveData<List<SjTag>> = repository.tags
 
-    /**mode*/
+    // mode
     var mode = NameMode.MODE_LOAD  //saves link named by auto or user input
 
-    /**data binding live data*/
+    // data binding live data
     private val _fullUrl = MutableLiveData<String>()
     val fullUrl: LiveData<String> get() = _fullUrl
     val linkName = MutableLiveData<String>()
     val linkUrl = MutableLiveData<String>()
 
-    /**Model to Save*/
+    // Model to Save
     private var targetLink = SjLink(did = -1, name = "", url = "")
     private var targetDomain = SjDomain(name = "", url = "")
     private val targetDomainData = MutableLiveData(targetDomain)
     val targetTagList = mutableListOf<SjTag>()
 
     init {
-        /** auto name link by html title */
+        // load auto name link by html title
         siteTitle.observeForever {
             if (linkName.value.isNullOrEmpty() || mode == NameMode.MODE_LOAD) {
                 linkName.postValue(it)
             }
         }
-        fullUrl.observeForever {
-            loadTitleOf(it)
-        }
+        fullUrl.observeForever { loadTitleOf(it) }
 
-        /** handle user change data */
-        linkName.observeForever {
-            targetLink.name = it
-        }
-        linkUrl.observeForever {
-            targetLink.url = it
-        }
+        // handle user input change data
+        linkName.observeForever { targetLink.name = it }
+        linkUrl.observeForever { targetLink.url = it }
 
-        /** change full url (domain.url+link.url) */
+        // change full url (domain.url or link.url changes)
         linkUrl.observeForever {
             val url = targetDomain.url
             _fullUrl.postValue(StringBuilder(url).append(it).toString())
@@ -67,8 +61,14 @@ class CreateLinkViewModel : BasicViewModelWithRepository() {
             val url = targetLink.url
             _fullUrl.postValue(StringBuilder(it.url).append(url).toString())
         }
+        /*
+        //TODO
+        이 부분 LiveData Transformations 활용해서 해결 가능하면 고치고 싶은 부분이다.
+         */
     }
 
+
+    // set link for update
     fun setLink(lid: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val link = async { repository.getLinkAndDomainWithTagsByLid(lid) }
@@ -83,16 +83,23 @@ class CreateLinkViewModel : BasicViewModelWithRepository() {
         targetTagList.addAll(link.tags)
     }
 
+    private fun selectLink(link: SjLink) {
+        mode = NameMode.MODE_USER
+        targetLink = link
+        linkName.postValue(link.name)
+        linkUrl.postValue(link.url)
+    }
+
+
+    // handle tag selection
+    fun selectTag(tag: SjTag) = targetTagList.add(tag)
+
+    fun unselectTag(tag: SjTag) = targetTagList.remove(tag)
+
+
+    // fragment selection sync
     fun getSelectedDomain(): SjDomain {
         return this.targetDomain
-    }
-
-    fun selectTag(tag: SjTag) {
-        targetTagList.add(tag)
-    }
-
-    fun unselectTag(tag: SjTag) {
-        targetTagList.remove(tag)
     }
 
     fun selectDomain(position: Int) {
@@ -105,7 +112,9 @@ class CreateLinkViewModel : BasicViewModelWithRepository() {
         targetDomainData.postValue(targetDomain)
     }
 
-    fun insertLink() {
+
+    // save link
+    fun saveLink() {
         if (targetLink.lid != 0) {
             repository.updateLinkAndTags(targetDomain, targetLink, targetTagList)
         } else {
@@ -114,14 +123,9 @@ class CreateLinkViewModel : BasicViewModelWithRepository() {
 
     }
 
+    // load auto title by url
     private fun loadTitleOf(url: String) {
         networkRepository.getTitleOf(url)
     }
 
-    private fun selectLink(link: SjLink) {
-        mode = NameMode.MODE_USER
-        targetLink = link
-        linkName.postValue(link.name)
-        linkUrl.postValue(link.url)
-    }
 }

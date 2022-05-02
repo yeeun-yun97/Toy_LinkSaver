@@ -11,11 +11,11 @@ import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.DomainAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.DataBindingBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.CreateLinkViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.LinkViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.NameMode
 
 class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
-    private val viewModel: CreateLinkViewModel by activityViewModels()
+    private val viewModel: LinkViewModel by activityViewModels()
 
     companion object {
         fun newInstance(lid: Int): EditLinkFragment {
@@ -117,7 +117,7 @@ class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
     }
 
     private fun saveLink() {
-        viewModel.insertLink()
+        viewModel.saveLink()
         this.requireActivity().finish()
     }
 

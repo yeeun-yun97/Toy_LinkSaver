@@ -96,8 +96,6 @@ class SearchFragment : DataBindingBasicFragment<FragmentSearchBinding>() {
 
     private fun search(keyword: String) {
         viewModel.searchLinkBySearchSet(keyword)
-//        readLinkViewModel.searchLinkByLinkName(keyword)
-        viewModel.saveSearch(SjSearch(keyword = keyword))
         popBack()
     }
 

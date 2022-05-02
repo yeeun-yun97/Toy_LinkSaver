@@ -9,57 +9,48 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class TagViewModel : BasicViewModelWithRepository(){
-
-    /** repo */
+class TagViewModel : BasicViewModelWithRepository() {
     val tags = repository.tags
 
-    /** data binding live data */
+    // data binding live data
     val tagName = MutableLiveData<String>()
 
-    /** Model to save */
-    private var targetTag = SjTag(name="")
+    // Model to save
+    private var targetTag = SjTag(name = "")
 
-    init{
-        /** handle user change data */
-        tagName.observeForever{
-            targetTag.name=it
+    init {
+        // handle user change data
+        tagName.observeForever {
+            targetTag.name = it
             Log.d("TagName change", it)
         }
     }
 
-    fun setTag(tid:Int){
-        viewModelScope.launch(Dispatchers.IO){
-            val tag = async{repository.getTagByTid(tid)}
+    // set update tag data
+    fun setTag(tid: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val tag = async { repository.getTagByTid(tid) }
             setTag(tag.await())
         }
     }
 
-    private fun setTag(tag:SjTag){
-        targetTag=tag
+    private fun setTag(tag: SjTag) {
+        targetTag = tag
         tagName.postValue(tag.name)
     }
 
-    fun saveTag(){
-        if(targetTag.tid==0){
-            insertTag()
-        }else{
-            updateTag()
+
+    // save tag
+    fun saveTag() {
+        if (targetTag.tid == 0) {
+            repository.insertTag(targetTag)
+        } else {
+            repository.updateTag(targetTag)
         }
     }
 
-    private fun insertTag() {
-        repository.insertTag(targetTag)
-    }
 
-    private fun updateTag(){
-        repository.updateTag(targetTag)
-    }
-
-    fun deleteTag(tag:SjTag){
-        repository.deleteTag(tag)
-    }
-
-
+    // delete tag
+    fun deleteTag(tag: SjTag) = repository.deleteTag(tag)
 
 }

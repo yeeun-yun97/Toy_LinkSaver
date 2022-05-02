@@ -14,7 +14,7 @@ class SjRepository private constructor() {
 
     private val dao: SjDao = SjDatabase.getDao()
 
-    private var _searchLinkList = MutableLiveData<List<SjLinksAndDomainsWithTags>>()
+    private val _searchLinkList = MutableLiveData<List<SjLinksAndDomainsWithTags>>()
     val searchLinkList: LiveData<List<SjLinksAndDomainsWithTags>> get() = _searchLinkList
     val searches: LiveData<List<SjSearchWithTags>> = dao.getAllSearch()
     val domains: LiveData<List<SjDomain>> = dao.getAllDomains()
