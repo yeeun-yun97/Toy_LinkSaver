@@ -96,10 +96,6 @@ class ViewLinkFragment : DataBindingBasicFragment<FragmentViewLinkBinding>() {
         viewModel.deleteLink(link, tags)
     }
 
-    private fun editLink() {}
-
-    private fun shareLink() {}
-
     private fun moveToSearchFragment(){
         moveToOtherFragment(SearchFragment())
     }

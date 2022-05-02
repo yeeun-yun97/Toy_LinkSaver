@@ -21,6 +21,11 @@ class ViewTagFragment : DataBindingBasicFragment<FragmentViewTagBinding>() {
         viewModel.tags.observe(
             viewLifecycleOwner, {
                 binding.tagChipGroup.removeAllViews()
+                if(it.isEmpty()){
+                    binding.include.emptyView.visibility=View.VISIBLE
+                }else{
+                    binding.include.emptyView.visibility=View.GONE
+                }
                 for (tag in it) {
                     val chip = SjTagChip(requireContext(), tag)
                     chip.isCheckable = false

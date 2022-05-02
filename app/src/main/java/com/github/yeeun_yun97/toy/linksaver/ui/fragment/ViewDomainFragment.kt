@@ -27,6 +27,11 @@ class ViewDomainFragment :DataBindingBasicFragment<FragmentViewDomainBinding>(){
 
         viewModel.domains.observe(
             viewLifecycleOwner,{
+                if(it.isEmpty()){
+                    binding.include.emptyView.visibility=View.VISIBLE
+                }else{
+                    binding.include.emptyView.visibility=View.GONE
+                }
                 adapter.setList(it)
             }
         )
