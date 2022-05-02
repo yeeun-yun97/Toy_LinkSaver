@@ -9,10 +9,20 @@ import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditTagBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.DataBindingBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.CreateTagViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.TagViewModel
 
 class EditTagFragment : DataBindingBasicFragment<FragmentEditTagBinding>() {
-    val viewModel: CreateTagViewModel by viewModels()
+    val viewModel: TagViewModel by viewModels()
+
+    companion object {
+        fun newInstance(tag: SjTag): EditTagFragment {
+            val fragment = EditTagFragment()
+            fragment.arguments = Bundle().apply {
+                putInt("tid", tag.tid)
+            }
+            return fragment
+        }
+    }
 
     override fun layoutId(): Int = R.layout.fragment_edit_tag
 
@@ -22,18 +32,18 @@ class EditTagFragment : DataBindingBasicFragment<FragmentEditTagBinding>() {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-
-        binding.nameEdtiText.requestFocus()
-        binding.saveButton.setOnClickListener {
-            insertTag()
+        binding.viewModel=viewModel
+        if(arguments!=null){
+            val tid = arguments!!.getInt("tid")
+            viewModel.setTag(tid)
         }
-
-
+        binding.nameEdtiText.requestFocus()
+        binding.saveButton.setOnClickListener { insertTag() }
         return binding.root
     }
 
     private fun insertTag() {
-        viewModel.insertTag(SjTag(name = binding.nameEdtiText.text.toString()))
+        viewModel.saveTag()
         popBack()
     }
 

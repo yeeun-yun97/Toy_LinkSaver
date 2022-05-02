@@ -59,6 +59,9 @@ interface SjDao {
     @Update
     fun updateLink(link: SjLink)
 
+    @Update
+    fun updateTag(tag: SjTag)
+
 
     /////NOT YET TESTED//////
 
@@ -89,6 +92,14 @@ interface SjDao {
 
     @Query("DELETE FROM LinkTagCrossRef WHERE lid= :lid")
     fun deleteLinkTagCrossRefsByLid(lid: Int)
+
+    @Query("DELETE FROM LinkTagCrossRef WHERE tid= :tid")
+    fun deleteLinkTagCrossRefsByTid(tid: Int)
+
+    @Query("SELECT * FROM SjTag WHERE tid = :tid")
+    fun getTagByTid(tid: Int): SjTag
+
+
 
 
 }

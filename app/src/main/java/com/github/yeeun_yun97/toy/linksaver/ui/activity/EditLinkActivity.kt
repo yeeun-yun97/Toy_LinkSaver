@@ -21,4 +21,6 @@ class EditLinkActivity : ViewBindingBasicActivity<ActivityEditLinkBinding>() {
         }
     }
 
+    override fun onCreate() { }
+
 }

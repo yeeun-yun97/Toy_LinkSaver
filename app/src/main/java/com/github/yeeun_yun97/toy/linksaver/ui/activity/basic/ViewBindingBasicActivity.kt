@@ -16,10 +16,13 @@ abstract class ViewBindingBasicActivity<T : ViewBinding> : AppCompatActivity() {
         //view binding
         binding = viewBindingInflate(layoutInflater)
         setContentView(binding.root)
-        setHomeFragment(homeFragment())
+        replaceFragmentTo(homeFragment())
+        onCreate()
     }
 
-    private fun setHomeFragment(fragment:Fragment) {
+    protected abstract fun onCreate()
+
+    protected fun replaceFragmentTo(fragment:Fragment) {
         supportFragmentManager.commit {
             replace(R.id.fragmentContainer, fragment)
             setReorderingAllowed(true)

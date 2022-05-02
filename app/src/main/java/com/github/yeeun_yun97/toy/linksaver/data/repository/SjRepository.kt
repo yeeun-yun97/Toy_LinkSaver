@@ -14,13 +14,13 @@ import kotlinx.coroutines.launch
 class SjRepository private constructor() {
 
     private val dao: SjDao = SjDatabase.getDao()
-    private var _searchLinkList= MutableLiveData<List<SjLinksAndDomainsWithTags>>()
+    private var _searchLinkList = MutableLiveData<List<SjLinksAndDomainsWithTags>>()
 
-    val searches:LiveData<List<SjSearchWithTags>> =  dao.getAllSearch()
+    val searches: LiveData<List<SjSearchWithTags>> = dao.getAllSearch()
     val domains: LiveData<List<SjDomain>> = dao.getAllDomains()
     val tags: LiveData<List<SjTag>> = dao.getAllTags()
-    val linkList:LiveData<List<SjLinksAndDomainsWithTags>> = dao.getAllLinksAndDomainsWithTags()
-    val searchLinkList:LiveData<List<SjLinksAndDomainsWithTags>> get()= _searchLinkList
+    val linkList: LiveData<List<SjLinksAndDomainsWithTags>> = dao.getAllLinksAndDomainsWithTags()
+    val searchLinkList: LiveData<List<SjLinksAndDomainsWithTags>> get() = _searchLinkList
 
     companion object {
         private val repo: SjRepository = SjRepository()
@@ -45,17 +45,17 @@ class SjRepository private constructor() {
         }
 
 
-    fun updateLink(domain: SjDomain, link: SjLink, tags: List<SjTag>){
-        CoroutineScope(Dispatchers.IO).launch{
+    fun updateLink(domain: SjDomain, link: SjLink, tags: List<SjTag>) {
+        CoroutineScope(Dispatchers.IO).launch {
             //update link
-            link.did=domain.did
+            link.did = domain.did
             dao.updateLink(link)
 
             //delete all crossRef
             dao.deleteLinkTagCrossRefsByLid(link.lid)
 
             //insert all crossRef
-            insertLinkTagCrossRefs(link.lid,tags)
+            insertLinkTagCrossRefs(link.lid, tags)
         }
     }
 
@@ -114,7 +114,7 @@ class SjRepository private constructor() {
 
     fun deleteSearch() {
         CoroutineScope(Dispatchers.IO).launch {
-            val job = launch{dao.deleteAllSearchTagCrossRefs()}
+            val job = launch { dao.deleteAllSearchTagCrossRefs() }
             job.join()
             dao.deleteAllSearch()
         }
@@ -123,23 +123,30 @@ class SjRepository private constructor() {
     fun deleteTag(tag: SjTag) {
         CoroutineScope(Dispatchers.IO).launch {
             dao.deleteTag(tag)
+            dao.deleteLinkTagCrossRefsByTid(tag.tid)
             //링크와 태그 크로스 레프 객체에서 참조하고 있을 수 있으니,
             //마찬가지로 확인하고, 있으면 지우지 말고 알리기
         }
     }
 
     fun saveSearchAndTags(newSearch: SjSearch, selectedTags: MutableList<SjTag>) {
-        CoroutineScope(Dispatchers.IO).launch{
-            val sid = async{insertSearch(newSearch)}
-            insertSearchTagCrossReff(sid.await(),selectedTags)
+        CoroutineScope(Dispatchers.IO).launch {
+            val sid = async { insertSearch(newSearch) }
+            insertSearchTagCrossReff(sid.await(), selectedTags)
         }
     }
 
-    private suspend fun insertSearch(newSearch:SjSearch):Int{
+    fun updateTag(tag: SjTag) {
+        CoroutineScope(Dispatchers.IO).launch {
+            dao.updateTag(tag)
+        }
+    }
+
+    private suspend fun insertSearch(newSearch: SjSearch): Int {
         return dao.insertSearch(newSearch).toInt()
     }
 
-    private suspend fun insertSearchTagCrossReff(sid:Int, tags: MutableList<SjTag>){
+    private suspend fun insertSearchTagCrossReff(sid: Int, tags: MutableList<SjTag>) {
         val searchTagCrossRefs = mutableListOf<SearchTagCrossRef>()
         for (tag in tags) {
             searchTagCrossRefs.add(SearchTagCrossRef(sid = sid, tid = tag.tid))
@@ -148,10 +155,13 @@ class SjRepository private constructor() {
         dao.insertSearchTagCrossRefs(*searchTagCrossRefs.toTypedArray())
     }
 
-    fun getLinkAndDomainWithTagsByLid(lid: Int) :SjLinksAndDomainsWithTags{
-        return dao.getLinkAndDomainWithTagsByLid(lid);
+    suspend fun getLinkAndDomainWithTagsByLid(lid: Int): SjLinksAndDomainsWithTags {
+        return dao.getLinkAndDomainWithTagsByLid(lid)
     }
 
+    suspend fun getTagByTid(tid: Int): SjTag {
+        return dao.getTagByTid(tid)
+    }
 
 
 }

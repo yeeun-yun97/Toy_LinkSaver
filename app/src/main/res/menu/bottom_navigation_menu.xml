@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/linkItem"
+        android:title="links"
+        android:enabled="true"
+        android:icon="@drawable/ic_menu_link"
+        />
+
+    <item
+        android:id="@+id/domainItem"
+        android:title="도메인"
+        android:enabled="true"
+        android:icon="@drawable/ic_menu_domain"
+        />
+
+    <item
+        android:id="@+id/tagItem"
+        android:title="태그"
+        android:enabled="true"
+        android:icon="@drawable/ic_menu_tag"
+        />
+
+    <item
+        android:id="@+id/settingItem"
+        android:title="설정"
+        android:enabled="true"
+        android:icon="@drawable/ic_menu_setting"
+        />
+</menu>
