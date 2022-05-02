@@ -107,9 +107,9 @@ class CreateLinkViewModel : BasicViewModelWithRepository() {
 
     fun insertLink() {
         if (targetLink.lid != 0) {
-            repository.updateLink(targetDomain, targetLink, targetTagList)
+            repository.updateLinkAndTags(targetDomain, targetLink, targetTagList)
         } else {
-            repository.insertLink(targetDomain, targetLink, targetTagList)
+            repository.insertLinkAndTags(targetDomain, targetLink, targetTagList)
         }
 
     }

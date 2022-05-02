@@ -6,41 +6,16 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.*
 
 @Dao
 interface SjDao {
-
-    //////Test Passed Methods///////
+    // get All Entities from Database
     @Query("SELECT * FROM SjDomain")
     fun getAllDomains(): LiveData<List<SjDomain>>
 
     @Query("SELECT * FROM SjTag")
     fun getAllTags(): LiveData<List<SjTag>>
 
-    @Query("SELECT name FROM SjDomain")
-    fun getAllDomainNames(): LiveData<List<String>>
-
-    @Transaction
-    @Query("SELECT * FROM SjLink WHERE name LIKE :linkName")
-    fun searchLinksAndDomainsWithTagsByLinkName(linkName: String)
-            : List<SjLinksAndDomainsWithTags>
-
-    @Transaction
-    @Query(
-        "SELECT link.lid, link.name, link.did, link.url FROM SjLink as link "
-                + "INNER JOIN linkTagCrossRef as ref ON link.lid = ref.lid "
-                + "INNER JOIN SjTag as tag ON ref.tid = tag.tid "
-                + "WHERE link.name LIKE :keyword "
-                + "AND tag.tid IN(:tags)"
-                + "GROUP BY link.lid"
-    )
-    fun searchLinksAndDomainsWithTagsByLinkNameAndTags(
-        keyword: String,
-        tags: List<Int>
-    ): List<SjLinksAndDomainsWithTags>
-
-
     @Transaction
     @Query("SELECT * FROM SjSearch ORDER BY sid DESC")
-    fun getAllSearch()
-            : LiveData<List<SjSearchWithTags>>
+    fun getAllSearch(): LiveData<List<SjSearchWithTags>>
 
     @Transaction
     @Query("SELECT * FROM SjLink ORDER BY lid DESC")
@@ -48,9 +23,24 @@ interface SjDao {
             : LiveData<List<SjLinksAndDomainsWithTags>>
 
 
-    //insert suspend functions
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertDomain(newDomain: SjDomain)
+    // search link query by link name and tags
+    @Transaction
+    @Query(
+        "SELECT link.lid, link.name, link.did, link.url FROM SjLink as link "
+                + "INNER JOIN linkTagCrossRef as ref ON link.lid = ref.lid "
+                + "INNER JOIN SjTag as tag ON ref.tid = tag.tid "
+                + "WHERE link.name LIKE :keyword "
+                + "AND tag.tid IN(:tags)"
+                + "GROUP BY link.lid" //prevent duplicates
+    )
+    suspend fun searchLinksAndDomainsWithTagsByLinkNameAndTags(
+        keyword: String, tags: List<Int>
+    ): List<SjLinksAndDomainsWithTags>
+
+
+    // Insert queries
+    @Insert
+    suspend fun insertDomain(newDomain: SjDomain): Long
 
     @Insert
     suspend fun insertLink(newLink: SjLink): Long
@@ -58,8 +48,8 @@ interface SjDao {
     @Insert
     suspend fun insertSearch(newSearch: SjSearch): Long
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTag(newTag: SjTag)
+    @Insert
+    suspend fun insertTag(newTag: SjTag): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertLinkTagCrossRef(newCrossRef: LinkTagCrossRef)
@@ -71,26 +61,26 @@ interface SjDao {
     suspend fun insertSearchTagCrossRefs(vararg ref: SearchTagCrossRef)
 
 
+    // update queries
     @Update
-    fun updateLink(link: SjLink)
-
-    @Update
-    fun updateTag(tag: SjTag)
+    suspend fun updateLink(link: SjLink)
 
     @Update
-    fun updateDomain(domain: SjDomain)
+    suspend fun updateTag(tag: SjTag)
+
+    @Update
+    suspend fun updateDomain(domain: SjDomain)
 
 
-    /////NOT YET TESTED//////
+    // delete queries
+    @Delete
+    suspend fun deleteDomain(newDomain: SjDomain)
 
     @Delete
-    fun deleteDomain(newDomain: SjDomain)
+    suspend fun deleteLink(newLink: SjLink)
 
     @Delete
-    fun deleteLink(newLink: SjLink)
-
-    @Delete
-    fun deleteTag(newTag: SjTag)
+    suspend fun deleteTag(newTag: SjTag)
 
     @Delete
     suspend fun deleteTags(vararg tag: SjTag)
@@ -99,30 +89,32 @@ interface SjDao {
     suspend fun deleteLinkTagCrossRefs(vararg ref: LinkTagCrossRef)
 
     @Query("Delete FROM SearchTagCrossRef")
-    fun deleteAllSearchTagCrossRefs()
+    suspend fun deleteAllSearchTagCrossRefs()
 
     @Query("Delete FROM SjSearch")
-    fun deleteAllSearch()
+    suspend fun deleteAllSearch()
 
+    @Query("DELETE FROM SjLink WHERE did = :did")
+    suspend fun deleteLinksByDid(did: Int)
+
+    @Query("DELETE FROM LinkTagCrossRef WHERE lid= :lid")
+    suspend fun deleteLinkTagCrossRefsByLid(lid: Int)
+
+    @Query("DELETE FROM LinkTagCrossRef WHERE tid= :tid")
+    suspend fun deleteLinkTagCrossRefsByTid(tid: Int)
+
+
+    // query by key
     @Transaction
     @Query("SELECT * FROM SjLink WHERE lid = :lid")
-    fun getLinkAndDomainWithTagsByLid(lid: Int): SjLinksAndDomainsWithTags
+    suspend fun getLinkAndDomainWithTagsByLid(lid: Int): SjLinksAndDomainsWithTags
 
     @Transaction
     @Query("SELECT * FROM SjLink WHERE did = :did")
     fun getLinkAndDomainWithTagsByDid(did: Int): List<SjLinksAndDomainsWithTags>
 
-    @Query("DELETE FROM LinkTagCrossRef WHERE lid= :lid")
-    fun deleteLinkTagCrossRefsByLid(lid: Int)
-
-    @Query("DELETE FROM LinkTagCrossRef WHERE tid= :tid")
-    fun deleteLinkTagCrossRefsByTid(tid: Int)
-
     @Query("SELECT * FROM SjTag WHERE tid = :tid")
-    fun getTagByTid(tid: Int): SjTag
-
-    @Query("DELETE FROM SjLink WHERE did = :did")
-    fun deleteLinksByDid(did: Int)
+    suspend fun getTagByTid(tid: Int): SjTag
 
     @Query("SELECT * FROM SjDomain WHERE did = :did")
     suspend fun getDomainByDid(did: Int): SjDomain
