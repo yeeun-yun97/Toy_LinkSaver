@@ -23,6 +23,21 @@ interface SjDao {
             : List<SjLinksAndDomainsWithTags>
 
     @Transaction
+    @Query(
+        "SELECT link.lid, link.name, link.did, link.url FROM SjLink as link "
+                + "INNER JOIN linkTagCrossRef as ref ON link.lid = ref.lid "
+                + "INNER JOIN SjTag as tag ON ref.tid = tag.tid "
+                + "WHERE link.name LIKE :keyword "
+                + "AND tag.tid IN(:tags)"
+                + "GROUP BY link.lid"
+    )
+    fun searchLinksAndDomainsWithTagsByLinkNameAndTags(
+        keyword: String,
+        tags: List<Int>
+    ): List<SjLinksAndDomainsWithTags>
+
+
+    @Transaction
     @Query("SELECT * FROM SjSearch ORDER BY sid DESC")
     fun getAllSearch()
             : LiveData<List<SjSearchWithTags>>
@@ -111,6 +126,5 @@ interface SjDao {
 
     @Query("SELECT * FROM SjDomain WHERE did = :did")
     suspend fun getDomainByDid(did: Int): SjDomain
-
 
 }

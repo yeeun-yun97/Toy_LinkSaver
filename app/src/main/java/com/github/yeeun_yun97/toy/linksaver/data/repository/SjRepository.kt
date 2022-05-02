@@ -34,6 +34,21 @@ class SjRepository private constructor() {
         }
     }
 
+    fun searchLinksBySearchSet(keyword: String, selectedTags: MutableList<SjTag>) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val list: MutableList<Int> = mutableListOf()
+            for (tag in selectedTags) {
+                list.add(tag.tid)
+            }
+            val result = dao.searchLinksAndDomainsWithTagsByLinkNameAndTags(
+                "%$keyword%", list
+            )
+            Log.d("search result", result.toString())
+            _searchLinkList.postValue(result)
+
+        }
+    }
+
     fun insertDomain(newDomain: SjDomain) =
         CoroutineScope(Dispatchers.IO).launch {
             dao.insertDomain(newDomain)
@@ -94,9 +109,9 @@ class SjRepository private constructor() {
         }
     }
 
-    private fun deleteLinks(list:List<SjLinksAndDomainsWithTags>){
-        for(link in list){
-            deleteLink(link.link,link.tags)
+    private fun deleteLinks(list: List<SjLinksAndDomainsWithTags>) {
+        for (link in list) {
+            deleteLink(link.link, link.tags)
         }
     }
 
@@ -174,7 +189,7 @@ class SjRepository private constructor() {
         return dao.getTagByTid(tid)
     }
 
-    suspend fun getDomainByDid(did: Int) :SjDomain{
+    suspend fun getDomainByDid(did: Int): SjDomain {
         return dao.getDomainByDid(did)
     }
 

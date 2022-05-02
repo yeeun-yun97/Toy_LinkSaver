@@ -19,12 +19,9 @@ import com.github.yeeun_yun97.toy.linksaver.ui.adapter.SearchesAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.DataBindingBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.ReadLinkViewModel
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.SearchViewModel
 
 class SearchFragment : DataBindingBasicFragment<FragmentSearchBinding>() {
-
-    val viewModel: SearchViewModel by activityViewModels()
-    val readLinkViewModel: ReadLinkViewModel by activityViewModels()
+    val viewModel: ReadLinkViewModel by activityViewModels()
 
     override fun layoutId(): Int = R.layout.fragment_search
 
@@ -98,7 +95,8 @@ class SearchFragment : DataBindingBasicFragment<FragmentSearchBinding>() {
     }
 
     private fun search(keyword: String) {
-        readLinkViewModel.searchLinkByLinkName(keyword)
+        viewModel.searchLinkBySearchSet(keyword)
+//        readLinkViewModel.searchLinkByLinkName(keyword)
         viewModel.saveSearch(SjSearch(keyword = keyword))
         popBack()
     }
