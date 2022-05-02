@@ -32,7 +32,6 @@
             android:ems="10"
             android:hint="이름을 입력해주세요"
             android:text="@={viewModel.tagName}"
-            android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="@+id/nameTextView"
             app:layout_constraintStart_toStartOf="@+id/nameTextView"
             app:layout_constraintTop_toBottomOf="@+id/nameTextView" />

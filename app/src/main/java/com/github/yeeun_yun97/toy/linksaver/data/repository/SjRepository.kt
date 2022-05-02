@@ -88,10 +88,15 @@ class SjRepository private constructor() {
 
     fun deleteDomain(domain: SjDomain) {
         CoroutineScope(Dispatchers.IO).launch {
+            val links = dao.getLinkAndDomainWithTagsByDid(domain.did)
+            deleteLinks(links)
             dao.deleteDomain(domain)
-            //링크에서 도메인을 참조하고 있을 수 있으니,
-            //확인하고, 있으면 지우는 작업을 하지 않고,
-            //사용자에게 알릴 수 있으면 좋겠다.
+        }
+    }
+
+    private fun deleteLinks(list:List<SjLinksAndDomainsWithTags>){
+        for(link in list){
+            deleteLink(link.link,link.tags)
         }
     }
 
@@ -132,7 +137,7 @@ class SjRepository private constructor() {
     fun saveSearchAndTags(newSearch: SjSearch, selectedTags: MutableList<SjTag>) {
         CoroutineScope(Dispatchers.IO).launch {
             val sid = async { insertSearch(newSearch) }
-            insertSearchTagCrossReff(sid.await(), selectedTags)
+            insertSearchTagCrossRef(sid.await(), selectedTags)
         }
     }
 
@@ -142,11 +147,17 @@ class SjRepository private constructor() {
         }
     }
 
+    fun updateDomain(domain: SjDomain) {
+        CoroutineScope(Dispatchers.IO).launch {
+            dao.updateDomain(domain)
+        }
+    }
+
     private suspend fun insertSearch(newSearch: SjSearch): Int {
         return dao.insertSearch(newSearch).toInt()
     }
 
-    private suspend fun insertSearchTagCrossReff(sid: Int, tags: MutableList<SjTag>) {
+    private suspend fun insertSearchTagCrossRef(sid: Int, tags: MutableList<SjTag>) {
         val searchTagCrossRefs = mutableListOf<SearchTagCrossRef>()
         for (tag in tags) {
             searchTagCrossRefs.add(SearchTagCrossRef(sid = sid, tid = tag.tid))
@@ -161,6 +172,10 @@ class SjRepository private constructor() {
 
     suspend fun getTagByTid(tid: Int): SjTag {
         return dao.getTagByTid(tid)
+    }
+
+    suspend fun getDomainByDid(did: Int) :SjDomain{
+        return dao.getDomainByDid(did)
     }
 
 

@@ -14,7 +14,6 @@ class DomainAdapter(
 ) :
     ArrayAdapter<SjDomain>(context, resource, list) {
 
-
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val label = super.getView(position, convertView, parent) as TextView
         label.setText(list[position].name)
@@ -26,6 +25,4 @@ class DomainAdapter(
         label.setText(list[position].name)
         return label
     }
-
-
 }

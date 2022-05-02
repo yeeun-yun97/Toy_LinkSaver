@@ -1,5 +1,6 @@
 package com.github.yeeun_yun97.toy.linksaver.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
@@ -23,6 +24,7 @@ class TagViewModel : BasicViewModelWithRepository(){
         /** handle user change data */
         tagName.observeForever{
             targetTag.name=it
+            Log.d("TagName change", it)
         }
     }
 

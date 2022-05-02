@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.ActivityMainBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.basic.ViewBindingBasicActivity
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.ViewDomainFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.ViewLinkFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.ViewTagFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.ReadLinkViewModel
@@ -14,6 +15,7 @@ class MainActivity : ViewBindingBasicActivity<ActivityMainBinding>() {
     val viewModel: ReadLinkViewModel by viewModels()
     private val homeFragment = ViewLinkFragment()
     private val tagFragment = ViewTagFragment()
+    private val domainFragment = ViewDomainFragment()
 
     override fun viewBindingInflate(inflater: LayoutInflater): ActivityMainBinding =
         ActivityMainBinding.inflate(inflater)
@@ -29,6 +31,7 @@ class MainActivity : ViewBindingBasicActivity<ActivityMainBinding>() {
                     true
                 }
                 R.id.domainItem-> {
+                    this.replaceFragmentTo(domainFragment)
                     true
                 }
                 R.id.tagItem-> {

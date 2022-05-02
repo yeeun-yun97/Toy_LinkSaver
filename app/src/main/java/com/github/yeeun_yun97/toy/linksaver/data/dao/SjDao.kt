@@ -62,6 +62,9 @@ interface SjDao {
     @Update
     fun updateTag(tag: SjTag)
 
+    @Update
+    fun updateDomain(domain: SjDomain)
+
 
     /////NOT YET TESTED//////
 
@@ -90,6 +93,10 @@ interface SjDao {
     @Query("SELECT * FROM SjLink WHERE lid = :lid")
     fun getLinkAndDomainWithTagsByLid(lid: Int): SjLinksAndDomainsWithTags
 
+    @Transaction
+    @Query("SELECT * FROM SjLink WHERE did = :did")
+    fun getLinkAndDomainWithTagsByDid(did: Int): List<SjLinksAndDomainsWithTags>
+
     @Query("DELETE FROM LinkTagCrossRef WHERE lid= :lid")
     fun deleteLinkTagCrossRefsByLid(lid: Int)
 
@@ -99,7 +106,11 @@ interface SjDao {
     @Query("SELECT * FROM SjTag WHERE tid = :tid")
     fun getTagByTid(tid: Int): SjTag
 
+    @Query("DELETE FROM SjLink WHERE did = :did")
+    fun deleteLinksByDid(did: Int)
 
+    @Query("SELECT * FROM SjDomain WHERE did = :did")
+    suspend fun getDomainByDid(did: Int): SjDomain
 
 
 }
