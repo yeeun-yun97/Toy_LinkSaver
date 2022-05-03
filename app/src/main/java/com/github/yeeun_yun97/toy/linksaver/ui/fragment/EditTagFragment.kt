@@ -5,10 +5,10 @@ import androidx.fragment.app.viewModels
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditTagBinding
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.DataBindingBasicFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.TagViewModel
 
-class EditTagFragment : DataBindingBasicFragment<FragmentEditTagBinding>() {
+class EditTagFragment : SjBasicFragment<FragmentEditTagBinding>() {
     val viewModel: TagViewModel by viewModels()
 
     companion object {

@@ -2,15 +2,15 @@ package com.github.yeeun_yun97.toy.linksaver.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicAdapter
+import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicViewHolder
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
 import com.github.yeeun_yun97.toy.linksaver.databinding.ItemDomainsBinding
-import com.github.yeeun_yun97.toy.linksaver.ui.adapter.basic.SjDataBindingViewHolder
-import com.github.yeeun_yun97.toy.linksaver.ui.adapter.basic.SjRecyclerAdapter
 
 class RecyclerDomainAdapter(
     private val updateOperation: (Int) -> Unit,
     private val deleteOperation: (SjDomain) -> Unit
-) : SjRecyclerAdapter<SjDomain,DomainsViewHolder>() {
+) : RecyclerBasicAdapter<SjDomain, DomainsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DomainsViewHolder {
         val binding = ItemDomainsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -24,7 +24,7 @@ class RecyclerDomainAdapter(
 }
 
 class DomainsViewHolder(binding: ItemDomainsBinding) :
-    SjDataBindingViewHolder<ItemDomainsBinding>(binding) {
+    RecyclerBasicViewHolder<ItemDomainsBinding>(binding) {
 
     fun setItem(
         domain: SjDomain,

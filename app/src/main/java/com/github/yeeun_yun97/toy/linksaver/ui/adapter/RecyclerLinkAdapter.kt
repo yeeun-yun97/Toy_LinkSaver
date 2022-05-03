@@ -2,21 +2,19 @@ package com.github.yeeun_yun97.toy.linksaver.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
+import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicAdapter
+import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicViewHolder
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinksAndDomainsWithTags
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.ItemLinksBinding
-import com.github.yeeun_yun97.toy.linksaver.ui.adapter.basic.SjDataBindingViewHolder
-import com.github.yeeun_yun97.toy.linksaver.ui.adapter.basic.SjRecyclerAdapter
 
 class RecyclerLinkAdapter(
     private val openOperation: (String) -> Unit,
     private val updateOperation: (Int) -> Unit,
     private val deleteOperation: (SjLink, List<SjTag>) -> Unit
 ) :
-    SjRecyclerAdapter<SjLinksAndDomainsWithTags, LinksViewHolder>() {
+    RecyclerBasicAdapter<SjLinksAndDomainsWithTags, LinksViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LinksViewHolder {
         val binding = ItemLinksBinding.inflate(LayoutInflater.from(parent.context))
@@ -29,7 +27,7 @@ class RecyclerLinkAdapter(
 }
 
 class LinksViewHolder(binding: ItemLinksBinding) :
-    SjDataBindingViewHolder<ItemLinksBinding>(binding) {
+    RecyclerBasicViewHolder<ItemLinksBinding>(binding) {
 
     fun setLink(
         link: SjLinksAndDomainsWithTags,

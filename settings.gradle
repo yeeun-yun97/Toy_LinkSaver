@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "LinkSaver"
 include ':app'
+include ':YNModule'

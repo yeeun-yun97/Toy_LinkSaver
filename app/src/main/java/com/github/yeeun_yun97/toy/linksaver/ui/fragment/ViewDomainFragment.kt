@@ -7,10 +7,10 @@ import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentViewDomainBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerDomainAdapter
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.DataBindingBasicFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.DomainViewModel
 
-class ViewDomainFragment : DataBindingBasicFragment<FragmentViewDomainBinding>() {
+class ViewDomainFragment : SjBasicFragment<FragmentViewDomainBinding>() {
     val viewModel: DomainViewModel by activityViewModels()
 
 

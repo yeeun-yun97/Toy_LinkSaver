@@ -1,14 +1,14 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditDomainBinding
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.DataBindingBasicFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.DomainViewModel
 
-class EditDomainFragment : DataBindingBasicFragment<FragmentEditDomainBinding>() {
-    val viewModel: DomainViewModel by viewModels()
+class EditDomainFragment : SjBasicFragment<FragmentEditDomainBinding>() {
+    val viewModel: DomainViewModel by activityViewModels()
 
     companion object {
         fun newInstance(did: Int): EditDomainFragment {

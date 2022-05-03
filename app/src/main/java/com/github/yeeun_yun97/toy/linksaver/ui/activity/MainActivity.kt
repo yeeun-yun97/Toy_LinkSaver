@@ -5,13 +5,13 @@ import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.ActivityMainBinding
-import com.github.yeeun_yun97.toy.linksaver.ui.activity.basic.ViewBindingBasicActivity
+import com.github.yeeun_yun97.toy.linksaver.ui.activity.basic.SjBasicActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.ViewDomainFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.ViewLinkFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.ViewTagFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.ReadLinkViewModel
 
-class MainActivity : ViewBindingBasicActivity<ActivityMainBinding>() {
+class MainActivity : SjBasicActivity<ActivityMainBinding>() {
     val viewModel: ReadLinkViewModel by viewModels()
 
     // 바텀 내비에 따라 부착할 fragment들.

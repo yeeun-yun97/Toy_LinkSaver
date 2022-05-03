@@ -10,11 +10,11 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.SpinnerDomainAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.DataBindingBasicFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.LinkViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.NameMode
 
-class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
+class EditLinkFragment : SjBasicFragment<FragmentEditLinkBinding>() {
     private val viewModel: LinkViewModel by activityViewModels()
 
     companion object {

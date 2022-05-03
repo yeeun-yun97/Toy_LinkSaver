@@ -1,9 +1,8 @@
-package com.github.yeeun_yun97.toy.linksaver.ui.adapter.basic
+package com.github.yeeun_yun97.clone.ynmodule.ui.adapter
 
 import androidx.recyclerview.widget.RecyclerView
-import com.github.yeeun_yun97.toy.linksaver.ui.adapter.SearchesViewHolder
 
-abstract class SjRecyclerAdapter<T, C : RecyclerView.ViewHolder>(
+abstract class RecyclerBasicAdapter<T, C : RecyclerView.ViewHolder>(
     protected var itemList: List<T> = listOf()
 ) : RecyclerView.Adapter<C>() {
 

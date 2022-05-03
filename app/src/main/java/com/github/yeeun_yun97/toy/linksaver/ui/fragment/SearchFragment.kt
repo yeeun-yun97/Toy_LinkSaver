@@ -1,9 +1,7 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment
 
-import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.widget.CompoundButton
-import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
@@ -11,12 +9,13 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSearchBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerSearchAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.DataBindingBasicFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.ReadLinkViewModel
 
-class SearchFragment : DataBindingBasicFragment<FragmentSearchBinding>() {
+class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
     val viewModel: ReadLinkViewModel by activityViewModels()
 
+    // override methods
     override fun layoutId(): Int = R.layout.fragment_search
 
     override fun onCreateView() {
