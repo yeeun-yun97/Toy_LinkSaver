@@ -1,9 +1,6 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
@@ -24,25 +21,32 @@ class EditTagFragment : DataBindingBasicFragment<FragmentEditTagBinding>() {
         }
     }
 
+
+    // override methods
     override fun layoutId(): Int = R.layout.fragment_edit_tag
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        super.onCreateView(inflater, container, savedInstanceState)
-        binding.viewModel=viewModel
-        if(arguments!=null){
-            val tid = arguments!!.getInt("tid")
-            viewModel.setTag(tid)
+    override fun onCreateView() {
+        binding.viewModel = viewModel
+        if (arguments != null) {
+            loadUpdateData(arguments!!)
         }
+
+        //set focus
         binding.nameEdtiText.requestFocus()
-        binding.saveButton.setOnClickListener { insertTag() }
-        return binding.root
+
+        // handle user click event
+        binding.saveButton.setOnClickListener { saveTag() }
     }
 
-    private fun insertTag() {
+
+    // load and set update data
+    private fun loadUpdateData(arguments: Bundle) {
+        val tid = arguments.getInt("tid")
+        viewModel.setTag(tid)
+    }
+
+    // save Tag
+    private fun saveTag() {
         viewModel.saveTag()
         popBack()
     }

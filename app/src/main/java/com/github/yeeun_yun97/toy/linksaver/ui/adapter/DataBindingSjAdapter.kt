@@ -7,7 +7,7 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.google.android.material.chip.ChipGroup
 
-class SjBindingAdapter {
+class DataBindingSjAdapter {
     companion object{
         @JvmStatic
         @BindingAdapter("chipCountData")
@@ -24,7 +24,7 @@ class SjBindingAdapter {
         @BindingAdapter("chipDataList")
         fun setChipByList(view: ChipGroup, tags:List<SjTag>){
             view.removeAllViews()
-            if(tags.size>0){
+            if(tags.isNotEmpty()){
                 val chip = SjTagChip(view.context,tags[0])
                 chip.isCheckable=false
                 chip.isClickable=false

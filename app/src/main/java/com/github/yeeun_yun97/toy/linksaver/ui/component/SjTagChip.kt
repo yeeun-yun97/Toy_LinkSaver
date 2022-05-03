@@ -6,10 +6,29 @@ import com.google.android.material.chip.Chip
 
 class SjTagChip(context: Context, val tag: SjTag) : Chip(context) {
 
-    init{
+    init {
         setText(tag.name)
-        isCheckable=true
-        id=tag.tid
+        setBasicMode()
+    }
+
+    fun setBasicMode() {
+        isCheckable = true
+        id = tag.tid
+    }
+
+    fun setEditMode(
+        deleteOperation: (SjTag) -> Unit,
+        editOperation: (SjTag) -> Unit
+    ) {
+        isCheckable = false
+        isCloseIconVisible = true
+        setOnCloseIconClickListener {
+            deleteOperation(tag)
+        }
+        setOnLongClickListener {
+            editOperation(tag)
+            true
+        }
     }
 
 }

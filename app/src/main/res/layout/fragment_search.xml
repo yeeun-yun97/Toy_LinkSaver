@@ -4,7 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data />
+    <data>
+        <variable
+            name="viewModel"
+            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.ReadLinkViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -38,6 +42,7 @@
             android:layout_marginHorizontal="15dp"
             android:layout_marginTop="10dp"
             android:ems="10"
+            android:text="@={viewModel.searchWord}"
             android:hint="검색어를 입력해주세요"
             android:imeOptions="actionSearch"
             android:inputType="textPersonName"

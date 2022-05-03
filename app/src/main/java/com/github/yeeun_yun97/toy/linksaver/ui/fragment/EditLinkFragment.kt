@@ -8,7 +8,7 @@ import androidx.fragment.app.activityViewModels
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditLinkBinding
-import com.github.yeeun_yun97.toy.linksaver.ui.adapter.DomainAdapter
+import com.github.yeeun_yun97.toy.linksaver.ui.adapter.SpinnerDomainAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.DataBindingBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.LinkViewModel
@@ -30,18 +30,20 @@ class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
     }
 
 
+    // override methods
     override fun layoutId(): Int = R.layout.fragment_edit_link
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    // load and set update data
+    private fun loadUpdateData(arguments: Bundle) {
+        val lid = arguments.getInt("lid")
+        viewModel.setLink(lid)
+    }
 
-        if (arguments != null) {
-            val lid = requireArguments().getInt("lid")
-            viewModel.setLink(lid)
-        }
-
-        //set data binding variable
+    override fun onCreateView() {
         binding.viewModel = viewModel
-
+        if (arguments != null) {
+            loadUpdateData(arguments!!)
+        }
         //add tag chips
         viewModel.tags.observe(viewLifecycleOwner, { addTagsToChipGroupChildren(it) })
 
@@ -49,7 +51,7 @@ class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
         viewModel.domains.observe(viewLifecycleOwner, {
             //set spinner adapter
             binding.domainSpinner.adapter =
-                DomainAdapter(context = requireContext(), list = it)
+                SpinnerDomainAdapter(context = requireContext(), list = it)
 
             //set spinner select listener
             binding.domainSpinner.onItemSelectedListener =
@@ -76,17 +78,19 @@ class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
         })
 
 
-
-        binding.nameEditText.setOnKeyListener { p0, p1, p2 ->
+        // mode change when user edits name
+        binding.nameEditText.setOnKeyListener { _, _, _ ->
             viewModel.mode = NameMode.MODE_USER
             false
         }
 
-        //onClickListeners
+
+        // handle user click
         binding.saveButton.setOnClickListener { saveLink() }
         binding.addDomainTextView.setOnClickListener { moveToEditDomainFragment() }
         binding.addTagTextView.setOnClickListener { moveToEditTagFragment() }
     }
+
 
     private fun addTagsToChipGroupChildren(it: List<SjTag>) {
         binding.tagChipGroup.removeAllViews()
@@ -108,6 +112,7 @@ class EditLinkFragment : DataBindingBasicFragment<FragmentEditLinkBinding>() {
         }
     }
 
+    // handle click methods
     private fun moveToEditTagFragment() {
         moveToOtherFragment(EditTagFragment())
     }

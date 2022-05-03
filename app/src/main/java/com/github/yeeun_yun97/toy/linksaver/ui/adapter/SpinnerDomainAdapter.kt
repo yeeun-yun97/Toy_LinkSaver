@@ -7,7 +7,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
 
-class DomainAdapter(
+class SpinnerDomainAdapter(
     context: Context,
     resource: Int = android.R.layout.simple_spinner_dropdown_item,
     var list: List<SjDomain>

@@ -1,5 +1,6 @@
 package com.github.yeeun_yun97.toy.linksaver.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjSearch
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
@@ -19,6 +20,9 @@ class ReadLinkViewModel : BasicViewModelWithRepository() {
     // mode
     var mode: ListMode = ListMode.MODE_ALL
 
+    // data binding liveData
+    val searchWord = MutableLiveData<String>()
+
     // selected tags for search
     var selectedTags = mutableListOf<SjTag>()
 
@@ -30,7 +34,8 @@ class ReadLinkViewModel : BasicViewModelWithRepository() {
 
 
     // search methods
-    fun searchLinkBySearchSet(keyword: String) {
+    fun searchLinkBySearchSet() {
+        val keyword= searchWord.value!!
         if (keyword.isEmpty() && selectedTags.isEmpty()) {
             this.mode = ListMode.MODE_ALL
         } else {
