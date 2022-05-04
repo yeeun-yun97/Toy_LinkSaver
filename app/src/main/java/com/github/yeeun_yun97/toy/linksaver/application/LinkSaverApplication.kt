@@ -2,9 +2,8 @@ package com.github.yeeun_yun97.toy.linksaver.application
 
 import android.app.Application
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
+import kotlinx.coroutines.*
 
 class LinkSaverApplication : Application() {
     override fun onCreate() {
@@ -14,8 +13,14 @@ class LinkSaverApplication : Application() {
         SjDatabase.openDatabase(applicationContext)
 
         //insert initial Data
-        GlobalScope.launch(Dispatchers.IO) {
-            //SjDatabase.insertFirstData()
+        CoroutineScope(Dispatchers.IO).launch {
+
+            val count = async {
+                SjDatabase.getDao().getDomainCount()
+            }
+            if (count.await() == 0) {
+                SjDatabase.getDao().insertDomain(SjDomain(name = "빈 도메인", url = ""))
+            }
         }
     }
 

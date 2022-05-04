@@ -78,6 +78,9 @@ class ViewLinkFragment : SjBasicFragment<FragmentViewLinkBinding>() {
     // handle user event methods
     private fun deleteLink(link: SjLink, tags: List<SjTag>) {
         viewModel.deleteLink(link, tags)
+        if(viewModel.mode==ListMode.MODE_SEARCH){
+            viewModel.searchLinkBySearchSet()
+        }
     }
 
     private fun moveToSearchFragment() {

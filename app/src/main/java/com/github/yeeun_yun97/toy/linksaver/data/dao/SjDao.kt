@@ -22,6 +22,9 @@ interface SjDao {
     fun getAllLinksAndDomainsWithTags()
             : LiveData<List<SjLinksAndDomainsWithTags>>
 
+    @Query("SELECT COUNT(*) FROM SjDomain")
+    suspend fun getDomainCount(): Int
+
 
     // search link query by link name and tags
     @Transaction
