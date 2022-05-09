@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.LinkSaver">
+        android:theme="@style/Theme.PurpleBasicTheme">
         <activity
             android:name=".ui.activity.ShareLinkActivity"
             android:exported="false" />
@@ -20,9 +20,6 @@
             android:exported="false" />
         <activity
             android:name=".ui.activity.EditLinkActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activity.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.SplashActivity"
