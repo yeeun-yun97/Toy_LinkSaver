@@ -67,6 +67,12 @@ class LinkViewModel : BasicViewModelWithRepository() {
          */
     }
 
+    fun initialize(){
+        linkName.postValue("")
+        linkUrl.postValue("")
+    }
+
+
 
     // set link for update
     fun setLink(lid: Int) {

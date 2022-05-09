@@ -96,7 +96,7 @@ class SjRepository private constructor() {
     }
 
     // update methods
-    fun updateLinkAndTags(domain: SjDomain, link: SjLink, tags: List<SjTag>) {
+    fun updateLinkAndTags(domain: SjDomain, link: SjLink, tags: MutableList<SjTag>) {
         CoroutineScope(Dispatchers.IO).launch {
             link.did = domain.did
             dao.updateLink(link)
