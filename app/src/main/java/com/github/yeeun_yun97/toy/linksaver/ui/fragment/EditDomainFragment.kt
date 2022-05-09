@@ -26,6 +26,7 @@ class EditDomainFragment : SjBasicFragment<FragmentEditDomainBinding>() {
         binding.viewModel = viewModel
         if (arguments != null) {
             loadUpdateData(arguments!!)
+            binding.toolbar.toolbarTitle="도메인 수정"
         }
         binding.saveButton.setOnClickListener { saveDomain() }
     }
