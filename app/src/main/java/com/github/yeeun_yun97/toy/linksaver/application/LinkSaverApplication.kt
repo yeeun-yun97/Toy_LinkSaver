@@ -19,7 +19,7 @@ class LinkSaverApplication : Application() {
                 SjDatabase.getDao().getDomainCount()
             }
             if (count.await() == 0) {
-                SjDatabase.getDao().insertDomain(SjDomain(name = "빈 도메인", url = ""))
+                SjDatabase.getDao().insertDomain(SjDomain(did = 1, name = "-", url = ""))
             }
         }
     }

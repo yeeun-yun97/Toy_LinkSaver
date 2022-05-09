@@ -18,6 +18,7 @@ class SjRepository private constructor() {
     val searchLinkList: LiveData<List<SjLinksAndDomainsWithTags>> get() = _searchLinkList
     val searches: LiveData<List<SjSearchWithTags>> = dao.getAllSearch()
     val domains: LiveData<List<SjDomain>> = dao.getAllDomains()
+    val domainsExceptDefault: LiveData<List<SjDomain>> = dao.getAllDomainsExceptDefault()
     val tags: LiveData<List<SjTag>> = dao.getAllTags()
     val linkList: LiveData<List<SjLinksAndDomainsWithTags>> = dao.getAllLinksAndDomainsWithTags()
 

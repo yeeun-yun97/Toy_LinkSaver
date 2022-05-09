@@ -7,6 +7,9 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.*
 @Dao
 interface SjDao {
     // get All Entities from Database
+    @Query("SELECT * FROM SjDomain WHERE did NOT IN (1)")
+    fun getAllDomainsExceptDefault(): LiveData<List<SjDomain>>
+
     @Query("SELECT * FROM SjDomain")
     fun getAllDomains(): LiveData<List<SjDomain>>
 
