@@ -35,15 +35,24 @@ class ReadLinkViewModel : BasicViewModelWithRepository() {
 
     // search methods
     fun searchLinkBySearchSet() {
-        val keyword= searchWord.value
-        if (keyword.isNullOrEmpty() && selectedTags.isEmpty()) {
+        var keyword = searchWord.value ?: ""
+
+        //when search data is null -> return to All list mode
+        if (keyword.isEmpty() && selectedTags.isEmpty()) {
             this.mode = ListMode.MODE_ALL
-        } else {
-            this.mode = ListMode.MODE_SEARCH
-            val searchWord = keyword ?: ""
-            repository.searchLinksBySearchSet(searchWord, selectedTags)
-            saveSearch(searchWord)
+            return
         }
+
+        this.mode = ListMode.MODE_SEARCH
+        // search without Tags
+        if (selectedTags.isEmpty()) {
+            repository.searchLinksBySearchSet(keyword!!)
+
+        // search with Tags
+        } else {
+            repository.searchLinksBySearchSet(keyword!!, selectedTags)
+        }
+        saveSearch(keyword!!)
     }
 
     private fun saveSearch(keyword: String) {

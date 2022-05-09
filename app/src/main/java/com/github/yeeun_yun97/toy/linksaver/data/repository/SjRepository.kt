@@ -81,7 +81,16 @@ class SjRepository private constructor() {
     }
 
 
-    // search method
+    // search methods
+    fun searchLinksBySearchSet(keyword: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = dao.searchLinksAndDomainsWithTagsByLinkName(
+                "%$keyword%"
+            )
+            _searchLinkList.postValue(result)
+        }
+    }
+
     fun searchLinksBySearchSet(keyword: String, selectedTags: List<SjTag>) {
         CoroutineScope(Dispatchers.IO).launch {
             val list: MutableList<Int> = mutableListOf()

@@ -43,6 +43,13 @@ interface SjDao {
         keyword: String, tags: List<Int>
     ): List<SjLinksAndDomainsWithTags>
 
+    // search link query by link name
+    @Transaction
+    @Query("SELECT * FROM SjLink WHERE name LIKE :keyword")
+    suspend fun searchLinksAndDomainsWithTagsByLinkName(
+        keyword: String
+    ): List<SjLinksAndDomainsWithTags>
+
 
     // Insert queries
     @Insert
@@ -124,5 +131,6 @@ interface SjDao {
 
     @Query("SELECT * FROM SjDomain WHERE did = :did")
     suspend fun getDomainByDid(did: Int): SjDomain
+
 
 }
