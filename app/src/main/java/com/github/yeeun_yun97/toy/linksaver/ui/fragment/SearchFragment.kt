@@ -54,6 +54,11 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
             false
         }
 
+        // click search Icon -> search start.
+        binding.searchImageView.setOnClickListener {
+            searchAndPopBack()
+        }
+
         // set recyclerview search set
         binding.recentSearchedRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         val adapter = RecyclerSearchAdapter(::setSearch)
