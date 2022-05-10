@@ -10,8 +10,27 @@
 **junit**       (테스트)    
 
 ## 플레이스토어
-### 버전 v 1.0
-_<2022.05.05 현재 플레이 스토어 검토중..>_
+### 버전 v.1.1  <a href ="https://play.google.com/store/apps/details?id=com.github.yeeun_yun97.toy.linksaver" target = "_blank" >플레이스토어</a>
+updated log
+기본 도메인 이름 변경 및 숨김    
+검색에서 태그를 선택하지 않았을 때 결과가 정상적으로 나오지 않는 문제 해결    
+검색 아이콘에 검색 시작 기능 및 검색 취소 기능 추가    
+칩 UI 약간 수정 (체크 아이콘 제거 및 색 테마 적용)    
+검색모드에서도 링크 추가 시 바로 리스트에 표시하도록 수정    
+
+
+
+## ?? 소개
+### Room DB
+![스크린샷 2022-05-10 오후 11 38 32](https://user-images.githubusercontent.com/60867063/167655000-a493e766-a765-44f7-beb4-f72823bbba2b.png)    
+노란색 => 앱의 주요 기능인, Url 저장을 위한 테이블    
+하늘색 => 앱의 편의 기능인 최근 검색어 저장을 위한 테이블
+
+
+### Architecture
+![스크린샷 2022-05-10 오후 11 36 50](https://user-images.githubusercontent.com/60867063/167654673-62be891a-7719-4ea7-a357-83caaa173618.png)    
+MVVM 패턴으로 구현.
+
 
 ## 기능 소개 - 태그 관리
 ### :: 태그 생성하기 ::
