@@ -38,6 +38,11 @@ class ReadLinkViewModel : BasicViewModelWithRepository() {
         return searchWord.value.isNullOrEmpty() && selectedTags.isEmpty()
     }
 
+    fun searchLinkBySearchSetAndSave() {
+        var keyword = searchWord.value ?: ""
+        searchLinkBySearchSet()
+        saveSearch(keyword)
+    }
     fun searchLinkBySearchSet() {
         var keyword = searchWord.value ?: ""
 
@@ -56,7 +61,6 @@ class ReadLinkViewModel : BasicViewModelWithRepository() {
         } else {
             repository.searchLinksBySearchSet(keyword, selectedTags)
         }
-        saveSearch(keyword)
     }
 
     private fun saveSearch(keyword: String) {

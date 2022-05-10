@@ -110,7 +110,7 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
     }
 
     private fun searchAndPopBack() {
-        viewModel.searchLinkBySearchSet()
+        viewModel.searchLinkBySearchSetAndSave()
         popBack()
     }
 
