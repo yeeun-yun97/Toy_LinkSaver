@@ -2,6 +2,7 @@ package com.github.yeeun_yun97.toy.linksaver.ui.fragment
 
 import android.view.inputmethod.EditorInfo
 import android.widget.CompoundButton
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
@@ -14,6 +15,14 @@ import com.github.yeeun_yun97.toy.linksaver.viewmodel.ReadLinkViewModel
 
 class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
     val viewModel: ReadLinkViewModel by activityViewModels()
+
+    private val deleteIcon by lazy {
+        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_baseline_close_24)
+    }
+    private val searchIcon by lazy {
+        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_baseline_search_24)
+    }
+
 
     // override methods
     override fun layoutId(): Int = R.layout.fragment_search
@@ -31,8 +40,13 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
                 val chip = btn as SjTagChip
                 if (isChecked) {
                     viewModel.selectedTags.add(chip.tag)
+                    binding.searchImageView.setImageDrawable(searchIcon)
+
                 } else {
                     viewModel.selectedTags.remove(chip.tag)
+                    if (viewModel.isSearchSetEmpty()) {
+                        binding.searchImageView.setImageDrawable(deleteIcon)
+                    }
                 }
             }
 
@@ -53,6 +67,15 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
             }
             false
         }
+
+        // user input -> set search icon
+        viewModel.searchWord.observe(viewLifecycleOwner,{
+            if (it.isNullOrEmpty() && viewModel.isSearchSetEmpty()) {
+                binding.searchImageView.setImageDrawable(deleteIcon)
+            }else{
+                binding.searchImageView.setImageDrawable(searchIcon)
+            }
+        })
 
         // click search Icon -> search start.
         binding.searchImageView.setOnClickListener {
@@ -92,6 +115,8 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
     }
 
 }
+
+
 
 
 

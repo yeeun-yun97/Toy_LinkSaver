@@ -34,11 +34,15 @@ class ReadLinkViewModel : BasicViewModelWithRepository() {
 
 
     // search methods
+    fun isSearchSetEmpty(): Boolean {
+        return searchWord.value.isNullOrEmpty() && selectedTags.isEmpty()
+    }
+
     fun searchLinkBySearchSet() {
         var keyword = searchWord.value ?: ""
 
         //when search data is null -> return to All list mode
-        if (keyword.isEmpty() && selectedTags.isEmpty()) {
+        if (isSearchSetEmpty()) {
             this.mode = ListMode.MODE_ALL
             return
         }
@@ -48,7 +52,7 @@ class ReadLinkViewModel : BasicViewModelWithRepository() {
         if (selectedTags.isEmpty()) {
             repository.searchLinksBySearchSet(keyword)
 
-        // search with Tags
+            // search with Tags
         } else {
             repository.searchLinksBySearchSet(keyword, selectedTags)
         }
