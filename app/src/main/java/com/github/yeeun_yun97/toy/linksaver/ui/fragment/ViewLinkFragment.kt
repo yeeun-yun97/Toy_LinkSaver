@@ -22,6 +22,11 @@ class ViewLinkFragment : SjBasicFragment<FragmentViewLinkBinding>() {
     // override methods
     override fun layoutId(): Int = R.layout.fragment_view_link
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.searchLinkBySearchSet()
+    }
+
     override fun onCreateView() {
         // set recycler view
         val adapter = RecyclerLinkAdapter(
