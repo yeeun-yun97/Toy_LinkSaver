@@ -10,7 +10,7 @@ log
 - 검색모드에서도 링크 추가 시 바로 리스트에 표시하도록 수정   
 
 ## 기간
-- 2022.04.XX ~
+- 2022.04.03 ~
 
 ## 스택
 <img src="https://img.shields.io/badge/Android-3DDC84?style=flat-square&logo=Android&logoColor=black"/> <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=flat-square&logo=Kotlin&logoColor=black"/> 
