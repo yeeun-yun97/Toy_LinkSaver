@@ -3,11 +3,22 @@
 
 ## 스택
 <img src="https://img.shields.io/badge/Android-3DDC84?style=flat-square&logo=Android&logoColor=black"/> <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=flat-square&logo=Kotlin&logoColor=black"/> 
-### 사용 라이브러리
-**Room**        (데이터 저장)    
-**okhttp3**     (Url 주소 제목 가져오기)    
-**jsoup**       (Url 주소 제목 가져오기)    
-**junit**       (테스트)    
+
+### AAC
+**Room**        (데이터 저장)     
+**LiveData**    (데이터 변경 시 관찰자에게 알림)    
+**ViewModel**   (UI 데이터, 로직)    
+### Jetpack
+**dataBinding** (선언적 UI) + **viewBinding** (뷰의 직접참조)    
+**lifecycle**   (생명주기)
+### 통신
+**okhttp3**     (http 통신)    
+**jsoup**       (파싱)    
+### 비동기
+**coroutine**   (비동기 처리)
+### 테스트
+**junit**       (테스트) 
+
 
 ## 플레이스토어
 ### 버전 v.1.1  <a href ="https://play.google.com/store/apps/details?id=com.github.yeeun_yun97.toy.linksaver" target = "_blank" >플레이스토어</a>
@@ -20,7 +31,7 @@ updated log
 
 
 
-## ?? 소개
+## 내부 설계 소개
 ### Room DB
 ![스크린샷 2022-05-10 오후 11 38 32](https://user-images.githubusercontent.com/60867063/167655000-a493e766-a765-44f7-beb4-f72823bbba2b.png)    
 노란색 => 앱의 주요 기능인, Url 저장을 위한 테이블    
