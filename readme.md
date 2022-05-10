@@ -1,6 +1,7 @@
 # LinkTag
 ## 개요
 - 태그기반으로 URL을 관리하는 Application
+- (시중의 비슷환 앱들은 디렉토리 방식으로 관리 -> 불편함을 태그 방식으로 해결하자.)
 ### 버전 v.1.1  <a href ="https://play.google.com/store/apps/details?id=com.github.yeeun_yun97.toy.linksaver" target = "_blank" >플레이스토어</a>
 log
 - 기본 도메인 이름 변경 및 숨김
