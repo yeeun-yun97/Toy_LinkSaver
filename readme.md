@@ -17,8 +17,10 @@ log
 
 ## 특징
 - Kotlin + MVVM + LiveData + Room
+- DataBinding
 - 링크, 태그, 도메인 추가/삭제/수정
 - 태그 기반으로 링크 검색
+- 자주 재사용 할 만한 부분들을 Android Library로 따로 관리
 
 ## skills
 - Room
