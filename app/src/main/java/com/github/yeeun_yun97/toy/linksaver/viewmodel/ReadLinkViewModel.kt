@@ -46,13 +46,13 @@ class ReadLinkViewModel : BasicViewModelWithRepository() {
         this.mode = ListMode.MODE_SEARCH
         // search without Tags
         if (selectedTags.isEmpty()) {
-            repository.searchLinksBySearchSet(keyword!!)
+            repository.searchLinksBySearchSet(keyword)
 
         // search with Tags
         } else {
-            repository.searchLinksBySearchSet(keyword!!, selectedTags)
+            repository.searchLinksBySearchSet(keyword, selectedTags)
         }
-        saveSearch(keyword!!)
+        saveSearch(keyword)
     }
 
     private fun saveSearch(keyword: String) {
