@@ -41,9 +41,11 @@ class ReadLinkViewModel : BasicViewModelWithRepository() {
     fun searchLinkBySearchSetAndSave() {
         var keyword = searchWord.value ?: ""
         searchLinkBySearchSet()
-        saveSearch(keyword)
+        if(!isSearchSetEmpty())
+            saveSearch(keyword)
     }
-    fun searchLinkBySearchSet() {
+
+    fun searchLinkBySearchSet(){
         var keyword = searchWord.value ?: ""
 
         //when search data is null -> return to All list mode
