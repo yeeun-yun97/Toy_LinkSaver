@@ -40,10 +40,10 @@ class RoomTest {
 
     @Test
     fun insertDomainTest(){
-        //dao.insertDomain(domain)
-
-        //val domainList= dao.getAllDomains()
-        //assertThat(domainList[0], equalTo(domain))
+//        dao.insertDomain(domain)
+//
+//        val domainList= dao.getAllDomains()
+//        assertThat(domainList[0], equalTo(domain))
     }
 
 

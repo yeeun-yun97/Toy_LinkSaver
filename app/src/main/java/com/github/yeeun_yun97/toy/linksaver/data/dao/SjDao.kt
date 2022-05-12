@@ -68,7 +68,7 @@ interface SjDao {
     suspend fun insertLinkTagCrossRef(newCrossRef: LinkTagCrossRef)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertLinkTagCrossRefs(vararg newCrossRef: LinkTagCrossRef)
+    suspend fun insertLinkTagCrossRefs(vararg newCrossRef: LinkTagCrossRef):List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSearchTagCrossRefs(vararg ref: SearchTagCrossRef)
