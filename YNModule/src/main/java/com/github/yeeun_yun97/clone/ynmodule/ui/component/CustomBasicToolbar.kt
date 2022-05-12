@@ -35,9 +35,7 @@ class CustomBasicToolbar(context: Context, attrs: AttributeSet?) : AppBarLayout(
             ViewGroup.LayoutParams.MATCH_PARENT, //width
             ViewGroup.LayoutParams.WRAP_CONTENT  //height
         )
-
-        toolbar.setBackgroundColor(context.resources.getColor(R.color.white, context.theme))
-        toolbar.setTitleTextColor(context.resources.getColor(R.color.charcoal, context.theme))
+        CustomComponentStyleUtil.setMaterialCustomToolbarStyle(toolbar)
         this.addView(toolbar)
     }
 

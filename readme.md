@@ -1,18 +1,47 @@
 # LinkTag
-### 태그기반 URL 관리 앱
+## 개요
+- 태그기반으로 URL을 관리하는 Application
+- (시중의 비슷환 앱들은 디렉토리 방식으로 관리 -> 불편함을 태그 방식으로 해결하자.)
+### 버전 v.1.1  <a href ="https://play.google.com/store/apps/details?id=com.github.yeeun_yun97.toy.linksaver" target = "_blank" >플레이스토어</a>
+log
+- 기본 도메인 이름 변경 및 숨김
+- 검색에서 태그를 선택하지 않았을 때 결과가 정상적으로 나오지 않는 문제 해결
+- 검색 아이콘에 검색 시작 기능 및 검색 취소 기능 추가
+- 칩 UI 약간 수정 (체크 아이콘 제거 및 색 테마 적용)
+- 검색모드에서도 링크 추가 시 바로 리스트에 표시하도록 수정   
+
+## 기간
+- 2022.04.03 ~
 
 ## 스택
 <img src="https://img.shields.io/badge/Android-3DDC84?style=flat-square&logo=Android&logoColor=black"/> <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=flat-square&logo=Kotlin&logoColor=black"/> 
-### 사용 라이브러리
-**Room**        (데이터 저장)    
-**okhttp3**     (Url 주소 제목 가져오기)    
-**jsoup**       (Url 주소 제목 가져오기)    
-**junit**       (테스트)    
 
-## 플레이스토어
-### 버전 v 1.0
-_<2022.05.05 현재 플레이 스토어 검토중..>_
+## 특징
+- Kotlin + MVVM + LiveData + Room
+- DataBinding
+- 링크, 태그, 도메인 추가/삭제/수정
+- 태그 기반으로 링크 검색
+- 자주 재사용 할 만한 부분들을 Android Library로 따로 관리
 
+## skills
+- Room
+- LiveData
+- ViewModel
+- dataBinding
+- viewBinding
+- lifecycle
+- okhttp3 
+- jsoup
+- coroutine
+- junit
+
+## 내부 설계 소개
+### Room DB
+![스크린샷 2022-05-10 오후 11 38 32](https://user-images.githubusercontent.com/60867063/167655000-a493e766-a765-44f7-beb4-f72823bbba2b.png)    
+### Architecture
+![스크린샷 2022-05-10 오후 11 36 50](https://user-images.githubusercontent.com/60867063/167654673-62be891a-7719-4ea7-a357-83caaa173618.png)    
+
+<!--
 ## 기능 소개 - 태그 관리
 ### :: 태그 생성하기 ::
 ![tag_create](https://user-images.githubusercontent.com/60867063/166867419-d60935ff-d039-4a20-9057-40e08ceac970.gif) 
@@ -44,3 +73,4 @@ _<2022.05.05 현재 플레이 스토어 검토중..>_
 ![search_name](https://user-images.githubusercontent.com/60867063/166876082-7c5d1593-ab55-49f3-8336-2266cc635b0a.gif)
 ### :: 링크 검색하기(태그선택) ::
 ![search_tag](https://user-images.githubusercontent.com/60867063/166876225-c72476fd-ebe5-4ec7-af53-d8b1a7e26be3.gif)
+-->

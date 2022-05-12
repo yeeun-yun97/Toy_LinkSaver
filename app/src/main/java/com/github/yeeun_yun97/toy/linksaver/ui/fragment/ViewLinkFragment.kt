@@ -83,7 +83,7 @@ class ViewLinkFragment : SjBasicFragment<FragmentViewLinkBinding>() {
     // handle user event methods
     private fun deleteLink(link: SjLink, tags: List<SjTag>) {
         viewModel.deleteLink(link, tags)
-        if(viewModel.mode==ListMode.MODE_SEARCH){
+        if (viewModel.mode == ListMode.MODE_SEARCH) {
             viewModel.searchLinkBySearchSetAndSave()
         }
     }
@@ -92,9 +92,14 @@ class ViewLinkFragment : SjBasicFragment<FragmentViewLinkBinding>() {
         moveToOtherFragment(SearchFragment())
     }
 
+    private fun isStringTypeUrl(url: String): Boolean {
+        return url.startsWith("http://") || url.startsWith("https://")
+    }
     private fun startWebBrowser(url: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        startActivity(intent)
+        if (isStringTypeUrl(url)) {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(intent)
+        }
     }
 
     private fun startEditActivity() {
