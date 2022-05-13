@@ -21,6 +21,10 @@ interface SjDao {
     fun getAllSearch(): LiveData<List<SjSearchWithTags>>
 
     @Transaction
+    @Query("SELECT * FROM SjSearch ORDER BY sid DESC")
+    fun getAllSearchForTest(): List<SjSearchWithTags>
+
+    @Transaction
     @Query("SELECT * FROM SjLink ORDER BY lid DESC")
     fun getAllLinksAndDomainsWithTags()
             : LiveData<List<SjLinksAndDomainsWithTags>>
@@ -68,10 +72,10 @@ interface SjDao {
     suspend fun insertLinkTagCrossRef(newCrossRef: LinkTagCrossRef)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertLinkTagCrossRefs(vararg newCrossRef: LinkTagCrossRef):List<Long>
+    suspend fun insertLinkTagCrossRefs(vararg newCrossRef: LinkTagCrossRef): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSearchTagCrossRefs(vararg ref: SearchTagCrossRef)
+    suspend fun insertSearchTagCrossRefs(vararg ref: SearchTagCrossRef): List<Long>
 
 
     // update queries

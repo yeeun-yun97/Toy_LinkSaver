@@ -20,8 +20,10 @@
  */
 package com.github.yeeun_yun97.clone.ynmodule
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import kotlinx.coroutines.Deferred
 
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -34,10 +36,11 @@ import java.util.concurrent.TimeoutException
  * `InstantTaskExecutorRule` or a similar mechanism to execute tasks synchronously.
  */
 fun <T> LiveData<T>.getOrAwaitValue(
-    time: Long = 2,
+    time: Long = 5,
     timeUnit: TimeUnit = TimeUnit.SECONDS,
     afterObserve: () -> Unit = {}
-): T {
+): Deferred<T> {
+
     var data: T? = null
     val latch = CountDownLatch(1)
     val observer = object : Observer<T> {
@@ -48,6 +51,7 @@ fun <T> LiveData<T>.getOrAwaitValue(
         }
     }
     this.observeForever(observer)
+    Log.d("Test get list of results", "observe")
 
     afterObserve.invoke()
 
@@ -58,5 +62,21 @@ fun <T> LiveData<T>.getOrAwaitValue(
     }
 
     @Suppress("UNCHECKED_CAST")
-    return data as T
+    return data as Deferred<T>
+}
+
+fun <T> LiveData<T>.blockingObserve(time: Long = 5): Deferred<T>? {
+    var value: T? = null
+    val latch = CountDownLatch(1)
+
+    val observer = Observer<T> { t ->
+        value = t
+        latch.countDown()
+    }
+
+    observeForever(observer)
+    Log.d("Test get list of results", "observe")
+
+    latch.await(time, TimeUnit.SECONDS)
+    return value as Deferred<T>?
 }

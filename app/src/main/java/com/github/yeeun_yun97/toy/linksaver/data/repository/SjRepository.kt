@@ -2,6 +2,7 @@ package com.github.yeeun_yun97.toy.linksaver.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.github.yeeun_yun97.clone.ynmodule.getOrAwaitValue
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDao
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabase
 import com.github.yeeun_yun97.toy.linksaver.data.model.*
