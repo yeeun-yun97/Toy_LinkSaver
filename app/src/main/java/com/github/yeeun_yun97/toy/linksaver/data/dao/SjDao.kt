@@ -32,6 +32,18 @@ interface SjDao {
     @Query("SELECT COUNT(*) FROM SjDomain")
     suspend fun getDomainCount(): Int
 
+    @Query("SELECT COUNT(*) FROM SjLink")
+    suspend fun getLinkCount(): Int
+
+    @Query("SELECT COUNT(*) FROM SjTag")
+    suspend fun getTagCount(): Int
+
+    @Query("SELECT COUNT(*) FROM LinkTagCrossRef")
+    suspend fun getLinkTagCrossRefCount(): Int
+
+    @Query("SELECT COUNT(*) FROM SearchTagCrossRef")
+    suspend fun getSearchTagCrossRefCount(): Int
+
 
     // search link query by link name and tags
     @Transaction
@@ -104,6 +116,9 @@ interface SjDao {
 
     @Delete
     suspend fun deleteLinkTagCrossRefs(vararg ref: LinkTagCrossRef)
+
+    @Delete
+    suspend fun deleteSearchTagCrossRefs(vararg ref: SearchTagCrossRef)
 
     @Query("Delete FROM SearchTagCrossRef")
     suspend fun deleteAllSearchTagCrossRefs()
