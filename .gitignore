@@ -1,6 +1,7 @@
 .idea/
-app/
 */.DS_Store
+app/release/
+*.aab
 
 *.iml
 .gradle
