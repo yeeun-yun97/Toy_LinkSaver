@@ -1,9 +1,13 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment
 
+import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
+import android.content.ClipboardManager
+import android.content.Context.*
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.CompoundButton
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.activityViewModels
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
@@ -13,6 +17,7 @@ import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.LinkViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.NameMode
+
 
 class EditLinkFragment : SjBasicFragment<FragmentEditLinkBinding>() {
     private val viewModel: LinkViewModel by activityViewModels()
@@ -90,6 +95,7 @@ class EditLinkFragment : SjBasicFragment<FragmentEditLinkBinding>() {
         binding.saveButton.setOnClickListener { saveLink() }
         binding.addDomainTextView.setOnClickListener { moveToEditDomainFragment() }
         binding.addTagTextView.setOnClickListener { moveToEditTagFragment() }
+        binding.pasteButton.setOnClickListener { pasteLinkFromClipBoard() }
     }
 
 
@@ -125,6 +131,25 @@ class EditLinkFragment : SjBasicFragment<FragmentEditLinkBinding>() {
     private fun saveLink() {
         viewModel.saveLink()
         this.requireActivity().finish()
+    }
+
+    private fun pasteLinkFromClipBoard() {
+        var clipboard :ClipboardManager= getSystemService(requireContext(), ClipboardManager::class.java)!!
+        var pasteData: String = ""
+
+        // If the clipboard doesn't contain data, disable the paste menu item.
+        // If it does contain data, decide if you can handle the data.
+        if (clipboard.hasPrimaryClip()
+            && clipboard.primaryClipDescription!!.hasMimeType(
+                MIMETYPE_TEXT_PLAIN
+            )
+        ) {
+            //since the clipboard contains plain text.
+            val item = clipboard.primaryClip!!.getItemAt(0)
+            // Gets the clipboard as text.
+            pasteData = item.text.toString()
+        }
+        viewModel.linkUrl.postValue(pasteData)
     }
 
 }
