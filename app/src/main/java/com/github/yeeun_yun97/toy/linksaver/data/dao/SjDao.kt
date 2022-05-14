@@ -100,6 +100,9 @@ interface SjDao {
     @Update
     suspend fun updateDomain(domain: SjDomain)
 
+    @Update
+    suspend fun updateLinks(vararg links: SjLink)
+
 
     // delete queries
     @Delete
@@ -150,6 +153,5 @@ interface SjDao {
 
     @Query("SELECT * FROM SjDomain WHERE did = :did")
     suspend fun getDomainByDid(did: Int): SjDomain
-
 
 }

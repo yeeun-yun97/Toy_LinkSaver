@@ -134,9 +134,16 @@ class SjRepository private constructor() {
     fun deleteDomain(domain: SjDomain) {
         CoroutineScope(Dispatchers.IO).launch {
             //delete all related links
+            val url = domain.url
+            val updateLinks= mutableListOf<SjLink>()
             val job = launch {
                 val links = dao.getLinkAndDomainWithTagsByDid(domain.did)
-                deleteLinks(links)
+                for(link in links){
+                    link.link.url = StringBuilder(url).append(link.link.url).toString()
+                    link.link.did = 1
+                    updateLinks.add(link.link)
+                }
+                dao.updateLinks(*updateLinks.toTypedArray())
             }
             job.join()
             //wait and delete
