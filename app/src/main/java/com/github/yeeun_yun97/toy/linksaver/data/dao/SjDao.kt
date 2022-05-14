@@ -45,6 +45,28 @@ interface SjDao {
     suspend fun getSearchTagCrossRefCount(): Int
 
 
+    //search search query by search word and tags
+    @Query(
+        "SELECT search.sid FROM SjSearch as search "
+                + "INNER JOIN SearchTagCrossRef as ref ON search.sid = ref.sid "
+                + "INNER JOIN SjTag as tag ON ref.tid = tag.tid "
+                + "WHERE search.keyword = :searchWord "
+                + "AND tag.tid IN(:tags) "
+                + "GROUP BY search.sid" //prevent duplicates
+    )
+    suspend fun getSearchWithTagsBySearchWordAndTags(
+        searchWord: String,
+        tags: List<Int>
+    ): List<Int>
+
+    // search search query by search word
+    @Query("SELECT sid FROM SjSearch WHERE keyword LIKE :searchWord")
+    suspend fun getSearchWithTagsBySearchWord(
+        searchWord: String,
+    ): List<Int>
+
+
+
     // search link query by link name and tags
     @Transaction
     @Query(
@@ -138,6 +160,12 @@ interface SjDao {
     @Query("DELETE FROM LinkTagCrossRef WHERE tid= :tid")
     suspend fun deleteLinkTagCrossRefsByTid(tid: Int)
 
+    @Query("DELETE FROM SearchTagCrossRef WHERE sid IN (:sids)")
+    suspend fun deleteSearchTagCrossRefsBySid(sids: List<Int>)
+
+    @Query("DELETE FROM SjSearch WHERE sid IN(:sids)")
+    suspend fun deleteSearches(sids: List<Int>)
+
 
     // query by key
     @Transaction
@@ -153,5 +181,6 @@ interface SjDao {
 
     @Query("SELECT * FROM SjDomain WHERE did = :did")
     suspend fun getDomainByDid(did: Int): SjDomain
+
 
 }
