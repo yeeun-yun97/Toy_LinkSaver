@@ -2,13 +2,12 @@
 ## 개요
 - 태그기반으로 URL을 관리하는 Application
 - (시중의 비슷환 앱들은 디렉토리 방식으로 관리 -> 불편함을 태그 방식으로 해결하자.)
-### 버전 v.1.1  <a href ="https://play.google.com/store/apps/details?id=com.github.yeeun_yun97.toy.linksaver" target = "_blank" >플레이스토어</a>
+### 버전 v.1.3  <a href ="https://play.google.com/store/apps/details?id=com.github.yeeun_yun97.toy.linksaver" target = "_blank" >플레이스토어</a>
 log
-- 기본 도메인 이름 변경 및 숨김
-- 검색에서 태그를 선택하지 않았을 때 결과가 정상적으로 나오지 않는 문제 해결
-- 검색 아이콘에 검색 시작 기능 및 검색 취소 기능 추가
-- 칩 UI 약간 수정 (체크 아이콘 제거 및 색 테마 적용)
-- 검색모드에서도 링크 추가 시 바로 리스트에 표시하도록 수정   
+- 버튼을 눌러서 Url을 붙여 넣을 수 있게 하여 사용성을 개선하였습니다.    
+- 링크 생성 UI에서 이름 입력 칸을 상단으로 올려서 가려지지 않게 개선하였습니다.    
+- 도메인을 삭제할 때, 연결되어 있던 링크들이 일괄 삭제되지 않게 개선하였습니다.    
+- 최근 검색 기록이 중복 저장되는 현상을 해결하였습니다.    
 
 ## 기간
 - 2022.04.03 ~
@@ -22,6 +21,7 @@ log
 - 링크, 태그, 도메인 추가/삭제/수정
 - 태그 기반으로 링크 검색
 - 자주 재사용 할 만한 부분들을 Android Library로 따로 관리
+- Jira 이슈 관리
 
 ## skills
 - Room
