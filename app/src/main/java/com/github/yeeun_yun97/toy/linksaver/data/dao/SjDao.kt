@@ -60,11 +60,18 @@ interface SjDao {
     ): List<Int>
 
     // search search query by search word
-    @Query("SELECT sid FROM SjSearch WHERE keyword LIKE :searchWord")
+    @Query(
+        "SELECT search.sid FROM SjSearch as search "
+                + "WHERE search.keyword = :searchWord "
+                + "AND search.sid NOT IN("
+                + "SELECT ref.sid "
+                + "FROM SearchTagCrossRef as ref "
+                + "GROUP BY ref.sid"
+                + ")"
+    )
     suspend fun getSearchWithTagsBySearchWord(
         searchWord: String,
     ): List<Int>
-
 
 
     // search link query by link name and tags
