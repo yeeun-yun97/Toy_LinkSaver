@@ -8,19 +8,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
-import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentViewLinkBinding
+import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerLinkAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.ListMode
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.ReadLinkViewModel
 
-class ViewLinkFragment : SjBasicFragment<FragmentViewLinkBinding>() {
+class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
     val viewModel: ReadLinkViewModel by activityViewModels()
 
 
     // override methods
-    override fun layoutId(): Int = R.layout.fragment_view_link
+    override fun layoutId(): Int = R.layout.fragment_list_link
 
     override fun onResume() {
         super.onResume()
