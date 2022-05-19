@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/linkIconImageView"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginStart="15dp"
             app:layout_constraintBottom_toBottomOf="@+id/nameTextView"
             app:layout_constraintStart_toStartOf="parent"

@@ -1,12 +1,13 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment
 
 import android.content.Intent
-import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.github.yeeun_yun97.clone.ynmodule.ui.component.DataState
+import com.github.yeeun_yun97.clone.ynmodule.ui.component.ViewVisibilityUtil
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinksAndDomainsWithTags
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
@@ -22,15 +23,14 @@ import kotlinx.coroutines.launch
 class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
     val viewModel: ReadLinkViewModel by activityViewModels()
 
+    lateinit var viewUtil: ViewVisibilityUtil
 
     // override methods
     override fun layoutId(): Int = R.layout.fragment_list_link
 
     override fun onResume() {
         super.onResume()
-        binding.shimmerRecylerView.visibility=View.VISIBLE
-        binding.include.emptyView.visibility = View.GONE
-        binding.recyclerView.visibility=View.GONE
+        viewUtil.state = DataState.LOADING
         binding.shimmer.startShimmer()
         viewModel.searchLinkBySearchSet()
     }
@@ -43,24 +43,18 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
 
+        viewUtil = ViewVisibilityUtil(
+            loadingView = binding.shimmerRecylerView,
+            loadedView = binding.recyclerView,
+            emptyView = binding.include.emptyView
+        )
 
         // set list when Mode ALL
         viewModel.linkList.observe(viewLifecycleOwner,
             {
-                CoroutineScope(Dispatchers.Main).launch{
-                    delay(1500)
-                    binding.shimmerRecylerView.visibility=View.GONE
-
-                    if (it.isEmpty()) {
-                        binding.include.emptyView.visibility = View.VISIBLE
-                        binding.recyclerView.visibility = View.GONE
-                    } else {
-                        binding.include.emptyView.visibility = View.GONE
-                        binding.recyclerView.visibility = View.VISIBLE
-                    }
-                }
                 if (viewModel.mode == ListMode.MODE_ALL) {
                     adapter.setList(it)
+                    delayAndViewVisibleControl(it)
                 }
             }
         )
@@ -70,14 +64,7 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
             {
                 if (viewModel.mode == ListMode.MODE_SEARCH) {
                     adapter.setList(it)
-                    if (it.isEmpty()) {
-                        binding.include.emptyView.visibility = View.VISIBLE
-                        binding.recyclerView.visibility = View.GONE
-                    } else {
-                        binding.include.emptyView.visibility = View.GONE
-                        binding.recyclerView.visibility = View.VISIBLE
-                    }
-
+                    delayAndViewVisibleControl(it)
                 }
             }
         )
@@ -90,6 +77,16 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
         }
     }
 
+    private fun delayAndViewVisibleControl(datas: List<SjLinksAndDomainsWithTags>) {
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(1500)
+            if (datas.isEmpty()) {
+                viewUtil.state = DataState.EMPTY
+            } else {
+                viewUtil.state = DataState.LOADED
+            }
+        }
+    }
 
     // handle user event methods
     private fun deleteLink(link: SjLink, tags: List<SjTag>) {
@@ -103,7 +100,7 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
         moveToOtherFragment(SearchFragment())
     }
 
-    private fun moveToDetailFragment(lid:Int) {
+    private fun moveToDetailFragment(lid: Int) {
         moveToOtherFragment(DetailLinkFragment.newInstance(lid))
     }
 

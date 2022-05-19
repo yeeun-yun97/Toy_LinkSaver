@@ -117,6 +117,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     />
+                <include
+                    layout="@layout/shimmer_link_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
             </LinearLayout>
         </com.facebook.shimmer.ShimmerFrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
