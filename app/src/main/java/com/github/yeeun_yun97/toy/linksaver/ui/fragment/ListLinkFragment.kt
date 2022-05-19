@@ -1,20 +1,23 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment
 
 import android.content.Intent
-import android.net.Uri
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
-import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerLinkAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerSearchLinkAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.ListMode
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.ReadLinkViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
     val viewModel: ReadLinkViewModel by activityViewModels()
@@ -25,6 +28,10 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
 
     override fun onResume() {
         super.onResume()
+        binding.shimmerRecylerView.visibility=View.VISIBLE
+        binding.include.emptyView.visibility = View.GONE
+        binding.recyclerView.visibility=View.GONE
+        binding.shimmer.startShimmer()
         viewModel.searchLinkBySearchSet()
     }
 
@@ -40,8 +47,10 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
         // set list when Mode ALL
         viewModel.linkList.observe(viewLifecycleOwner,
             {
-                if (viewModel.mode == ListMode.MODE_ALL) {
-                    adapter.setList(it)
+                CoroutineScope(Dispatchers.Main).launch{
+                    delay(1500)
+                    binding.shimmerRecylerView.visibility=View.GONE
+
                     if (it.isEmpty()) {
                         binding.include.emptyView.visibility = View.VISIBLE
                         binding.recyclerView.visibility = View.GONE
@@ -49,6 +58,9 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
                         binding.include.emptyView.visibility = View.GONE
                         binding.recyclerView.visibility = View.VISIBLE
                     }
+                }
+                if (viewModel.mode == ListMode.MODE_ALL) {
+                    adapter.setList(it)
                 }
             }
         )

@@ -73,6 +73,9 @@ android {
 
 dependencies {
 
+    //skeleton loading view
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
     implementation 'androidx.palette:palette-ktx:1.0.0'
 
     implementation 'com.github.bumptech.glide:glide:4.13.0'

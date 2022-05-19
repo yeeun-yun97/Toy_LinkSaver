@@ -60,7 +60,64 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchEditText"
-            tools:itemCount="6"
-            tools:listitem="@layout/item_links" />
+            tools:itemCount="10"
+            tools:listitem="@layout/item_link_search" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchEditText"
+            >
+            <LinearLayout
+                android:id="@+id/shimmerRecylerView"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+                <include
+                    layout="@layout/shimmer_link_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+                <include
+                    layout="@layout/shimmer_link_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+                <include
+                    layout="@layout/shimmer_link_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+                <include
+                    layout="@layout/shimmer_link_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+                <include
+                    layout="@layout/shimmer_link_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+                <include
+                    layout="@layout/shimmer_link_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+                <include
+                    layout="@layout/shimmer_link_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+                <include
+                    layout="@layout/shimmer_link_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
