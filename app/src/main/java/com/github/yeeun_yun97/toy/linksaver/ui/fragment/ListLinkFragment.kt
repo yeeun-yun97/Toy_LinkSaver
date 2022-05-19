@@ -11,6 +11,7 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerLinkAdapter
+import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerSearchLinkAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.ListMode
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.ReadLinkViewModel
@@ -29,10 +30,8 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
 
     override fun onCreateView() {
         // set recycler view
-        val adapter = RecyclerLinkAdapter(
-            openOperation = ::startWebBrowser,
-            updateOperation = ::startEditActivityToUpdate,
-            deleteOperation = ::deleteLink
+        val adapter = RecyclerSearchLinkAdapter(
+            detailOperation = ::moveToDetailFragment
         )
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
@@ -92,25 +91,15 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
         moveToOtherFragment(SearchFragment())
     }
 
-    private fun isStringTypeUrl(url: String): Boolean {
-        return url.startsWith("http://") || url.startsWith("https://")
+    private fun moveToDetailFragment(lid:Int) {
+        moveToOtherFragment(DetailLinkFragment.newInstance(lid))
     }
-    private fun startWebBrowser(url: String) {
-        if (isStringTypeUrl(url)) {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            startActivity(intent)
-        }
-    }
+
 
     private fun startEditActivity() {
         val intent = Intent(requireContext(), EditLinkActivity::class.java)
         startActivity(intent)
     }
 
-    private fun startEditActivityToUpdate(lid: Int) {
-        val intent = Intent(requireContext(), EditLinkActivity::class.java)
-        intent.putExtra("lid", lid)
-        startActivity(intent)
-    }
 
 }
