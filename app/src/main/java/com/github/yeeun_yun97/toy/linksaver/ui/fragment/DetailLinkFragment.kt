@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
@@ -44,6 +45,11 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
 
     override fun onCreateView() {
         binding.viewModel = viewModel
+
+        binding.toolbar.setMenu(
+            R.menu.menu_link_datail,
+            hashMapOf(R.id.playItem to ::moveToPlayFragment)
+        )
 
         lid = requireArguments().getInt("lid")
         viewModel.tags.observe(viewLifecycleOwner, { tagList ->
@@ -100,6 +106,11 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
     }
 
     // handle user event methods
+    private fun moveToPlayFragment() {
+        moveToOtherFragment(PlayVideoFragment())
+        Toast.makeText(context, "pressed", Toast.LENGTH_LONG).show()
+    }
+
     private fun deleteLink(link: SjLink, tags: List<SjTag>) {
         viewModel.deleteLink(link, tags)
         popBack()
