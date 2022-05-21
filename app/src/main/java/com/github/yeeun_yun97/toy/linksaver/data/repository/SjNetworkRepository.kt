@@ -62,6 +62,8 @@ class SjNetworkRepository private constructor() {
             }
         } catch (e: java.lang.Exception) {
             Log.e("error", e.localizedMessage)
+            Log.d("image load failed", "empty")
+            return ""
         }
         return ""
     }
