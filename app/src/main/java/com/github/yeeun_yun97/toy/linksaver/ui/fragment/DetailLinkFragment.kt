@@ -9,6 +9,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.palette.graphics.Palette
+import androidx.work.ExistingWorkPolicy
+import androidx.work.WorkManager
 import com.bumptech.glide.Glide
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
@@ -16,6 +18,7 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentDetailLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
+import com.github.yeeun_yun97.toy.linksaver.ui.component.VideoPreloadWorker
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.DetailLinkViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -101,13 +104,23 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
                     Glide.with(this).load(it).centerCrop().into(binding.previewImageView)
                 }
             })
+        schedulePreloadWork("https://www.youtube.com/watch?v=H0M1yU6uO30")
+    }
 
-
+    private fun schedulePreloadWork(videoUrl: String) {
+        val workManager = WorkManager.getInstance(requireActivity().applicationContext)
+        val videoPreloadWorker = VideoPreloadWorker.buildWorkRequest(videoUrl)
+        workManager.enqueueUniqueWork(
+            "VideoPreloadWorker",
+            ExistingWorkPolicy.KEEP,
+            videoPreloadWorker
+        )
     }
 
     // handle user event methods
     private fun moveToPlayFragment() {
-        moveToOtherFragment(PlayVideoFragment())
+        val url = "https://www.youtube.com/watch?v=H0M1yU6uO30"
+        moveToOtherFragment(PlayVideoFragment.newInstance(url))
         Toast.makeText(context, "pressed", Toast.LENGTH_LONG).show()
     }
 

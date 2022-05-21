@@ -8,44 +8,102 @@ import com.google.android.exoplayer2.MediaItem
 import android.util.SparseArray
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.os.Bundle
+import android.util.Log
 import at.huber.youtubeExtractor.VideoMeta
 import at.huber.youtubeExtractor.YouTubeExtractor
 import at.huber.youtubeExtractor.YtFile
+import com.github.yeeun_yun97.toy.linksaver.application.LinkSaverApplication
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.upstream.DefaultDataSource
+import com.google.android.exoplayer2.upstream.*
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource
+import com.google.android.exoplayer2.upstream.cache.SimpleCache
+import java.util.*
 
 class PlayVideoFragment : SjBasicFragment<FragmentPlayVideoBinding>() {
 
     private var _player: ExoPlayer? = null
     private val player: ExoPlayer get() = _player!!
 
+    private lateinit var mHttpDataSourceFactory: HttpDataSource.Factory
+    private lateinit var mDefaultDataSourceFactory: DefaultDataSourceFactory
+    private lateinit var mCacheDataSourceFactory: DataSource.Factory
+    private lateinit var exoPlayer: SimpleExoPlayer
+    private lateinit var mediaSource: ProgressiveMediaSource
+    private val cache: SimpleCache = LinkSaverApplication.cache
+
+    companion object {
+        fun newInstance(url: String): PlayVideoFragment {
+            val fragment = PlayVideoFragment()
+            fragment.arguments = Bundle().apply { putString("VIDEO_URL", url) }
+            return fragment
+        }
+    }
+
+
     override fun layoutId(): Int = R.layout.fragment_play_video
 
     override fun onCreateView() {
-        _player = ExoPlayer.Builder(requireContext()).build()
-        binding.playerView.player = player
+//        _player = ExoPlayer.Builder(requireContext()).build()
+//        binding.playerView.player = player
+
+        val applicationContext = requireActivity().applicationContext
+        val videoUrl = requireArguments().getString("VIDEO_URL")
+
+        mHttpDataSourceFactory = DefaultHttpDataSource.Factory()
+            .setAllowCrossProtocolRedirects(true)
+
+        this.mDefaultDataSourceFactory = DefaultDataSourceFactory(
+            applicationContext, mHttpDataSourceFactory
+        )
+
+        mCacheDataSourceFactory = CacheDataSource.Factory()
+            .setCache(cache)
+            .setUpstreamDataSourceFactory(mHttpDataSourceFactory)
+            .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
+
+
+        exoPlayer = SimpleExoPlayer.Builder(applicationContext)
+            .setMediaSourceFactory(DefaultMediaSourceFactory(mCacheDataSourceFactory)).build()
+
+        val videoUri = Uri.parse(videoUrl)
+        val mediaItem = MediaItem.fromUri(videoUri)
+        mediaSource =
+            ProgressiveMediaSource.Factory(mCacheDataSourceFactory).createMediaSource(mediaItem)
+
+
     }
 
     override fun onStop() {
         super.onStop()
-        binding.playerView.player = null
-        player.release()
-        _player = null
+//        binding.playerView.player = null
+//        player.release()
+//        _player = null
     }
 
     override fun onResume() {
         super.onResume()
-        val sampleLink = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
-        val youtubeLink = "https://www.youtube.com/watch?v=H0M1yU6uO30"
-
-        playExample(sampleLink)
+        binding.playerView.player = exoPlayer
+        exoPlayer.playWhenReady = true
+        exoPlayer.seekTo(0, 0)
+        exoPlayer.setMediaSource(mediaSource, true)
+        exoPlayer.prepare()
+//        val sampleLink =
+//            "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+//        val youtubeLink = "https://www.youtube.com/watch?v=H0M1yU6uO30"
+//        extractYoutubeUrl(youtubeLink)
+//        playExample(sampleLink)
     }
 
-    private fun playExample(url:String) {
+
+    private fun playExample(url: String) {
         val dataSourceFactory = DefaultDataSource.Factory(requireContext())
         val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(
             MediaItem.fromUri(Uri.parse(url))
         )
+
 
         player.setMediaSource(mediaSource)
         player.prepare()
@@ -62,12 +120,22 @@ class PlayVideoFragment : SjBasicFragment<FragmentPlayVideoBinding>() {
     @SuppressLint("StaticFieldLeak")
     private fun extractYoutubeUrl(url: String) {
         object : YouTubeExtractor(requireContext()) {
-            override fun onExtractionComplete(ytFiles: SparseArray<YtFile>?, vMeta: VideoMeta?) {
-                if (ytFiles != null) {
-                    val itag = 22
-                    val downloadUrl = ytFiles[itag]?.url
-                    if (downloadUrl != null) {
-                        playVideo(downloadUrl)
+            override fun onExtractionComplete(
+                sparseArray: SparseArray<YtFile>?,
+                vMeta: VideoMeta?
+            ) {
+                if (sparseArray != null) {
+                    //136 no audio 247,
+                    val iTags = listOf(22, 18);
+                    for (itag in iTags) {
+                        val downloadUrl = sparseArray[itag]?.url
+                        if (downloadUrl != null) {
+                            Log.d("tl", "loaded $itag")
+                            playExample(downloadUrl)
+                            break
+                        } else {
+                            Log.d("tl", "canotload")
+                        }
                     }
                 }
             }
