@@ -63,10 +63,10 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
         binding.viewModel = viewModel
 
         // set toolbar Menu
-        binding.toolbar.setMenu(
-            R.menu.menu_link_datail,
-            hashMapOf(R.id.playItem to ::moveToPlayFragment)
-        )
+//        binding.toolbar.setMenu(
+//            R.menu.menu_link_datail,
+//            hashMapOf(R.id.playItem to ::moveToPlayFragment)
+//        )
 
         // show tags or show empty view
         viewModel.tags.observe(viewLifecycleOwner, { tagList ->
@@ -118,7 +118,7 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
                     )
                 }
             })
-        schedulePreloadWork("https://www.youtube.com/watch?v=H0M1yU6uO30")
+//        schedulePreloadWork("https://www.youtube.com/watch?v=H0M1yU6uO30")
     }
 
     private fun schedulePreloadWork(videoUrl: String) {
