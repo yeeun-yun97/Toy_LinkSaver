@@ -1,24 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="important2" parent="TextAppearance.AppCompat">
         <item name="android:textSize">16sp</item>
         <item name="android:paddingVertical">10dp</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="important3" parent="TextAppearance.AppCompat">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="important6">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/gray</item>
     </style>
-<style name="imageButton">
-    <item name="android:scaleType">fitStart</item>
-    <item name="android:padding">10dp</item>
-</style>
+
+    <style name="imageButton">
+        <item name="android:scaleType">fitStart</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+
+    <style name="small3">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
     <style name="header1">
         <item name="android:paddingVertical">20dp</item>
