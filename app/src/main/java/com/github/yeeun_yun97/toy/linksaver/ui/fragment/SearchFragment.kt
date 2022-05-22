@@ -1,14 +1,19 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment
 
+import android.graphics.Rect
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.CompoundButton
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSearchBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerSearchAdapter
+import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerSearchGalleryAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.ReadLinkViewModel
@@ -69,10 +74,10 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
         }
 
         // user input -> set search icon
-        viewModel.searchWord.observe(viewLifecycleOwner,{
+        viewModel.searchWord.observe(viewLifecycleOwner, {
             if (it.isNullOrEmpty() && viewModel.isSearchSetEmpty()) {
                 binding.searchImageView.setImageDrawable(deleteIcon)
-            }else{
+            } else {
                 binding.searchImageView.setImageDrawable(searchIcon)
             }
         })
@@ -83,8 +88,27 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
         }
 
         // set recyclerview search set
-        binding.recentSearchedRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = RecyclerSearchAdapter(::setSearch)
+//        binding.recentSearchedRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recentSearchedRecyclerView.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+//        val adapter = RecyclerSearchAdapter(::setSearch)
+        val adapter = RecyclerSearchGalleryAdapter(::setSearch)
+        binding.recentSearchedRecyclerView.addItemDecoration(
+            object : RecyclerView.ItemDecoration() {
+                override fun getItemOffsets(
+                    outRect: Rect,
+                    view: View,
+                    parent: RecyclerView,
+                    state: RecyclerView.State
+                ) {
+                    outRect.left = 15
+                    outRect.right = 15
+                    outRect.bottom = 20
+                    outRect.top = 20
+                }
+            }
+        )
         binding.recentSearchedRecyclerView.adapter = adapter
         viewModel.searchList.observe(viewLifecycleOwner,
             {

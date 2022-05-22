@@ -20,6 +20,11 @@ class SjTagChip(context: Context, val tag: SjTag) : Chip(context, null) {
         id = tag.tid
     }
 
+    fun setViewMode() {
+        isChecked = true
+        isCheckable = false
+    }
+
     fun setEditMode(
         deleteOperation: (SjTag) -> Unit,
         editOperation: (SjTag) -> Unit

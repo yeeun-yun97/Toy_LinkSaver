@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.DetailLinkViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.github.yeeun_yun97.clone.ynmodule.ui.component.CustomBasicToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:toolbarTitle="상세보기" />
+
+        <ImageView
+            android:id="@+id/previewImageView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:srcCompat="@drawable/ic_baseline_web_24" />
+
+        <ImageView
+            android:id="@+id/editImageView"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_margin="15dp"
+            android:layout_marginBottom="205dp"
+            app:layout_constraintBottom_toBottomOf="@+id/previewImageView"
+            app:layout_constraintEnd_toStartOf="@+id/deleteImageView"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@+id/previewImageView"
+            app:srcCompat="@drawable/ic_icons8_edit__1_" />
+
+        <ImageView
+            android:id="@+id/deleteImageView"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintBottom_toBottomOf="@+id/editImageView"
+            app:layout_constraintEnd_toEndOf="@+id/previewImageView"
+            app:layout_constraintStart_toEndOf="@id/editImageView"
+            app:layout_constraintTop_toTopOf="@+id/editImageView"
+            app:srcCompat="@drawable/ic_icons8_delete__4_" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/previewImageView"
+            app:layout_constraintVertical_bias="0.0">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/tagEmptyGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="emptyImageView,emptyTextView" />
+
+                <TextView
+                    android:id="@+id/nameTextView"
+                    style="@style/important2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:text="@{viewModel.link.link.name, default= 링크이름}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="0dp"
+                    android:layout_height="0.5dp"
+                    android:background="@color/light_gray"
+                    app:layout_constraintEnd_toEndOf="@id/fullUrlTextView"
+                    app:layout_constraintStart_toStartOf="@+id/fullUrlTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/fullUrlTextView" />
+
+                <TextView
+                    android:id="@+id/fullUrlTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:text="@{viewModel.link.domain.url+viewModel.link.link.url, default= 링크주소}"
+                    app:layout_constraintEnd_toEndOf="@+id/nameTextView"
+                    app:layout_constraintStart_toStartOf="@+id/nameTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/tagChipGroup"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="10dp"
+                    app:layout_constraintEnd_toEndOf="@+id/fullUrlTextView"
+                    app:layout_constraintHeight_min="200dp"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/fullUrlTextView"
+                    app:layout_constraintTop_toBottomOf="@id/view3">
+
+                </com.google.android.material.chip.ChipGroup>
+
+                <ImageView
+                    android:id="@+id/emptyImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintBottom_toTopOf="@id/emptyTextView"
+                    app:layout_constraintEnd_toEndOf="@+id/tagChipGroup"
+                    app:layout_constraintStart_toStartOf="@+id/tagChipGroup"
+                    app:layout_constraintTop_toTopOf="@+id/tagChipGroup"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    app:srcCompat="@drawable/ic_icons8_empty" />
+
+                <TextView
+                    android:id="@+id/emptyTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="설정된 태그가 없습니다."
+                    app:layout_constraintBottom_toBottomOf="@+id/tagChipGroup"
+                    app:layout_constraintEnd_toEndOf="@+id/tagChipGroup"
+                    app:layout_constraintStart_toStartOf="@+id/tagChipGroup"
+                    app:layout_constraintTop_toBottomOf="@+id/emptyImageView" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

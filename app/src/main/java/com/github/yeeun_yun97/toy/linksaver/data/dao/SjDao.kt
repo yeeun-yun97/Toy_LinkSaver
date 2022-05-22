@@ -45,6 +45,20 @@ interface SjDao {
     suspend fun getSearchTagCrossRefCount(): Int
 
 
+    // search search query by search word
+    @Query(
+        "SELECT search.sid FROM SjSearch as search "
+                + "WHERE search.keyword = :searchWord "
+                + "AND search.sid NOT IN("
+                + "SELECT ref.sid "
+                + "FROM SearchTagCrossRef as ref "
+                + "GROUP BY ref.sid"
+                + ")"
+    )
+    suspend fun getSearchWithTagsBySearchWord(
+        searchWord: String,
+    ): List<Int>
+
     //search search query by search word and tags
     @Query(
         "SELECT search.sid FROM SjSearch as search "
@@ -52,20 +66,26 @@ interface SjDao {
                 + "INNER JOIN SjTag as tag ON ref.tid = tag.tid "
                 + "WHERE search.keyword = :searchWord "
                 + "AND tag.tid IN(:tags) "
-                + "GROUP BY search.sid" //prevent duplicates
+                + "AND search.sid NOT IN ("
+                + "SELECT r.sid "
+                + "FROM SearchTagCrossRef as r "
+                + "WHERE r.tid NOT IN(:tags) "
+                + "GROUP BY r.sid"
+                + ")"
+                + "GROUP BY search.sid "
+                + "HAVING count(*) == :size"
+        //prevent duplicates
     )
     suspend fun getSearchWithTagsBySearchWordAndTags(
         searchWord: String,
-        tags: List<Int>
+        tags: List<Int>,
+        size: Int = tags.size
     ): List<Int>
 
-    // search search query by search word
-    @Query("SELECT sid FROM SjSearch WHERE keyword LIKE :searchWord")
-    suspend fun getSearchWithTagsBySearchWord(
-        searchWord: String,
-    ): List<Int>
-
-
+    fun tt (){
+        val list = listOf<String>()
+        list.size
+    }
 
     // search link query by link name and tags
     @Transaction
@@ -171,6 +191,7 @@ interface SjDao {
     @Transaction
     @Query("SELECT * FROM SjLink WHERE lid = :lid")
     suspend fun getLinkAndDomainWithTagsByLid(lid: Int): SjLinksAndDomainsWithTags
+
 
     @Transaction
     @Query("SELECT * FROM SjLink WHERE did = :did")
