@@ -45,20 +45,6 @@ interface SjDao {
     suspend fun getSearchTagCrossRefCount(): Int
 
 
-    //search search query by search word and tags
-    @Query(
-        "SELECT search.sid FROM SjSearch as search "
-                + "INNER JOIN SearchTagCrossRef as ref ON search.sid = ref.sid "
-                + "INNER JOIN SjTag as tag ON ref.tid = tag.tid "
-                + "WHERE search.keyword = :searchWord "
-                + "AND tag.tid IN(:tags) "
-                + "GROUP BY search.sid" //prevent duplicates
-    )
-    suspend fun getSearchWithTagsBySearchWordAndTags(
-        searchWord: String,
-        tags: List<Int>
-    ): List<Int>
-
     // search search query by search word
     @Query(
         "SELECT search.sid FROM SjSearch as search "
@@ -73,6 +59,33 @@ interface SjDao {
         searchWord: String,
     ): List<Int>
 
+    //search search query by search word and tags
+    @Query(
+        "SELECT search.sid FROM SjSearch as search "
+                + "INNER JOIN SearchTagCrossRef as ref ON search.sid = ref.sid "
+                + "INNER JOIN SjTag as tag ON ref.tid = tag.tid "
+                + "WHERE search.keyword = :searchWord "
+                + "AND tag.tid IN(:tags) "
+                + "AND search.sid NOT IN ("
+                + "SELECT r.sid "
+                + "FROM SearchTagCrossRef as r "
+                + "WHERE r.tid NOT IN(:tags) "
+                + "GROUP BY r.sid"
+                + ")"
+                + "GROUP BY search.sid "
+                + "HAVING count(*) == :size"
+        //prevent duplicates
+    )
+    suspend fun getSearchWithTagsBySearchWordAndTags(
+        searchWord: String,
+        tags: List<Int>,
+        size: Int = tags.size
+    ): List<Int>
+
+    fun tt (){
+        val list = listOf<String>()
+        list.size
+    }
 
     // search link query by link name and tags
     @Transaction
