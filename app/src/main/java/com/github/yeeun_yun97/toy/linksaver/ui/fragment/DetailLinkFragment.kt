@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.work.ExistingWorkPolicy
-import androidx.work.WorkManager
 import com.github.yeeun_yun97.clone.ynmodule.ui.component.SjImageViewUtil
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
@@ -15,7 +13,6 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentDetailLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
-import com.github.yeeun_yun97.toy.linksaver.ui.component.VideoPreloadWorker
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.DetailLinkViewModel
 
@@ -121,15 +118,15 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
 //        schedulePreloadWork("https://www.youtube.com/watch?v=H0M1yU6uO30")
     }
 
-    private fun schedulePreloadWork(videoUrl: String) {
-        val workManager = WorkManager.getInstance(requireActivity().applicationContext)
-        val videoPreloadWorker = VideoPreloadWorker.buildWorkRequest(videoUrl)
-        workManager.enqueueUniqueWork(
-            "VideoPreloadWorker",
-            ExistingWorkPolicy.KEEP,
-            videoPreloadWorker
-        )
-    }
+//    private fun schedulePreloadWork(videoUrl: String) {
+//        val workManager = WorkManager.getInstance(requireActivity().applicationContext)
+//        val videoPreloadWorker = VideoPreloadWorker.buildWorkRequest(videoUrl)
+//        workManager.enqueueUniqueWork(
+//            "VideoPreloadWorker",
+//            ExistingWorkPolicy.KEEP,
+//            videoPreloadWorker
+//        )
+//    }
 
     // handle user event methods
     private fun moveToPlayFragment() {

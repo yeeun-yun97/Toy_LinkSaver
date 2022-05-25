@@ -23,9 +23,9 @@ class DataBindingSjAdapter {
 
         @JvmStatic
         @BindingAdapter("chipDataList")
-        fun setChipByList(view: ChipGroup, tags: List<SjTag>) {
+        fun setChipByList(view: ChipGroup, tags: List<SjTag>?) {
             view.removeAllViews()
-            if (tags.isNotEmpty()) {
+            if (!tags.isNullOrEmpty()) {
                 for( tag in tags) {
                     val chip = SjTagChip(view.context, tag)
                     chip.isChecked = true

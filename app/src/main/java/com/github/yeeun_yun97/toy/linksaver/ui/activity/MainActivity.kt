@@ -9,6 +9,7 @@ import com.github.yeeun_yun97.toy.linksaver.ui.activity.basic.SjBasicActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.ListDomainFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.ListLinkFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.ListTagFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.ListVideoFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.ReadLinkViewModel
 
 class MainActivity : SjBasicActivity<ActivityMainBinding>() {
@@ -18,6 +19,7 @@ class MainActivity : SjBasicActivity<ActivityMainBinding>() {
     private val linkFragment = ListLinkFragment()
     private val tagFragment = ListTagFragment()
     private val domainFragment = ListDomainFragment()
+    private val videoFragment = ListVideoFragment()
 
     override fun viewBindingInflate(inflater: LayoutInflater): ActivityMainBinding =
         ActivityMainBinding.inflate(inflater)
@@ -37,7 +39,7 @@ class MainActivity : SjBasicActivity<ActivityMainBinding>() {
                     true
                 }
                 R.id.domainItem -> {
-                    this.replaceFragmentTo(domainFragment)
+                    this.replaceFragmentTo(videoFragment)
                     true
                 }
                 R.id.tagItem -> {

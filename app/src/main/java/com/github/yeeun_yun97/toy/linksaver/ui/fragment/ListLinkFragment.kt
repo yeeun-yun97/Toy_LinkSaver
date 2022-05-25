@@ -101,7 +101,8 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
     }
 
     private fun moveToDetailFragment(lid: Int) {
-        moveToOtherFragment(DetailLinkFragment.newInstance(lid))
+//        moveToOtherFragment(DetailLinkFragment.newInstance(lid))
+        moveToOtherFragment(DetailVideoFragment.newInstance(lid))
     }
 
 

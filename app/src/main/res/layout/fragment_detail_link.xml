@@ -115,9 +115,7 @@
                     app:layout_constraintHeight_min="200dp"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/fullUrlTextView"
-                    app:layout_constraintTop_toBottomOf="@id/view3">
-
-                </com.google.android.material.chip.ChipGroup>
+                    app:layout_constraintTop_toBottomOf="@id/view3"/>
 
                 <ImageView
                     android:id="@+id/emptyImageView"

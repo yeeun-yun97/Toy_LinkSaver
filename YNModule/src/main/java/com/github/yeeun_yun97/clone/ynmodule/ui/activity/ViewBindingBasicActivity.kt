@@ -44,7 +44,11 @@ abstract class ViewBindingBasicActivity<T : ViewBinding> : AppCompatActivity() {
     }
 
     protected fun replaceFragmentTo(fragment: Fragment) {
+        val fragments = supportFragmentManager.fragments
         supportFragmentManager.commit {
+            for(fragment in fragments){
+                remove(fragment)
+            }
             replace(fragmentContainer(), fragment)
             setReorderingAllowed(true)
         }

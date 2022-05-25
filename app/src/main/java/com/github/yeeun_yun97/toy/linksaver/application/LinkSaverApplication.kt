@@ -15,7 +15,7 @@ class LinkSaverApplication : Application() {
     private lateinit var exoplayerDatabaseProvider: ExoDatabaseProvider
 
     companion object{
-        lateinit var cache: SimpleCache
+//        lateinit var cache: SimpleCache
     }
 
     override fun onCreate() {
@@ -36,9 +36,9 @@ class LinkSaverApplication : Application() {
         }
 
         //cache of video
-        cacheEvictor = LeastRecentlyUsedCacheEvictor(cacheSize)
-        exoplayerDatabaseProvider = ExoDatabaseProvider(this)
-        cache = SimpleCache(cacheDir, cacheEvictor, exoplayerDatabaseProvider)
+//        cacheEvictor = LeastRecentlyUsedCacheEvictor(cacheSize)
+//        exoplayerDatabaseProvider = ExoDatabaseProvider(this)
+//        cache = SimpleCache(cacheDir, cacheEvictor, exoplayerDatabaseProvider)
     }
 
     override fun onTerminate() {
