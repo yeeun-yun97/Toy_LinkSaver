@@ -24,11 +24,11 @@ abstract class SjDatabase : RoomDatabase() {
 
 val MIGRATION_1_2 = object : Migration(1, 2) {
     override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("ALTER TABLE SjLink ADD COLUMN icon TEXT default ''")
-        database.execSQL("ALTER TABLE SjLink ADD COLUMN preview TEXT default ''")
-        database.execSQL("ALTER TABLE SjLink ADD COLUMN type TEXT default 'link'")
+        database.execSQL("ALTER TABLE SjLink ADD COLUMN icon TEXT NOT NULL default ''")
+        database.execSQL("ALTER TABLE SjLink ADD COLUMN preview TEXT NOT NULL default ''")
+        database.execSQL("ALTER TABLE SjLink ADD COLUMN type TEXT NOT NULL default 'link'")
 
-        database.execSQL("CREATE UNIQUE INDEX index_SjDomain_name ON SjDomain (name)")
+        database.execSQL("CREATE INDEX index_SjDomain_name ON SjDomain (name)")
         database.execSQL("CREATE UNIQUE INDEX index_SjDomain_url ON SjDomain (url)")
 
         database.execSQL("CREATE INDEX index_SjLink_name ON SjLink (name)")
