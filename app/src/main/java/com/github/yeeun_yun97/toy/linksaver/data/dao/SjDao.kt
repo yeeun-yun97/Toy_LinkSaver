@@ -90,7 +90,7 @@ interface SjDao {
     // search link query by link name and tags
     @Transaction
     @Query(
-        "SELECT link.lid, link.name, link.did, link.url FROM SjLink as link "
+        "SELECT link.lid, link.name, link.did, link.url, link.icon, link.preview, link.type FROM SjLink as link "
                 + "INNER JOIN linkTagCrossRef as ref ON link.lid = ref.lid "
                 + "INNER JOIN SjTag as tag ON ref.tid = tag.tid "
                 + "WHERE link.name LIKE :keyword "

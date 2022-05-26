@@ -1,14 +1,14 @@
 package com.github.yeeun_yun97.toy.linksaver.data.db
 
-import android.content.Context
-import android.util.Log
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDao
 import com.github.yeeun_yun97.toy.linksaver.data.model.*
 
 @Database(
+    version = 2,
     entities = [
         SjTag::class,
         SjLink::class,
@@ -17,49 +17,29 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.*
         SjSearch::class,
         SearchTagCrossRef::class
     ],
-    version = 1
 )
 abstract class SjDatabase : RoomDatabase() {
-    companion object {
-        // singleton object
-        private lateinit var db: SjDatabase
-        private const val TAG: String = "SjDatabase"
-
-        // open database
-        fun openDatabaseForTest(applicationContext: Context) {
-            this.db =
-                Room.inMemoryDatabaseBuilder(applicationContext, SjDatabase::class.java).build()
-        }
-
-        fun openDatabase(applicationContext: Context) {
-            if (this::db.isInitialized) {
-                Log.i(TAG, "there is already initialized database instance")
-            } else {
-                this.db =
-                    Room.databaseBuilder(applicationContext, SjDatabase::class.java, "sj_database")
-                        .build()
-            }
-        }
-
-        // close database
-        fun closeDatabase() {
-            if (!db.isOpen) {
-                Log.i(TAG, "attempt to close Database that is not open")
-            } else {
-                this.db.close()
-            }
-        }
-
-        // get dao for rest of application
-        fun getDao(): SjDao {
-            if (!this::db.isInitialized) {
-                throw Exception("Database is not yet initialized")
-            }
-            return this.db.getDao()
-        }
-
-    }
-
-    protected abstract fun getDao(): SjDao
-
+    abstract fun getDao(): SjDao
 }
+
+val MIGRATION_1_2 = object : Migration(1, 2) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE SjLink ADD COLUMN icon TEXT default ''")
+        database.execSQL("ALTER TABLE SjLink ADD COLUMN preview TEXT default ''")
+        database.execSQL("ALTER TABLE SjLink ADD COLUMN type TEXT default 'link'")
+
+        database.execSQL("CREATE UNIQUE INDEX index_SjDomain_name ON SjDomain (name)")
+        database.execSQL("CREATE UNIQUE INDEX index_SjDomain_url ON SjDomain (url)")
+
+        database.execSQL("CREATE INDEX index_SjLink_name ON SjLink (name)")
+        database.execSQL("CREATE INDEX index_SjLink_did ON SjLink (did)")
+        database.execSQL("CREATE INDEX index_SjLink_type ON SjLink (type)")
+
+
+        database.execSQL("CREATE UNIQUE INDEX index_SjTag_name ON SjTag (name)")
+
+        database.execSQL("CREATE INDEX index_SjSearch_keyword ON SjSearch (keyword)")
+    }
+}
+
+

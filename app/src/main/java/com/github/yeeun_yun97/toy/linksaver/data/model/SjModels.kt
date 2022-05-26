@@ -2,29 +2,59 @@ package com.github.yeeun_yun97.toy.linksaver.data.model
 
 import androidx.room.*
 
+enum class ELinkType() {
+    video, link;
+}
+
+class Converters {
+    @TypeConverter
+    fun toELinkType(value: String) = enumValueOf<ELinkType>(value)
+
+    @TypeConverter
+    fun fromELinkType(value: ELinkType) = value.name
+}
+
+
 // entities
-@Entity
+@Entity(
+    indices = [
+        Index(value = ["name"]),
+        Index(value = ["url"], unique = true),
+    ]
+)
 data class SjDomain(
     @PrimaryKey(autoGenerate = true) val did: Int = 0,
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "url") var url: String
 )
 
-@Entity
+@Entity(
+    indices = [
+        Index(value = ["name"]),
+        Index(value = ["did"]),
+        Index(value = ["type"])
+    ]
+)
 data class SjLink(
     @PrimaryKey(autoGenerate = true) val lid: Int = 0,
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "did") var did: Int,
     @ColumnInfo(name = "url") var url: String,
+
+    @ColumnInfo(name = "icon", defaultValue = "") var icon: String="",
+    @ColumnInfo(name = "preview", defaultValue = "") var preview: String="",
+    @ColumnInfo(name = "type", defaultValue = "link")
+    @TypeConverters(Converters::class)
+    var type: ELinkType=ELinkType.link,
 )
 
-@Entity
+@Entity(indices = [Index(value = ["name"], unique = true)])
 data class SjTag(
     @PrimaryKey(autoGenerate = true) val tid: Int = 0,
     @ColumnInfo(name = "name") var name: String
 )
 
-@Entity
+@Entity(indices = [Index(value = ["keyword"])])
 data class SjSearch(
     @PrimaryKey(autoGenerate = true) val sid: Int = 0,
     @ColumnInfo(name = "keyword") var keyword: String

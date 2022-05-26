@@ -3,10 +3,7 @@ package com.github.yeeun_yun97.toy.linksaver.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinksAndDomainsWithTags
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
+import com.github.yeeun_yun97.toy.linksaver.data.model.*
 import com.github.yeeun_yun97.toy.linksaver.data.repository.SjNetworkRepository
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.BasicViewModelWithRepository
 import kotlinx.coroutines.Dispatchers

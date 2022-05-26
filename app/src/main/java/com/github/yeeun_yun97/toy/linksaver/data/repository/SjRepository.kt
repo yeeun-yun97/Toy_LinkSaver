@@ -3,7 +3,7 @@ package com.github.yeeun_yun97.toy.linksaver.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDao
-import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabase
+import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class SjRepository private constructor() {
 
-    private val dao: SjDao = SjDatabase.getDao()
+    private val dao: SjDao = SjDatabaseUtil.getDao()
 
     private val _searchLinkList = MutableLiveData<List<SjLinksAndDomainsWithTags>>()
     val searchLinkList: LiveData<List<SjLinksAndDomainsWithTags>> get() = _searchLinkList
