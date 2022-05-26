@@ -13,13 +13,13 @@ import com.github.yeeun_yun97.toy.linksaver.ui.fragment.ListVideoFragment
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 
-class RecyclerVideoAdapter(val player: ExoPlayer) :
+class RecyclerVideoAdapter(val player: ExoPlayer, val detailOperation: () -> Unit) :
     RecyclerBasicAdapter<ListVideoFragment.VideoData, VideoRecyclerViewHolder>() {
     override fun onBindViewHolder(
         holder: VideoRecyclerViewHolder,
         item: ListVideoFragment.VideoData
     ) {
-        holder.setData(item)
+        holder.setData(item, detailOperation)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoRecyclerViewHolder {
@@ -34,8 +34,8 @@ class VideoRecyclerViewHolder(val player: ExoPlayer, binding: ItemVideoListDetai
     lateinit var videoUrl: String
 
     fun playStart() {
-        binding.playerView.player=player
-        binding.gradientImageView.visibility= View.GONE
+        binding.playerView.player = player
+        binding.gradientImageView.visibility = View.GONE
         binding.playerView.visibility = View.VISIBLE
         binding.thumbnailImageView.visibility = View.GONE
 
@@ -49,19 +49,20 @@ class VideoRecyclerViewHolder(val player: ExoPlayer, binding: ItemVideoListDetai
             ).build()
         player.setMediaItem(mediaItem)
         player.prepare()
-        player.playWhenReady=true
+        player.playWhenReady = true
     }
 
     fun playStop() {
-        binding.playerView.player=null
+        binding.playerView.player = null
         player.clearMediaItems()
         binding.playerView.visibility = View.INVISIBLE
         binding.thumbnailImageView.visibility = View.VISIBLE
     }
 
     @SuppressLint("CheckResult")
-    fun setData(data: ListVideoFragment.VideoData) {
+    fun setData(data: ListVideoFragment.VideoData, detailOperation: () -> Unit) {
         binding.data = data
+        binding.root.setOnClickListener { detailOperation() }
         binding.gradientImageView.visibility = View.INVISIBLE
 
         previewUrl = data.thumbnail

@@ -1,6 +1,7 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment
 
 import android.annotation.SuppressLint
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.yeeun_yun97.toy.linksaver.R
@@ -9,10 +10,13 @@ import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListVideoBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerVideoAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.VideoRecyclerViewHolder
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.ListVideoViewModel
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 
 class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
+
+    private val viewModel: ListVideoViewModel by activityViewModels()
 
     private var _player: ExoPlayer? = null
     private val player: ExoPlayer get() = _player!!
@@ -33,10 +37,10 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
 
         val manager = LinearLayoutManager(context)
         binding.videoRecyclerView.layoutManager = manager
-        val adapter = RecyclerVideoAdapter(player)
+        val adapter = RecyclerVideoAdapter(player, ::moveToDetailFragment)
         binding.videoRecyclerView.adapter = adapter
 
-        adapter.setList(getDataList())
+        adapter.setList(viewModel.getDataList())
 
         binding.videoRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             @SuppressLint("StaticFieldLeak")
@@ -63,65 +67,10 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
         _player = null
     }
 
-    private fun getDataList(): List<VideoData> {
-        val list = listOf(
-            VideoData(
-                "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                "Big Buck Bunny",
 
-                "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg",
-                listOf(
-                    SjTag(name = "Bunny"),
-                    SjTag(name = "Big"),
-                    SjTag(name = "Blender")
-                )
-            ),
-
-            VideoData(
-                "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-                "For Bigger Blazes",
-                "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerBlazes.jpg",
-                listOf(
-                    SjTag(name = "Blaze"),
-                    SjTag(name = "google")
-                )
-            ),
-
-            VideoData(
-                "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-                "Elephant Dream",
-                "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/ElephantsDream.jpg",
-                listOf(
-                    SjTag(name = "Elephant"),
-                    SjTag(name = "Blender")
-                )
-            ),
-
-            VideoData(
-                "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4",
-                "What care can you get for a grand?",
-                "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/WhatCarCanYouGetForAGrand.jpg",
-                listOf(
-                    SjTag(name = "Blend"),
-                    SjTag(name = "Garage419")
-                )
-            ),
-
-
-            VideoData(
-                "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-                "For Bigger Escape",
-                "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerEscapes.jpg",
-                listOf(
-                    SjTag(name = "Escape"),
-                    SjTag(name = "Google")
-                )
-            )
-        )
-        return list
+    private fun moveToDetailFragment() {
+        moveToOtherFragment(DetailVideoFragment.newInstance(0))
     }
-
-
 
 
 }

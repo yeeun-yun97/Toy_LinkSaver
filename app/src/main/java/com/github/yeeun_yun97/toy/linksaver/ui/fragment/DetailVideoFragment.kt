@@ -51,7 +51,7 @@ class DetailVideoFragment : SjBasicFragment<FragmentDetailVideoBinding>() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.loadLinkData(lid)
+//        viewModel.loadLinkData(lid)
 
         /* Exoplayer docs clone */
         // create player
