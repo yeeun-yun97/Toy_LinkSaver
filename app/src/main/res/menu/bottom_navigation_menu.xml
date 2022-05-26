@@ -3,23 +3,16 @@
 
     <item
         android:id="@+id/linkItem"
-        android:title="links"
+        android:title="링크"
         android:enabled="true"
         android:icon="@drawable/ic_menu_link"
         />
 
     <item
-        android:id="@+id/domainItem"
-        android:title="도메인"
+        android:id="@+id/videoItem"
+        android:title="비디오"
         android:enabled="true"
-        android:icon="@drawable/ic_menu_domain"
-        />
-
-    <item
-        android:id="@+id/tagItem"
-        android:title="태그"
-        android:enabled="true"
-        android:icon="@drawable/ic_menu_tag"
+        android:icon="@drawable/ic_menu_video"
         />
 
     <item
