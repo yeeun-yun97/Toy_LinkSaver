@@ -13,26 +13,23 @@ import android.util.Log
 import at.huber.youtubeExtractor.VideoMeta
 import at.huber.youtubeExtractor.YouTubeExtractor
 import at.huber.youtubeExtractor.YtFile
-import com.github.yeeun_yun97.toy.linksaver.application.LinkSaverApplication
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.*
-import com.google.android.exoplayer2.upstream.cache.CacheDataSource
-import com.google.android.exoplayer2.upstream.cache.SimpleCache
-import java.util.*
 
 class PlayVideoFragment : SjBasicFragment<FragmentPlayVideoBinding>() {
 
     private var _player: ExoPlayer? = null
     private val player: ExoPlayer get() = _player!!
 
-    private lateinit var mHttpDataSourceFactory: HttpDataSource.Factory
-    private lateinit var mDefaultDataSourceFactory: DefaultDataSourceFactory
-    private lateinit var mCacheDataSourceFactory: DataSource.Factory
     private lateinit var exoPlayer: SimpleExoPlayer
     private lateinit var mediaSource: ProgressiveMediaSource
-//    private val cache: SimpleCache = LinkSaverApplication.cache
+
+    //    private val cache: SimpleCache = LinkSaverApplication.cache
+//    private lateinit var mHttpDataSourceFactory: HttpDataSource.Factory
+//    private lateinit var mDefaultDataSourceFactory: DefaultDataSourceFactory
+//    private lateinit var mCacheDataSourceFactory: DataSource.Factory
+
 
     companion object {
         fun newInstance(url: String): PlayVideoFragment {

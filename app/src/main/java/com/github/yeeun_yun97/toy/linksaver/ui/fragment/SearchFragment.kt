@@ -6,13 +6,11 @@ import android.view.inputmethod.EditorInfo
 import android.widget.CompoundButton
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSearchBinding
-import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerSearchAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerSearchGalleryAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment

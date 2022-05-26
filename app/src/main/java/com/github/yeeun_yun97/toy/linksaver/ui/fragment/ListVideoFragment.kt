@@ -1,22 +1,15 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment
 
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicAdapter
-import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicViewHolder
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListVideoBinding
-import com.github.yeeun_yun97.toy.linksaver.databinding.ItemVideoListDetailBinding
+import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerVideoAdapter
+import com.github.yeeun_yun97.toy.linksaver.ui.adapter.VideoRecyclerViewHolder
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 
 class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
@@ -31,109 +24,6 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
         val tagList: List<SjTag>
     )
 
-    class VideoRecyclerAdapter(val player: ExoPlayer) :
-        RecyclerBasicAdapter<VideoData, VideoRecyclerViewHolder>() {
-        override fun onBindViewHolder(
-            holder: VideoRecyclerViewHolder,
-            item: VideoData
-        ) {
-            holder.setData(item)
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoRecyclerViewHolder {
-            val binding = ItemVideoListDetailBinding.inflate(LayoutInflater.from(parent.context))
-            return VideoRecyclerViewHolder(player, binding)
-        }
-    }
-
-    class VideoRecyclerViewHolder(val player: ExoPlayer, binding: ItemVideoListDetailBinding) :
-        RecyclerBasicViewHolder<ItemVideoListDetailBinding>(binding) {
-        lateinit var previewUrl: String
-        lateinit var videoUrl: String
-
-
-        fun playStart() {
-            binding.playerView.player=player
-            binding.gradientImageView.visibility=View.GONE
-            binding.playerView.visibility = View.VISIBLE
-            binding.thumbnailImageView.visibility = View.GONE
-
-            val mediaItem: MediaItem = MediaItem.Builder()
-                .setUri(videoUrl)
-                .setClippingConfiguration(
-                    MediaItem.ClippingConfiguration.Builder()
-                        .setStartPositionMs(1000)
-                        .setEndPositionMs(20000)
-                        .build()
-                ).build()
-            player.setMediaItem(mediaItem)
-            player.prepare()
-            player.playWhenReady=true
-        }
-
-        fun playStop() {
-            binding.playerView.player=null
-            player.clearMediaItems()
-            binding.playerView.visibility = View.INVISIBLE
-            binding.thumbnailImageView.visibility = View.VISIBLE
-        }
-
-        @SuppressLint("CheckResult")
-        fun setData(data: VideoData) {
-            binding.data = data
-            binding.gradientImageView.visibility = View.INVISIBLE
-
-            previewUrl = data.thumbnail
-            videoUrl = data.url
-
-            binding.playerView.visibility = View.INVISIBLE
-            binding.thumbnailImageView.visibility = View.VISIBLE
-
-            binding.thumbnailImageView.setBackgroundColor(Color.BLACK)
-            Glide.with(itemView.context).load(previewUrl).fitCenter()
-                .into(binding.thumbnailImageView)
-
-//            Glide.with(itemView.context)
-//                .asBitmap()
-//                .load(previewUrl)
-//                .listener(object : RequestListener<Bitmap?> {
-//                    override fun onLoadFailed(
-//                        e: GlideException?,
-//                        model: Any?,
-//                        target: Target<Bitmap?>?,
-//                        isFirstResource: Boolean
-//                    ): Boolean {
-//                        Log.e("thumb fail", "fail")
-//                        return false
-//                    }
-//
-//                    override fun onResourceReady(
-//                        resource: Bitmap?,
-//                        model: Any?,
-//                        target: Target<Bitmap?>?,
-//                        dataSource: DataSource?,
-//                        isFirstResource: Boolean
-//                    ): Boolean {
-//                        if (resource != null) {
-//                            binding.playerView.setThumbnailImage(resource)
-//                            Log.e("thumb success", "success")
-//                        } else {
-//                            Log.e("thumb success", "null")
-//                        }
-//                        return false
-//                    }
-//                })
-//                .preload()
-
-//            var File = File(previewUrl)
-//           val thumb = ThumbnailUtils.extractThumbnail()
-//            binding.playerView.defaultArtwork=BitmapDrawable(thumb)
-        }
-
-
-    }
-
-
     override fun layoutId(): Int = R.layout.fragment_list_video
 
     override fun onCreateView() {
@@ -143,8 +33,37 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
 
         val manager = LinearLayoutManager(context)
         binding.videoRecyclerView.layoutManager = manager
-        val adapter = VideoRecyclerAdapter(player)
+        val adapter = RecyclerVideoAdapter(player)
         binding.videoRecyclerView.adapter = adapter
+
+        adapter.setList(getDataList())
+
+        binding.videoRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            @SuppressLint("StaticFieldLeak")
+            private var prevViewHolder: VideoRecyclerViewHolder? = null
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val index = manager.findFirstCompletelyVisibleItemPosition()
+                val currentViewHolder =
+                    binding.videoRecyclerView.findViewHolderForLayoutPosition(index) as VideoRecyclerViewHolder
+                prevViewHolder?.playStop()
+                currentViewHolder.playStart()
+                prevViewHolder = currentViewHolder
+            }
+        })
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        // release player
+        player.release()
+        _player = null
+    }
+
+    private fun getDataList(): List<VideoData> {
         val list = listOf(
             VideoData(
                 "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
@@ -199,33 +118,10 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
                 )
             )
         )
-        adapter.setList(list)
-
-        binding.videoRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            @SuppressLint("StaticFieldLeak")
-            private var prevViewHolder: VideoRecyclerViewHolder? = null
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val index = manager.findFirstCompletelyVisibleItemPosition()
-                val viewHolder =
-                    binding.videoRecyclerView.findViewHolderForLayoutPosition(index) as VideoRecyclerViewHolder
-                    prevViewHolder?.playStop()
-                prevViewHolder =viewHolder
-                viewHolder.playStart()
-            }
-        })
-
-
+        return list
     }
 
-    override fun onStop() {
-        super.onStop()
 
-        // release player
-        player.release()
-        _player = null
-    }
 
 
 }

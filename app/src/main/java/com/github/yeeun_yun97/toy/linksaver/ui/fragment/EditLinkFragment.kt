@@ -2,7 +2,6 @@ package com.github.yeeun_yun97.toy.linksaver.ui.fragment
 
 import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
 import android.content.ClipboardManager
-import android.content.Context.*
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView

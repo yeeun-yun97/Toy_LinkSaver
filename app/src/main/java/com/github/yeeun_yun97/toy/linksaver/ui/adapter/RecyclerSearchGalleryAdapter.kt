@@ -2,7 +2,6 @@ package com.github.yeeun_yun97.toy.linksaver.ui.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicAdapter
