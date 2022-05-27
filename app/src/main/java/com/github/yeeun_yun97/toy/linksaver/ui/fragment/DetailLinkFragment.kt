@@ -105,13 +105,13 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
                         fragment = this,
                         binding.previewImageView,
                         it,
-                        R.drawable.ic_baseline_web_24
+                        R.drawable.ic_icons8_no_image_100
                     )
                 } else {
                     SjImageViewUtil.setDefaultImage(
                         fragment = this,
                         binding.previewImageView,
-                        R.drawable.ic_baseline_web_24
+                        R.drawable.ic_icons8_no_image_100
                     )
                 }
             })

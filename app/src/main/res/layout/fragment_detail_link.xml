@@ -30,7 +30,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:srcCompat="@drawable/ic_baseline_web_24" />
+            app:srcCompat="@drawable/ic_icons8_no_image_100" />
 
         <ImageView
             android:id="@+id/editImageView"
@@ -115,30 +115,29 @@
                     app:layout_constraintHeight_min="200dp"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/fullUrlTextView"
-                    app:layout_constraintTop_toBottomOf="@id/view3"/>
+                    app:layout_constraintTop_toBottomOf="@id/view3" />
 
                 <ImageView
                     android:id="@+id/emptyImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintBottom_toTopOf="@id/emptyTextView"
-                    app:layout_constraintEnd_toEndOf="@+id/tagChipGroup"
+                    app:layout_constraintBottom_toBottomOf="@+id/tagChipGroup"
+                    app:layout_constraintEnd_toStartOf="@id/emptyTextView"
+                    app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="@+id/tagChipGroup"
                     app:layout_constraintTop_toTopOf="@+id/tagChipGroup"
-                    app:layout_constraintVertical_chainStyle="packed"
-                    app:srcCompat="@drawable/ic_icons8_empty" />
+                    app:srcCompat="@drawable/ic_icons8_empty__2_" />
 
                 <TextView
                     android:id="@+id/emptyTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="10dp"
                     android:text="설정된 태그가 없습니다."
-                    app:layout_constraintBottom_toBottomOf="@+id/tagChipGroup"
+                    app:layout_constraintBottom_toBottomOf="@+id/emptyImageView"
                     app:layout_constraintEnd_toEndOf="@+id/tagChipGroup"
-                    app:layout_constraintStart_toStartOf="@+id/tagChipGroup"
-                    app:layout_constraintTop_toBottomOf="@+id/emptyImageView" />
+                    app:layout_constraintStart_toEndOf="@+id/emptyImageView"
+                    app:layout_constraintTop_toTopOf="@+id/emptyImageView" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
