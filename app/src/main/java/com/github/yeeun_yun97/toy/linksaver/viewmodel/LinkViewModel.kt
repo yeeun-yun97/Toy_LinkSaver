@@ -128,7 +128,7 @@ class LinkViewModel : BasicViewModelWithRepository() {
 
     // load auto title by url
     private fun loadTitleOf(url: String) {
-        networkRepository.getTitleOf(url)
+        networkRepository.postTitleOf(url)
     }
 
 }
