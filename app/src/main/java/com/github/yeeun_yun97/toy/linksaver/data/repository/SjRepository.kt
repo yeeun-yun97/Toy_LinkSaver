@@ -22,6 +22,9 @@ class SjRepository private constructor() {
     val tags: LiveData<List<SjTag>> = dao.getAllTags()
     val linkList: LiveData<List<SjLinksAndDomainsWithTags>> = dao.getAllLinksAndDomainsWithTags()
 
+    val linkTypeVideoList = dao.getAllLinksByType(ELinkType.video.name)
+    val linkTypeLinkList = dao.getAllLinksByType(ELinkType.link.name)
+
     companion object {
         // singleton object
         private lateinit var repo: SjRepository
@@ -231,5 +234,7 @@ class SjRepository private constructor() {
     suspend fun getTagByTid(tid: Int): SjTag = dao.getTagByTid(tid)
 
     suspend fun getDomainByDid(did: Int): SjDomain = dao.getDomainByDid(did)
+
+
 
 }

@@ -13,7 +13,7 @@ import com.github.yeeun_yun97.toy.linksaver.ui.fragment.ListVideoFragment
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 
-class RecyclerVideoAdapter(val player: ExoPlayer, val detailOperation: () -> Unit) :
+class RecyclerVideoAdapter(val player: ExoPlayer, val detailOperation: (Int) -> Unit) :
     RecyclerBasicAdapter<ListVideoFragment.VideoData, VideoRecyclerViewHolder>() {
     override fun onBindViewHolder(
         holder: VideoRecyclerViewHolder,
@@ -60,9 +60,9 @@ class VideoRecyclerViewHolder(val player: ExoPlayer, binding: ItemVideoListDetai
     }
 
     @SuppressLint("CheckResult")
-    fun setData(data: ListVideoFragment.VideoData, detailOperation: () -> Unit) {
+    fun setData(data: ListVideoFragment.VideoData, detailOperation: (Int) -> Unit) {
         binding.data = data
-        binding.root.setOnClickListener { detailOperation() }
+        binding.root.setOnClickListener { detailOperation(data.lid) }
         binding.gradientImageView.visibility = View.INVISIBLE
 
         previewUrl = data.thumbnail

@@ -1,6 +1,5 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment
 
-import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,19 +14,14 @@ import com.github.yeeun_yun97.toy.linksaver.viewmodel.ListVideoViewModel
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 
-class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
+class ListVideoSampleFragment : SjBasicFragment<FragmentListVideoBinding>() {
 
     private val viewModel: ListVideoViewModel by activityViewModels()
-
-    private lateinit var manager: LinearLayoutManager
-    private lateinit var adapter: RecyclerVideoAdapter
-
 
     private var _player: ExoPlayer? = null
     private val player: ExoPlayer get() = _player!!
 
     data class VideoData(
-        val lid: Int = 0,
         val url: String,
         val name: String,
         val thumbnail: String,
@@ -37,39 +31,18 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
     override fun layoutId(): Int = R.layout.fragment_list_video
 
     override fun onCreateView() {
-
-        // set toolbar
         val handlerMap = hashMapOf<Int, () -> Unit>(R.id.menu_playlist to ::moveToPlaylistFragment)
         binding.toolbar.setMenu(R.menu.toolbar_menu_video_list, handlerMap = handlerMap)
 
-        // player
         _player = ExoPlayer.Builder(requireContext()).build()
         player.repeatMode = Player.REPEAT_MODE_ONE
 
-        // set adapter
-        manager = LinearLayoutManager(context)
+        val manager = LinearLayoutManager(context)
         binding.videoRecyclerView.layoutManager = manager
-        adapter = RecyclerVideoAdapter(player, ::moveToDetailFragment)
+        val adapter = RecyclerVideoAdapter(player, ::moveToDetailFragment)
         binding.videoRecyclerView.adapter = adapter
 
-        viewModel.allVideoList.observe(viewLifecycleOwner, {
-            val videos = mutableListOf<VideoData>()
-            for (vid in it) {
-                Log.d("비디오 불러옴", vid.toString())
-                videos.add(
-                    VideoData(
-                        vid.link.lid,
-                        vid.domain.url + vid.link.url,
-                        vid.link.name,
-                        vid.link.preview,
-                        vid.tags
-                    )
-                )
-            }
-            adapter.setList(videos)
-        })
-
-
+        adapter.setList(viewModel.getDataList())
 
         binding.videoRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             private var prevPosition: Int = -1
@@ -78,12 +51,10 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
                 super.onScrolled(recyclerView, dx, dy)
 
                 val position = manager.findFirstCompletelyVisibleItemPosition()
-                val currentViewHolder =
-                    binding.videoRecyclerView.findViewHolderForLayoutPosition(position)
+                val currentViewHolder = binding.videoRecyclerView.findViewHolderForLayoutPosition(position)
                 if (currentViewHolder is VideoRecyclerViewHolder) {
                     if (prevPosition != -1) {
-                        val prevViewHolder =
-                            binding.videoRecyclerView.findViewHolderForAdapterPosition(prevPosition)
+                        val prevViewHolder = binding.videoRecyclerView.findViewHolderForAdapterPosition(prevPosition)
                         if (prevViewHolder is VideoRecyclerViewHolder) {
                             prevViewHolder.playStop()
                         }
@@ -105,8 +76,8 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
     }
 
 
-    private fun moveToDetailFragment(lid: Int) {
-        moveToOtherFragment(DetailVideoFragment.newInstance(lid))
+    private fun moveToDetailFragment(lid:Int) {
+        moveToOtherFragment(DetailVideoFragment.newInstance(0))
     }
 
     private fun moveToPlaylistFragment() {

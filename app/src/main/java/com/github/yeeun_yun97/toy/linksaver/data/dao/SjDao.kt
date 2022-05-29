@@ -203,5 +203,9 @@ interface SjDao {
     @Query("SELECT * FROM SjDomain WHERE did = :did")
     suspend fun getDomainByDid(did: Int): SjDomain
 
+    @Transaction
+    @Query("SELECT * FROM SjLink WHERE Type = :type ORDER BY lid desc")
+    fun getAllLinksByType(type:String): LiveData<List<SjLinksAndDomainsWithTags>>
+
 
 }
