@@ -4,8 +4,6 @@
 
     <item
         android:id="@+id/menu_save"
-        android:icon="@drawable/ic_menu_save"
-        app:iconTint="?attr/colorOnPrimary"
-        android:title="save"
-        app:showAsAction="always" />
+        android:title="추가하기"
+        app:showAsAction="never" />
 </menu>

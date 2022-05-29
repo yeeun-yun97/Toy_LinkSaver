@@ -3,7 +3,6 @@ package com.github.yeeun_yun97.toy.linksaver.ui.fragment.edit_link
 import android.os.Bundle
 import android.view.View
 import android.widget.CompoundButton
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.github.yeeun_yun97.toy.linksaver.R
@@ -101,7 +100,6 @@ class EditLinkAndVideoFragment : SjBasicFragment<FragmentEditVideoBinding>() {
 
 
     private fun saveVideo() {
-        Toast.makeText(requireContext(), "저장버튼", Toast.LENGTH_LONG).show()
         viewModel.saveVideo()
         this.requireActivity().finish()
     }
