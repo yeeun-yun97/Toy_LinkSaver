@@ -49,6 +49,7 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val index = manager.findFirstCompletelyVisibleItemPosition()
+                //TODO Null pointer here
                 val currentViewHolder =
                     binding.videoRecyclerView.findViewHolderForLayoutPosition(index) as VideoRecyclerViewHolder
                 prevViewHolder?.playStop()

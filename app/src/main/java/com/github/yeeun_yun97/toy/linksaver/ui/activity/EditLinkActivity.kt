@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import com.github.yeeun_yun97.toy.linksaver.databinding.ActivityEditLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.basic.SjBasicActivity
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.EditPasteFragment
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.EditVideoFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.edit_link.EditLinkPasteFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.edit_link.EditLinkAndVideoFragment
 
 class EditLinkActivity : SjBasicActivity<ActivityEditLinkBinding>() {
 
@@ -14,11 +14,12 @@ class EditLinkActivity : SjBasicActivity<ActivityEditLinkBinding>() {
         ActivityEditLinkBinding.inflate(layoutInflater)
 
     override fun homeFragment(): Fragment {
-        val url = intent.getStringExtra("url")
-        return if (url.isNullOrEmpty()) {
-            EditPasteFragment()
+        val lid = intent.getIntExtra("lid", -1)
+        val url = intent.getStringExtra("url") ?: ""
+        return if (lid == -1 && url.isEmpty()) {
+            EditLinkPasteFragment()
         } else {
-            EditVideoFragment.newInstance(url)
+            EditLinkAndVideoFragment.newInstance(lid, url)
         }
     }
 

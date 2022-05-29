@@ -6,12 +6,20 @@
     <data>
         <variable
             name="viewModel"
-            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.EditVideoViewModel" />
+            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.edit_link.EditVideoViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <com.github.yeeun_yun97.clone.ynmodule.ui.component.CustomBasicToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:toolbarTitle="수정하기" />
 
         <ImageView
             android:id="@+id/previewImageView"
@@ -20,8 +28,29 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_min="200dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:srcCompat="@drawable/ic_icons8_no_image_100" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/VideoTypeSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:checked="@={viewModel.bindingIsVideo}"
+            android:text="동영상 모드"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/scrollView"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="@+id/scrollView" />
+
+        <ImageView
+            android:id="@+id/videoTypeIconImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="15dp"
+            app:layout_constraintBottom_toBottomOf="@+id/previewImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_icons8_video__1_" />
 
         <EditText
             android:id="@+id/nameEditText"
@@ -30,22 +59,20 @@
             android:layout_height="50dp"
             android:layout_marginHorizontal="15dp"
             android:background="@android:color/transparent"
-            android:ems="10"
             android:hint="이름"
-            android:text="@={viewModel.name}"
-            app:layout_constraintBottom_toTopOf="@id/urlEditText"
+            android:text="@={viewModel.bindingName}"
+            app:layout_constraintBottom_toTopOf="@id/urlTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/previewImageView"
             app:layout_constraintVertical_chainStyle="packed" />
 
-        <EditText
-            android:id="@+id/urlEditText"
+        <TextView
+            android:id="@+id/urlTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
             android:hint="url"
-            android:text="@={viewModel.url}"
+            android:text="@{viewModel.bindingUrl}"
             app:layout_constraintEnd_toEndOf="@id/nameEditText"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@id/nameEditText"
@@ -55,10 +82,11 @@
             android:id="@+id/scrollView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/urlEditText"
-            app:layout_constraintStart_toStartOf="@id/urlEditText"
-            app:layout_constraintTop_toBottomOf="@+id/urlEditText">
+            android:paddingVertical="15dp"
+            app:layout_constraintBottom_toTopOf="@+id/VideoTypeSwitch"
+            app:layout_constraintEnd_toEndOf="@id/urlTextView"
+            app:layout_constraintStart_toStartOf="@id/urlTextView"
+            app:layout_constraintTop_toBottomOf="@id/urlTextView">
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/tagChipGroup"
