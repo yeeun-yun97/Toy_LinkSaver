@@ -17,34 +17,43 @@ class MainActivity : SjBasicActivity<ActivityMainBinding>() {
     private val videoFragment = ListVideoFragment()
     private val settingFragment = SettingFragment()
 
+    private var selectedItemId = 0
+
     override fun viewBindingInflate(inflater: LayoutInflater): ActivityMainBinding =
         ActivityMainBinding.inflate(inflater)
 
     override fun homeFragment(): Fragment{
         // 최초 부착할 프래그먼트와 바텀내비의 선택된 메뉴를 동기화.
-        binding.bottomNavigation.selectedItemId=R.id.linkItem
+        this.selectedItemId=R.id.linkItem
+        binding.bottomNavigation.selectedItemId=selectedItemId
         return linkFragment
     }
 
     override fun onCreate() {
         // 바텀 내비 메뉴 선택시 프래그먼트 변경.
         binding.bottomNavigation.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.linkItem -> {
-                    this.replaceFragmentTo(linkFragment)
-                    true
+            if(it.itemId!= selectedItemId) {
+                selectedItemId=it.itemId
+                when (it.itemId) {
+                    R.id.linkItem -> {
+                        this.replaceFragmentTo(linkFragment)
+                        true
+                    }
+                    R.id.videoItem -> {
+                        this.replaceFragmentTo(videoFragment)
+                        true
+                    }
+                    R.id.settingItem -> {
+                        this.replaceFragmentTo(settingFragment)
+                        true
+                    }
+                    else -> false
                 }
-                R.id.videoItem -> {
-                    this.replaceFragmentTo(videoFragment)
-                    true
-                }
-                R.id.settingItem -> {
-                    this.replaceFragmentTo(settingFragment)
-                    true
-                }
-                else -> false
+            }else{
+                false
             }
         }
+
     }
 
 }
