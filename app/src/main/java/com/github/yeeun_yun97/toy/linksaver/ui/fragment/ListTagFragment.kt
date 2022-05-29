@@ -1,6 +1,7 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment
 
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
@@ -17,6 +18,8 @@ class ListTagFragment : SjBasicFragment<FragmentListTagBinding>() {
     override fun layoutId(): Int = R.layout.fragment_list_tag
 
     override fun onCreateView() {
+        val handlerMap = hashMapOf<Int, ()->Unit>(R.id.menu_add to ::moveToAddFragment)
+        binding.toolbar.setMenu(R.menu.toolbar_menu_add, handlerMap = handlerMap)
         viewModel.tags.observe(
             viewLifecycleOwner, {
                 if (it.isEmpty()) {
@@ -54,6 +57,10 @@ class ListTagFragment : SjBasicFragment<FragmentListTagBinding>() {
         //TODO
         //여기서 확인 다이얼로그 표시하면 좋을 것 같음.
         //링크와의 연결도 사라진다고 알리기.
+    }
+
+    private fun moveToAddFragment(){
+        moveToOtherFragment(EditTagFragment())
     }
 
 }
