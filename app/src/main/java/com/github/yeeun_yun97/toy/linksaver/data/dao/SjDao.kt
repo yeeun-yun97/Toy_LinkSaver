@@ -89,9 +89,10 @@ interface SjDao {
                 + "INNER JOIN linkTagCrossRef as ref ON link.lid = ref.lid "
                 + "INNER JOIN SjTag as tag ON ref.tid = tag.tid "
                 + "WHERE link.name LIKE :keyword "
-                + "AND tag.tid IN(:tags)"
+                + "AND tag.tid IN(:tags) "
                 + "GROUP BY link.lid " //prevent duplicates
-                + "HAVING count(*) == :size"
+                + "HAVING count(*) == :size "
+                + "ORDER BY link.lid desc"
     )
     suspend fun searchLinksAndDomainsWithTagsByLinkNameAndTags(
         keyword: String, tags: List<Int>, size: Int
@@ -99,7 +100,7 @@ interface SjDao {
 
     // search link query by link name
     @Transaction
-    @Query("SELECT * FROM SjLink WHERE name LIKE :keyword")
+    @Query("SELECT * FROM SjLink WHERE name LIKE :keyword ORDER BY lid desc")
     suspend fun searchLinksAndDomainsWithTagsByLinkName(
         keyword: String
     ): List<SjLinksAndDomainsWithTags>
@@ -201,7 +202,7 @@ interface SjDao {
 
     @Transaction
     @Query("SELECT * FROM SjLink WHERE Type = :type ORDER BY lid desc")
-    fun getAllLinksByType(type:String): LiveData<List<SjLinksAndDomainsWithTags>>
+    fun getAllLinksByType(type: String): LiveData<List<SjLinksAndDomainsWithTags>>
 
 
 }

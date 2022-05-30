@@ -1,6 +1,7 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment
 
 import android.content.Intent
+import android.util.Log
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.clone.ynmodule.ui.component.DataState
@@ -28,11 +29,14 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
     // override methods
     override fun layoutId(): Int = R.layout.fragment_list_link
 
-    override fun onResume() {
-        super.onResume()
-        viewUtil.state = DataState.LOADING
-        binding.shimmer.startShimmer()
-        viewModel.searchLinkBySearchSet()
+    override fun onStart() {
+        super.onStart()
+        Log.d("onStart","search start, shimmer started")
+        if(viewModel.mode==ListMode.MODE_SEARCH){
+            viewUtil.state = DataState.LOADING
+            binding.shimmer.startShimmer()
+            viewModel.searchLinkBySearchSet()
+        }
     }
 
     override fun onCreateView() {
@@ -85,8 +89,10 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
             delay(500)
             if (dataList.isEmpty()) {
                 viewUtil.state = DataState.EMPTY
+                Log.d("search ended","empty")
             } else {
                 viewUtil.state = DataState.LOADED
+                Log.d("search ended","list")
             }
         }
     }

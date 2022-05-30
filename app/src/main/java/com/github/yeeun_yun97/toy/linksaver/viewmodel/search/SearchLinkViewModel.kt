@@ -1,5 +1,6 @@
 package com.github.yeeun_yun97.toy.linksaver.viewmodel.search
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
@@ -64,6 +65,8 @@ class SearchLinkViewModel : BasicViewModelWithRepository() {
     fun searchLinkBySearchSet() {
         val keyword = bindingSearchWord.value!!
         repository.searchLinksBySearchSet(keyword, _selectedTags)
+        Log.d("viewModel search start","keyword $keyword")
+        Log.d("viewModel search start","tags $_selectedTags")
     }
 
     fun isSearchSetEmpty(): Boolean =
