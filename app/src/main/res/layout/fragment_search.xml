@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.github.yeeun_yun97.toy.linksaver.viewmodel.ReadLinkViewModel" />
@@ -38,7 +39,7 @@
             android:imeOptions="actionSearch"
             android:inputType="textPersonName"
             android:paddingHorizontal="10dp"
-            android:text="@={viewModel.searchWord}"
+            android:text="@={viewModel.bindingSearchWord}"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -61,9 +62,7 @@
             android:layout_height="200dp"
             app:layout_constraintEnd_toEndOf="@+id/recentSearchedRecyclerView"
             app:layout_constraintStart_toStartOf="@+id/tagTextView"
-            app:layout_constraintTop_toBottomOf="@+id/tagTextView">
-
-        </com.google.android.material.chip.ChipGroup>
+            app:layout_constraintTop_toBottomOf="@+id/tagTextView"/>
 
         <ImageView
             android:id="@+id/deleteImageView"

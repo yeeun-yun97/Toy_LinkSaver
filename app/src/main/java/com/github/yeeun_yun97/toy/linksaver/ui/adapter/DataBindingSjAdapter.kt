@@ -28,9 +28,7 @@ class DataBindingSjAdapter {
             if (!tags.isNullOrEmpty()) {
                 for( tag in tags) {
                     val chip = SjTagChip(view.context, tag)
-                    chip.isChecked = true
-                    chip.isCheckable = false
-                    chip.isClickable = false
+                    chip.setViewMode()
                     view.addView(chip)
                 }
             }

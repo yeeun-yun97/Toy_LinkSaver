@@ -52,7 +52,7 @@ class SjRepository private constructor() {
 
     fun insertLinkAndTags(domain: SjDomain?, newLink: SjLink, tags: List<SjTag>) =
         CoroutineScope(Dispatchers.IO).launch {
-            if(domain!=null)newLink.did = domain.did
+            if (domain != null) newLink.did = domain.did
             val lid = async { dao.insertLink(newLink).toInt() }
 
             //insert crossRef after newLink insert
@@ -67,18 +67,18 @@ class SjRepository private constructor() {
         dao.insertLinkTagCrossRefs(*linkTagCrossRefs.toTypedArray())
     }
 
-    fun insertSearchAndTags(newSearch: SjSearch, selectedTags: List<SjTag>) {
+    fun insertSearchAndTags(searchWord: String, selectedTags: List<SjTag>) {
         CoroutineScope(Dispatchers.IO).launch {
             //find if there is already same searchData and delete them
             val sids = async {
-                getSearchBySearchWordAndTags(newSearch.keyword, selectedTags)
+                getSearchBySearchWordAndTags(searchWord, selectedTags)
             }
             deleteSearchesBySids(sids.await())
 
             //insert new searchData
             val newSid = async {
                 sids.await()
-                dao.insertSearch(newSearch).toInt()
+                dao.insertSearch(SjSearch(keyword = searchWord)).toInt()
             }
             insertSearchTagCrossRef(newSid.await(), selectedTags)
         }
@@ -114,32 +114,39 @@ class SjRepository private constructor() {
 
 
     // search methods
-    fun searchLinksBySearchSet(keyword: String) {
+    fun searchLinksBySearchSet(keyword: String, selectedTags: List<SjTag>) {
         CoroutineScope(Dispatchers.IO).launch {
-            val result = dao.searchLinksAndDomainsWithTagsByLinkName(
-                "%$keyword%"
-            )
-            _searchLinkList.postValue(result)
+            if (selectedTags.isEmpty()) {
+                searchByLinkName(keyword)
+            } else {
+                searchByLinkNameAndTags(keyword, selectedTags)
+            }
         }
     }
 
-    fun searchLinksBySearchSet(keyword: String, selectedTags: List<SjTag>) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val list: MutableList<Int> = mutableListOf()
-            for (tag in selectedTags) {
-                list.add(tag.tid)
-            }
-            val result = dao.searchLinksAndDomainsWithTagsByLinkNameAndTags(
-                "%$keyword%", list
-            )
-            _searchLinkList.postValue(result)
-        }
+    private suspend fun searchByLinkName(keyword: String) {
+        val result = dao.searchLinksAndDomainsWithTagsByLinkName(
+            "%$keyword%"
+        )
+        _searchLinkList.postValue(result)
     }
+
+    private suspend fun searchByLinkNameAndTags(keyword: String, selectedTags: List<SjTag>) {
+        val list: MutableList<Int> = mutableListOf()
+        for (tag in selectedTags) {
+            list.add(tag.tid)
+        }
+        val result = dao.searchLinksAndDomainsWithTagsByLinkNameAndTags(
+            "%$keyword%", list
+        )
+        _searchLinkList.postValue(result)
+    }
+
 
     // update methods
     fun updateLinkAndTags(domain: SjDomain?, link: SjLink, tags: MutableList<SjTag>) {
         CoroutineScope(Dispatchers.IO).launch {
-            if(domain!=null) link.did = domain.did
+            if (domain != null) link.did = domain.did
             dao.updateLink(link)
 
             //update tags:: delete all and insert all
@@ -234,7 +241,6 @@ class SjRepository private constructor() {
     suspend fun getTagByTid(tid: Int): SjTag = dao.getTagByTid(tid)
 
     suspend fun getDomainByDid(did: Int): SjDomain = dao.getDomainByDid(did)
-
 
 
 }

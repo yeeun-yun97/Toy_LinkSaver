@@ -1,6 +1,5 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,8 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.ItemGallerySearchSetBinding
 
 class RecyclerSearchGalleryAdapter(
-    private val clickOperation: (String, List<SjTag>) -> Unit
+    private val setSearchOperation: (String, List<SjTag>) -> Unit,
+    private val searchStartOperation: () -> Unit
 ) : RecyclerBasicAdapter<SjSearchWithTags, SearchesGalleryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchesGalleryViewHolder {
@@ -21,7 +21,7 @@ class RecyclerSearchGalleryAdapter(
     }
 
     override fun onBindViewHolder(holder: SearchesGalleryViewHolder, item: SjSearchWithTags) {
-        holder.setSearch(item, clickOperation)
+        holder.setSearch(item, setSearchOperation, searchStartOperation)
     }
 
 }
@@ -31,23 +31,30 @@ class SearchesGalleryViewHolder(binding: ItemGallerySearchSetBinding) :
         binding
     ) {
 
-    @SuppressLint("ClickableViewAccessibility")
     fun setSearch(
         search: SjSearchWithTags,
-        clickOperation: (String, List<SjTag>) -> Unit
+        setSearchOperation: (String, List<SjTag>) -> Unit,
+        searchStartOperation: () -> Unit
     ) {
 
         binding.search = search
         itemView.setOnClickListener {
-            clickOperation(search.search.keyword, search.tags)
+            setSearchOperation(search.search.keyword, search.tags)
+            searchStartOperation()
+        }
+        itemView.setOnLongClickListener {
+            setSearchOperation(search.search.keyword, search.tags)
+            true
         }
         val searchWord = search.search.keyword
+        /*
         if (searchWord.isEmpty()) {
             binding.keywordTextView.visibility = View.GONE
         } else {
             binding.keywordTextView.visibility = View.VISIBLE
             binding.keywordTextView.setText(search.search.keyword)
         }
+         */
     }
 
 }

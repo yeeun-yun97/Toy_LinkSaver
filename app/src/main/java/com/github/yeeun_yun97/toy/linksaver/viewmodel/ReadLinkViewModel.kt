@@ -2,7 +2,6 @@ package com.github.yeeun_yun97.toy.linksaver.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjSearch
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.BasicViewModelWithRepository
 
@@ -20,63 +19,71 @@ class ReadLinkViewModel : BasicViewModelWithRepository() {
     // mode
     var mode: ListMode = ListMode.MODE_ALL
 
-    // data binding liveData
-    val searchWord = MutableLiveData<String>()
+    // to save
+    val bindingSearchWord = MutableLiveData("")
+    private var _selectedTags = mutableListOf<SjTag>()
+    val selectedTags = MutableLiveData(_selectedTags)
 
-    // selected tags for search
-    var selectedTags = mutableListOf<SjTag>()
+    //  update tag selection
+    fun addTag(tag: SjTag) {
+        _selectedTags.add(tag)
+    }
+
+    fun removeTag(tag: SjTag) {
+        _selectedTags.remove(tag)
+    }
+
+    fun containsTag(tag: SjTag) = _selectedTags.contains(tag)
+
+    fun setTags(tags: List<SjTag>) {
+        _selectedTags.clear()
+        _selectedTags.addAll(tags)
+        selectedTags.postValue(_selectedTags)
+    }
+
+    private fun initTags() {
+        _selectedTags = mutableListOf()
+        selectedTags.postValue(_selectedTags)
+    }
+
+
+    // search methods
+    fun searchLinkBySearchSetAndSave() {
+        if (isSearchSetEmpty()) {
+            this.mode = ListMode.MODE_ALL
+        } else {
+            this.mode = ListMode.MODE_SEARCH
+            searchLinkBySearchSet()
+            saveSearchSet()
+        }
+        initData()
+    }
+
+    fun searchLinkBySearchSet() {
+        val keyword = bindingSearchWord.value!!
+        repository.searchLinksBySearchSet(keyword, _selectedTags)
+    }
+
+    fun isSearchSetEmpty(): Boolean =
+        bindingSearchWord.value.isNullOrEmpty() && _selectedTags.isEmpty()
+
+    private fun saveSearchSet() {
+        // save
+        repository.insertSearchAndTags(
+            this.bindingSearchWord.value!!,
+            this._selectedTags
+        )
+    }
+
+    private fun initData() {
+        this.bindingSearchWord.postValue("")
+        this.initTags()
+    }
 
 
     // delete methods
     fun deleteAllSearch() = repository.deleteSearch()
 
     fun deleteLink(link: SjLink, tags: List<SjTag>) = repository.deleteLink(link, tags)
-
-
-    // search methods
-    fun isSearchSetEmpty(): Boolean {
-        return searchWord.value.isNullOrEmpty() && selectedTags.isEmpty()
-    }
-
-    fun searchLinkBySearchSetAndSave() {
-        var keyword = searchWord.value ?: ""
-        searchLinkBySearchSet()
-        if (!isSearchSetEmpty())
-            saveSearch(keyword)
-    }
-
-    fun searchLinkBySearchSet() {
-        var keyword = searchWord.value ?: ""
-
-        //when search data is null -> return to All list mode
-        if (isSearchSetEmpty()) {
-            this.mode = ListMode.MODE_ALL
-            return
-        }
-
-        this.mode = ListMode.MODE_SEARCH
-        // search without Tags
-        if (selectedTags.isEmpty()) {
-            repository.searchLinksBySearchSet(keyword)
-
-            // search with Tags
-        } else {
-            repository.searchLinksBySearchSet(keyword, selectedTags)
-        }
-    }
-
-    private fun saveSearch(keyword: String) {
-        repository.insertSearchAndTags(
-            SjSearch(keyword = keyword),
-            selectedTags
-        )
-        /*
-        매번 selectedTags.clear()해서 하나의 객체로 썼었는데,
-        일이 비동기로 일어나다 보니, 다른 검색을 하는 중에 clear()하는 사고가 발생해서
-        어쩔 수 없이 일단 새 객체로 갈아서 다음 검색은 다른 리스트 객체를 사용하게 만들었다.
-         */
-        selectedTags = mutableListOf()
-    }
-
 }
 
