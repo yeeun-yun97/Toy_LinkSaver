@@ -1,5 +1,6 @@
-package com.github.yeeun_yun97.toy.linksaver.viewmodel
+package com.github.yeeun_yun97.toy.linksaver.viewmodel.search
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
@@ -10,7 +11,7 @@ enum class ListMode {
     MODE_ALL, MODE_SEARCH;
 }
 
-class ReadLinkViewModel : BasicViewModelWithRepository() {
+class SearchLinkViewModel : BasicViewModelWithRepository() {
     val linkList = repository.linkList
     val searchLinkList = repository.searchLinkList
     val searchList = repository.searches
@@ -22,7 +23,8 @@ class ReadLinkViewModel : BasicViewModelWithRepository() {
     // to save
     val bindingSearchWord = MutableLiveData("")
     private var _selectedTags = mutableListOf<SjTag>()
-    val selectedTags = MutableLiveData(_selectedTags)
+    private val _targetTags = MutableLiveData(_selectedTags)
+    val targetTags: LiveData<MutableList<SjTag>> get() = _targetTags
 
     //  update tag selection
     fun addTag(tag: SjTag) {
@@ -38,12 +40,12 @@ class ReadLinkViewModel : BasicViewModelWithRepository() {
     fun setTags(tags: List<SjTag>) {
         _selectedTags.clear()
         _selectedTags.addAll(tags)
-        selectedTags.postValue(_selectedTags)
+        _targetTags.postValue(_selectedTags)
     }
 
     private fun initTags() {
         _selectedTags = mutableListOf()
-        selectedTags.postValue(_selectedTags)
+        _targetTags.postValue(_selectedTags)
     }
 
 
@@ -51,12 +53,12 @@ class ReadLinkViewModel : BasicViewModelWithRepository() {
     fun searchLinkBySearchSetAndSave() {
         if (isSearchSetEmpty()) {
             this.mode = ListMode.MODE_ALL
+            initData()
         } else {
             this.mode = ListMode.MODE_SEARCH
             searchLinkBySearchSet()
             saveSearchSet()
         }
-        initData()
     }
 
     fun searchLinkBySearchSet() {

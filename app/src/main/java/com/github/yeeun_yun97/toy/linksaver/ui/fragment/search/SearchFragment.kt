@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.ui.fragment
+package com.github.yeeun_yun97.toy.linksaver.ui.fragment.search
 
 import android.graphics.Rect
 import android.view.View
@@ -11,13 +11,13 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSearchBinding
-import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerSearchGalleryAdapter
+import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.SearchSetAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.ReadLinkViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel
 
 class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
-    val viewModel: ReadLinkViewModel by activityViewModels()
+    val viewModel: SearchLinkViewModel by activityViewModels()
 
     // drawable resources
     private val deleteIcon by lazy {
@@ -48,7 +48,7 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
         viewModel.tagList.observe(viewLifecycleOwner, {
             setTagList(it)
         })
-        viewModel.selectedTags.observe(viewLifecycleOwner, {
+        viewModel.targetTags.observe(viewLifecycleOwner, {
             if (viewModel.tagList.value != null) {
                 setTagList(viewModel.tagList.value!!)
             }
@@ -79,7 +79,7 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
         // set recyclerview search set
         binding.recentSearchedRecyclerView.layoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        val adapter = RecyclerSearchGalleryAdapter(::setSearch, ::searchAndPopBack)
+        val adapter = SearchSetAdapter(::setSearch, ::searchAndPopBack)
         binding.recentSearchedRecyclerView.addItemDecoration(
             object : RecyclerView.ItemDecoration() {
                 override fun getItemOffsets(
@@ -126,19 +126,17 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
         binding.tagChipGroup.removeAllViews()
         for (tag in it) {
             val chip = SjTagChip(requireContext(), tag)
-            chip.setOnCheckedChangeListener(onCheckedListener)
             chip.isChecked = viewModel.containsTag(tag)
+            chip.setOnCheckedChangeListener(onCheckedListener)
             binding.tagChipGroup.addView(chip)
         }
-
     }
 
 
+    // search methods
     private fun setSearch(keyword: String, tags: List<SjTag>) {
         viewModel.bindingSearchWord.postValue(keyword)
         viewModel.setTags(tags)
-
-        // set tags selected here
     }
 
     private fun searchAndPopBack() {

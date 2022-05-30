@@ -5,10 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
-            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.ReadLinkViewModel" />
+            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -93,7 +92,7 @@
             app:layout_constraintStart_toStartOf="@+id/recentSearchWordTextView"
             app:layout_constraintTop_toBottomOf="@+id/recentSearchWordTextView"
             tools:itemCount="4"
-            tools:listitem="@layout/item_gallery_search_set" />
+            tools:listitem="@layout/item_search_set" />
 
         <ImageView
             android:id="@+id/searchImageView"

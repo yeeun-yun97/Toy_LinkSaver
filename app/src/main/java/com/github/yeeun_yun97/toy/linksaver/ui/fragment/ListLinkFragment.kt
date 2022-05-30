@@ -13,15 +13,16 @@ import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerSearchLinkAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.ListMode
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.ReadLinkViewModel
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.search.SearchFragment
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.ListMode
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
-    val viewModel: ReadLinkViewModel by activityViewModels()
+    val viewModel: SearchLinkViewModel by activityViewModels()
 
     lateinit var viewUtil: ViewVisibilityUtil
 

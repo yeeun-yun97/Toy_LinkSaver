@@ -7,10 +7,10 @@ import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.ActivityMainBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.basic.SjBasicActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.*
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.ReadLinkViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel
 
 class MainActivity : SjBasicActivity<ActivityMainBinding>() {
-    val viewModel: ReadLinkViewModel by viewModels()
+    val viewModel: SearchLinkViewModel by viewModels()
 
     // 바텀 내비에 따라 부착할 fragment들.
     private val linkFragment = ListLinkFragment()
