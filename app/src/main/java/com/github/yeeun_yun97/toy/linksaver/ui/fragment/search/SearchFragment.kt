@@ -6,6 +6,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.CompoundButton
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
@@ -44,14 +45,15 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
         // set auto focus on Search Field
         binding.searchEditText.requestFocus()
 
+        // hide empty views
+        binding.emptySearchSetGroup.visibility = View.GONE
+        binding.emptyTagGroup.visibility = View.GONE
+
         // set tag list
-        viewModel.tagList.observe(viewLifecycleOwner, {
-            setTagList(it)
-        })
-        viewModel.targetTags.observe(viewLifecycleOwner, {
-            if (viewModel.tagList.value != null) {
+        viewModel.tagList.observe(viewLifecycleOwner, { setTagList(it) })
+        viewModel.bindingTargetTags.observe(viewLifecycleOwner, {
+            if (viewModel.tagList.value != null)
                 setTagList(viewModel.tagList.value!!)
-            }
         })
 
         // user input enter(action search) -> search start.
@@ -98,6 +100,11 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
         binding.recentSearchedRecyclerView.adapter = adapter
         viewModel.searchList.observe(viewLifecycleOwner,
             {
+                if (it.isNullOrEmpty()) {
+                    binding.emptySearchSetGroup.visibility = View.VISIBLE
+                } else {
+                    binding.emptySearchSetGroup.visibility = View.GONE
+                }
                 adapter.setList(it)
             }
         )
@@ -109,6 +116,11 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
     }
 
     private fun setTagList(it: List<SjTag>) {
+        if (it.isNullOrEmpty()) {
+            binding.emptyTagGroup.visibility = View.VISIBLE
+        } else {
+            binding.emptyTagGroup.visibility = View.GONE
+        }
         val onCheckedListener =
             CompoundButton.OnCheckedChangeListener { btn, isChecked ->
                 val chip = btn as SjTagChip

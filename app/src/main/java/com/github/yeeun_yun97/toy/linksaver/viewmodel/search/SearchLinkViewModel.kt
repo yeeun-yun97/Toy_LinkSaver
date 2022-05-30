@@ -24,7 +24,7 @@ class SearchLinkViewModel : BasicViewModelWithRepository() {
     val bindingSearchWord = MutableLiveData("")
     private var _selectedTags = mutableListOf<SjTag>()
     private val _targetTags = MutableLiveData(_selectedTags)
-    val targetTags: LiveData<MutableList<SjTag>> get() = _targetTags
+    val bindingTargetTags: LiveData<MutableList<SjTag>> get() = _targetTags
 
     //  update tag selection
     fun addTag(tag: SjTag) {

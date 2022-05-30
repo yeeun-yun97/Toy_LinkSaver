@@ -6,9 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.clone.ynmodule.ui.component.DataState
 import com.github.yeeun_yun97.clone.ynmodule.ui.component.ViewVisibilityUtil
 import com.github.yeeun_yun97.toy.linksaver.R
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinksAndDomainsWithTags
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerSearchLinkAdapter
@@ -22,9 +20,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
-    val viewModel: SearchLinkViewModel by activityViewModels()
+    private val viewModel: SearchLinkViewModel by activityViewModels()
 
-    lateinit var viewUtil: ViewVisibilityUtil
+    // control view visibility
+    private lateinit var viewUtil: ViewVisibilityUtil
 
     // override methods
     override fun layoutId(): Int = R.layout.fragment_list_link
@@ -37,6 +36,9 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
     }
 
     override fun onCreateView() {
+        // set binding variable
+        binding.viewModel=viewModel
+
         // set recycler view
         val adapter = RecyclerSearchLinkAdapter(
             detailOperation = ::moveToDetailFragment
@@ -44,6 +46,7 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
 
+        // set view Util
         viewUtil = ViewVisibilityUtil(
             loadingView = binding.shimmerRecylerView,
             loadedView = binding.recyclerView,
@@ -70,7 +73,6 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
             }
         )
 
-
         // handle user click event
         binding.floatingActionView.setOnClickListener { startEditActivity() }
         binding.searchEditText.setOnClickListener {
@@ -78,22 +80,14 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
         }
     }
 
-    private fun delayAndViewVisibleControl(datas: List<SjLinksAndDomainsWithTags>) {
+    private fun delayAndViewVisibleControl(dataList: List<SjLinksAndDomainsWithTags>) {
         CoroutineScope(Dispatchers.Main).launch {
-            delay(1500)
-            if (datas.isEmpty()) {
+            delay(500)
+            if (dataList.isEmpty()) {
                 viewUtil.state = DataState.EMPTY
             } else {
                 viewUtil.state = DataState.LOADED
             }
-        }
-    }
-
-    // handle user event methods
-    private fun deleteLink(link: SjLink, tags: List<SjTag>) {
-        viewModel.deleteLink(link, tags)
-        if (viewModel.mode == ListMode.MODE_SEARCH) {
-            viewModel.searchLinkBySearchSetAndSave()
         }
     }
 
@@ -104,7 +98,6 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
     private fun moveToDetailFragment(lid: Int) {
         moveToOtherFragment(DetailLinkFragment.newInstance(lid))
     }
-
 
     private fun startEditActivity() {
         val intent = Intent(requireContext(), EditLinkActivity::class.java)

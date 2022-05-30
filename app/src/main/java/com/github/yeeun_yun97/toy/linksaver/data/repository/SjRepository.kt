@@ -137,7 +137,7 @@ class SjRepository private constructor() {
             list.add(tag.tid)
         }
         val result = dao.searchLinksAndDomainsWithTagsByLinkNameAndTags(
-            "%$keyword%", list
+            "%$keyword%", list, list.size
         )
         _searchLinkList.postValue(result)
     }

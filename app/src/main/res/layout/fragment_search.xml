@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel" />
@@ -14,18 +15,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/emptySearchSetGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="emptySearchSetImageView,emptySearchSetTextView" />
+
         <TextView
             android:id="@+id/deleteTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="전체 삭제"
-            app:layout_constraintBottom_toBottomOf="@+id/deleteImageView"
-            app:layout_constraintEnd_toEndOf="@+id/deleteImageView"
-            app:layout_constraintEnd_toStartOf="@+id/searchImageView"
+            app:layout_constraintBottom_toBottomOf="@id/deleteImageView"
+            app:layout_constraintEnd_toEndOf="@id/deleteImageView"
+            app:layout_constraintEnd_toStartOf="@id/searchImageView"
             app:layout_constraintHorizontal_bias="1"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toEndOf="@+id/recentSearchWordTextView"
-            app:layout_constraintTop_toTopOf="@+id/deleteImageView" />
+            app:layout_constraintStart_toEndOf="@id/recentSearchWordTextView"
+            app:layout_constraintTop_toTopOf="@id/deleteImageView" />
 
         <EditText
             android:id="@+id/searchEditText"
@@ -38,10 +45,11 @@
             android:imeOptions="actionSearch"
             android:inputType="textPersonName"
             android:paddingHorizontal="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="45dp"
             android:text="@={viewModel.bindingSearchWord}"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,26 +60,29 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="최근 검색어"
-            app:layout_constraintStart_toStartOf="@+id/searchEditText"
-            app:layout_constraintTop_toBottomOf="@+id/searchEditText" />
+            app:layout_constraintStart_toStartOf="@id/searchEditText"
+            app:layout_constraintTop_toBottomOf="@id/searchEditText" />
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/tagChipGroup"
             android:layout_width="0dp"
-            android:layout_height="200dp"
-            app:layout_constraintEnd_toEndOf="@+id/recentSearchedRecyclerView"
-            app:layout_constraintStart_toStartOf="@+id/tagTextView"
-            app:layout_constraintTop_toBottomOf="@+id/tagTextView"/>
+            android:layout_height="0dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/recentSearchedRecyclerView"
+            app:layout_constraintHeight_min="50dp"
+            app:layout_constraintStart_toStartOf="@id/tagTextView"
+            app:layout_constraintTop_toBottomOf="@id/tagTextView" />
 
         <ImageView
             android:id="@+id/deleteImageView"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginEnd="5dp"
-            app:layout_constraintBottom_toTopOf="@+id/recentSearchedRecyclerView"
-            app:layout_constraintEnd_toEndOf="@+id/recentSearchedRecyclerView"
+            app:layout_constraintBottom_toTopOf="@id/recentSearchedRecyclerView"
+            app:layout_constraintEnd_toEndOf="@id/recentSearchedRecyclerView"
             app:layout_constraintStart_toEndOf="@id/deleteTextView"
-            app:layout_constraintTop_toTopOf="@+id/recentSearchWordTextView"
+            app:layout_constraintTop_toTopOf="@id/recentSearchWordTextView"
             app:srcCompat="@drawable/ic_baseline_delete_24" />
 
         <TextView
@@ -81,16 +92,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:text="태그"
-            app:layout_constraintStart_toStartOf="@+id/recentSearchedRecyclerView"
-            app:layout_constraintTop_toBottomOf="@+id/recentSearchedRecyclerView" />
+            app:layout_constraintStart_toStartOf="@id/recentSearchedRecyclerView"
+            app:layout_constraintTop_toBottomOf="@id/recentSearchedRecyclerView" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recentSearchedRecyclerView"
             android:layout_width="0dp"
             android:layout_height="180dp"
-            app:layout_constraintEnd_toEndOf="@+id/searchEditText"
-            app:layout_constraintStart_toStartOf="@+id/recentSearchWordTextView"
-            app:layout_constraintTop_toBottomOf="@+id/recentSearchWordTextView"
+            app:layout_constraintEnd_toEndOf="@id/searchEditText"
+            app:layout_constraintStart_toStartOf="@id/recentSearchWordTextView"
+            app:layout_constraintTop_toBottomOf="@id/recentSearchWordTextView"
             tools:itemCount="4"
             tools:listitem="@layout/item_search_set" />
 
@@ -99,10 +110,62 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginEnd="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/searchEditText"
-            app:layout_constraintEnd_toEndOf="@+id/searchEditText"
-            app:layout_constraintTop_toTopOf="@+id/searchEditText"
+            app:layout_constraintBottom_toBottomOf="@id/searchEditText"
+            app:layout_constraintEnd_toEndOf="@id/searchEditText"
+            app:layout_constraintTop_toTopOf="@id/searchEditText"
             app:layout_constraintVertical_bias="0.5"
             app:srcCompat="@drawable/ic_baseline_close_24" />
+
+
+        <ImageView
+            android:id="@+id/emptyTagImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/tagChipGroup"
+            app:layout_constraintEnd_toStartOf="@id/emptyTagTextView"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@id/tagChipGroup"
+            app:layout_constraintTop_toTopOf="@id/tagChipGroup"
+            app:layout_constraintVertical_bias="0.1"
+            app:srcCompat="@drawable/ic_icons8_empty__2_" />
+
+        <TextView
+            android:id="@+id/emptyTagTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="아직 생성된 태그가 없습니다."
+            app:layout_constraintBottom_toBottomOf="@+id/emptyTagImageView"
+            app:layout_constraintEnd_toEndOf="@+id/tagChipGroup"
+            app:layout_constraintStart_toEndOf="@id/emptyTagImageView"
+            app:layout_constraintTop_toTopOf="@+id/emptyTagImageView" />
+
+        <ImageView
+            android:id="@+id/emptySearchSetImageView"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:layout_constraintBottom_toTopOf="@id/emptySearchSetTextView"
+            app:layout_constraintEnd_toEndOf="@+id/recentSearchedRecyclerView"
+            app:layout_constraintStart_toStartOf="@+id/recentSearchedRecyclerView"
+            app:layout_constraintTop_toTopOf="@+id/recentSearchedRecyclerView"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:srcCompat="@drawable/ic_icons8_google_web_search" />
+
+        <TextView
+            android:id="@+id/emptySearchSetTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="저장된 검색 기록이 없습니다."
+            app:layout_constraintBottom_toBottomOf="@+id/recentSearchedRecyclerView"
+            app:layout_constraintEnd_toEndOf="@+id/emptySearchSetImageView"
+            app:layout_constraintStart_toStartOf="@+id/emptySearchSetImageView"
+            app:layout_constraintTop_toBottomOf="@+id/emptySearchSetImageView" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/emptyTagGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="emptyTagImageView,emptyTagTextView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

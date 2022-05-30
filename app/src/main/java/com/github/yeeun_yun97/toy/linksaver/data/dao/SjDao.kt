@@ -82,11 +82,6 @@ interface SjDao {
         size: Int = tags.size
     ): List<Int>
 
-    fun tt (){
-        val list = listOf<String>()
-        list.size
-    }
-
     // search link query by link name and tags
     @Transaction
     @Query(
@@ -95,10 +90,11 @@ interface SjDao {
                 + "INNER JOIN SjTag as tag ON ref.tid = tag.tid "
                 + "WHERE link.name LIKE :keyword "
                 + "AND tag.tid IN(:tags)"
-                + "GROUP BY link.lid" //prevent duplicates
+                + "GROUP BY link.lid " //prevent duplicates
+                + "HAVING count(*) == :size"
     )
     suspend fun searchLinksAndDomainsWithTagsByLinkNameAndTags(
-        keyword: String, tags: List<Int>
+        keyword: String, tags: List<Int>, size: Int
     ): List<SjLinksAndDomainsWithTags>
 
     // search link query by link name
