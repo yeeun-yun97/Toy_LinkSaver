@@ -66,23 +66,30 @@ class SjNetworkRepository private constructor() {
         return ""
     }
 
-    suspend fun getTitleOf(url: String) :String {
+    suspend fun getTitleOf(url: String): String {
         if (!SjUtil.checkUrlPrefix(url)) return ""
-            try {
-                val request = Request.Builder().url(url).build()
-                client.newCall(request).execute().use { response ->
-                    if (!response.isSuccessful) Log.e("Error", "UnExpected code $response")
+        try {
+            val request = Request.Builder().url(url).build()
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) {
+                    Log.e("Error", "UnExpected code $response")
+                    return ""
+                }
+                val contentType = response.headers.get("Content-Type") ?: ""
+                return if (!contentType.startsWith("video")) {
                     val html = Jsoup.parse(response.body!!.string())
                     Log.d("loadTitle", html.title())
-                    return html.title()
-                }
-            } catch (e: Exception) {
-                /*
-                유저가 입력한 url이 완벽하지 않아서 오류가 날 수도 있다.
-                근데 이건 오류가 아니고, 아직 입력중인 것일 수도 있는 심각하지 않은 문제다.
-                 */
-                return ""
+                    html.title()
+                } else
+                    ""
             }
+        } catch (e: Exception) {
+            /*
+            유저가 입력한 url이 완벽하지 않아서 오류가 날 수도 있다.
+            근데 이건 오류가 아니고, 아직 입력중인 것일 수도 있는 심각하지 않은 문제다.
+             */
+            return ""
+        }
     }
 
     fun postTitleOf(url: String) {

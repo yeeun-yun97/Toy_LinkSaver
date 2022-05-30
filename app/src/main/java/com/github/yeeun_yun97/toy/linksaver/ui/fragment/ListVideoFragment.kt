@@ -80,7 +80,7 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
                 val position = manager.findFirstCompletelyVisibleItemPosition()
                 val currentViewHolder =
                     binding.videoRecyclerView.findViewHolderForLayoutPosition(position)
-                if (currentViewHolder is VideoRecyclerViewHolder) {
+                if (position != prevPosition && currentViewHolder is VideoRecyclerViewHolder) {
                     if (prevPosition != -1) {
                         val prevViewHolder =
                             binding.videoRecyclerView.findViewHolderForAdapterPosition(prevPosition)
