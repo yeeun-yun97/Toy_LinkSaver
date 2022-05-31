@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.fragment.search.ListLinkFragment">
+        tools:context=".ui.fragment.main.search.ListLinkFragment">
 
         <include
             android:id="@+id/include"

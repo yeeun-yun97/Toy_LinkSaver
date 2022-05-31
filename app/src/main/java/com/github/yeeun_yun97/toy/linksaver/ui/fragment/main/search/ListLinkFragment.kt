@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.ui.fragment.search
+package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search
 
 import android.content.Intent
 import android.util.Log
@@ -12,7 +12,7 @@ import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.LinkSearchListAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.detail_link.DetailLinkFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.detail_link.DetailLinkFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.ListMode
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel
 import kotlinx.coroutines.CoroutineScope

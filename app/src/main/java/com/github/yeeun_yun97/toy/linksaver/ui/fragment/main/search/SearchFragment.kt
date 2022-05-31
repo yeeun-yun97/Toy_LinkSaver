@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.ui.fragment.search
+package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search
 
 import android.graphics.Rect
 import android.view.View
@@ -6,7 +6,6 @@ import android.view.inputmethod.EditorInfo
 import android.widget.CompoundButton
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R

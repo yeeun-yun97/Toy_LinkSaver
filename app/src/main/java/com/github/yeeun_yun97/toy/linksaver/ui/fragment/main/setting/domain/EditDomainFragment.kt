@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.ui.fragment.domain
+package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.domain
 
 import android.os.Bundle
 import androidx.fragment.app.viewModels

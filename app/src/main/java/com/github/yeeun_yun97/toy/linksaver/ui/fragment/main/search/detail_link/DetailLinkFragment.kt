@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.ui.fragment.detail_link
+package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.detail_link
 
 import android.content.Intent
 import android.net.Uri
