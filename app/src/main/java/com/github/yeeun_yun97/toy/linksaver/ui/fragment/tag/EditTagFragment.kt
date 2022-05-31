@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.ui.fragment
+package com.github.yeeun_yun97.toy.linksaver.ui.fragment.tag
 
 import android.os.Bundle
 import androidx.fragment.app.viewModels
@@ -6,7 +6,7 @@ import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditTagBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.TagViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.TagViewModel
 
 class EditTagFragment : SjBasicFragment<FragmentEditTagBinding>() {
     val viewModel: TagViewModel by viewModels()
@@ -20,7 +20,6 @@ class EditTagFragment : SjBasicFragment<FragmentEditTagBinding>() {
             return fragment
         }
     }
-
 
     // override methods
     override fun layoutId(): Int = R.layout.fragment_edit_tag

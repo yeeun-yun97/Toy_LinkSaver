@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.viewmodel
+package com.github.yeeun_yun97.toy.linksaver.viewmodel.tag
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -13,14 +13,14 @@ class TagViewModel : BasicViewModelWithRepository() {
     val tags = repository.tags
 
     // data binding live data
-    val tagName = MutableLiveData<String>()
+    val bindingTagName = MutableLiveData<String>()
 
     // Model to save
     private var targetTag = SjTag(name = "")
 
     init {
         // handle user change data
-        tagName.observeForever {
+        bindingTagName.observeForever {
             targetTag.name = it
             Log.d("TagName change", it)
         }
@@ -36,7 +36,7 @@ class TagViewModel : BasicViewModelWithRepository() {
 
     private fun setTag(tag: SjTag) {
         targetTag = tag
-        tagName.postValue(tag.name)
+        bindingTagName.postValue(tag.name)
     }
 
 

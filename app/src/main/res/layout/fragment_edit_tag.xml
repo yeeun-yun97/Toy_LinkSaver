@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.TagViewModel" />
+            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.TagViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,7 +39,7 @@
             android:layout_height="50dp"
             android:ems="10"
             android:hint="이름을 입력해주세요"
-            android:text="@={viewModel.tagName}"
+            android:text="@={viewModel.bindingTagName}"
             app:layout_constraintEnd_toEndOf="@+id/nameTextView"
             app:layout_constraintStart_toStartOf="@+id/nameTextView"
             app:layout_constraintTop_toBottomOf="@+id/nameTextView" />

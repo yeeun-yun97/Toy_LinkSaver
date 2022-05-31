@@ -1,18 +1,16 @@
-package com.github.yeeun_yun97.toy.linksaver.ui.fragment
+package com.github.yeeun_yun97.toy.linksaver.ui.fragment.tag
 
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListTagBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.TagViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.TagViewModel
 
 class ListTagFragment : SjBasicFragment<FragmentListTagBinding>() {
     val viewModel: TagViewModel by activityViewModels()
-
 
     // override methods
     override fun layoutId(): Int = R.layout.fragment_list_tag
