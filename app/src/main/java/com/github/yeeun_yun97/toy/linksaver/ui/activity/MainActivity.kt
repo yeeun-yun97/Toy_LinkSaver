@@ -8,6 +8,7 @@ import com.github.yeeun_yun97.toy.linksaver.databinding.ActivityMainBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.basic.SjBasicActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.*
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.ListLinkFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.SettingFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel
 
 class MainActivity : SjBasicActivity<ActivityMainBinding>() {

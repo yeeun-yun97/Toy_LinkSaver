@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="data"
+            type="com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.app_info.AppInfoData" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.github.yeeun_yun97.clone.ynmodule.ui.component.CustomBasicToolbar
+            android:id="@+id/customBasicToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:toolbarTitle="앱 정보" />
+
+        <ImageView
+            android:id="@+id/appIconImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/customBasicToolbar"
+            app:srcCompat="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/appNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:paddingVertical="5dp"
+            android:text="링크택"
+            app:layout_constraintEnd_toEndOf="@+id/appInfoTextView"
+            app:layout_constraintStart_toStartOf="@+id/appInfoTextView"
+            app:layout_constraintTop_toBottomOf="@+id/appInfoTextView" />
+
+        <TextView
+            android:id="@+id/appVersionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:paddingVertical="5dp"
+            android:text="@{data.appVersion, default=버전}"
+            app:layout_constraintEnd_toEndOf="@+id/appNameTextView"
+            app:layout_constraintStart_toStartOf="@+id/appNameTextView"
+            app:layout_constraintTop_toBottomOf="@+id/appNameTextView" />
+
+        <TextView
+            android:id="@+id/devInfoTextView"
+            style="@style/important3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center_horizontal"
+            android:paddingVertical="5dp"
+            android:text="Developer"
+            app:layout_constraintEnd_toEndOf="@+id/appInfoTextView"
+            app:layout_constraintStart_toStartOf="@+id/appInfoTextView"
+            app:layout_constraintTop_toBottomOf="@+id/appstoreTextView" />
+
+        <TextView
+            android:id="@+id/appInfoTextView"
+            style="@style/important3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="70dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:paddingVertical="5dp"
+            android:text="Application"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appIconImageView" />
+
+        <TextView
+            android:id="@+id/appstoreTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:paddingVertical="5dp"
+            android:text="플레이스토어"
+            app:layout_constraintEnd_toEndOf="@+id/appVersionTextView"
+            app:layout_constraintStart_toStartOf="@+id/appVersionTextView"
+            app:layout_constraintTop_toBottomOf="@+id/appVersionTextView" />
+
+        <TextView
+            android:id="@+id/devNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:paddingVertical="5dp"
+            android:text="윤 예은"
+            app:layout_constraintEnd_toEndOf="@+id/devInfoTextView"
+            app:layout_constraintStart_toStartOf="@+id/devInfoTextView"
+            app:layout_constraintTop_toBottomOf="@+id/devInfoTextView" />
+
+        <TextView
+            android:id="@+id/githubTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:paddingVertical="5dp"
+            android:text="깃허브"
+            app:layout_constraintEnd_toEndOf="@+id/devNameTextView"
+            app:layout_constraintStart_toStartOf="@+id/devNameTextView"
+            app:layout_constraintTop_toBottomOf="@+id/devNameTextView" />
+
+        <TextView
+            android:id="@+id/devContactTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:paddingVertical="5dp"
+            android:text="연락처"
+            app:layout_constraintStart_toStartOf="@+id/githubTextView"
+            app:layout_constraintTop_toBottomOf="@+id/githubTextView" />
+
+        <TextView
+            android:id="@+id/iconInfoTextView"
+            style="@style/important3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center_horizontal"
+            android:paddingVertical="5dp"
+            android:text="Resources"
+            app:layout_constraintEnd_toEndOf="@+id/devInfoTextView"
+            app:layout_constraintStart_toStartOf="@+id/devInfoTextView"
+            app:layout_constraintTop_toBottomOf="@+id/devContactTextView" />
+
+        <TextView
+            android:id="@+id/icons8TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:paddingVertical="5dp"
+            android:text="icons from https://icons8.com/"
+            app:layout_constraintEnd_toEndOf="@+id/iconInfoTextView"
+            app:layout_constraintStart_toStartOf="@+id/iconInfoTextView"
+            app:layout_constraintTop_toBottomOf="@+id/iconInfoTextView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
