@@ -17,8 +17,11 @@ class EditVideoViewModel : BasicViewModelWithRepository() {
     // model list
     val tagList = repository.tags
 
+    // default type
+    private val defaultType = ELinkType.link
+
     // Model to Save
-    private var targetLink = SjLink(lid = 0, did = -1, name = "", url = "", type = ELinkType.video)
+    private var targetLink = SjLink(lid = 0, did = -1, name = "", url = "", type = defaultType)
     private var targetDomain = SjDomain(did = 1, name = "", url = "")
     private val targetTags = mutableListOf<SjTag>()
 
@@ -26,8 +29,8 @@ class EditVideoViewModel : BasicViewModelWithRepository() {
     private val _previewImage = MutableLiveData<String>()
     val bindingPreviewImage: LiveData<String> get() = _previewImage
     val bindingName = MutableLiveData<String>()
-    val bindingIsVideo = MutableLiveData(true)
-    val bindingUrl = targetDomain.url + targetLink.url
+    val bindingIsVideo = MutableLiveData(defaultType == ELinkType.video)
+    val bindingUrl get() = targetDomain.url + targetLink.url
 
 
     init {
@@ -37,8 +40,10 @@ class EditVideoViewModel : BasicViewModelWithRepository() {
 
         bindingIsVideo.observeForever {
             targetLink.type =
-                if (it) ELinkType.video
-                else ELinkType.link
+                when (it) {
+                    true -> ELinkType.video
+                    false -> ELinkType.link
+                }
         }
     }
 
