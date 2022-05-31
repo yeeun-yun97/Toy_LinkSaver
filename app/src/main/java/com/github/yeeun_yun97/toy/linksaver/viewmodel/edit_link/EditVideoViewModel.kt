@@ -27,10 +27,11 @@ class EditVideoViewModel : BasicViewModelWithRepository() {
 
     // binding live data
     private val _previewImage = MutableLiveData<String>()
+    private val _bindingUrl = MutableLiveData("")
     val bindingPreviewImage: LiveData<String> get() = _previewImage
+    val bindingUrl: LiveData<String> get() = _bindingUrl
     val bindingName = MutableLiveData<String>()
     val bindingIsVideo = MutableLiveData(defaultType == ELinkType.video)
-    val bindingUrl get() = targetDomain.url + targetLink.url
 
 
     init {
@@ -51,6 +52,7 @@ class EditVideoViewModel : BasicViewModelWithRepository() {
     fun createLinkByUrl(url: String) {
         viewModelScope.launch(Dispatchers.IO) {
             targetLink.url = url
+            _bindingUrl.postValue(url)
 
             // load title of url site
             launch {
@@ -94,6 +96,7 @@ class EditVideoViewModel : BasicViewModelWithRepository() {
 
     private fun setLink(link: SjLink) {
         targetLink = link
+        _bindingUrl.postValue(link.url)
         bindingName.postValue(link.name)
         _previewImage.postValue(link.preview)
         bindingIsVideo.postValue(link.type == ELinkType.video)
