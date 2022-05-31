@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.ui.fragment
+package com.github.yeeun_yun97.toy.linksaver.ui.fragment.search
 
 import android.content.Intent
 import android.util.Log
@@ -10,9 +10,9 @@ import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinksAndDomainsWithTags
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
-import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerSearchLinkAdapter
+import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.LinkSearchListAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.search.SearchFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.detail_link.DetailLinkFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.ListMode
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -44,7 +44,7 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
         binding.viewModel=viewModel
 
         // set recycler view
-        val adapter = RecyclerSearchLinkAdapter(
+        val adapter = LinkSearchListAdapter(
             detailOperation = ::moveToDetailFragment
         )
         binding.recyclerView.adapter = adapter

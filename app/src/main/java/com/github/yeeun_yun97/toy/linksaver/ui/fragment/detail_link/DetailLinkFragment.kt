@@ -1,20 +1,20 @@
-package com.github.yeeun_yun97.toy.linksaver.ui.fragment
+package com.github.yeeun_yun97.toy.linksaver.ui.fragment.detail_link
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.github.yeeun_yun97.clone.ynmodule.ui.component.SjImageViewUtil
 import com.github.yeeun_yun97.toy.linksaver.R
+import com.github.yeeun_yun97.toy.linksaver.data.model.LinkModelUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentDetailLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
-import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
+import com.github.yeeun_yun97.toy.linksaver.ui.component.SjUtil
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.DetailLinkViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.detail_link.DetailLinkViewModel
 
 class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
     private val viewModel: DetailLinkViewModel by activityViewModels()
@@ -34,22 +34,7 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
 
     override fun onStart() {
         super.onStart()
-        SjImageViewUtil.setDefaultImage(
-            fragment = this,
-            imageView = binding.previewImageView,
-            defaultImage = R.drawable.ic_baseline_web_24
-        )
-    }
-
-    override fun onResume() {
-        super.onResume()
         viewModel.loadLinkData(lid)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        // clear viewModel data when screen not visible
-        viewModel.clearData()
     }
 
     override fun onCreateView() {
@@ -59,26 +44,12 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
         // set variable of binding
         binding.viewModel = viewModel
 
-        // set toolbar Menu
-//        binding.toolbar.setMenu(
-//            R.menu.menu_link_datail,
-//            hashMapOf(R.id.playItem to ::moveToPlayFragment)
-//        )
-
         // show tags or show empty view
-        viewModel.tags.observe(viewLifecycleOwner, { tagList ->
+        viewModel.bindingTags.observe(viewLifecycleOwner, { tagList ->
             if (tagList.isEmpty()) {
                 binding.tagEmptyGroup.visibility = View.VISIBLE
             } else {
                 binding.tagEmptyGroup.visibility = View.GONE
-                binding.tagChipGroup.removeAllViews()
-                for (tag in tagList) {
-                    binding.tagChipGroup.addView(
-                        SjTagChip(
-                            requireContext(),
-                            tag
-                        ).apply { setViewMode() })
-                }
             }
         })
 
@@ -91,8 +62,7 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
             binding.deleteImageView.setOnClickListener { deleteLink(data.link, data.tags) }
 
             // open url with browser
-            val openListener = View.OnClickListener { startWebBrowser(data.domain.url + data.link.url) }
-            binding.previewImageView.setOnClickListener(openListener)
+            val openListener = View.OnClickListener { startWebBrowser(LinkModelUtil.getFullUrl(data)) }
             binding.nameTextView.setOnClickListener(openListener)
             binding.fullUrlTextView.setOnClickListener(openListener)
         })
@@ -115,24 +85,6 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
                     )
                 }
             })
-//        schedulePreloadWork("https://www.youtube.com/watch?v=H0M1yU6uO30")
-    }
-
-//    private fun schedulePreloadWork(videoUrl: String) {
-//        val workManager = WorkManager.getInstance(requireActivity().applicationContext)
-//        val videoPreloadWorker = VideoPreloadWorker.buildWorkRequest(videoUrl)
-//        workManager.enqueueUniqueWork(
-//            "VideoPreloadWorker",
-//            ExistingWorkPolicy.KEEP,
-//            videoPreloadWorker
-//        )
-//    }
-
-    // handle user event methods
-    private fun moveToPlayFragment() {
-        val url = "https://www.youtube.com/watch?v=H0M1yU6uO30"
-        moveToOtherFragment(PlayVideoFragment.newInstance(url))
-        Toast.makeText(context, "pressed", Toast.LENGTH_LONG).show()
     }
 
     private fun deleteLink(link: SjLink, tags: List<SjTag>) {
@@ -146,14 +98,12 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
         startActivity(intent)
     }
 
-    private fun isStringTypeUrl(url: String): Boolean {
-        return url.startsWith("http://") || url.startsWith("https://")
-    }
-
     private fun startWebBrowser(url: String) {
-        if (isStringTypeUrl(url)) {
+        if (SjUtil.checkUrlPrefix(url)) {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(intent)
+        }else{
+            // string url is wrong
         }
     }
 }

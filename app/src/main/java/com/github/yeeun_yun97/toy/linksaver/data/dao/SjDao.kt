@@ -189,7 +189,6 @@ interface SjDao {
     @Query("SELECT * FROM SjLink WHERE lid = :lid")
     suspend fun getLinkAndDomainWithTagsByLid(lid: Int): SjLinksAndDomainsWithTags
 
-
     @Transaction
     @Query("SELECT * FROM SjLink WHERE did = :did")
     fun getLinkAndDomainWithTagsByDid(did: Int): List<SjLinksAndDomainsWithTags>
@@ -203,6 +202,7 @@ interface SjDao {
     @Transaction
     @Query("SELECT * FROM SjLink WHERE Type = :type ORDER BY lid desc")
     fun getAllLinksByType(type: String): LiveData<List<SjLinksAndDomainsWithTags>>
+
 
 
 }

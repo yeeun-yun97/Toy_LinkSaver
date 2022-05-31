@@ -41,11 +41,11 @@ data class SjLink(
     @ColumnInfo(name = "did") var did: Int,
     @ColumnInfo(name = "url") var url: String,
 
-    @ColumnInfo(name = "icon", defaultValue = "") var icon: String="",
-    @ColumnInfo(name = "preview", defaultValue = "") var preview: String="",
+    @ColumnInfo(name = "icon", defaultValue = "") var icon: String = "",
+    @ColumnInfo(name = "preview", defaultValue = "") var preview: String = "",
     @ColumnInfo(name = "type", defaultValue = "link")
     @TypeConverters(Converters::class)
-    var type: ELinkType=ELinkType.link,
+    var type: ELinkType = ELinkType.link,
 )
 
 @Entity(indices = [Index(value = ["name"], unique = true)])
@@ -119,6 +119,19 @@ data class SjLinksAndDomainsWithTags(
         associateBy = Junction(LinkTagCrossRef::class)
     ) val tags: List<SjTag>
 )
+
+class LinkModelUtil{
+    companion object {
+        fun getFullUrl(data: SjLinksAndDomainsWithTags): String {
+            val domainUrl = data.domain.url
+            val linkUrl = data.link.url
+            return StringBuilder(domainUrl.length + linkUrl.length)
+                .append(domainUrl)
+                .append(linkUrl)
+                .toString()
+        }
+    }
+}
 
 
 // 1 by n relation :: domain and link

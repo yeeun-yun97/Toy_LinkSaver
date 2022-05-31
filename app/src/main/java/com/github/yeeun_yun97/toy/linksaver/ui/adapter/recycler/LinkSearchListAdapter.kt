@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.ui.adapter
+package com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,22 +10,22 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.ELinkType
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinksAndDomainsWithTags
 import com.github.yeeun_yun97.toy.linksaver.databinding.ItemLinkSearchBinding
 
-class RecyclerSearchLinkAdapter(
+class LinkSearchListAdapter(
     private val detailOperation: (Int) -> Unit,
 ) :
-    RecyclerBasicAdapter<SjLinksAndDomainsWithTags, LinksSearchViewHolder>() {
+    RecyclerBasicAdapter<SjLinksAndDomainsWithTags, LinkSearchListViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LinksSearchViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LinkSearchListViewHolder {
         val binding = ItemLinkSearchBinding.inflate(LayoutInflater.from(parent.context))
-        return LinksSearchViewHolder(binding)
+        return LinkSearchListViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: LinksSearchViewHolder, item: SjLinksAndDomainsWithTags) {
+    override fun onBindViewHolder(holder: LinkSearchListViewHolder, item: SjLinksAndDomainsWithTags) {
         holder.setLink(item, detailOperation)
     }
 }
 
-class LinksSearchViewHolder(binding: ItemLinkSearchBinding) :
+class LinkSearchListViewHolder(binding: ItemLinkSearchBinding) :
     RecyclerBasicViewHolder<ItemLinkSearchBinding>(binding) {
 
     fun setLink(
