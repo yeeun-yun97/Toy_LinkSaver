@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.viewmodel
+package com.github.yeeun_yun97.toy.linksaver.viewmodel.domain
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -12,8 +12,8 @@ class DomainViewModel : BasicViewModelWithRepository() {
     val domains = repository.domainsExceptDefault
 
     // Data binding live data
-    val domainName = MutableLiveData<String>()
-    val domainUrl = MutableLiveData<String>()
+    val bindingDomainName = MutableLiveData<String>()
+    val bindingDomainUrl = MutableLiveData<String>()
 
     // Model to save
     private var targetDomain = SjDomain(name = "", url = "")
@@ -21,10 +21,10 @@ class DomainViewModel : BasicViewModelWithRepository() {
 
     init {
         // handle user change data
-        domainName.observeForever {
+        bindingDomainName.observeForever {
             targetDomain.name = it
         }
-        domainUrl.observeForever {
+        bindingDomainUrl.observeForever {
             targetDomain.url = it
         }
     }
@@ -40,8 +40,8 @@ class DomainViewModel : BasicViewModelWithRepository() {
 
     private fun setDomain(domain: SjDomain) {
         targetDomain = domain
-        domainName.postValue(domain.name)
-        domainUrl.postValue(domain.url)
+        bindingDomainName.postValue(domain.name)
+        bindingDomainUrl.postValue(domain.url)
     }
 
 
@@ -53,7 +53,6 @@ class DomainViewModel : BasicViewModelWithRepository() {
             repository.updateDomain(targetDomain)
         }
     }
-
 
     //delete domain
     fun deleteDomain(domain: SjDomain) = repository.deleteDomain(domain)

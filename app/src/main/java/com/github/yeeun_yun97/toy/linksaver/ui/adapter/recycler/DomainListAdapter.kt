@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.ui.adapter
+package com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,25 +7,25 @@ import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicViewHolder
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
 import com.github.yeeun_yun97.toy.linksaver.databinding.ItemDomainsBinding
 
-class RecyclerDomainAdapter(
+class DomainListAdapter(
     private val updateOperation: (Int) -> Unit,
     private val deleteOperation: (SjDomain) -> Unit
-) : RecyclerBasicAdapter<SjDomain, DomainsViewHolder>() {
+) : RecyclerBasicAdapter<SjDomain, DomainListViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DomainsViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DomainListViewHolder {
         val binding = ItemDomainsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return DomainsViewHolder(binding)
+        return DomainListViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: DomainsViewHolder, item: SjDomain) {
+    override fun onBindViewHolder(holder: DomainListViewHolder, item: SjDomain) {
         holder.setItem(item,updateOperation, deleteOperation)
     }
 
+
 }
 
-class DomainsViewHolder(binding: ItemDomainsBinding) :
+class DomainListViewHolder(binding: ItemDomainsBinding) :
     RecyclerBasicViewHolder<ItemDomainsBinding>(binding) {
-
     fun setItem(
         domain: SjDomain,
         updateOperation: (Int) -> Unit,
@@ -35,5 +35,6 @@ class DomainsViewHolder(binding: ItemDomainsBinding) :
         binding.deleteImageView.setOnClickListener { deleteOperation(domain) }
         binding.editImageView.setOnClickListener { updateOperation(domain.did) }
     }
+
 
 }

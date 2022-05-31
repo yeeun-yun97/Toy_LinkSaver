@@ -1,15 +1,14 @@
-package com.github.yeeun_yun97.toy.linksaver.ui.fragment
+package com.github.yeeun_yun97.toy.linksaver.ui.fragment.domain
 
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListDomainBinding
-import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerDomainAdapter
+import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.DomainListAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.DomainViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.domain.DomainViewModel
 
 class ListDomainFragment : SjBasicFragment<FragmentListDomainBinding>() {
     val viewModel: DomainViewModel by activityViewModels()
@@ -22,7 +21,7 @@ class ListDomainFragment : SjBasicFragment<FragmentListDomainBinding>() {
         val handlerMap = hashMapOf<Int, ()->Unit>(R.id.menu_add to ::moveToAddFragment)
         binding.toolbar.setMenu(R.menu.toolbar_menu_add, handlerMap = handlerMap)
         // set recyclerView
-        val adapter = RecyclerDomainAdapter(
+        val adapter = DomainListAdapter(
             ::moveToEditDomainFragment,
             ::deleteDomain
         )

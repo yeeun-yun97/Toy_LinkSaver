@@ -6,6 +6,7 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SettingData
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSettingBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerSettingAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.domain.ListDomainFragment
 
 class SettingFragment : SjBasicFragment<FragmentSettingBinding>() {
     private val tagFragment = ListTagFragment()
