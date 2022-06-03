@@ -22,6 +22,7 @@ class SjRepository private constructor() {
     val domains: LiveData<List<SjDomain>> = dao.getAllDomains()
     val domainsExceptDefault: LiveData<List<SjDomain>> = dao.getAllDomainsExceptDefault()
     val tags: LiveData<List<SjTag>> = dao.getAllTags()
+    val tagGroups: LiveData<List<SjTagGroupWithTags>> = dao.getAllTagGroupsWithTags()
     val linkList: LiveData<List<SjLinksAndDomainsWithTags>> = dao.getAllLinksAndDomainsWithTags()
 
     val linkTypeVideoList = dao.getAllLinksByType(ELinkType.video.name)

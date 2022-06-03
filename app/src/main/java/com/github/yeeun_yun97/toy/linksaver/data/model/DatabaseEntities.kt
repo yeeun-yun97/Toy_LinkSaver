@@ -49,9 +49,17 @@ data class SjLink(
 )
 
 @Entity(indices = [Index(value = ["name"], unique = true)])
+data class SjTagGroup(
+    @PrimaryKey(autoGenerate = true) val gid: Int = 0,
+    @ColumnInfo(name = "name") var name: String,
+    @ColumnInfo(name = "is_private") var isPrivate: Boolean,
+)
+
+@Entity(indices = [Index(value = ["name"], unique = true)])
 data class SjTag(
     @PrimaryKey(autoGenerate = true) val tid: Int = 0,
-    @ColumnInfo(name = "name") var name: String
+    @ColumnInfo(name = "name") var name: String,
+    @ColumnInfo(name = "gid") var gid: Int = 1
 )
 
 @Entity(indices = [Index(value = ["keyword"])])
@@ -117,6 +125,15 @@ data class SjLinksAndDomainsWithTags(
         parentColumn = "lid",
         entityColumn = "tid",
         associateBy = Junction(LinkTagCrossRef::class)
+    ) val tags: List<SjTag>
+)
+
+// 1 by n relation :: tagGroup and tag
+data class SjTagGroupWithTags(
+    @Embedded val tagGroup: SjTagGroup,
+    @Relation(
+        parentColumn = "gid",
+        entityColumn = "gid",
     ) val tags: List<SjTag>
 )
 

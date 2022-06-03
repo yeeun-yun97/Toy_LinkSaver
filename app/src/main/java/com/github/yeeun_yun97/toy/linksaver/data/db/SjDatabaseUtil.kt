@@ -24,6 +24,7 @@ class SjDatabaseUtil {
                 this.db =
                     Room.databaseBuilder(applicationContext, SjDatabase::class.java, "sj_database")
                         .addMigrations(MIGRATION_1_2)
+                        .addMigrations(MIGRATION_2_3)
                         .build()
             }
         }

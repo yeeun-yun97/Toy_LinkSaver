@@ -21,3 +21,13 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
         database.execSQL("CREATE INDEX index_SjSearch_keyword ON SjSearch (keyword)")
     }
 }
+
+val MIGRATION_2_3 = object : Migration(2, 3) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE SjTag ADD COLUMN gid INTEGER NOT NULL default 1")
+
+        database.execSQL("CREATE TABLE `SjTagGroup` (`gid` INTEGER NOT NULL, `name` TEXT NOT NULL, `is_private` INTEGER NOT NULL, PRIMARY KEY(`gid`))")
+        database.execSQL("CREATE UNIQUE INDEX index_SjTagGroup_name ON SjTagGroup (name)")
+        database.execSQL("INSERT INTO SjTagGroup (`gid`, `name`, `is_private`) VALUES (1,'기본',0)")
+    }
+}

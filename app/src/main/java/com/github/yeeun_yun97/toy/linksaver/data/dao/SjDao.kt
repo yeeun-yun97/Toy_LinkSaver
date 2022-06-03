@@ -13,8 +13,11 @@ interface SjDao {
     @Query("SELECT * FROM SjDomain")
     fun getAllDomains(): LiveData<List<SjDomain>>
 
-    @Query("SELECT * FROM SjTag")
+    @Query("SELECT * FROM SjTag ORDER BY name")
     fun getAllTags(): LiveData<List<SjTag>>
+
+    @Query("SELECT * FROM SjTagGroup ORDER BY gid")
+    fun getAllTagGroups(): LiveData<List<SjTagGroup>>
 
     @Transaction
     @Query("SELECT * FROM SjSearch ORDER BY sid DESC")
@@ -28,6 +31,17 @@ interface SjDao {
     @Query("SELECT * FROM SjLink ORDER BY lid DESC")
     fun getAllLinksAndDomainsWithTags()
             : LiveData<List<SjLinksAndDomainsWithTags>>
+
+    @Transaction
+    @Query("SELECT * FROM SjTagGroup ORDER BY gid")
+    fun getAllTagGroupsWithTags()
+            : LiveData<List<SjTagGroupWithTags>>
+
+    @Transaction
+    @Query("SELECT * FROM SjTagGroup WHERE is_private=0 ORDER BY gid")
+    fun getNotPrivateTagGroupsWithTags()
+            : LiveData<List<SjTagGroupWithTags>>
+
 
     @Query("SELECT COUNT(*) FROM SjDomain")
     suspend fun getDomainCount(): Int
@@ -209,6 +223,7 @@ interface SjDao {
     @Query("SELECT * FROM SjLink WHERE Type = :type ORDER BY lid desc")
     fun getAllLinksByType(type: String): LiveData<List<SjLinksAndDomainsWithTags>>
 
-
+    @Query("SELECT * FROM SjTag WHERE gid = :gid ORDER BY name")
+    fun getAllTagsByGid(gid: Int): LiveData<List<SjTag>>
 
 }
