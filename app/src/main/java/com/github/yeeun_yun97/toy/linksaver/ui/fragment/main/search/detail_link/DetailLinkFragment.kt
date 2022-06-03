@@ -1,9 +1,11 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.detail_link
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.webkit.WebViewClient
 import androidx.fragment.app.activityViewModels
 import com.github.yeeun_yun97.clone.ynmodule.ui.component.SjImageViewUtil
 import com.github.yeeun_yun97.toy.linksaver.R
@@ -37,7 +39,13 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
         viewModel.loadLinkData(lid)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView() {
+
+        binding.previewWebView.webViewClient = WebViewClient()
+        binding.previewWebView.settings.javaScriptEnabled = true
+        binding.previewWebView.setOnTouchListener { view, event -> true }
+
         // get lid from argument
         lid = requireArguments().getInt("lid")
 
@@ -62,7 +70,8 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
             binding.deleteImageView.setOnClickListener { deleteLink(data.link, data.tags) }
 
             // open url with browser
-            val openListener = View.OnClickListener { startWebBrowser(LinkModelUtil.getFullUrl(data)) }
+            val openListener =
+                View.OnClickListener { startWebBrowser(data.fullUrl) }
             binding.nameTextView.setOnClickListener(openListener)
             binding.fullUrlTextView.setOnClickListener(openListener)
         })
@@ -71,6 +80,8 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
         viewModel.imageUrl.observe(viewLifecycleOwner,
             {
                 if (!it.isNullOrEmpty()) {
+                    binding.previewImageView.visibility = View.VISIBLE
+                    binding.previewWebView.visibility = View.GONE
                     SjImageViewUtil.setImage(
                         fragment = this,
                         binding.previewImageView,
@@ -78,11 +89,20 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
                         R.drawable.ic_icons8_no_image_100
                     )
                 } else {
-                    SjImageViewUtil.setDefaultImage(
-                        fragment = this,
-                        binding.previewImageView,
-                        R.drawable.ic_icons8_no_image_100
-                    )
+                    val fullUrl = viewModel.bindingFullUrl.value ?: ""
+                    if (!viewModel.isVideoType && SjUtil.checkUrlPrefix(fullUrl)) {
+                        binding.previewWebView.visibility = View.VISIBLE
+                        binding.previewImageView.visibility = View.GONE
+                        binding.previewWebView.loadUrl(fullUrl)
+                    } else {
+                        binding.previewImageView.visibility = View.VISIBLE
+                        binding.previewWebView.visibility = View.GONE
+                        SjImageViewUtil.setDefaultImage(
+                            fragment = this,
+                            binding.previewImageView,
+                            R.drawable.ic_icons8_no_image_100
+                        )
+                    }
                 }
             })
     }
@@ -102,7 +122,7 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
         if (SjUtil.checkUrlPrefix(url)) {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(intent)
-        }else{
+        } else {
             // string url is wrong
         }
     }

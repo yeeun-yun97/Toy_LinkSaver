@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -30,13 +31,31 @@
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:srcCompat="@drawable/ic_icons8_no_image_100" />
 
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="previewImageView,previewWebView"
+            tools:layout_editor_absoluteY="731dp" />
+
+        <WebView
+            android:id="@+id/previewWebView"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        </WebView>
+
         <ImageView
             android:id="@+id/editImageView"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_margin="15dp"
             android:layout_marginBottom="205dp"
-            app:layout_constraintBottom_toBottomOf="@+id/previewImageView"
+            app:layout_constraintBottom_toBottomOf="@id/barrier"
             app:layout_constraintEnd_toStartOf="@+id/deleteImageView"
             app:layout_constraintHorizontal_bias="1"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -61,7 +80,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/previewImageView"
+            app:layout_constraintTop_toBottomOf="@id/barrier"
             app:layout_constraintVertical_bias="0.0">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -106,10 +125,10 @@
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/tagChipGroup"
+                    chipDataList="@{viewModel.bindingTags}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:paddingVertical="10dp"
-                    chipDataList="@{viewModel.bindingTags}"
                     app:layout_constraintEnd_toEndOf="@+id/fullUrlTextView"
                     app:layout_constraintHeight_min="200dp"
                     app:layout_constraintHorizontal_bias="0.0"

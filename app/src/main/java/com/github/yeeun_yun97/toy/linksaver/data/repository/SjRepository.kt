@@ -130,8 +130,8 @@ class SjRepository private constructor() {
             "%$keyword%"
         )
         _searchLinkList.postValue(result)
-        Log.d("repository search","with keyword")
-        Log.d("repository search","result $result")
+        Log.d("repository search", "with keyword")
+        Log.d("repository search", "result $result")
     }
 
     private suspend fun searchByLinkNameAndTags(keyword: String, selectedTags: List<SjTag>) {
@@ -143,8 +143,8 @@ class SjRepository private constructor() {
             "%$keyword%", list, list.size
         )
         _searchLinkList.postValue(result)
-        Log.d("repository search","with keyword and tags")
-        Log.d("repository search","result $result")
+        Log.d("repository search", "with keyword and tags")
+        Log.d("repository search", "result $result")
     }
 
 
@@ -242,6 +242,21 @@ class SjRepository private constructor() {
     // get query by key
     suspend fun getLinkAndDomainWithTagsByLid(lid: Int): SjLinksAndDomainsWithTags =
         dao.getLinkAndDomainWithTagsByLid(lid)
+
+    suspend fun getLinkDetailDataByLid(lid: Int): LinkDetailData {
+        val entity = dao.getLinkAndDomainWithTagsByLid(lid)
+        val vo = LinkDetailData(
+            fullUrl = LinkModelUtil.getFullUrl(entity),
+            link = entity.link,
+            tags = entity.tags,
+            isVideo = when (entity.link.type) {
+                ELinkType.video -> true
+                ELinkType.link -> false
+            }
+        )
+        return vo
+    }
+
 
     suspend fun getTagByTid(tid: Int): SjTag = dao.getTagByTid(tid)
 
