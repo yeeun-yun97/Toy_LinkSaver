@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:maxLines="2"
-            android:text="@{viewModel.link.link.name, default= 링크이름}"
+            android:text="@{viewModel.link.name, default= 링크이름}"
             android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@id/scrollView"
             app:layout_constraintEnd_toEndOf="parent"

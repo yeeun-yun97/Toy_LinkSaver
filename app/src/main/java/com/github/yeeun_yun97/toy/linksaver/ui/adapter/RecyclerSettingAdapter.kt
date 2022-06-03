@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicAdapter
 import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicViewHolder
-import com.github.yeeun_yun97.toy.linksaver.data.model.SettingData
+import com.github.yeeun_yun97.toy.linksaver.data.model.SettingItemValue
 import com.github.yeeun_yun97.toy.linksaver.databinding.ItemSettingBinding
 
 class RecyclerSettingAdapter :
-    RecyclerBasicAdapter<SettingData, RecyclerSettingViewHolder>() {
+    RecyclerBasicAdapter<SettingItemValue, RecyclerSettingViewHolder>() {
     override fun onBindViewHolder(
         holder: RecyclerSettingViewHolder,
-        item: SettingData
+        item: SettingItemValue
     ) {
         holder.setItem(item)
     }
@@ -24,7 +24,7 @@ class RecyclerSettingAdapter :
 
 class RecyclerSettingViewHolder(binding: ItemSettingBinding) :
     RecyclerBasicViewHolder<ItemSettingBinding>(binding) {
-        fun setItem(item: SettingData){
+        fun setItem(item: SettingItemValue){
             binding.item = item
             binding.root.setOnClickListener { item.open() }
         }

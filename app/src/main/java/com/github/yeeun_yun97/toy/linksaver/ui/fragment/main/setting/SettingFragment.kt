@@ -3,7 +3,7 @@ package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
-import com.github.yeeun_yun97.toy.linksaver.data.model.SettingData
+import com.github.yeeun_yun97.toy.linksaver.data.model.SettingItemValue
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSettingBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerSettingAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
@@ -25,12 +25,12 @@ class SettingFragment : SjBasicFragment<FragmentSettingBinding>() {
         adapter.setList(getSettingList())
     }
 
-    private fun getSettingList(): List<SettingData> {
+    private fun getSettingList(): List<SettingItemValue> {
         return mutableListOf(
-            SettingData("도메인 목록", ::moveToViewDomains),
-            SettingData("태그 목록", ::moveToViewTags),
-            SettingData("플레이리스트", ::moveToViewPlayLists),
-            SettingData("앱 정보 보기", ::moveToViewData),
+            SettingItemValue("도메인 목록", ::moveToViewDomains),
+            SettingItemValue("태그 목록", ::moveToViewTags),
+            SettingItemValue("플레이리스트", ::moveToViewPlayLists),
+            SettingItemValue("앱 정보 보기", ::moveToViewData),
         )
     }
 

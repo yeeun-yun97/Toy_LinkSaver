@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDao
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.*
+import com.github.yeeun_yun97.toy.linksaver.ui.component.SjUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -218,6 +219,23 @@ class SjRepository private constructor() {
             dao.deleteLink(link)
         }
 
+    fun deleteLinkByLid(lid: Int, tags: List<SjTag>) =
+        CoroutineScope(Dispatchers.IO).launch {
+            if (tags.isNotEmpty()) {
+                //delete all related tag refs
+                val deleteRefs = launch {
+                    val tids = mutableListOf<Int>()
+                    for (tag in tags) {
+                        tids.add(tag.tid)
+                    }
+                    dao.deleteLinkTagCrossRefsByLidAndTid(lid, tids)
+                }
+                deleteRefs.join()
+            }
+            //wait and delete
+            dao.deleteLinkByLid(lid)
+        }
+
     fun deleteSearch() {
         CoroutineScope(Dispatchers.IO).launch {
             //delete all refs
@@ -243,16 +261,23 @@ class SjRepository private constructor() {
     suspend fun getLinkAndDomainWithTagsByLid(lid: Int): SjLinksAndDomainsWithTags =
         dao.getLinkAndDomainWithTagsByLid(lid)
 
-    suspend fun getLinkDetailDataByLid(lid: Int): LinkDetailData {
+    suspend fun getLinkDetailDataByLid(lid: Int): LinkDetailValue {
         val entity = dao.getLinkAndDomainWithTagsByLid(lid)
-        val vo = LinkDetailData(
+        val vo = LinkDetailValue(
+            lid = entity.link.lid,
+            name = entity.link.name,
             fullUrl = LinkModelUtil.getFullUrl(entity),
-            link = entity.link,
-            tags = entity.tags,
+            preview = entity.link.preview,
             isVideo = when (entity.link.type) {
                 ELinkType.video -> true
                 ELinkType.link -> false
-            }
+            },
+            isYoutubeVideo =
+            entity.link.type == ELinkType.video &&
+                    SjUtil.checkYoutubePrefix(
+                        LinkModelUtil.getFullUrl(entity)
+                    ),
+            tags = entity.tags
         )
         return vo
     }

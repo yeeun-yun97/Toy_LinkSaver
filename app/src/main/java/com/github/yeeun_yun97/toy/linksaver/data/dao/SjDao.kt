@@ -183,6 +183,12 @@ interface SjDao {
     @Query("DELETE FROM SjSearch WHERE sid IN(:sids)")
     suspend fun deleteSearches(sids: List<Int>)
 
+    @Query("DELETE FROM LinkTagCrossRef WHERE lid = :lid AND tid IN(:tids)")
+    suspend fun deleteLinkTagCrossRefsByLidAndTid(lid: Int, tids: MutableList<Int>)
+
+    @Query("DELETE FROM SjLink WHERE lid = :lid")
+    suspend fun deleteLinkByLid(lid: Int)
+
 
     // query by key
     @Transaction

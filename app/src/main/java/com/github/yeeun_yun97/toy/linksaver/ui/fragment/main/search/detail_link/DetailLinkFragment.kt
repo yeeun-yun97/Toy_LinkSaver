@@ -7,10 +7,10 @@ import android.os.Bundle
 import android.view.View
 import android.webkit.WebViewClient
 import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
 import com.github.yeeun_yun97.clone.ynmodule.ui.component.SjImageViewUtil
 import com.github.yeeun_yun97.toy.linksaver.R
-import com.github.yeeun_yun97.toy.linksaver.data.model.LinkModelUtil
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
+import com.github.yeeun_yun97.toy.linksaver.data.model.LinkDetailValue
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentDetailLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
@@ -41,74 +41,81 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView() {
-
-        binding.previewWebView.webViewClient = WebViewClient()
-        binding.previewWebView.settings.javaScriptEnabled = true
-        binding.previewWebView.setOnTouchListener { view, event -> true }
-
         // get lid from argument
         lid = requireArguments().getInt("lid")
 
         // set variable of binding
         binding.viewModel = viewModel
 
-        // show tags or show empty view
-        viewModel.bindingTags.observe(viewLifecycleOwner, { tagList ->
-            if (tagList.isEmpty()) {
-                binding.tagEmptyGroup.visibility = View.VISIBLE
-            } else {
-                binding.tagEmptyGroup.visibility = View.GONE
-            }
-        })
+        // set previewWebView
+        binding.previewWebView.webViewClient = WebViewClient()              // prevent opening browser
+        binding.previewWebView.settings.javaScriptEnabled = true            // show javascript needed pages
+        binding.previewWebView.setOnTouchListener { view, event -> true }   // prevent touch, view-only webView
 
         // set linkdata user to click event
         viewModel.link.observe(viewLifecycleOwner, { data ->
-            // edit
-            binding.editImageView.setOnClickListener { startEditActivityToUpdate(data.link.lid) }
-
-            // delete
-            binding.deleteImageView.setOnClickListener { deleteLink(data.link, data.tags) }
-
-            // open url with browser
-            val openListener =
-                View.OnClickListener { startWebBrowser(data.fullUrl) }
-            binding.nameTextView.setOnClickListener(openListener)
-            binding.fullUrlTextView.setOnClickListener(openListener)
+            setUserClickHandlers(data)
+            showPreviewOfLink(data)
+            showOrHideTagChipGroup(data.tags)
         })
-
-        // show image preview
-        viewModel.imageUrl.observe(viewLifecycleOwner,
-            {
-                if (!it.isNullOrEmpty()) {
-                    binding.previewImageView.visibility = View.VISIBLE
-                    binding.previewWebView.visibility = View.GONE
-                    SjImageViewUtil.setImage(
-                        fragment = this,
-                        binding.previewImageView,
-                        it,
-                        R.drawable.ic_icons8_no_image_100
-                    )
-                } else {
-                    val fullUrl = viewModel.bindingFullUrl.value ?: ""
-                    if (!viewModel.isVideoType && SjUtil.checkUrlPrefix(fullUrl)) {
-                        binding.previewWebView.visibility = View.VISIBLE
-                        binding.previewImageView.visibility = View.GONE
-                        binding.previewWebView.loadUrl(fullUrl)
-                    } else {
-                        binding.previewImageView.visibility = View.VISIBLE
-                        binding.previewWebView.visibility = View.GONE
-                        SjImageViewUtil.setDefaultImage(
-                            fragment = this,
-                            binding.previewImageView,
-                            R.drawable.ic_icons8_no_image_100
-                        )
-                    }
-                }
-            })
     }
 
-    private fun deleteLink(link: SjLink, tags: List<SjTag>) {
-        viewModel.deleteLink(link, tags)
+    private fun setUserClickHandlers(data: LinkDetailValue) {
+        // edit
+        binding.editImageView.setOnClickListener { startEditActivityToUpdate(data.lid) }
+        // delete
+        binding.deleteImageView.setOnClickListener { deleteLink(data.lid, data.tags) }
+        // open url with browser
+        val openListener =
+            View.OnClickListener { startWebBrowser(data.fullUrl) }
+        binding.nameTextView.setOnClickListener(openListener)
+        binding.fullUrlTextView.setOnClickListener(openListener)
+    }
+
+    private fun showOrHideTagChipGroup(tagList: List<SjTag>) {
+        if (tagList.isEmpty()) {
+            binding.tagEmptyGroup.visibility = View.VISIBLE
+        } else {
+            binding.tagEmptyGroup.visibility = View.GONE
+        }
+    }
+
+    private fun showPreviewOfLink(data: LinkDetailValue) {
+        // show preview
+        if (data.isVideo && !data.isYoutubeVideo) {
+            // case simple video
+            binding.previewImageView.visibility = View.VISIBLE
+            binding.previewWebView.visibility = View.GONE
+            Glide.with(requireContext())
+                .load(data.fullUrl)
+                .centerCrop()
+                .override(720, 360)
+                .into(binding.previewImageView)
+        } else {
+            if (data.preview.isNotEmpty()) {
+                // case has preview image
+                binding.previewImageView.visibility = View.VISIBLE
+                binding.previewWebView.visibility = View.GONE
+                SjImageViewUtil.setImage(
+                    fragment = this,
+                    binding.previewImageView,
+                    data.preview,
+                    R.drawable.ic_icons8_no_image_100
+                )
+            } else {
+                // case has no preview image, show webView
+                val fullUrl = viewModel.bindingFullUrl.value ?: ""
+                if (SjUtil.checkUrlPrefix(fullUrl)) {
+                    binding.previewWebView.visibility = View.VISIBLE
+                    binding.previewImageView.visibility = View.GONE
+                    binding.previewWebView.loadUrl(fullUrl)
+                }
+            }
+        }
+    }
+
+    private fun deleteLink(lid: Int, tags: List<SjTag>) {
+        viewModel.deleteLink(lid, tags)
         popBack()
     }
 
