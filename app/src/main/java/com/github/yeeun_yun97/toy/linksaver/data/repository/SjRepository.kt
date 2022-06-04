@@ -23,6 +23,7 @@ class SjRepository private constructor() {
     val domainsExceptDefault: LiveData<List<SjDomain>> = dao.getAllDomainsExceptDefault()
     val tags: LiveData<List<SjTag>> = dao.getAllTags()
     val tagGroups: LiveData<List<SjTagGroupWithTags>> = dao.getAllTagGroupsWithTags()
+    val basicTagGroup: LiveData<SjTagGroupWithTags> = dao.getBasicTagGroupWithTags()
     val linkList: LiveData<List<SjLinksAndDomainsWithTags>> = dao.getAllLinksAndDomainsWithTags()
 
     val linkTypeVideoList = dao.getAllLinksByType(ELinkType.video.name)
@@ -84,6 +85,13 @@ class SjRepository private constructor() {
                 dao.insertSearch(SjSearch(keyword = searchWord)).toInt()
             }
             insertSearchTagCrossRef(newSid.await(), selectedTags)
+        }
+    }
+
+    fun insertTagGroup(name: String, isPrivate: Boolean) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val newTagGroup = SjTagGroup(name=name, isPrivate = isPrivate)
+            dao.insertTagGroup(newTagGroup)
         }
     }
 
@@ -287,6 +295,11 @@ class SjRepository private constructor() {
     suspend fun getTagByTid(tid: Int): SjTag = dao.getTagByTid(tid)
 
     suspend fun getDomainByDid(did: Int): SjDomain = dao.getDomainByDid(did)
+
+    suspend fun getTagGroupWithTagsByGid(gid: Int): SjTagGroupWithTags = dao.getTagGroupWithTagsByGid(gid)
+    suspend fun updateTags(tags: List<SjTag>) {
+        dao.updateTags(*tags.toTypedArray())
+    }
 
 
 }

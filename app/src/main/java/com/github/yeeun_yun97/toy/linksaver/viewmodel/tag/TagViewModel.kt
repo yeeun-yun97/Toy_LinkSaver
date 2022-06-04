@@ -1,16 +1,25 @@
 package com.github.yeeun_yun97.toy.linksaver.viewmodel.tag
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.BasicViewModelWithRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
+data class TagGroupDetailValue(
+    val name : String,
+    val isPrivate : Boolean,
+    val tags : LiveData<List<SjTag>>
+)
+
 class TagViewModel : BasicViewModelWithRepository() {
     val tags = repository.tags
+    val tagGroups = repository.tagGroups
 
     // data binding live data
     val bindingTagName = MutableLiveData<String>()
@@ -47,6 +56,10 @@ class TagViewModel : BasicViewModelWithRepository() {
         } else {
             repository.updateTag(targetTag)
         }
+    }
+
+    fun createTagGroup(name: String, isPrivate: Boolean){
+        repository.insertTagGroup(name,isPrivate)
     }
 
 

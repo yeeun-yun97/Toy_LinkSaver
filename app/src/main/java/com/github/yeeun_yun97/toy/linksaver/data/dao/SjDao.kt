@@ -133,6 +133,9 @@ interface SjDao {
     @Insert
     suspend fun insertTag(newTag: SjTag): Long
 
+    @Insert
+    suspend fun insertTagGroup(newTagGroup: SjTagGroup): Long
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertLinkTagCrossRef(newCrossRef: LinkTagCrossRef)
 
@@ -149,6 +152,9 @@ interface SjDao {
 
     @Update
     suspend fun updateTag(tag: SjTag)
+
+    @Update
+    suspend fun updateTags(vararg tags: SjTag)
 
     @Update
     suspend fun updateDomain(domain: SjDomain)
@@ -225,5 +231,15 @@ interface SjDao {
 
     @Query("SELECT * FROM SjTag WHERE gid = :gid ORDER BY name")
     fun getAllTagsByGid(gid: Int): LiveData<List<SjTag>>
+
+    @Transaction
+    @Query("SELECT * FROM SjTagGroup WHERE gid= :gid")
+    fun getTagGroupWithTagsByGid(gid: Int): SjTagGroupWithTags
+
+    @Transaction
+    @Query("SELECT * FROM SjTagGroup WHERE gid= 1")
+    fun getBasicTagGroupWithTags(): LiveData<SjTagGroupWithTags>
+
+
 
 }

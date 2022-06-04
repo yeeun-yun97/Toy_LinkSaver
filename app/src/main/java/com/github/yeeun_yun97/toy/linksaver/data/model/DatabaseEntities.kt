@@ -134,7 +134,7 @@ data class SjTagGroupWithTags(
     @Relation(
         parentColumn = "gid",
         entityColumn = "gid",
-    ) val tags: List<SjTag>
+    ) var tags: List<SjTag>
 )
 
 class LinkModelUtil{

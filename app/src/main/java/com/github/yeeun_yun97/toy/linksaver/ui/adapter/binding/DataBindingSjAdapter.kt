@@ -23,6 +23,18 @@ class DataBindingSjAdapter {
         }
 
         @JvmStatic
+        @BindingAdapter("chipCheckableDataList")
+        fun setCheckableChipByList(view: ChipGroup, tags: List<SjTag>?) {
+            view.removeAllViews()
+            if (!tags.isNullOrEmpty()) {
+                for( tag in tags) {
+                    val chip = SjTagChip(view.context, tag)
+                    view.addView(chip)
+                }
+            }
+        }
+
+        @JvmStatic
         @BindingAdapter("textOrHide")
         fun setTextOrHide(view: TextView, string: String) {
             if (string.isEmpty()) {
