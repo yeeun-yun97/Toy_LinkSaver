@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroupWithTags
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.BasicViewModelWithRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -22,7 +23,9 @@ class TagViewModel : BasicViewModelWithRepository() {
     val tagGroups = repository.tagGroups
 
     // data binding live data
+    private val _bindingBasicTagGroup = repository.basicTagGroup
     val bindingTagName = MutableLiveData<String>()
+    val bindingBasicTagGroup: LiveData<SjTagGroupWithTags> get() = _bindingBasicTagGroup
 
     // Model to save
     private var targetTag = SjTag(name = "")

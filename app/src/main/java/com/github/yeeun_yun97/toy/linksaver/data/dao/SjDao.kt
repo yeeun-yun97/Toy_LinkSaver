@@ -33,7 +33,7 @@ interface SjDao {
             : LiveData<List<SjLinksAndDomainsWithTags>>
 
     @Transaction
-    @Query("SELECT * FROM SjTagGroup ORDER BY gid")
+    @Query("SELECT * FROM SjTagGroup WHERE gid != 1 ORDER BY gid")
     fun getAllTagGroupsWithTags()
             : LiveData<List<SjTagGroupWithTags>>
 

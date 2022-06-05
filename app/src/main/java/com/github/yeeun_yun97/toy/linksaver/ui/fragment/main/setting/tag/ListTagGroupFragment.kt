@@ -9,6 +9,7 @@ import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.TagGroupListAdap
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.TagViewModel
 import android.text.InputType
+import android.view.View
 
 import android.widget.EditText
 import android.widget.Switch
@@ -22,6 +23,8 @@ class ListTagGroupFragment : SjBasicFragment<FragmentListTagGroupBinding>() {
     override fun layoutId(): Int = R.layout.fragment_list_tag_group
 
     override fun onCreateView() {
+        binding.viewModel = viewModel
+
         val handlerMap = hashMapOf<Int, () -> Unit>(R.id.menu_add to ::addTagGroup)
         binding.toolbar.setMenu(R.menu.toolbar_menu_add, handlerMap = handlerMap)
 
@@ -32,6 +35,15 @@ class ListTagGroupFragment : SjBasicFragment<FragmentListTagGroupBinding>() {
         viewModel.tagGroups.observe(viewLifecycleOwner, {
             adapter.setList(it)
         })
+
+        viewModel.bindingBasicTagGroup.observe(viewLifecycleOwner, {
+            if (it.tags.isEmpty()) {
+                binding.emptyBasicTagGroupTextView.visibility = View.VISIBLE
+            } else {
+                binding.emptyBasicTagGroupTextView.visibility = View.INVISIBLE
+            }
+        })
+
 
     }
 

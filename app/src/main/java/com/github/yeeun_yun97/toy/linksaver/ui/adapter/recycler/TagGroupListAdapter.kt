@@ -43,6 +43,12 @@ class TagGroupListViewHolder(binding: ItemTagGroupBinding) :
             binding.emptyTextView.visibility = View.GONE
         }
 
+        if(item.tagGroup.isPrivate){
+            binding.privateImageView.visibility=View.VISIBLE
+        }else{
+            binding.privateImageView.visibility=View.GONE
+        }
+
 
     }
 
