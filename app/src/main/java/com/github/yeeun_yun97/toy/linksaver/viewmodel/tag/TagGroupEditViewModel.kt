@@ -1,5 +1,6 @@
 package com.github.yeeun_yun97.toy.linksaver.viewmodel.tag
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -7,6 +8,7 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroupWithTags
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.BasicViewModelWithRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class TagGroupEditViewModel : BasicViewModelWithRepository() {
@@ -48,9 +50,10 @@ class TagGroupEditViewModel : BasicViewModelWithRepository() {
 
     private fun createTag(tag: SjTag) {
         viewModelScope.launch(Dispatchers.IO) {
-            val job = launch { repository.insertTag(tag) }
-            job.join()
+            val tagId = async { repository.insertTag(tag) }
+            Log.d("inserted tag", "tagId = ${tagId.await()}")
             setGid(gid)
+            Log.d("refresh", "gid = $gid")
         }
     }
 
