@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
-            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.TagGroupViewModel" />
+            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.SwapTagViewModel" />
     </data>
 
 
@@ -17,61 +16,27 @@
 
 
         <com.github.yeeun_yun97.clone.ynmodule.ui.component.CustomBasicToolbar
-            android:id="@+id/customBasicToolbar3"
-            android:layout_width="match_parent"
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:toolbarTitle="태그 그룹 관리" />
 
-        <TextView
-            android:id="@+id/basicGroupTextView"
-            style="@style/important2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
-            android:text="@{viewModel.bindingBasicTagGroup.tagGroup.name, default = 기본}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/basicPrivateImageView"
-            app:layout_constraintTop_toBottomOf="@+id/customBasicToolbar3" />
-
-        <ImageView
-            android:id="@+id/basicPrivateImageView"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_marginStart="15dp"
-            app:layout_constraintBottom_toBottomOf="@+id/basicGroupTextView"
-            app:layout_constraintEnd_toStartOf="@id/basicGroupTextView"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/basicGroupTextView"
-            app:srcCompat="@drawable/ic_icons8_lock" />
-
-        <ImageView
-            android:id="@+id/targetPrivateImageView"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            app:layout_constraintBottom_toBottomOf="@+id/targetGroupTextView"
-            app:layout_constraintEnd_toStartOf="@id/targetGroupTextView"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="@+id/basicScrollView"
-            app:layout_constraintTop_toTopOf="@+id/targetGroupTextView"
-            app:srcCompat="@drawable/ic_icons8_lock" />
-
 
         <ScrollView
             android:id="@+id/basicScrollView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toTopOf="@+id/moveToBasicImageView"
-            app:layout_constraintEnd_toEndOf="@+id/basicGroupTextView"
-            app:layout_constraintHorizontal_bias="0.533"
-            app:layout_constraintStart_toStartOf="@+id/basicPrivateImageView"
-            app:layout_constraintTop_toBottomOf="@+id/basicGroupTextView"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_max="300dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/basicChipGroup"
@@ -81,47 +46,43 @@
 
         <ImageView
             android:id="@+id/moveToBasicImageView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:paddingVertical="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/moveToTargetImageView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/customBasicToolbar3"
+            app:layout_constraintStart_toStartOf="@+id/basicScrollView"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintVertical_bias="0.4"
             app:srcCompat="@drawable/ic_icons8_up" />
 
         <ImageView
             android:id="@+id/moveToTargetImageView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="58dp"
+            android:paddingVertical="10dp"
             app:layout_constraintBottom_toBottomOf="@+id/moveToBasicImageView"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/basicScrollView"
             app:layout_constraintStart_toEndOf="@+id/moveToBasicImageView"
             app:layout_constraintTop_toTopOf="@+id/moveToBasicImageView"
             app:srcCompat="@drawable/ic_icons8_down" />
-
-        <TextView
-            android:id="@+id/targetGroupTextView"
-            style="@style/important2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{viewModel.bindingTargetTagGroup.tagGroup.name, default = 타깃}"
-            app:layout_constraintEnd_toEndOf="@+id/basicScrollView"
-            app:layout_constraintStart_toEndOf="@+id/targetPrivateImageView"
-            app:layout_constraintTop_toBottomOf="@+id/moveToBasicImageView" />
 
         <ScrollView
             android:id="@+id/targetScrollView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/targetGroupTextView"
-            app:layout_constraintStart_toStartOf="@+id/targetPrivateImageView"
-            app:layout_constraintTop_toBottomOf="@+id/targetGroupTextView">
+            app:layout_constraintEnd_toEndOf="@+id/moveToTargetImageView"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/moveToBasicImageView"
+            app:layout_constraintTop_toBottomOf="@+id/moveToBasicImageView"
+            app:layout_constraintVertical_bias="0.0">
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/targetChipGroup"
-                android:layout_width="wrap_content"
+            <include
+                android:id="@+id/include"
+                layout="@layout/item_tag_group"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

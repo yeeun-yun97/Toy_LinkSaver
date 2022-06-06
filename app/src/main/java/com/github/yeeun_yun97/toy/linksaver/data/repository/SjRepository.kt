@@ -3,7 +3,6 @@ package com.github.yeeun_yun97.toy.linksaver.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.test.core.app.ActivityScenario.launch
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDao
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.*
@@ -57,8 +56,8 @@ class SjRepository private constructor() {
         }
 
     suspend fun createTag(newTag: SjTag) {
-            dao.insertTag(newTag)
-        }
+        dao.insertTag(newTag)
+    }
 
     fun insertLinkAndTags(domain: SjDomain?, newLink: SjLink, tags: List<SjTag>) =
         CoroutineScope(Dispatchers.IO).launch {
@@ -94,11 +93,22 @@ class SjRepository private constructor() {
         }
     }
 
-    fun insertTagGroup(name: String, isPrivate: Boolean) {
+    fun editTagGroup(name: String, isPrivate: Boolean, group: SjTagGroup?) {
         CoroutineScope(Dispatchers.IO).launch {
-            val newTagGroup = SjTagGroup(name=name, isPrivate = isPrivate)
-            dao.insertTagGroup(newTagGroup)
+            if (group == null) {
+                insertTagGroup(SjTagGroup(name = name, isPrivate = isPrivate))
+            } else {
+                updateTagGroup(group.copy(name = name, isPrivate = isPrivate))
+            }
         }
+    }
+
+    suspend fun updateTagGroup(tagGroup: SjTagGroup) {
+        dao.updateTagGroup(tagGroup)
+    }
+
+    suspend fun insertTagGroup(tagGroup: SjTagGroup) {
+        dao.insertTagGroup(tagGroup)
     }
 
     private suspend fun deleteSearchesBySids(sids: List<Int>) {
@@ -177,7 +187,7 @@ class SjRepository private constructor() {
     }
 
     suspend fun updateTag(tag: SjTag) {
-            dao.updateTag(tag)
+        dao.updateTag(tag)
     }
 
     fun updateDomain(domain: SjDomain) {
@@ -259,20 +269,20 @@ class SjRepository private constructor() {
         }
     }
 
-    suspend fun deleteTagRefs(tag:SjTag){
+    suspend fun deleteTagRefs(tag: SjTag) {
         //delete all refs
         dao.deleteLinkTagCrossRefsByTid(tag.tid)
     }
 
-    suspend fun deleteTag(tag: SjTag){
-            // wait and delete
-            dao.deleteTag(tag)
+    suspend fun deleteTag(tag: SjTag) {
+        // wait and delete
+        dao.deleteTag(tag)
     }
 
     fun deleteTagGroup(gid: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             // change tags related to group to basic group
-            val job = launch {dao.updateTagToBasicGroupByGid(gid)}
+            val job = launch { dao.updateTagToBasicGroupByGid(gid) }
 
             job.join()
             // delete group
@@ -311,12 +321,12 @@ class SjRepository private constructor() {
 
     suspend fun getDomainByDid(did: Int): SjDomain = dao.getDomainByDid(did)
 
-    suspend fun getTagGroupWithTagsByGid(gid: Int): SjTagGroupWithTags = dao.getTagGroupWithTagsByGid(gid)
+    suspend fun getTagGroupWithTagsByGid(gid: Int): SjTagGroupWithTags =
+        dao.getTagGroupWithTagsByGid(gid)
+
     suspend fun updateTags(tags: List<SjTag>) {
         dao.updateTags(*tags.toTypedArray())
     }
-
-
 
 
 }

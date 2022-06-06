@@ -11,14 +11,14 @@ import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.TagGroupEditViewModel
 
-class EditTagGroupFragment : SjBasicFragment<FragmentListTagBinding>() {
+class EditTagInGroupFragment : SjBasicFragment<FragmentListTagBinding>() {
     val viewModel: TagGroupEditViewModel by activityViewModels()
     private var gid: Int = -1
     private var groupName: String = ""
 
     companion object {
-        fun newInstance(gid: Int): EditTagGroupFragment {
-            val fragment = EditTagGroupFragment()
+        fun newInstance(gid: Int): EditTagInGroupFragment {
+            val fragment = EditTagInGroupFragment()
             fragment.arguments = Bundle().apply {
                 putInt("gid", gid)
             }
@@ -39,8 +39,6 @@ class EditTagGroupFragment : SjBasicFragment<FragmentListTagBinding>() {
 
         val handlerMap = hashMapOf<Int, () -> Unit>(
             R.id.menu_group_new_tag to ::createNewTag,
-            R.id.menu_group_rename to ::renameTagGroup,
-            R.id.menu_group_delete to ::deleteTagGroup,
             R.id.menu_group_swap to ::moveToSwapTagGroupFragment,
         )
         binding.toolbar.setMenu(R.menu.toolbar_menu_tag_group, handlerMap)
@@ -59,31 +57,21 @@ class EditTagGroupFragment : SjBasicFragment<FragmentListTagBinding>() {
     }
 
     private fun createNewTag() {
-        val tagGroupWithTag=viewModel.tagGroupWithTags.value
+        val tagGroupWithTag = viewModel.tagGroupWithTags.value
         val dialogFragment = EditTagDialogFragment(::editTag, tagGroupWithTag?.tagGroup)
         dialogFragment.show(childFragmentManager, "그룹에 새 태그 생성하기")
     }
 
     // handle user click event
     private fun renameTag(tag: SjTag) {
-        val tagGroupWithTag=viewModel.tagGroupWithTags.value
+        val tagGroupWithTag = viewModel.tagGroupWithTags.value
         val dialogFragment = EditTagDialogFragment(::editTag, tagGroupWithTag?.tagGroup, tag)
         dialogFragment.show(childFragmentManager, "그룹에 새 태그 생성하기")
     }
 
-    private fun renameTagGroup() {
-
-    }
-
-
-    private fun editTag(tag:SjTag?, name: String) {
-        viewModel.editTag(tag,name, gid)
+    private fun editTag(name: String, tag: SjTag?) {
+        viewModel.editTag(tag, name, gid)
         viewModel.setGid(gid)
-    }
-
-    private fun deleteTagGroup() {
-        if (gid != -1) viewModel.deleteTagGroup(gid)
-        this.popBack()
     }
 
     private fun moveToSwapTagGroupFragment() {

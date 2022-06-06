@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.TagViewModel" />
+            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.ListGroupViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,8 +18,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"
-            android:maxHeight="200dp"
+            android:layout_marginTop="5dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_max="160dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
@@ -46,7 +47,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:toolbarTitle="태그 목록" />
+            app:toolbarTitle="태그 그룹 목록" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

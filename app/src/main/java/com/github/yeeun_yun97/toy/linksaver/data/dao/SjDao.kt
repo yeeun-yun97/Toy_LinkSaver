@@ -162,6 +162,9 @@ interface SjDao {
     suspend fun updateTags(vararg tags: SjTag)
 
     @Update
+    suspend fun updateTagGroup(tagGroup: SjTagGroup)
+
+    @Update
     suspend fun updateDomain(domain: SjDomain)
 
     @Update
@@ -250,8 +253,6 @@ interface SjDao {
     @Transaction
     @Query("SELECT * FROM SjTagGroup WHERE gid= 1")
     fun getBasicTagGroupWithTags(): LiveData<SjTagGroupWithTags>
-
-
 
 
 }

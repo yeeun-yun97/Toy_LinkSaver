@@ -9,9 +9,9 @@ import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.BasicViewModelWithRe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class TagGroupViewModel : BasicViewModelWithRepository() {
+class SwapTagViewModel : BasicViewModelWithRepository() {
 
-    var gid: Int = -1
+    var targetGid: Int = -1
     val selectedBasicTags = mutableListOf<SjTag>()
     val selectedTargetTags = mutableListOf<SjTag>()
 
@@ -21,39 +21,48 @@ class TagGroupViewModel : BasicViewModelWithRepository() {
     val bindingBasicTagGroup: LiveData<SjTagGroupWithTags> get() = _bindingBasicTagGroup
     val bindingTargetTagGroup: LiveData<SjTagGroupWithTags> get() = _bindingTargetTagGroup
 
+    fun setTargetTagGroupByGid(gid: Int) {
+        this.targetGid = gid
+        loadTargetTagGroup()
+    }
 
     private fun loadTargetTagGroup() {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = repository.getTagGroupWithTagsByGid(gid)
+            val result = repository.getTagGroupWithTagsByGid(targetGid)
             _bindingTargetTagGroup.postValue(result)
         }
     }
 
-    fun setTargetTagGroupGid(gid:Int){
-        this.gid = gid
-        loadTargetTagGroup()
-    }
 
+    // move tags and save
     fun moveSelectedTargetTagsToBasicGroup() {
         viewModelScope.launch(Dispatchers.IO) {
             for (tag in selectedTargetTags) {
-                tag.gid = bindingBasicTagGroup.value!!.tagGroup.gid
+                tag.gid = 1 // basicGid
             }
-            val updateJob = launch{repository.updateTags(selectedTargetTags)}
+            val updateJob = launch { repository.updateTags(selectedTargetTags) }
             updateJob.join()
             loadTargetTagGroup()
+            clearLists()
         }
     }
 
     fun moveSelectedBasicTagsToTargetGroup() {
         viewModelScope.launch(Dispatchers.IO) {
             for (tag in selectedBasicTags) {
-                tag.gid = bindingTargetTagGroup.value!!.tagGroup.gid
+                tag.gid = targetGid
             }
-            val updateJob = launch{repository.updateTags(selectedBasicTags)}
+            val updateJob = launch { repository.updateTags(selectedBasicTags) }
             updateJob.join()
             loadTargetTagGroup()
+            clearLists()
         }
     }
+
+    fun clearLists(){
+        selectedBasicTags.clear()
+        selectedTargetTags.clear()
+    }
+
 
 }

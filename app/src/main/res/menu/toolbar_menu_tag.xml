@@ -6,8 +6,8 @@
         android:id="@+id/menu_add_group"
         android:title="새 그룹 추가하기"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/menu_add_tag"
-        android:title="그룹 없는 태그 추가하기"
-        app:showAsAction="never" />
+<!--    <item-->
+<!--        android:id="@+id/menu_add_tag"-->
+<!--        android:title="그룹 없는 태그 추가하기"-->
+<!--        app:showAsAction="never" />-->
 </menu>

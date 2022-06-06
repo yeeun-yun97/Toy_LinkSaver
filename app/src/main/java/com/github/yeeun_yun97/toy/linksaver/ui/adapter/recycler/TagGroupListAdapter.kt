@@ -7,15 +7,17 @@ import android.widget.PopupMenu
 import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicAdapter
 import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicViewHolder
 import com.github.yeeun_yun97.toy.linksaver.R
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroupWithTags
 import com.github.yeeun_yun97.toy.linksaver.databinding.ItemTagGroupBinding
 
 class TagGroupListAdapter(
     private val deleteOperation: (Int) -> Unit,
     private val editOperation: (Int) -> Unit,
+    private val renameOperation: (SjTagGroup) -> Unit
 ) : RecyclerBasicAdapter<SjTagGroupWithTags, TagGroupListViewHolder>() {
     override fun onBindViewHolder(holder: TagGroupListViewHolder, item: SjTagGroupWithTags) {
-        holder.setItem(item, deleteOperation, editOperation)
+        holder.setItem(item, deleteOperation, editOperation, renameOperation)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagGroupListViewHolder {
@@ -32,6 +34,7 @@ class TagGroupListViewHolder(binding: ItemTagGroupBinding) :
         item: SjTagGroupWithTags,
         deleteOperation: (Int) -> Unit,
         editOperation: (Int) -> Unit,
+        renameOperation: (SjTagGroup) -> Unit,
     ) {
         binding.item = item
 
@@ -46,6 +49,10 @@ class TagGroupListViewHolder(binding: ItemTagGroupBinding) :
                 }
                 R.id.menu_group_edit -> {
                     editOperation(gid)
+                    true
+                }
+                R.id.menu_group_rename -> {
+                    renameOperation(item.tagGroup)
                     true
                 }
                 else -> false

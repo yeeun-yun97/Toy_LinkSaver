@@ -1,16 +1,17 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.tag
 
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.viewModels
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSwapTagGroupBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.TagGroupViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.SwapTagViewModel
 
 class SwapTagGroupFragment : SjBasicFragment<FragmentSwapTagGroupBinding>() {
 
-    private val viewModel: TagGroupViewModel by viewModels()
+    private val viewModel: SwapTagViewModel by viewModels()
 
     companion object {
         fun newInstance(gid: Int): SwapTagGroupFragment {
@@ -22,25 +23,26 @@ class SwapTagGroupFragment : SjBasicFragment<FragmentSwapTagGroupBinding>() {
         }
     }
 
-    private fun loadTargetTagGroup(){
-        val gid = requireArguments().getInt("gid", -1)
-        viewModel.setTargetTagGroupGid(gid)
-    }
-
     override fun layoutId(): Int = R.layout.fragment_swap_tag_group
 
     override fun onCreateView() {
-        loadTargetTagGroup()
+
+        // handle arguments
+        val gid = requireArguments().getInt("gid", -1)
+        viewModel.setTargetTagGroupByGid(gid)
+
+        // set binding variable
         binding.viewModel = viewModel
 
+        // observe basic tag group
         viewModel.bindingBasicTagGroup.observe(viewLifecycleOwner, {
             binding.basicChipGroup.removeAllViews()
             for (tag in it.tags) {
                 val chip = SjTagChip(requireContext(), tag)
                 chip.setOnCheckedChangeListener { button, isChecked ->
-                    if(isChecked){
+                    if (isChecked) {
                         viewModel.selectedBasicTags.add(tag)
-                    }else{
+                    } else {
                         viewModel.selectedBasicTags.remove(tag)
                     }
                 }
@@ -49,17 +51,26 @@ class SwapTagGroupFragment : SjBasicFragment<FragmentSwapTagGroupBinding>() {
         })
 
         viewModel.bindingTargetTagGroup.observe(viewLifecycleOwner, {
-            binding.targetChipGroup.removeAllViews()
+            binding.include.tagChipGroup.removeAllViews()
+            if (it.tags.isEmpty()) {
+                binding.include.emptyTextView.visibility = View.VISIBLE
+            } else {
+                binding.include.emptyTextView.visibility = View.INVISIBLE
+            }
+            binding.include.groupNameTextView.setText(it.tagGroup.name)
+            binding.include.privateImageView.visibility =
+                if (it.tagGroup.isPrivate) View.VISIBLE
+                else View.GONE
             for (tag in it.tags) {
                 val chip = SjTagChip(requireContext(), tag)
                 chip.setOnCheckedChangeListener { button, isChecked ->
-                    if(isChecked){
+                    if (isChecked) {
                         viewModel.selectedTargetTags.add(tag)
-                    }else{
+                    } else {
                         viewModel.selectedTargetTags.remove(tag)
                     }
                 }
-                binding.targetChipGroup.addView(chip)
+                binding.include.tagChipGroup.addView(chip)
             }
         })
 

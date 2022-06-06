@@ -12,7 +12,7 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
 import java.lang.IllegalStateException
 
 class EditTagDialogFragment(
-    private val saveOperation: (SjTag?, String) -> Unit,
+    private val saveOperation: (String, SjTag?) -> Unit,
     private val group: SjTagGroup? = null,
     private val tag: SjTag? = null
 ) :
@@ -37,7 +37,7 @@ class EditTagDialogFragment(
 
             builder.setView(dialogView)
                 .setPositiveButton("확인") { _, _ ->
-                    saveOperation(tag, nameEditText.text.toString())
+                    saveOperation(nameEditText.text.toString(), tag)
                 }
 
             builder.create()

@@ -7,9 +7,13 @@ import android.widget.EditText
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.DialogFragment
 import com.github.yeeun_yun97.toy.linksaver.R
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
 import java.lang.IllegalStateException
 
-class EditTagGroupDialogFragment(private val saveOperation: (String, Boolean) -> Unit) :
+class EditTagGroupDialogFragment(
+    private val saveOperation: (String, Boolean,SjTagGroup?) -> Unit,
+    private val tagGroup: SjTagGroup? = null
+) :
     DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -22,12 +26,17 @@ class EditTagGroupDialogFragment(private val saveOperation: (String, Boolean) ->
             val isPrivateSwitch = dialogView.findViewById<SwitchCompat>(R.id.isPrivateSwitch)
 
             builder.setTitle("새로운 태그 그룹 만들기")
+            if(tagGroup!=null){
+                nameEditText.setText(tagGroup.name)
+                isPrivateSwitch.isChecked=tagGroup.isPrivate
+            }
 
             builder.setView(dialogView)
                 .setPositiveButton("확인") { _, _ ->
                     saveOperation(
                         nameEditText.text.toString(),
-                        isPrivateSwitch.isChecked
+                        isPrivateSwitch.isChecked,
+                        tagGroup
                     )
                 }
 

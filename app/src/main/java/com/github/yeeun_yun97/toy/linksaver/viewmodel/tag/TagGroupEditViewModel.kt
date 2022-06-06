@@ -12,7 +12,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class TagGroupEditViewModel : BasicViewModelWithRepository() {
-
     private var gid = -1
 
     private val _tagGroupWithTags = MutableLiveData<SjTagGroupWithTags>()
