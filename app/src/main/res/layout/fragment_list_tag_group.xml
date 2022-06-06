@@ -13,32 +13,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/emptyBasicTagGroupTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="그룹에 속하지 않은 태그가 없습니다."
-            app:layout_constraintBottom_toBottomOf="@+id/basicTagGroupScrollView"
-            app:layout_constraintEnd_toEndOf="@+id/basicTagGroupScrollView"
-            app:layout_constraintStart_toStartOf="@+id/basicTagGroupScrollView"
-            app:layout_constraintTop_toTopOf="@+id/basicTagGroupScrollView" />
-
         <ScrollView
             android:id="@+id/basicTagGroupScrollView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"
             android:maxHeight="200dp"
-            android:minHeight="80dp"
-            android:paddingVertical="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
             <com.google.android.material.chip.ChipGroup
+                chipDataList="@{viewModel.bindingBasicTagGroup.tags}"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                chipDataList="@{viewModel.bindingBasicTagGroup.tags}"/>
+                android:layout_height="wrap_content" />
         </ScrollView>
 
         <androidx.recyclerview.widget.RecyclerView

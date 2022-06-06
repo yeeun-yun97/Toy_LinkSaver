@@ -16,7 +16,8 @@ class SearchLinkViewModel : BasicViewModelWithRepository() {
     val linkList = repository.linkList
     val searchLinkList = repository.searchLinkList
     val searchList = repository.searches
-    val tagList = repository.tags
+//    val tagList = repository.tags
+    val tagWithLinks = repository.tagGroupsWithDefault
 
     // mode
     var mode: ListMode = ListMode.MODE_ALL

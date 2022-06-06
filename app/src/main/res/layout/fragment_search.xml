@@ -63,8 +63,8 @@
             app:layout_constraintStart_toStartOf="@id/searchEditText"
             app:layout_constraintTop_toBottomOf="@id/searchEditText" />
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/tagChipGroup"
+        <ScrollView
+            android:id="@+id/tagChipGroupScrollView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="20dp"
@@ -72,7 +72,15 @@
             app:layout_constraintEnd_toEndOf="@id/recentSearchedRecyclerView"
             app:layout_constraintHeight_min="50dp"
             app:layout_constraintStart_toStartOf="@id/tagTextView"
-            app:layout_constraintTop_toBottomOf="@id/tagTextView" />
+            app:layout_constraintTop_toBottomOf="@id/tagTextView" >
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/tagChipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </ScrollView>
+
+
 
         <ImageView
             android:id="@+id/deleteImageView"
@@ -121,11 +129,11 @@
             android:id="@+id/emptyTagImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/tagChipGroup"
+            app:layout_constraintBottom_toBottomOf="@id/tagChipGroupScrollView"
             app:layout_constraintEnd_toStartOf="@id/emptyTagTextView"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="@id/tagChipGroup"
-            app:layout_constraintTop_toTopOf="@id/tagChipGroup"
+            app:layout_constraintStart_toStartOf="@id/tagChipGroupScrollView"
+            app:layout_constraintTop_toTopOf="@id/tagChipGroupScrollView"
             app:layout_constraintVertical_bias="0.1"
             app:srcCompat="@drawable/ic_icons8_empty__2_" />
 
@@ -136,7 +144,7 @@
             android:layout_marginStart="10dp"
             android:text="아직 생성된 태그가 없습니다."
             app:layout_constraintBottom_toBottomOf="@+id/emptyTagImageView"
-            app:layout_constraintEnd_toEndOf="@+id/tagChipGroup"
+            app:layout_constraintEnd_toEndOf="@id/tagChipGroupScrollView"
             app:layout_constraintStart_toEndOf="@id/emptyTagImageView"
             app:layout_constraintTop_toTopOf="@+id/emptyTagImageView" />
 

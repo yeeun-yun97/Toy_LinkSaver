@@ -15,7 +15,7 @@ class EditVideoViewModel : BasicViewModelWithRepository() {
     private val networkRepository = SjNetworkRepository.newInstance()
 
     // model list
-    val tagList = repository.tags
+    val tagWithLinks = repository.tagGroupsWithDefault
 
     // default type
     private val defaultType = ELinkType.link

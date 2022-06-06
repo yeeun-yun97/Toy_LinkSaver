@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroupWithTags
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSearchBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.SearchSetAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
@@ -49,10 +50,10 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
         binding.emptyTagGroup.visibility = View.GONE
 
         // set tag list
-        viewModel.tagList.observe(viewLifecycleOwner, { setTagList(it) })
+        viewModel.tagWithLinks.observe(viewLifecycleOwner, { setTagList(it) })
         viewModel.bindingTargetTags.observe(viewLifecycleOwner, {
-            if (viewModel.tagList.value != null)
-                setTagList(viewModel.tagList.value!!)
+            if (viewModel.tagWithLinks.value != null)
+                setTagList(viewModel.tagWithLinks.value!!)
         })
 
         // user input enter(action search) -> search start.
@@ -114,7 +115,7 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
         binding.deleteTextView.setOnClickListener(onClickListener)
     }
 
-    private fun setTagList(it: List<SjTag>) {
+    private fun setTagList(it: List<SjTagGroupWithTags>) {
         if (it.isNullOrEmpty()) {
             binding.emptyTagGroup.visibility = View.VISIBLE
         } else {
@@ -135,11 +136,14 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
             }
 
         binding.tagChipGroup.removeAllViews()
-        for (tag in it) {
-            val chip = SjTagChip(requireContext(), tag)
-            chip.isChecked = viewModel.containsTag(tag)
-            chip.setOnCheckedChangeListener(onCheckedListener)
-            binding.tagChipGroup.addView(chip)
+        for (group in it) {
+            for(tag in group.tags) {
+                val chip = SjTagChip(requireContext(), tag)
+                chip.isChecked = viewModel.containsTag(tag)
+                chip.setOnCheckedChangeListener(onCheckedListener)
+                if(group.tagGroup.gid!=1) chip.setText("${group.tagGroup.name}: ${tag.name}")
+                binding.tagChipGroup.addView(chip)
+            }
         }
     }
 

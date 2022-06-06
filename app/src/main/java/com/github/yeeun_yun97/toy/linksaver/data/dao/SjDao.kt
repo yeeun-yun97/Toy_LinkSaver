@@ -33,7 +33,12 @@ interface SjDao {
             : LiveData<List<SjLinksAndDomainsWithTags>>
 
     @Transaction
-    @Query("SELECT * FROM SjTagGroup WHERE gid != 1 ORDER BY gid")
+    @Query("SELECT * FROM SjTagGroup WHERE gid != 1 ORDER BY name")
+    fun getTagGroupsWithTags()
+            : LiveData<List<SjTagGroupWithTags>>
+
+    @Transaction
+    @Query("SELECT * FROM SjTagGroup ORDER BY name")
     fun getAllTagGroupsWithTags()
             : LiveData<List<SjTagGroupWithTags>>
 
@@ -162,6 +167,9 @@ interface SjDao {
     @Update
     suspend fun updateLinks(vararg links: SjLink)
 
+    @Query("UPDATE SjTag SET gid = 1 WHERE gid = :gid")
+    suspend fun updateTagToBasicGroupByGid(gid: Int)
+
 
     // delete queries
     @Delete
@@ -209,6 +217,9 @@ interface SjDao {
     @Query("DELETE FROM SjLink WHERE lid = :lid")
     suspend fun deleteLinkByLid(lid: Int)
 
+    @Query("DELETE FROM SjTagGroup WHERE gid = :gid")
+    suspend fun deleteTagGroupByGid(gid: Int)
+
 
     // query by key
     @Transaction
@@ -239,6 +250,7 @@ interface SjDao {
     @Transaction
     @Query("SELECT * FROM SjTagGroup WHERE gid= 1")
     fun getBasicTagGroupWithTags(): LiveData<SjTagGroupWithTags>
+
 
 
 

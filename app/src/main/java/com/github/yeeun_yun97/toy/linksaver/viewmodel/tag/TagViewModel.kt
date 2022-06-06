@@ -13,9 +13,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 data class TagGroupDetailValue(
-    val name : String,
-    val isPrivate : Boolean,
-    val tags : LiveData<List<SjTag>>
+    val name: String,
+    val isPrivate: Boolean,
+    val tags: LiveData<List<SjTag>>
 )
 
 class TagViewModel : BasicViewModelWithRepository() {
@@ -52,21 +52,17 @@ class TagViewModel : BasicViewModelWithRepository() {
     }
 
 
-    // save tag
-    fun saveTag() {
-        if (targetTag.tid == 0) {
-            repository.insertTag(targetTag)
-        } else {
-            repository.updateTag(targetTag)
-        }
+
+    fun createTag(name: String) {
+        repository.insertTag(SjTag(name = name))
     }
 
-    fun createTagGroup(name: String, isPrivate: Boolean){
-        repository.insertTagGroup(name,isPrivate)
+    fun createTagGroup(name: String, isPrivate: Boolean) {
+        repository.insertTagGroup(name, isPrivate)
     }
 
-
-    // delete tag
-    fun deleteTag(tag: SjTag) = repository.deleteTag(tag)
+    fun deleteTagGroup(gid:Int){
+        repository.deleteTagGroup(gid)
+    }
 
 }

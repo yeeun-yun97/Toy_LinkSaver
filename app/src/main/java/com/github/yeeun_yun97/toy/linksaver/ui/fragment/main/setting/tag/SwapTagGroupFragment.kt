@@ -1,7 +1,6 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.tag
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.viewModels
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSwapTagGroupBinding

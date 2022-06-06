@@ -7,6 +7,7 @@ import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroupWithTags
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditVideoBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
@@ -61,13 +62,13 @@ class EditLinkAndVideoFragment : SjBasicFragment<FragmentEditVideoBinding>() {
         })
 
         // set tagList
-        viewModel.tagList.observe(viewLifecycleOwner, {
+        viewModel.tagWithLinks.observe(viewLifecycleOwner, {
             this.addTagsToChipGroupChildren(it)
         })
 
     }
 
-    private fun handleArguments(arguments:Bundle){
+    private fun handleArguments(arguments: Bundle) {
         val lid = arguments.getInt("lid", -1)
         val url = arguments.getString("url") ?: ""
 
@@ -78,7 +79,7 @@ class EditLinkAndVideoFragment : SjBasicFragment<FragmentEditVideoBinding>() {
         }
     }
 
-    private fun addTagsToChipGroupChildren(it: List<SjTag>) {
+    private fun addTagsToChipGroupChildren(it: List<SjTagGroupWithTags>) {
         val onCheckListener =
             CompoundButton.OnCheckedChangeListener { btn, isChecked ->
                 val chip = btn as SjTagChip
@@ -90,11 +91,14 @@ class EditLinkAndVideoFragment : SjBasicFragment<FragmentEditVideoBinding>() {
             }
 
         binding.tagChipGroup.removeAllViews()
-        for (tag in it) {
-            val chip = SjTagChip(context!!, tag)
-            chip.isChecked = viewModel.isTagSelected(tag)
-            chip.setOnCheckedChangeListener(onCheckListener)
-            binding.tagChipGroup.addView(chip)
+        for (group in it) {
+            for (tag in group.tags) {
+                val chip = SjTagChip(context!!, tag)
+                chip.isChecked = viewModel.isTagSelected(tag)
+                chip.setOnCheckedChangeListener(onCheckListener)
+                if (group.tagGroup.gid != 1) chip.setText("${group.tagGroup.name}: ${tag.name}")
+                binding.tagChipGroup.addView(chip)
+            }
         }
     }
 

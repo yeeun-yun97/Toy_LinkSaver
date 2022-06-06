@@ -3,6 +3,7 @@ package com.github.yeeun_yun97.toy.linksaver.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.test.core.app.ActivityScenario.launch
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDao
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.*
@@ -22,7 +23,8 @@ class SjRepository private constructor() {
     val domains: LiveData<List<SjDomain>> = dao.getAllDomains()
     val domainsExceptDefault: LiveData<List<SjDomain>> = dao.getAllDomainsExceptDefault()
     val tags: LiveData<List<SjTag>> = dao.getAllTags()
-    val tagGroups: LiveData<List<SjTagGroupWithTags>> = dao.getAllTagGroupsWithTags()
+    val tagGroups: LiveData<List<SjTagGroupWithTags>> = dao.getTagGroupsWithTags()
+    val tagGroupsWithDefault: LiveData<List<SjTagGroupWithTags>> = dao.getAllTagGroupsWithTags()
     val basicTagGroup: LiveData<SjTagGroupWithTags> = dao.getBasicTagGroupWithTags()
     val linkList: LiveData<List<SjLinksAndDomainsWithTags>> = dao.getAllLinksAndDomainsWithTags()
 
@@ -51,6 +53,10 @@ class SjRepository private constructor() {
 
     fun insertTag(newTag: SjTag) =
         CoroutineScope(Dispatchers.IO).launch {
+            dao.insertTag(newTag)
+        }
+
+    suspend fun createTag(newTag: SjTag) {
             dao.insertTag(newTag)
         }
 
@@ -170,10 +176,8 @@ class SjRepository private constructor() {
         }
     }
 
-    fun updateTag(tag: SjTag) {
-        CoroutineScope(Dispatchers.IO).launch {
+    suspend fun updateTag(tag: SjTag) {
             dao.updateTag(tag)
-        }
     }
 
     fun updateDomain(domain: SjDomain) {
@@ -255,13 +259,24 @@ class SjRepository private constructor() {
         }
     }
 
-    fun deleteTag(tag: SjTag) {
-        CoroutineScope(Dispatchers.IO).launch {
-            //delete all refs
-            val job = launch { dao.deleteLinkTagCrossRefsByTid(tag.tid) }
-            job.join()
+    suspend fun deleteTagRefs(tag:SjTag){
+        //delete all refs
+        dao.deleteLinkTagCrossRefsByTid(tag.tid)
+    }
+
+    suspend fun deleteTag(tag: SjTag){
             // wait and delete
             dao.deleteTag(tag)
+    }
+
+    fun deleteTagGroup(gid: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            // change tags related to group to basic group
+            val job = launch {dao.updateTagToBasicGroupByGid(gid)}
+
+            job.join()
+            // delete group
+            dao.deleteTagGroupByGid(gid)
         }
     }
 
@@ -300,6 +315,8 @@ class SjRepository private constructor() {
     suspend fun updateTags(tags: List<SjTag>) {
         dao.updateTags(*tags.toTypedArray())
     }
+
+
 
 
 }

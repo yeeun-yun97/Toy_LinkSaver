@@ -9,11 +9,11 @@ import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.TagGroupListAdap
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.TagViewModel
 import android.text.InputType
-import android.view.View
-
 import android.widget.EditText
-import android.widget.Switch
 import androidx.appcompat.app.AlertDialog
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
+import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagDialogFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagGroupDialogFragment
 
 
 class ListTagGroupFragment : SjBasicFragment<FragmentListTagGroupBinding>() {
@@ -25,57 +25,48 @@ class ListTagGroupFragment : SjBasicFragment<FragmentListTagGroupBinding>() {
     override fun onCreateView() {
         binding.viewModel = viewModel
 
-        val handlerMap = hashMapOf<Int, () -> Unit>(R.id.menu_add to ::addTagGroup)
-        binding.toolbar.setMenu(R.menu.toolbar_menu_add, handlerMap = handlerMap)
+        val handlerMap = hashMapOf<Int, () -> Unit>(
+            R.id.menu_add_group to ::addTagGroup,
+            R.id.menu_add_tag to ::addTag,
+        )
+        binding.toolbar.setMenu(R.menu.toolbar_menu_tag, handlerMap = handlerMap)
 
         binding.tagGroupRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = TagGroupListAdapter(::moveToSwapTagGroupFragment)
+        val adapter = TagGroupListAdapter(
+            deleteOperation = ::deleteGroupByGid,
+            editOperation = ::moveToEditTagGroupFragment,
+        )
         binding.tagGroupRecyclerView.adapter = adapter
 
         viewModel.tagGroups.observe(viewLifecycleOwner, {
             adapter.setList(it)
         })
 
-        viewModel.bindingBasicTagGroup.observe(viewLifecycleOwner, {
-            if (it.tags.isEmpty()) {
-                binding.emptyBasicTagGroupTextView.visibility = View.VISIBLE
-            } else {
-                binding.emptyBasicTagGroupTextView.visibility = View.INVISIBLE
-            }
-        })
-
 
     }
 
-    private fun moveToSwapTagGroupFragment(gid: Int) {
-        moveToOtherFragment(SwapTagGroupFragment.newInstance(gid))
+
+    private fun moveToEditTagGroupFragment(gid: Int) {
+        moveToOtherFragment(EditTagGroupFragment.newInstance(gid))
+    }
+
+    private fun deleteGroupByGid(gid: Int) {
+        viewModel.deleteTagGroup(gid)
     }
 
     private fun addTagGroup() {
-        Toast.makeText(requireContext(), "태그 그룹 생성", Toast.LENGTH_LONG).show()
-        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("태그 그룹 생성하기")
+        val dialogFragment = EditTagGroupDialogFragment(::createTagGroup)
+        dialogFragment.show(childFragmentManager, "새 태그 그룹 생성하기")
+    }
 
-        // Set up the input
-        val input = EditText(requireContext())
-        input.inputType = InputType.TYPE_CLASS_TEXT
-        builder.setView(input)
+    private fun createTagGroup(name: String, isPrivate: Boolean) =
+        viewModel.createTagGroup(name, isPrivate)
 
-//        val switch = Switch(requireContext())
-//        switch.setText("비공개 모드")
-//        switch.isChecked = false
-//        builder.setView(switch)
+    private fun createTag(tag: SjTag?, name: String) = viewModel.createTag(name)
 
-        // Set up the buttons
-        builder.setPositiveButton("OK",
-            { dialog, which ->
-                val name = input.text.toString()
-                val isPrivate = false
-                viewModel.createTagGroup(name, isPrivate)
-            })
-        builder.setNegativeButton("Cancel",
-            { dialog, which -> dialog.cancel() })
-        builder.show()
+    private fun addTag() {
+        val dialogFragment = EditTagDialogFragment(::createTag, null)
+        dialogFragment.show(childFragmentManager, "그룹 없는 새 태그 생성하기")
     }
 
 

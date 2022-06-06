@@ -9,11 +9,10 @@ import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerSettingAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.app_info.AppInfoFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.domain.ListDomainFragment
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.tag.ListTagFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.tag.ListTagGroupFragment
 
 class SettingFragment : SjBasicFragment<FragmentSettingBinding>() {
-    private val tagFragment = ListTagFragment()
+//    private val tagFragment = ListTagFragment()
     private val tagGroupFragment = ListTagGroupFragment()
     private val domainFragment = ListDomainFragment()
     private val appInfoFragment = AppInfoFragment()
@@ -30,7 +29,7 @@ class SettingFragment : SjBasicFragment<FragmentSettingBinding>() {
     private fun getSettingList(): List<SettingItemValue> {
         return mutableListOf(
             SettingItemValue("도메인 목록", ::moveToViewDomains),
-            SettingItemValue("태그 목록", ::moveToViewTags),
+//            SettingItemValue("태그 목록", ::moveToViewTags),
             SettingItemValue("태그 그룹", ::moveToViewTagGroups),
             SettingItemValue("플레이리스트", ::moveToViewPlayLists),
             SettingItemValue("앱 정보 보기", ::moveToViewData),
@@ -41,9 +40,9 @@ class SettingFragment : SjBasicFragment<FragmentSettingBinding>() {
         this.moveToOtherFragment(domainFragment)
     }
 
-    private fun moveToViewTags() {
-        this.moveToOtherFragment(tagFragment)
-    }
+//    private fun moveToViewTags() {
+//        this.moveToOtherFragment(tagFragment)
+//    }
 
     private fun moveToViewTagGroups() {
         this.moveToOtherFragment(tagGroupFragment)
