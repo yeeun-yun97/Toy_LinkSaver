@@ -24,7 +24,7 @@ class SjRepository private constructor() {
     val tags: LiveData<List<SjTag>> = dao.getAllTags()
     val tagGroups: LiveData<List<SjTagGroupWithTags>> = dao.getTagGroupsWithTags()
     val tagGroupsWithDefault: LiveData<List<SjTagGroupWithTags>> = dao.getAllTagGroupsWithTags()
-    val basicTagGroup: LiveData<SjTagGroupWithTags> = dao.getBasicTagGroupWithTags()
+    val defaultTagGroup: LiveData<SjTagGroupWithTags> = dao.getBasicTagGroupWithTags()
     val linkList: LiveData<List<SjLinksAndDomainsWithTags>> = dao.getAllLinksAndDomainsWithTags()
 
     val linkTypeVideoList = dao.getAllLinksByType(ELinkType.video.name)
@@ -54,10 +54,6 @@ class SjRepository private constructor() {
         CoroutineScope(Dispatchers.IO).launch {
             dao.insertTag(newTag)
         }
-
-    suspend fun createTag(newTag: SjTag) {
-        dao.insertTag(newTag)
-    }
 
     fun insertLinkAndTags(domain: SjDomain?, newLink: SjLink, tags: List<SjTag>) =
         CoroutineScope(Dispatchers.IO).launch {

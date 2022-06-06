@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.github.yeeun_yun97.clone.ynmodule.ui.component.SjImageViewUtil
 import com.github.yeeun_yun97.toy.linksaver.R
+import com.github.yeeun_yun97.toy.linksaver.data.model.FullNameTagValue
 import com.github.yeeun_yun97.toy.linksaver.data.model.LinkDetailValue
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentDetailLinkBinding

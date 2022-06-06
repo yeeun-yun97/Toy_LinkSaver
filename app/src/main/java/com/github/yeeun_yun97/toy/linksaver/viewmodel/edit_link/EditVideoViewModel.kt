@@ -15,7 +15,8 @@ class EditVideoViewModel : BasicViewModelWithRepository() {
     private val networkRepository = SjNetworkRepository.newInstance()
 
     // model list
-    val tagWithLinks = repository.tagGroupsWithDefault
+    val tagGroups = repository.tagGroups
+    val tagDefaultGroup = repository.defaultTagGroup
 
     // default type
     private val defaultType = ELinkType.link
@@ -100,6 +101,10 @@ class EditVideoViewModel : BasicViewModelWithRepository() {
         bindingName.postValue(link.name)
         _previewImage.postValue(link.preview)
         bindingIsVideo.postValue(link.type == ELinkType.video)
+    }
+
+    fun createTag(name: String) {
+        repository.insertTag(SjTag(name = name))
     }
 
 

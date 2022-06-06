@@ -43,6 +43,15 @@
             app:layout_constraintHorizontal_bias="1"
             app:layout_constraintStart_toStartOf="@+id/scrollView" />
 
+        <TextView
+            android:id="@+id/addTagTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="태그 추가"
+            app:layout_constraintStart_toStartOf="@+id/scrollView"
+            app:layout_constraintTop_toBottomOf="@+id/scrollView" />
+
         <ImageView
             android:id="@+id/videoTypeIconImageView"
             android:layout_width="50dp"

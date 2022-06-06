@@ -50,10 +50,17 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
         binding.emptyTagGroup.visibility = View.GONE
 
         // set tag list
-        viewModel.tagWithLinks.observe(viewLifecycleOwner, { setTagList(it) })
+        viewModel.tagGroups.observe(viewLifecycleOwner, {
+            if (viewModel.tagDefaultGroup.value != null)
+                setTagList(viewModel.tagDefaultGroup.value!!, it)
+        })
+        viewModel.tagDefaultGroup.observe(viewLifecycleOwner, {
+            if (viewModel.tagGroups.value != null)
+                setTagList(it, viewModel.tagGroups.value!!)
+        })
         viewModel.bindingTargetTags.observe(viewLifecycleOwner, {
-            if (viewModel.tagWithLinks.value != null)
-                setTagList(viewModel.tagWithLinks.value!!)
+            if (viewModel.tagGroups.value != null && viewModel.tagDefaultGroup.value != null)
+                setTagList(viewModel.tagDefaultGroup.value!!, viewModel.tagGroups.value!!)
         })
 
         // user input enter(action search) -> search start.
@@ -115,8 +122,11 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
         binding.deleteTextView.setOnClickListener(onClickListener)
     }
 
-    private fun setTagList(it: List<SjTagGroupWithTags>) {
-        if (it.isNullOrEmpty()) {
+    private fun setTagList(
+        defaultGroup: SjTagGroupWithTags,
+        groups: List<SjTagGroupWithTags>
+    ) {
+        if (groups.isNullOrEmpty() && defaultGroup.tags.isEmpty()) {
             binding.emptyTagGroup.visibility = View.VISIBLE
         } else {
             binding.emptyTagGroup.visibility = View.GONE
@@ -136,12 +146,18 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
             }
 
         binding.tagChipGroup.removeAllViews()
-        for (group in it) {
-            for(tag in group.tags) {
+        for (def in defaultGroup.tags) {
+            val chip = SjTagChip(requireContext(), def)
+            chip.isChecked = viewModel.containsTag(def)
+            chip.setOnCheckedChangeListener(onCheckedListener)
+            binding.tagChipGroup.addView(chip)
+        }
+        for (group in groups) {
+            for (tag in group.tags) {
                 val chip = SjTagChip(requireContext(), tag)
                 chip.isChecked = viewModel.containsTag(tag)
                 chip.setOnCheckedChangeListener(onCheckedListener)
-                if(group.tagGroup.gid!=1) chip.setText("${group.tagGroup.name}: ${tag.name}")
+                chip.setText("${group.tagGroup.name}: ${tag.name}")
                 binding.tagChipGroup.addView(chip)
             }
         }

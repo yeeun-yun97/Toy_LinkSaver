@@ -16,7 +16,7 @@ class SwapTagViewModel : BasicViewModelWithRepository() {
     val selectedTargetTags = mutableListOf<SjTag>()
 
     //bindingVariable
-    private val _bindingBasicTagGroup = repository.basicTagGroup
+    private val _bindingBasicTagGroup = repository.defaultTagGroup
     private val _bindingTargetTagGroup = MutableLiveData<SjTagGroupWithTags>()
     val bindingBasicTagGroup: LiveData<SjTagGroupWithTags> get() = _bindingBasicTagGroup
     val bindingTargetTagGroup: LiveData<SjTagGroupWithTags> get() = _bindingTargetTagGroup

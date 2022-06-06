@@ -15,3 +15,8 @@ data class LinkDetailValue(
     val tags: List<SjTag>
 )
 
+data class FullNameTagValue(
+    val tag: SjTag,
+    val fullName: String
+)
+

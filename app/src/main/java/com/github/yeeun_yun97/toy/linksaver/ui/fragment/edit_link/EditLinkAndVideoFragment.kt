@@ -9,6 +9,7 @@ import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroupWithTags
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditVideoBinding
+import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagDialogFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.edit_link.EditVideoViewModel
@@ -52,6 +53,10 @@ class EditLinkAndVideoFragment : SjBasicFragment<FragmentEditVideoBinding>() {
             }
         )
 
+        binding.addTagTextView.setOnClickListener {
+            showEditTagDialog()
+        }
+
         // set preview image
         viewModel.bindingPreviewImage.observe(viewLifecycleOwner, {
             Glide.with(requireContext())
@@ -62,11 +67,23 @@ class EditLinkAndVideoFragment : SjBasicFragment<FragmentEditVideoBinding>() {
         })
 
         // set tagList
-        viewModel.tagWithLinks.observe(viewLifecycleOwner, {
-            this.addTagsToChipGroupChildren(it)
+        viewModel.tagGroups.observe(viewLifecycleOwner, {
+            if(viewModel.tagDefaultGroup.value!=null)
+            this.addTagsToChipGroupChildren(viewModel.tagDefaultGroup.value!!, it)
+        })
+        viewModel.tagDefaultGroup.observe(viewLifecycleOwner, {
+            if(viewModel.tagGroups.value!=null)
+            this.addTagsToChipGroupChildren(it, viewModel.tagGroups.value!!)
         })
 
     }
+
+    private fun showEditTagDialog() {
+        val dialogFragment = EditTagDialogFragment(::createTag, null)
+        dialogFragment.show(childFragmentManager, "그룹 없는 새 태그 생성하기")
+    }
+
+    private fun createTag(name: String, tag: SjTag?) = viewModel.createTag(name)
 
     private fun handleArguments(arguments: Bundle) {
         val lid = arguments.getInt("lid", -1)
@@ -79,7 +96,10 @@ class EditLinkAndVideoFragment : SjBasicFragment<FragmentEditVideoBinding>() {
         }
     }
 
-    private fun addTagsToChipGroupChildren(it: List<SjTagGroupWithTags>) {
+    private fun addTagsToChipGroupChildren(
+        defaultGroup: SjTagGroupWithTags,
+        groups: List<SjTagGroupWithTags>
+    ) {
         val onCheckListener =
             CompoundButton.OnCheckedChangeListener { btn, isChecked ->
                 val chip = btn as SjTagChip
@@ -91,17 +111,22 @@ class EditLinkAndVideoFragment : SjBasicFragment<FragmentEditVideoBinding>() {
             }
 
         binding.tagChipGroup.removeAllViews()
-        for (group in it) {
+        for (def in defaultGroup.tags) {
+            val chip = SjTagChip(context!!, def)
+            chip.isChecked = viewModel.isTagSelected(def)
+            chip.setOnCheckedChangeListener(onCheckListener)
+            binding.tagChipGroup.addView(chip)
+        }
+        for (group in groups) {
             for (tag in group.tags) {
                 val chip = SjTagChip(context!!, tag)
                 chip.isChecked = viewModel.isTagSelected(tag)
                 chip.setOnCheckedChangeListener(onCheckListener)
-                if (group.tagGroup.gid != 1) chip.setText("${group.tagGroup.name}: ${tag.name}")
+                chip.setText("${group.tagGroup.name}: ${tag.name}")
                 binding.tagChipGroup.addView(chip)
             }
         }
     }
-
 
     private fun saveVideo() {
         viewModel.saveVideo()

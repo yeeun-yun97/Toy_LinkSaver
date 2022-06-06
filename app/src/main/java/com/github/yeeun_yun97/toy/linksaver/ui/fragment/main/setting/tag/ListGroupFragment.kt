@@ -24,8 +24,7 @@ class ListGroupFragment : SjBasicFragment<FragmentListTagGroupBinding>() {
 
         // set toolbar menu
         val handlerMap = hashMapOf<Int, () -> Unit>(
-            R.id.menu_add_group to ::showEditTagGroupDialog,
-//            R.id.menu_add_tag to ::showEditTagDialog
+            R.id.menu_add_group to ::showEditTagGroupDialog
         )
         binding.toolbar.setMenu(R.menu.toolbar_menu_tag, handlerMap = handlerMap)
 
@@ -48,15 +47,8 @@ class ListGroupFragment : SjBasicFragment<FragmentListTagGroupBinding>() {
         dialogFragment.show(childFragmentManager, "새 태그 그룹 생성하기")
     }
 
-//    private fun showEditTagDialog() {
-//        val dialogFragment = EditTagDialogFragment(::createTag, null)
-//        dialogFragment.show(childFragmentManager, "그룹 없는 새 태그 생성하기")
-//    }
-
     private fun createTagGroup(name: String, isPrivate: Boolean, group: SjTagGroup? = null) =
         viewModel.editTagGroup(name, isPrivate, group)
-
-    private fun createTag(name: String, tag: SjTag?) = viewModel.createTag(name)
 
 
     // handle recycler event
