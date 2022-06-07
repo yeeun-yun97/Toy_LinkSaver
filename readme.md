@@ -25,6 +25,7 @@ log
 - 태그 기반으로 링크 검색
 - 자주 재사용 할 만한 부분들을 Android Library로 따로 관리
 - Jira 이슈 관리
+- 링크(동영상) 목록으로 미리보기
 
 ## skills
 - Room
@@ -37,6 +38,7 @@ log
 - jsoup
 - coroutine
 - junit
+- exoplayer
 
 ## 내부 설계 소개
 ### Room DB
