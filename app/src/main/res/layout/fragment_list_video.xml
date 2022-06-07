@@ -24,7 +24,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
-            tools:listitem="@layout/item_video_list" />
+            tools:listitem="@layout/item_video_list_detail" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

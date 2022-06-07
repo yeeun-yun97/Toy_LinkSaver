@@ -2,38 +2,70 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <data>
-        <variable
-            name="data"
-            type="com.github.yeeun_yun97.toy.linksaver.ui.fragment.ListVideoFragment.VideoData" />
-    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp">
 
+
         <ImageView
             android:id="@+id/thumbnailImageView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="#FFA9A9"
-            app:layout_constraintBottom_toBottomOf="@id/playerView"
-            app:layout_constraintEnd_toEndOf="@id/playerView"
-            app:layout_constraintStart_toStartOf="@id/playerView"
-            app:layout_constraintTop_toTopOf="@id/playerView" />
+            app:layout_constraintBottom_toBottomOf="@+id/playerView"
+            app:layout_constraintEnd_toEndOf="@+id/playerView"
+            app:layout_constraintStart_toStartOf="@+id/playerView"
+            app:layout_constraintTop_toTopOf="@+id/playerView" />
+        <!--        <com.github.yeeun_yun97.toy.linksaver.ui.component.SjPlayerView-->
 
         <com.google.android.exoplayer2.ui.StyledPlayerView
             android:id="@+id/playerView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/black"
+            android:layout_width="match_parent"
             app:keep_content_on_player_reset="true"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_min="200dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:use_controller="false" />
+            android:background="@color/light_purple"
+            app:use_controller="false"
+            />
+
+        <ImageView
+            android:id="@+id/editImageView"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_margin="15dp"
+            android:layout_marginBottom="110dp"
+            app:layout_constraintBottom_toBottomOf="@+id/playerView"
+            app:layout_constraintEnd_toStartOf="@id/deleteImageView"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1"
+            app:srcCompat="@drawable/ic_icons8_edit__1_" />
+
+        <ImageView
+            android:id="@+id/deleteImageView"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            app:layout_constraintBottom_toBottomOf="@+id/editImageView"
+            app:layout_constraintEnd_toEndOf="@+id/nameTextView"
+            app:layout_constraintStart_toEndOf="@id/editImageView"
+            app:layout_constraintTop_toTopOf="@+id/editImageView"
+            app:srcCompat="@drawable/ic_icons8_delete__4_" />
+
+        <ImageView
+            android:id="@+id/gradientImageView"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            app:layout_constraintBottom_toBottomOf="@id/playerView"
+            app:layout_constraintEnd_toEndOf="@id/playerView"
+            app:layout_constraintStart_toStartOf="@id/playerView"
+            app:srcCompat="@drawable/bg_gradient_black" />
 
         <TextView
             android:id="@+id/nameTextView"
@@ -72,4 +104,10 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <data>
+
+        <variable
+            name="data"
+            type="com.github.yeeun_yun97.toy.linksaver.ui.fragment.ListVideoFragment.VideoData" />
+    </data>
 </layout>

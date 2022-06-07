@@ -23,7 +23,8 @@ class RecyclerVideoAdapter(val player: ExoPlayer, val detailOperation: (Int) -> 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoRecyclerViewHolder {
-        val binding = ItemVideoListDetailBinding.inflate(LayoutInflater.from(parent.context))
+        val binding =
+            ItemVideoListDetailBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return VideoRecyclerViewHolder(player, binding)
     }
 }
@@ -35,7 +36,7 @@ class VideoRecyclerViewHolder(val player: ExoPlayer, binding: ItemVideoListDetai
 
     fun playStart() {
         binding.playerView.player = player
-        binding.gradientImageView.visibility = View.GONE
+//        binding.gradientImageView.visibility = View.GONE
         binding.playerView.visibility = View.VISIBLE
         binding.thumbnailImageView.visibility = View.GONE
 
@@ -63,7 +64,7 @@ class VideoRecyclerViewHolder(val player: ExoPlayer, binding: ItemVideoListDetai
     fun setData(data: ListVideoFragment.VideoData, detailOperation: (Int) -> Unit) {
         binding.data = data
         binding.root.setOnClickListener { detailOperation(data.lid) }
-        binding.gradientImageView.visibility = View.INVISIBLE
+//        binding.gradientImageView.visibility = View.INVISIBLE
 
         previewUrl = data.thumbnail
         videoUrl = data.url
@@ -72,8 +73,16 @@ class VideoRecyclerViewHolder(val player: ExoPlayer, binding: ItemVideoListDetai
         binding.thumbnailImageView.visibility = View.VISIBLE
 
         binding.thumbnailImageView.setBackgroundColor(Color.BLACK)
-        Glide.with(itemView.context).load(previewUrl).fitCenter()
-            .into(binding.thumbnailImageView)
+        if (previewUrl.isNotEmpty())
+            Glide.with(itemView.context).load(previewUrl).fitCenter()
+                .into(binding.thumbnailImageView)
+        else {
+            Glide.with(itemView.context)
+                .load(videoUrl)
+                .centerCrop()
+                .override(720, 360)
+                .into(binding.thumbnailImageView)
+        }
 
 //            Glide.with(itemView.context)
 //                .asBitmap()
