@@ -12,8 +12,10 @@ import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerVideoAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.VideoRecyclerViewHolder
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.ListVideoViewModel
+import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
+import com.google.common.collect.ImmutableSet
 
 class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
 
@@ -45,6 +47,14 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
         // player
         _player = ExoPlayer.Builder(requireContext()).build()
         player.repeatMode = Player.REPEAT_MODE_ONE
+
+        // disable track types or groups
+        player.trackSelectionParameters =
+            player.trackSelectionParameters.buildUpon()
+                .setDisabledTrackTypes(
+                    ImmutableSet.of(C.TRACK_TYPE_AUDIO)
+                ) // disable track type audio
+                .build()
 
         // set adapter
         manager = LinearLayoutManager(context)
@@ -80,6 +90,7 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
                 val position = manager.findFirstCompletelyVisibleItemPosition()
                 val currentViewHolder =
                     binding.videoRecyclerView.findViewHolderForLayoutPosition(position)
+                Log.d("onScroll", "prev: $prevPosition, current: $position")
                 if (position != prevPosition && currentViewHolder is VideoRecyclerViewHolder) {
                     if (prevPosition != -1) {
                         val prevViewHolder =
@@ -96,9 +107,14 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        // pause player
+        player.pause()
+    }
+
     override fun onStop() {
         super.onStop()
-
         // release player
         player.release()
         _player = null
