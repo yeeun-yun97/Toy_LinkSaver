@@ -5,7 +5,7 @@
     <data>
         <variable
             name="data"
-            type="com.github.yeeun_yun97.toy.linksaver.ui.fragment.ListVideoFragment.VideoData" />
+            type="com.github.yeeun_yun97.toy.linksaver.data.model.VideoData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -8,16 +8,16 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicAdapter
 import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicViewHolder
+import com.github.yeeun_yun97.toy.linksaver.data.model.VideoData
 import com.github.yeeun_yun97.toy.linksaver.databinding.ItemVideoListDetailBinding
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.ListVideoFragment
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 
 class RecyclerVideoAdapter(val player: ExoPlayer, val detailOperation: (Int) -> Unit) :
-    RecyclerBasicAdapter<ListVideoFragment.VideoData, VideoRecyclerViewHolder>() {
+    RecyclerBasicAdapter<VideoData, VideoRecyclerViewHolder>() {
     override fun onBindViewHolder(
         holder: VideoRecyclerViewHolder,
-        item: ListVideoFragment.VideoData
+        item: VideoData
     ) {
         holder.setData(item, detailOperation)
     }
@@ -61,7 +61,7 @@ class VideoRecyclerViewHolder(val player: ExoPlayer, binding: ItemVideoListDetai
     }
 
     @SuppressLint("CheckResult")
-    fun setData(data: ListVideoFragment.VideoData, detailOperation: (Int) -> Unit) {
+    fun setData(data: VideoData, detailOperation: (Int) -> Unit) {
         binding.data = data
         binding.root.setOnClickListener { detailOperation(data.lid) }
 //        binding.gradientImageView.visibility = View.INVISIBLE

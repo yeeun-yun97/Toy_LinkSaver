@@ -23,15 +23,14 @@
         <com.google.android.exoplayer2.ui.StyledPlayerView
             android:id="@+id/playerView"
             android:layout_width="match_parent"
-            app:keep_content_on_player_reset="true"
             android:layout_height="wrap_content"
+            android:background="@color/light_purple"
+            app:keep_content_on_player_reset="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_min="200dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:background="@color/light_purple"
-            app:use_controller="false"
-            />
+            app:use_controller="false" />
 
         <ImageView
             android:id="@+id/editImageView"
@@ -108,6 +107,6 @@
 
         <variable
             name="data"
-            type="com.github.yeeun_yun97.toy.linksaver.ui.fragment.ListVideoFragment.VideoData" />
+            type="com.github.yeeun_yun97.toy.linksaver.data.model.VideoData" />
     </data>
 </layout>

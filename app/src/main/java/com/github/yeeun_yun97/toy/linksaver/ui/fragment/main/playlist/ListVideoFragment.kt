@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.ui.fragment
+package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.playlist
 
 import android.util.Log
 import android.widget.Toast
@@ -6,11 +6,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.yeeun_yun97.toy.linksaver.R
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
+import com.github.yeeun_yun97.toy.linksaver.data.model.VideoData
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListVideoBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerVideoAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.VideoRecyclerViewHolder
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.detail_link.DetailLinkFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.ListVideoViewModel
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
@@ -27,14 +28,6 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
 
     private var _player: ExoPlayer? = null
     private val player: ExoPlayer get() = _player!!
-
-    data class VideoData(
-        val lid: Int = 0,
-        val url: String,
-        val name: String,
-        val thumbnail: String,
-        val tagList: List<SjTag>
-    )
 
     override fun layoutId(): Int = R.layout.fragment_list_video
 
@@ -122,7 +115,8 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
 
 
     private fun moveToDetailFragment(lid: Int) {
-        moveToOtherFragment(DetailVideoFragment.newInstance(lid))
+//        moveToOtherFragment(DetailVideoFragment.newInstance(lid))
+        moveToOtherFragment(DetailLinkFragment.newInstance(lid))
     }
 
     private fun moveToPlaylistFragment() {

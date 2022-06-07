@@ -21,13 +21,6 @@ class ListVideoSampleFragment : SjBasicFragment<FragmentListVideoBinding>() {
     private var _player: ExoPlayer? = null
     private val player: ExoPlayer get() = _player!!
 
-    data class VideoData(
-        val url: String,
-        val name: String,
-        val thumbnail: String,
-        val tagList: List<SjTag>
-    )
-
     override fun layoutId(): Int = R.layout.fragment_list_video
 
     override fun onCreateView() {

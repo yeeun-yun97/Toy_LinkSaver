@@ -2,18 +2,17 @@ package com.github.yeeun_yun97.toy.linksaver.viewmodel
 
 
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.ListVideoFragment
+import com.github.yeeun_yun97.toy.linksaver.data.model.VideoData
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.playlist.ListVideoFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.BasicViewModelWithRepository
 
 class ListVideoViewModel : BasicViewModelWithRepository() {
 
     val allVideoList = repository.linkTypeVideoList
 
-
-
-    fun getDataList(): List<ListVideoFragment.VideoData> {
+    fun getDataList(): List<VideoData> {
         val list = listOf(
-            ListVideoFragment.VideoData(
+           VideoData(
                 url="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
                 name="Big Buck Bunny",
 

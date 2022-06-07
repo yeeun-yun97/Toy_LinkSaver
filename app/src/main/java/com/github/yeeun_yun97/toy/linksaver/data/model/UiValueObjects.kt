@@ -20,3 +20,11 @@ data class FullNameTagValue(
     val fullName: String
 )
 
+data class VideoData(
+    val lid: Int = 0,
+    val url: String,
+    val name: String,
+    val thumbnail: String,
+    val tagList: List<SjTag>
+)
+
