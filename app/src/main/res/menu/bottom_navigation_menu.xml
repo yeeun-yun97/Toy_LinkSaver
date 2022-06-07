@@ -3,9 +3,9 @@
 
     <item
         android:id="@+id/linkItem"
-        android:title="링크"
+        android:title="검색"
         android:enabled="true"
-        android:icon="@drawable/ic_menu_link"
+        android:icon="@drawable/ic_menu_search"
         />
 
     <item
