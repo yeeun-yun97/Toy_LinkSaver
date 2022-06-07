@@ -6,10 +6,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.yeeun_yun97.toy.linksaver.R
+import com.github.yeeun_yun97.toy.linksaver.data.model.LinkModelUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.VideoData
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListVideoBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerVideoAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.VideoRecyclerViewHolder
+import com.github.yeeun_yun97.toy.linksaver.ui.component.SjUtil
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.detail_link.DetailLinkFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.ListVideoViewModel
@@ -59,15 +61,18 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
             val videos = mutableListOf<VideoData>()
             for (vid in it) {
                 Log.d("비디오 불러옴", vid.toString())
-                videos.add(
-                    VideoData(
-                        vid.link.lid,
-                        vid.domain.url + vid.link.url,
-                        vid.link.name,
-                        vid.link.preview,
-                        vid.tags
+                val fullUrl = LinkModelUtil.getFullUrl(vid)
+                if (!SjUtil.checkYoutubePrefix(fullUrl)) {
+                    videos.add(
+                        VideoData(
+                            vid.link.lid,
+                            fullUrl,
+                            vid.link.name,
+                            vid.link.preview,
+                            vid.tags
+                        )
                     )
-                )
+                }
             }
             adapter.setList(videos)
         })

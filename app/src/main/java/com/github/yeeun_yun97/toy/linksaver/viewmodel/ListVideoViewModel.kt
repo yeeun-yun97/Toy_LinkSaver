@@ -12,9 +12,9 @@ class ListVideoViewModel : BasicViewModelWithRepository() {
 
     fun getDataList(): List<VideoData> {
         val list = listOf(
-           VideoData(
-                url="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                name="Big Buck Bunny",
+            VideoData(
+                url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                name = "Big Buck Bunny",
 
                 thumbnail = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg",
                 tagList = listOf(
