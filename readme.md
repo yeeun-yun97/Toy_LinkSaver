@@ -42,6 +42,6 @@ log
 
 ## 내부 설계 소개
 ### Room DB
-![스크린샷 2022-05-10 오후 11 38 32](https://user-images.githubusercontent.com/60867063/167655000-a493e766-a765-44f7-beb4-f72823bbba2b.png)    
+![스크린샷 2022-06-07 오후 10 51 46](https://user-images.githubusercontent.com/60867063/172397550-69c0151f-3caf-4893-9994-186b68d660a2.png)
 ### Architecture
 ![스크린샷 2022-05-10 오후 11 36 50](https://user-images.githubusercontent.com/60867063/167654673-62be891a-7719-4ea7-a357-83caaa173618.png)    
