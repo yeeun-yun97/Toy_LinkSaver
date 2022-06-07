@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import androidx.viewbinding.ViewBinding
 
@@ -39,12 +40,18 @@ abstract class ViewBindingBasicActivity<T : ViewBinding> : AppCompatActivity() {
         supportFragmentManager.commit {
             replace(fragmentContainer(), fragment)
             setReorderingAllowed(true)
-            addToBackStack(fragment.javaClass.name)
+            val name = fragment.javaClass.name
+            addToBackStack(name)
         }
     }
 
     protected fun replaceFragmentTo(fragment: Fragment) {
+        val fragments = supportFragmentManager.fragments
+        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         supportFragmentManager.commit {
+            for (fragment in fragments) {
+                remove(fragment)
+            }
             replace(fragmentContainer(), fragment)
             setReorderingAllowed(true)
         }

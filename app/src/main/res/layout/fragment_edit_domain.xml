@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
         <variable
             name="viewModel"
-            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.DomainViewModel" />
+            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.domain.DomainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,7 +37,7 @@
             android:layout_height="50dp"
             android:ems="10"
             android:hint="http://www..."
-            android:text="@={viewModel.domainUrl}"
+            android:text="@={viewModel.bindingDomainUrl}"
             app:layout_constraintEnd_toEndOf="@+id/urlTextView"
             app:layout_constraintStart_toStartOf="@+id/urlTextView"
             app:layout_constraintTop_toBottomOf="@+id/urlTextView" />
@@ -60,7 +59,7 @@
             android:layout_height="50dp"
             android:ems="10"
             android:hint="이름을 입력해주세요"
-            android:text="@={viewModel.domainName}"
+            android:text="@={viewModel.bindingDomainName}"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="@+id/nameTextView"
             app:layout_constraintStart_toStartOf="@+id/nameTextView"

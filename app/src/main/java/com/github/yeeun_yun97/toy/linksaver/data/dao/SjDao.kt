@@ -13,8 +13,11 @@ interface SjDao {
     @Query("SELECT * FROM SjDomain")
     fun getAllDomains(): LiveData<List<SjDomain>>
 
-    @Query("SELECT * FROM SjTag")
+    @Query("SELECT * FROM SjTag ORDER BY name")
     fun getAllTags(): LiveData<List<SjTag>>
+
+    @Query("SELECT * FROM SjTagGroup ORDER BY gid")
+    fun getAllTagGroups(): LiveData<List<SjTagGroup>>
 
     @Transaction
     @Query("SELECT * FROM SjSearch ORDER BY sid DESC")
@@ -28,6 +31,22 @@ interface SjDao {
     @Query("SELECT * FROM SjLink ORDER BY lid DESC")
     fun getAllLinksAndDomainsWithTags()
             : LiveData<List<SjLinksAndDomainsWithTags>>
+
+    @Transaction
+    @Query("SELECT * FROM SjTagGroup WHERE gid != 1 ORDER BY name")
+    fun getTagGroupsWithTags()
+            : LiveData<List<SjTagGroupWithTags>>
+
+    @Transaction
+    @Query("SELECT * FROM SjTagGroup ORDER BY name")
+    fun getAllTagGroupsWithTags()
+            : LiveData<List<SjTagGroupWithTags>>
+
+    @Transaction
+    @Query("SELECT * FROM SjTagGroup WHERE is_private=0 ORDER BY gid")
+    fun getNotPrivateTagGroupsWithTags()
+            : LiveData<List<SjTagGroupWithTags>>
+
 
     @Query("SELECT COUNT(*) FROM SjDomain")
     suspend fun getDomainCount(): Int
@@ -82,28 +101,25 @@ interface SjDao {
         size: Int = tags.size
     ): List<Int>
 
-    fun tt (){
-        val list = listOf<String>()
-        list.size
-    }
-
     // search link query by link name and tags
     @Transaction
     @Query(
-        "SELECT link.lid, link.name, link.did, link.url FROM SjLink as link "
+        "SELECT link.lid, link.name, link.did, link.url, link.icon, link.preview, link.type FROM SjLink as link "
                 + "INNER JOIN linkTagCrossRef as ref ON link.lid = ref.lid "
                 + "INNER JOIN SjTag as tag ON ref.tid = tag.tid "
                 + "WHERE link.name LIKE :keyword "
-                + "AND tag.tid IN(:tags)"
-                + "GROUP BY link.lid" //prevent duplicates
+                + "AND tag.tid IN(:tags) "
+                + "GROUP BY link.lid " //prevent duplicates
+                + "HAVING count(*) == :size "
+                + "ORDER BY link.lid desc"
     )
     suspend fun searchLinksAndDomainsWithTagsByLinkNameAndTags(
-        keyword: String, tags: List<Int>
+        keyword: String, tags: List<Int>, size: Int
     ): List<SjLinksAndDomainsWithTags>
 
     // search link query by link name
     @Transaction
-    @Query("SELECT * FROM SjLink WHERE name LIKE :keyword")
+    @Query("SELECT * FROM SjLink WHERE name LIKE :keyword ORDER BY lid desc")
     suspend fun searchLinksAndDomainsWithTagsByLinkName(
         keyword: String
     ): List<SjLinksAndDomainsWithTags>
@@ -121,6 +137,9 @@ interface SjDao {
 
     @Insert
     suspend fun insertTag(newTag: SjTag): Long
+
+    @Insert
+    suspend fun insertTagGroup(newTagGroup: SjTagGroup): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertLinkTagCrossRef(newCrossRef: LinkTagCrossRef)
@@ -140,10 +159,19 @@ interface SjDao {
     suspend fun updateTag(tag: SjTag)
 
     @Update
+    suspend fun updateTags(vararg tags: SjTag)
+
+    @Update
+    suspend fun updateTagGroup(tagGroup: SjTagGroup)
+
+    @Update
     suspend fun updateDomain(domain: SjDomain)
 
     @Update
     suspend fun updateLinks(vararg links: SjLink)
+
+    @Query("UPDATE SjTag SET gid = 1 WHERE gid = :gid")
+    suspend fun updateTagToBasicGroupByGid(gid: Int)
 
 
     // delete queries
@@ -186,12 +214,20 @@ interface SjDao {
     @Query("DELETE FROM SjSearch WHERE sid IN(:sids)")
     suspend fun deleteSearches(sids: List<Int>)
 
+    @Query("DELETE FROM LinkTagCrossRef WHERE lid = :lid AND tid IN(:tids)")
+    suspend fun deleteLinkTagCrossRefsByLidAndTid(lid: Int, tids: MutableList<Int>)
+
+    @Query("DELETE FROM SjLink WHERE lid = :lid")
+    suspend fun deleteLinkByLid(lid: Int)
+
+    @Query("DELETE FROM SjTagGroup WHERE gid = :gid")
+    suspend fun deleteTagGroupByGid(gid: Int)
+
 
     // query by key
     @Transaction
     @Query("SELECT * FROM SjLink WHERE lid = :lid")
     suspend fun getLinkAndDomainWithTagsByLid(lid: Int): SjLinksAndDomainsWithTags
-
 
     @Transaction
     @Query("SELECT * FROM SjLink WHERE did = :did")
@@ -202,6 +238,21 @@ interface SjDao {
 
     @Query("SELECT * FROM SjDomain WHERE did = :did")
     suspend fun getDomainByDid(did: Int): SjDomain
+
+    @Transaction
+    @Query("SELECT * FROM SjLink WHERE Type = :type ORDER BY lid desc")
+    fun getAllLinksByType(type: String): LiveData<List<SjLinksAndDomainsWithTags>>
+
+    @Query("SELECT * FROM SjTag WHERE gid = :gid ORDER BY name")
+    fun getAllTagsByGid(gid: Int): LiveData<List<SjTag>>
+
+    @Transaction
+    @Query("SELECT * FROM SjTagGroup WHERE gid= :gid")
+    fun getTagGroupWithTagsByGid(gid: Int): SjTagGroupWithTags
+
+    @Transaction
+    @Query("SELECT * FROM SjTagGroup WHERE gid= 1")
+    fun getBasicTagGroupWithTags(): LiveData<SjTagGroupWithTags>
 
 
 }

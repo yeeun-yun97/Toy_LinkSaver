@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="viewModel"
-            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.DetailLinkViewModel" />
+            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.detail_link.DetailLinkViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,7 +29,25 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:srcCompat="@drawable/ic_baseline_web_24" />
+            app:srcCompat="@drawable/ic_icons8_no_image_100" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="previewImageView,previewWebView"
+            tools:layout_editor_absoluteY="731dp" />
+
+        <WebView
+            android:id="@+id/previewWebView"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        </WebView>
 
         <ImageView
             android:id="@+id/editImageView"
@@ -38,7 +55,7 @@
             android:layout_height="25dp"
             android:layout_margin="15dp"
             android:layout_marginBottom="205dp"
-            app:layout_constraintBottom_toBottomOf="@+id/previewImageView"
+            app:layout_constraintBottom_toBottomOf="@id/barrier"
             app:layout_constraintEnd_toStartOf="@+id/deleteImageView"
             app:layout_constraintHorizontal_bias="1"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -63,7 +80,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/previewImageView"
+            app:layout_constraintTop_toBottomOf="@id/barrier"
             app:layout_constraintVertical_bias="0.0">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -82,7 +99,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
-                    android:text="@{viewModel.link.link.name, default= 링크이름}"
+                    android:text="@{viewModel.bindingLinkName, default= 링크이름}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -100,14 +117,16 @@
                     android:id="@+id/fullUrlTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:maxLines="3"
                     android:paddingBottom="10dp"
-                    android:text="@{viewModel.link.domain.url+viewModel.link.link.url, default= 링크주소}"
+                    android:text="@{viewModel.bindingFullUrl, default= 링크주소}"
                     app:layout_constraintEnd_toEndOf="@+id/nameTextView"
                     app:layout_constraintStart_toStartOf="@+id/nameTextView"
                     app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/tagChipGroup"
+                    chipDataList="@{viewModel.bindingTags}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:paddingVertical="10dp"
@@ -115,32 +134,29 @@
                     app:layout_constraintHeight_min="200dp"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/fullUrlTextView"
-                    app:layout_constraintTop_toBottomOf="@id/view3">
-
-                </com.google.android.material.chip.ChipGroup>
+                    app:layout_constraintTop_toBottomOf="@id/view3" />
 
                 <ImageView
                     android:id="@+id/emptyImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintBottom_toTopOf="@id/emptyTextView"
-                    app:layout_constraintEnd_toEndOf="@+id/tagChipGroup"
+                    app:layout_constraintBottom_toBottomOf="@+id/tagChipGroup"
+                    app:layout_constraintEnd_toStartOf="@id/emptyTextView"
+                    app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="@+id/tagChipGroup"
                     app:layout_constraintTop_toTopOf="@+id/tagChipGroup"
-                    app:layout_constraintVertical_chainStyle="packed"
-                    app:srcCompat="@drawable/ic_icons8_empty" />
+                    app:srcCompat="@drawable/ic_icons8_empty__2_" />
 
                 <TextView
                     android:id="@+id/emptyTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="10dp"
                     android:text="설정된 태그가 없습니다."
-                    app:layout_constraintBottom_toBottomOf="@+id/tagChipGroup"
+                    app:layout_constraintBottom_toBottomOf="@+id/emptyImageView"
                     app:layout_constraintEnd_toEndOf="@+id/tagChipGroup"
-                    app:layout_constraintStart_toStartOf="@+id/tagChipGroup"
-                    app:layout_constraintTop_toBottomOf="@+id/emptyImageView" />
+                    app:layout_constraintStart_toEndOf="@+id/emptyImageView"
+                    app:layout_constraintTop_toTopOf="@+id/emptyImageView" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

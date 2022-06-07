@@ -21,6 +21,7 @@ class SjTagChip(context: Context, val tag: SjTag) : Chip(context, null) {
     }
 
     fun setViewMode() {
+        isClickable = false
         isChecked = true
         isCheckable = false
     }

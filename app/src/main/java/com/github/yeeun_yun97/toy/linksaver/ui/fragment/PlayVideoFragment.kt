@@ -13,26 +13,23 @@ import android.util.Log
 import at.huber.youtubeExtractor.VideoMeta
 import at.huber.youtubeExtractor.YouTubeExtractor
 import at.huber.youtubeExtractor.YtFile
-import com.github.yeeun_yun97.toy.linksaver.application.LinkSaverApplication
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.*
-import com.google.android.exoplayer2.upstream.cache.CacheDataSource
-import com.google.android.exoplayer2.upstream.cache.SimpleCache
-import java.util.*
 
 class PlayVideoFragment : SjBasicFragment<FragmentPlayVideoBinding>() {
 
     private var _player: ExoPlayer? = null
     private val player: ExoPlayer get() = _player!!
 
-    private lateinit var mHttpDataSourceFactory: HttpDataSource.Factory
-    private lateinit var mDefaultDataSourceFactory: DefaultDataSourceFactory
-    private lateinit var mCacheDataSourceFactory: DataSource.Factory
     private lateinit var exoPlayer: SimpleExoPlayer
     private lateinit var mediaSource: ProgressiveMediaSource
-    private val cache: SimpleCache = LinkSaverApplication.cache
+
+    //    private val cache: SimpleCache = LinkSaverApplication.cache
+//    private lateinit var mHttpDataSourceFactory: HttpDataSource.Factory
+//    private lateinit var mDefaultDataSourceFactory: DefaultDataSourceFactory
+//    private lateinit var mCacheDataSourceFactory: DataSource.Factory
+
 
     companion object {
         fun newInstance(url: String): PlayVideoFragment {
@@ -49,29 +46,29 @@ class PlayVideoFragment : SjBasicFragment<FragmentPlayVideoBinding>() {
 //        _player = ExoPlayer.Builder(requireContext()).build()
 //        binding.playerView.player = player
 
-        val applicationContext = requireActivity().applicationContext
-        val videoUrl = requireArguments().getString("VIDEO_URL")
-
-        mHttpDataSourceFactory = DefaultHttpDataSource.Factory()
-            .setAllowCrossProtocolRedirects(true)
-
-        this.mDefaultDataSourceFactory = DefaultDataSourceFactory(
-            applicationContext, mHttpDataSourceFactory
-        )
-
-        mCacheDataSourceFactory = CacheDataSource.Factory()
-            .setCache(cache)
-            .setUpstreamDataSourceFactory(mHttpDataSourceFactory)
-            .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
-
-
-        exoPlayer = SimpleExoPlayer.Builder(applicationContext)
-            .setMediaSourceFactory(DefaultMediaSourceFactory(mCacheDataSourceFactory)).build()
-
-        val videoUri = Uri.parse(videoUrl)
-        val mediaItem = MediaItem.fromUri(videoUri)
-        mediaSource =
-            ProgressiveMediaSource.Factory(mCacheDataSourceFactory).createMediaSource(mediaItem)
+//        val applicationContext = requireActivity().applicationContext
+//        val videoUrl = requireArguments().getString("VIDEO_URL")
+//
+//        mHttpDataSourceFactory = DefaultHttpDataSource.Factory()
+//            .setAllowCrossProtocolRedirects(true)
+//
+//        this.mDefaultDataSourceFactory = DefaultDataSourceFactory(
+//            applicationContext, mHttpDataSourceFactory
+//        )
+//
+//        mCacheDataSourceFactory = CacheDataSource.Factory()
+//            .setCache(cache)
+//            .setUpstreamDataSourceFactory(mHttpDataSourceFactory)
+//            .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
+//
+//
+//        exoPlayer = SimpleExoPlayer.Builder(applicationContext)
+//            .setMediaSourceFactory(DefaultMediaSourceFactory(mCacheDataSourceFactory)).build()
+//
+//        val videoUri = Uri.parse(videoUrl)
+//        val mediaItem = MediaItem.fromUri(videoUri)
+//        mediaSource =
+//            ProgressiveMediaSource.Factory(mCacheDataSourceFactory).createMediaSource(mediaItem)
 
 
     }

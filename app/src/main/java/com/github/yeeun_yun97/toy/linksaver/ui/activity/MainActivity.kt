@@ -6,48 +6,57 @@ import androidx.fragment.app.Fragment
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.ActivityMainBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.basic.SjBasicActivity
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.ListDomainFragment
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.ListLinkFragment
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.ListTagFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.ReadLinkViewModel
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.*
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.playlist.ListVideoFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.ListLinkFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.SettingFragment
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel
 
 class MainActivity : SjBasicActivity<ActivityMainBinding>() {
-    val viewModel: ReadLinkViewModel by viewModels()
+    val viewModel: SearchLinkViewModel by viewModels()
 
     // 바텀 내비에 따라 부착할 fragment들.
     private val linkFragment = ListLinkFragment()
-    private val tagFragment = ListTagFragment()
-    private val domainFragment = ListDomainFragment()
+    private val videoFragment = ListVideoFragment()
+    private val settingFragment = SettingFragment()
+
+    private var selectedItemId = 0
 
     override fun viewBindingInflate(inflater: LayoutInflater): ActivityMainBinding =
         ActivityMainBinding.inflate(inflater)
 
     override fun homeFragment(): Fragment{
         // 최초 부착할 프래그먼트와 바텀내비의 선택된 메뉴를 동기화.
-        binding.bottomNavigation.selectedItemId=R.id.linkItem
+        this.selectedItemId=R.id.linkItem
+        binding.bottomNavigation.selectedItemId=selectedItemId
         return linkFragment
     }
 
     override fun onCreate() {
         // 바텀 내비 메뉴 선택시 프래그먼트 변경.
         binding.bottomNavigation.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.linkItem -> {
-                    this.replaceFragmentTo(linkFragment)
-                    true
+            if(it.itemId!= selectedItemId) {
+                selectedItemId=it.itemId
+                when (it.itemId) {
+                    R.id.linkItem -> {
+                        this.replaceFragmentTo(linkFragment)
+                        true
+                    }
+                    R.id.videoItem -> {
+                        this.replaceFragmentTo(videoFragment)
+                        true
+                    }
+                    R.id.settingItem -> {
+                        this.replaceFragmentTo(settingFragment)
+                        true
+                    }
+                    else -> false
                 }
-                R.id.domainItem -> {
-                    this.replaceFragmentTo(domainFragment)
-                    true
-                }
-                R.id.tagItem -> {
-                    this.replaceFragmentTo(tagFragment)
-                    true
-                }
-                R.id.settingItem -> true
-                else -> false
+            }else{
+                false
             }
         }
+
     }
 
 }
