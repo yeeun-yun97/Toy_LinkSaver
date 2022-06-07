@@ -5,10 +5,10 @@
 ### 버전 v 2.0  <a href ="https://play.google.com/store/apps/details?id=com.github.yeeun_yun97.toy.linksaver" target = "_blank" >플레이스토어</a> 
 log
 - 동영상 기능을 추가하였습니다.
-- 링크 저장 UI를 개선하였습니다.
+- 링크 생성 및 수정 UI를 개선하였습니다.
 - 태그 그룹 기능을 추가하였습니다.
 - 검색이 정상적으로 되지 않는 오류를 수정하였습니다.
-- 검색 UI를 개선하였습니다.
+- 검색 UI를 개선하고 편의기능을 추가하였습니다.
 ### 미리보기<a href ="https://github.com/yeeun-yun97/Toy_LinkSaver/blob/main/preview.md"> preview.md </a>
 
 
