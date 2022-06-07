@@ -117,6 +117,7 @@
                     android:id="@+id/fullUrlTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:maxLines="3"
                     android:paddingBottom="10dp"
                     android:text="@{viewModel.bindingFullUrl, default= 링크주소}"
                     app:layout_constraintEnd_toEndOf="@+id/nameTextView"
