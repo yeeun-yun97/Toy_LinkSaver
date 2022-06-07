@@ -3,18 +3,24 @@
     
 ## UI 개선함
 ### :: 링크 검색화면 ::
-구버전 UI | 1.4 ~
+1.4 | 2.0 ~
 :-----:|:-----:
-![search_name](https://user-images.githubusercontent.com/60867063/166876082-7c5d1593-ab55-49f3-8336-2266cc635b0a.gif) |  ![second search](https://user-images.githubusercontent.com/60867063/169701904-4f3b52a0-aedc-44be-8b57-c4103137778b.gif)
+![second search](https://user-images.githubusercontent.com/60867063/169701904-4f3b52a0-aedc-44be-8b57-c4103137778b.gif) |   ![2 0  chip multi line](https://user-images.githubusercontent.com/60867063/172381251-4dfe4014-97de-4a30-a282-188263b66b84.gif)
+
 
 ### :: 링크 리스트 및 상세화면 ::
 없었음 | 1.4 ~
 :-----:|:-----:
 ![link_list](https://user-images.githubusercontent.com/60867063/169702950-28c298ea-2f17-4ad8-a812-e2420bb7f5ab.jpg)  | ![detail link](https://user-images.githubusercontent.com/60867063/169702243-7838e1a7-7321-4e06-a6e2-cd9552b8d65a.gif)
 
+-------
+<br><br><br><br><br><br><br><br><br>
 
 
-
+## 기능 소개 - 검색 관리
+사용 | 적용 | 삭제
+:-----:|:-----:|:-----:
+![consumeSearch](https://user-images.githubusercontent.com/60867063/172382714-6aefe836-cb68-4e11-af22-1e166b8f4ca4.gif) |   ![selectSearch](https://user-images.githubusercontent.com/60867063/172382805-1d9fec01-49b0-44a7-867f-01e42d1ccc87.gif)  |   ![deleteSearch](https://user-images.githubusercontent.com/60867063/172382865-c8208941-8926-4a91-ba84-971f6f1fe781.gif)
 
 ## 기능 소개 - 태그 관리
 생성 | 수정 | 삭제
@@ -36,9 +42,5 @@
 :-----:|:-----:
 ![autotitle](https://user-images.githubusercontent.com/60867063/166875761-f8c6ebf0-69ab-4ac8-9c36-144030e3b577.gif) | ![link add button save](https://user-images.githubusercontent.com/60867063/169703173-c6906308-ea6a-4743-8173-1d4fd651fb5c.gif)
 
-## 기능 소개 - 링크 검색
-검색하기 및 검색어 저장 |
-:-----:
-![search](https://user-images.githubusercontent.com/60867063/169703636-404228b4-7e8c-4462-8f80-7973441dc4be.gif)
 
 
