@@ -16,13 +16,8 @@
 ~1.4 | 2.0 ~
 :-----:|:-----:
 ![createLink_prev](https://user-images.githubusercontent.com/60867063/172390421-98461953-93d7-4064-8107-a83f87d09a3e.gif)   |   ![createLink](https://user-images.githubusercontent.com/60867063/172390464-161bc178-3656-4aea-a19f-1ac1fa912e85.gif)
-
-
-
-
-
 -------
-<br><br><br><br><br><br><br><br><br>
+<br><br><br><br>
 
 
 ## 기능 소개 - 검색 관리
@@ -39,13 +34,10 @@
 :-----:|:-----:|:-----:
 ![putTagsToGroup](https://user-images.githubusercontent.com/60867063/172386625-4328f514-e3dc-4fd2-9d99-ad123d537cd2.gif)    |   ![renameTag](https://user-images.githubusercontent.com/60867063/172386931-c3c949b0-f14f-4c85-9f8e-1b80303734db.gif) |   ![deleteTag](https://user-images.githubusercontent.com/60867063/172387059-4b61a6ea-8d3c-4114-9843-66dd24d6982d.gif)
 
-
-
-    
-## 기능 소개 - 도메인 관리
+<!-- ## 기능 소개 - 도메인 관리
 생성 | 수정 | 삭제
 :-----:|:-----:|:-----:
-![domain_create](https://user-images.githubusercontent.com/60867063/166867190-37ea4d82-f543-4b19-966f-a6b732628ff0.gif)  | ![domain_update](https://user-images.githubusercontent.com/60867063/166874717-2ca283a6-8c32-4c6a-9cf0-514655c390fa.gif)  | ![domain_delete](https://user-images.githubusercontent.com/60867063/166874941-89849cf8-bd79-44fd-a713-46853ebe2fa7.gif)
+![domain_create](https://user-images.githubusercontent.com/60867063/166867190-37ea4d82-f543-4b19-966f-a6b732628ff0.gif)  | ![domain_update](https://user-images.githubusercontent.com/60867063/166874717-2ca283a6-8c32-4c6a-9cf0-514655c390fa.gif)  | ![domain_delete](https://user-images.githubusercontent.com/60867063/166874941-89849cf8-bd79-44fd-a713-46853ebe2fa7.gif) -->
     
 ## 기능 소개 - 링크 관리
 생성 | 수정 | 삭제
@@ -56,9 +48,8 @@
 목록보기
 :-----:
 ![Jun-07-2022 22-43-32](https://user-images.githubusercontent.com/60867063/172395591-eef1a98b-3f58-4dc3-a014-54f73ee49261.gif)
-
-
-
+-------
+<br><br><br><br>
 
 
 ### 편의기능
@@ -73,8 +64,3 @@
 미리보기 이미지 없는 경우 웹뷰 (링크 상세 화면)
 :-----:
 ![webView](https://user-images.githubusercontent.com/60867063/172393430-08c34cd2-24b8-413a-a57c-78da64fbe49d.gif)
-
-
-
-
-
