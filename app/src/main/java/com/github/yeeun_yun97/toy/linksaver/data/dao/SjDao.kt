@@ -47,6 +47,8 @@ interface SjDao {
     fun getNotPrivateTagGroupsWithTags()
             : LiveData<List<SjTagGroupWithTags>>
 
+    @Query("SELECT COUNT(*) FROM SjTagGroup")
+    suspend fun getTagGroupCount(): Int
 
     @Query("SELECT COUNT(*) FROM SjDomain")
     suspend fun getDomainCount(): Int
