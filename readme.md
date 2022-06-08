@@ -1,14 +1,11 @@
 # LinkTag 링크택
 ## 개요
 - 태그기반으로 URL을 관리하는 Application
-- (시중의 비슷환 앱들은 디렉토리 방식으로 관리 -> 불편함을 태그 방식으로 해결하자.)
+- (시중의 비슷한 앱들은 디렉토리 방식으로 관리 -> 불편함을 태그 방식으로 해결하자.)
 ### 버전 v 2.0  <a href ="https://play.google.com/store/apps/details?id=com.github.yeeun_yun97.toy.linksaver" target = "_blank" >플레이스토어</a> 
 log
-- 동영상 기능을 추가하였습니다.
-- 링크 생성 및 수정 UI를 개선하였습니다.
-- 태그 그룹 기능을 추가하였습니다.
-- 검색이 정상적으로 되지 않는 오류를 수정하였습니다.
-- 검색 UI를 개선하고 편의기능을 추가하였습니다.
+- 동영상 UI 약간 개선 (shimmer View 추가)
+- 신규설치 시 기본 tagGroup이 없어 발생하는 문제 해결
 ### 미리보기<a href ="https://github.com/yeeun-yun97/Toy_LinkSaver/blob/main/preview.md"> preview.md </a>
 
 
