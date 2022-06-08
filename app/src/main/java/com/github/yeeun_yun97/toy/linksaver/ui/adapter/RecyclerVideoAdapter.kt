@@ -1,25 +1,37 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.adapter
 
-import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicAdapter
 import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicViewHolder
 import com.github.yeeun_yun97.toy.linksaver.data.model.VideoData
 import com.github.yeeun_yun97.toy.linksaver.databinding.ItemVideoListDetailBinding
+import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
 
-class RecyclerVideoAdapter(val player: ExoPlayer, val detailOperation: (Int) -> Unit) :
+class RecyclerVideoAdapter(
+    private val player: ExoPlayer,
+    private val detailOperation: (Int) -> Unit
+) :
     RecyclerBasicAdapter<VideoData, VideoRecyclerViewHolder>() {
     override fun onBindViewHolder(
         holder: VideoRecyclerViewHolder,
         item: VideoData
     ) {
-        holder.setData(item, detailOperation)
+    }
+
+    override fun onBindViewHolder(
+        holder: VideoRecyclerViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        holder.setData(position, itemList[position], detailOperation)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoRecyclerViewHolder {
@@ -29,96 +41,63 @@ class RecyclerVideoAdapter(val player: ExoPlayer, val detailOperation: (Int) -> 
     }
 }
 
-class VideoRecyclerViewHolder(val player: ExoPlayer, binding: ItemVideoListDetailBinding) :
+class VideoRecyclerViewHolder(private val player: ExoPlayer, binding: ItemVideoListDetailBinding) :
     RecyclerBasicViewHolder<ItemVideoListDetailBinding>(binding) {
-    lateinit var previewUrl: String
-    lateinit var videoUrl: String
 
-    fun playStart() {
-        binding.playerView.player = player
-//        binding.gradientImageView.visibility = View.GONE
-        binding.playerView.visibility = View.VISIBLE
-        binding.thumbnailImageView.visibility = View.GONE
+    private var index: Int = -1
+    private lateinit var previewUrl: String
+    private lateinit var videoUrl: String
+    private var isYoutubeVideo: Boolean = false
 
-        val mediaItem: MediaItem = MediaItem.Builder()
-            .setUri(videoUrl)
-            .setClippingConfiguration(
-                MediaItem.ClippingConfiguration.Builder()
-                    .setStartPositionMs(1000)
-                    .setEndPositionMs(20000)
-                    .build()
-            ).build()
-        player.setMediaItem(mediaItem)
-        player.prepare()
-        player.playWhenReady = true
+    fun setData(index: Int, data: VideoData, detailOperation: (Int) -> Unit) {
+        this.index = index
+        binding.data = data
+        binding.root.setOnClickListener { detailOperation(data.lid) }
+
+        // set video data
+        previewUrl = data.thumbnail
+        videoUrl = data.url
+        isYoutubeVideo = data.isYoutubeVideo
+
+        // hide playerView
+        binding.playerView.visibility = View.INVISIBLE
+
+        // show thumbnail
+        binding.thumbnailImageView.visibility = View.VISIBLE
+        binding.thumbnailImageView.setBackgroundColor(Color.BLACK)
+        setThumbnailImage(itemView.context, binding.thumbnailImageView)
+
     }
 
     fun playStop() {
+        player.pause()
         binding.playerView.player = null
-        player.clearMediaItems()
         binding.playerView.visibility = View.INVISIBLE
         binding.thumbnailImageView.visibility = View.VISIBLE
     }
 
-    @SuppressLint("CheckResult")
-    fun setData(data: VideoData, detailOperation: (Int) -> Unit) {
-        binding.data = data
-        binding.root.setOnClickListener { detailOperation(data.lid) }
-//        binding.gradientImageView.visibility = View.INVISIBLE
+    fun playStart() {
+        binding.playerView.player = player
 
-        previewUrl = data.thumbnail
-        videoUrl = data.url
+        player.playWhenReady = true
+        player.seekToDefaultPosition(index)
 
-        binding.playerView.visibility = View.INVISIBLE
-        binding.thumbnailImageView.visibility = View.VISIBLE
+        binding.playerView.visibility = View.VISIBLE
+        binding.thumbnailImageView.visibility = View.GONE
+    }
 
-        binding.thumbnailImageView.setBackgroundColor(Color.BLACK)
+
+    private fun setThumbnailImage(context: Context, imageView: ImageView) {
         if (previewUrl.isNotEmpty())
-            Glide.with(itemView.context).load(previewUrl).fitCenter()
-                .into(binding.thumbnailImageView)
+            Glide.with(context).load(previewUrl).fitCenter()
+                .into(imageView)
         else {
-            Glide.with(itemView.context)
+            Glide.with(context)
                 .load(videoUrl)
                 .centerCrop()
                 .override(720, 360)
-                .into(binding.thumbnailImageView)
+                .into(imageView)
         }
-
-//            Glide.with(itemView.context)
-//                .asBitmap()
-//                .load(previewUrl)
-//                .listener(object : RequestListener<Bitmap?> {
-//                    override fun onLoadFailed(
-//                        e: GlideException?,
-//                        model: Any?,
-//                        target: Target<Bitmap?>?,
-//                        isFirstResource: Boolean
-//                    ): Boolean {
-//                        Log.e("thumb fail", "fail")
-//                        return false
-//                    }
-//
-//                    override fun onResourceReady(
-//                        resource: Bitmap?,
-//                        model: Any?,
-//                        target: Target<Bitmap?>?,
-//                        dataSource: DataSource?,
-//                        isFirstResource: Boolean
-//                    ): Boolean {
-//                        if (resource != null) {
-//                            binding.playerView.setThumbnailImage(resource)
-//                            Log.e("thumb success", "success")
-//                        } else {
-//                            Log.e("thumb success", "null")
-//                        }
-//                        return false
-//                    }
-//                })
-//                .preload()
-
-//            var File = File(previewUrl)
-//           val thumb = ThumbnailUtils.extractThumbnail()
-//            binding.playerView.defaultArtwork=BitmapDrawable(thumb)
     }
 
 

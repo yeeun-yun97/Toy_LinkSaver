@@ -70,7 +70,6 @@ class PlayVideoFragment : SjBasicFragment<FragmentPlayVideoBinding>() {
 //        mediaSource =
 //            ProgressiveMediaSource.Factory(mCacheDataSourceFactory).createMediaSource(mediaItem)
 
-
     }
 
     override fun onStop() {

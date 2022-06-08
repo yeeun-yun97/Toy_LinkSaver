@@ -25,6 +25,7 @@ data class VideoData(
     val url: String,
     val name: String,
     val thumbnail: String,
+    val isYoutubeVideo: Boolean,
     val tagList: List<SjTag>
 )
 
