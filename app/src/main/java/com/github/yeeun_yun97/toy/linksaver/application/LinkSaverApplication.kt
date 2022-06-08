@@ -3,6 +3,7 @@ package com.github.yeeun_yun97.toy.linksaver.application
 import android.app.Application
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
 import com.google.android.exoplayer2.database.ExoDatabaseProvider
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
 import kotlinx.coroutines.*
@@ -26,11 +27,18 @@ class LinkSaverApplication : Application() {
         //insert initial Data
         CoroutineScope(Dispatchers.IO).launch {
 
-            val count = async {
+            val countDomain = async {
                 SjDatabaseUtil.getDao().getDomainCount()
             }
-            if (count.await() == 0) {
+            if (countDomain.await() == 0) {
                 SjDatabaseUtil.getDao().insertDomain(SjDomain(did = 1, name = "-", url = ""))
+            }
+
+            val countTagGroup = async {
+                SjDatabaseUtil.getDao().getTagGroupCount()
+            }
+            if (countTagGroup.await() == 0) {
+                SjDatabaseUtil.getDao().insertTagGroup(SjTagGroup(gid = 1, name = "-", isPrivate = false))
             }
         }
 
