@@ -2,6 +2,7 @@ package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.playlist
 
 import android.util.Log
 import android.util.SparseArray
+import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -60,12 +61,15 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
         binding.videoRecyclerView.adapter = adapter
 
         viewModel.playList.observe(viewLifecycleOwner, {
-            // TODO stop loading shimmerView here if not null
+            binding.shimmer.visibility = View.INVISIBLE
+            binding.videoRecyclerView.visibility = View.VISIBLE
             player.setMediaItems(it)
             player.prepare()
         })
         viewModel.allVideoData.observe(viewLifecycleOwner, {
-            // TODO show loading shimmerView here
+            binding.shimmer.visibility = View.VISIBLE
+            binding.videoRecyclerView.visibility = View.INVISIBLE
+            binding.shimmer.startShimmer()
             val mediaItems: SparseArray<MediaItem> = SparseArray()
             for (i in it.indices) {
                 val videoData = it[i]
