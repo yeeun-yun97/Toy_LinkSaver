@@ -1,7 +1,5 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.playlist
 
-import android.content.Context
-import android.net.Uri
 import android.util.Log
 import android.util.SparseArray
 import android.widget.Toast
@@ -9,12 +7,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.yeeun_yun97.toy.linksaver.R
-import com.github.yeeun_yun97.toy.linksaver.data.model.LinkModelUtil
-import com.github.yeeun_yun97.toy.linksaver.data.model.VideoData
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListVideoBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerVideoAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.VideoRecyclerViewHolder
-import com.github.yeeun_yun97.toy.linksaver.ui.component.SjUtil
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjYoutubeExtractListener
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjYoutubeExtractor
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
@@ -25,9 +20,6 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.common.collect.ImmutableSet
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
     private val viewModel: ListVideoViewModel by activityViewModels()

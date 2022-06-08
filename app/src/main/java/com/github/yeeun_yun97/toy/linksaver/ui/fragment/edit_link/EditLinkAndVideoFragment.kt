@@ -8,13 +8,13 @@ import com.bumptech.glide.Glide
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroupWithTags
-import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditVideoBinding
+import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagDialogFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.edit_link.EditVideoViewModel
 
-class EditLinkAndVideoFragment : SjBasicFragment<FragmentEditVideoBinding>() {
+class EditLinkAndVideoFragment : SjBasicFragment<FragmentEditLinkBinding>() {
 
     val viewModel: EditVideoViewModel by activityViewModels()
 
@@ -29,7 +29,7 @@ class EditLinkAndVideoFragment : SjBasicFragment<FragmentEditVideoBinding>() {
         }
     }
 
-    override fun layoutId(): Int = R.layout.fragment_edit_video
+    override fun layoutId(): Int = R.layout.fragment_edit_link
 
     override fun onCreateView() {
 
