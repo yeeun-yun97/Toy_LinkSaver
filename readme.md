@@ -2,7 +2,7 @@
 ## 개요
 - 태그기반으로 URL을 관리하는 Application
 - (시중의 비슷한 앱들은 디렉토리 방식으로 관리 -> 불편함을 태그 방식으로 해결하자.)
-### 버전 v 2.0  <a href ="https://play.google.com/store/apps/details?id=com.github.yeeun_yun97.toy.linksaver" target = "_blank" >플레이스토어</a> 
+### 버전 v 2.1  <a href ="https://play.google.com/store/apps/details?id=com.github.yeeun_yun97.toy.linksaver" target = "_blank" >플레이스토어</a> 
 log
 - 동영상 UI 약간 개선 (shimmer View 추가)
 - 신규설치 시 기본 tagGroup이 없어 발생하는 문제 해결
