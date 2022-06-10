@@ -67,9 +67,14 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
             player.prepare()
         })
         viewModel.allVideoData.observe(viewLifecycleOwner, {
-            binding.shimmer.visibility = View.VISIBLE
-            binding.videoRecyclerView.visibility = View.INVISIBLE
-            binding.shimmer.startShimmer()
+            if (!it.isNullOrEmpty()) {
+                binding.emptyGroup.visibility=View.GONE
+                binding.shimmer.visibility = View.VISIBLE
+                binding.videoRecyclerView.visibility = View.INVISIBLE
+                binding.shimmer.startShimmer()
+            }else{
+                binding.emptyGroup.visibility=View.VISIBLE
+            }
             val mediaItems: SparseArray<MediaItem> = SparseArray()
             for (i in it.indices) {
                 val videoData = it[i]
