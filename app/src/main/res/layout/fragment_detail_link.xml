@@ -138,14 +138,15 @@
 
                 <ImageView
                     android:id="@+id/emptyImageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     app:layout_constraintBottom_toBottomOf="@+id/tagChipGroup"
                     app:layout_constraintEnd_toStartOf="@id/emptyTextView"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="@+id/tagChipGroup"
                     app:layout_constraintTop_toTopOf="@+id/tagChipGroup"
-                    app:srcCompat="@drawable/ic_icons8_empty__2_" />
+                    app:layout_constraintVertical_bias="0.35"
+                    app:srcCompat="@drawable/ic_icons8_opened_folder" />
 
                 <TextView
                     android:id="@+id/emptyTextView"
