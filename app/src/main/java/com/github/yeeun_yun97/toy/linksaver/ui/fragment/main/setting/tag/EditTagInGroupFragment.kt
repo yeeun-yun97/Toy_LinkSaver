@@ -47,9 +47,9 @@ class EditTagInGroupFragment : SjBasicFragment<FragmentListTagBinding>() {
             groupName = it.tagGroup.name
             binding.toolbar.toolbarTitle = it.tagGroup.name
             if (it.tags.isEmpty()) {
-                binding.include.emptyView.visibility = View.VISIBLE
+                binding.emptyGroup.visibility = View.VISIBLE
             } else {
-                binding.include.emptyView.visibility = View.GONE
+                binding.emptyGroup.visibility = View.GONE
             }
             addTagChipsToTagChipGroup(it.tags)
         }
