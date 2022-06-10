@@ -54,7 +54,7 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
         viewUtil = ViewVisibilityUtil(
             loadingView = binding.shimmerRecylerView,
             loadedView = binding.recyclerView,
-            emptyView = binding.include.emptyView
+            emptyView = binding.emptyGroup
         )
 
         // set list when Mode ALL
