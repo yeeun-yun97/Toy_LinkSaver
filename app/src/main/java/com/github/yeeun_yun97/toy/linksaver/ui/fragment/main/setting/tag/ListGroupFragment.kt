@@ -1,5 +1,6 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.tag
 
+import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
@@ -37,6 +38,11 @@ class ListGroupFragment : SjBasicFragment<FragmentListTagGroupBinding>() {
         )
         binding.tagGroupRecyclerView.adapter = adapter
         viewModel.tagGroups.observe(viewLifecycleOwner, {
+            if (it.isNullOrEmpty()) {
+                binding.emptyGroup.visibility = View.VISIBLE
+            } else {
+                binding.emptyGroup.visibility = View.GONE
+            }
             adapter.setList(it)
         })
     }
