@@ -42,7 +42,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/nameTextView"
             app:layout_constraintEnd_toStartOf="@+id/deleteImageView"
             app:layout_constraintTop_toTopOf="@+id/nameTextView"
-            app:srcCompat="@drawable/ic_baseline_edit_24" />
+            app:srcCompat="@drawable/ic_button_edit_domain" />
 
         <ImageView
             android:id="@+id/deleteImageView"
@@ -51,6 +51,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/editImageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/editImageView"
-            app:srcCompat="@drawable/ic_baseline_delete_24" />
+            app:srcCompat="@drawable/ic_button_delete_search_set" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

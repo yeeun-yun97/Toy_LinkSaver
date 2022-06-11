@@ -91,7 +91,7 @@
             app:layout_constraintEnd_toEndOf="@id/recentSearchedRecyclerView"
             app:layout_constraintStart_toEndOf="@id/deleteTextView"
             app:layout_constraintTop_toTopOf="@id/recentSearchWordTextView"
-            app:srcCompat="@drawable/ic_baseline_delete_24" />
+            app:srcCompat="@drawable/ic_button_delete_search_set" />
 
         <TextView
             android:id="@+id/tagTextView"
@@ -122,20 +122,20 @@
             app:layout_constraintEnd_toEndOf="@id/searchEditText"
             app:layout_constraintTop_toTopOf="@id/searchEditText"
             app:layout_constraintVertical_bias="0.5"
-            app:srcCompat="@drawable/ic_baseline_close_24" />
+            app:srcCompat="@drawable/ic_button_cancel_search" />
 
 
         <ImageView
             android:id="@+id/emptyTagImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             app:layout_constraintBottom_toBottomOf="@id/tagChipGroupScrollView"
             app:layout_constraintEnd_toStartOf="@id/emptyTagTextView"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="@id/tagChipGroupScrollView"
             app:layout_constraintTop_toTopOf="@id/tagChipGroupScrollView"
             app:layout_constraintVertical_bias="0.1"
-            app:srcCompat="@drawable/ic_icons8_empty__2_" />
+            app:srcCompat="@drawable/ic_empty_tag_group" />
 
         <TextView
             android:id="@+id/emptyTagTextView"
@@ -156,8 +156,9 @@
             app:layout_constraintEnd_toEndOf="@+id/recentSearchedRecyclerView"
             app:layout_constraintStart_toStartOf="@+id/recentSearchedRecyclerView"
             app:layout_constraintTop_toTopOf="@+id/recentSearchedRecyclerView"
+            app:layout_constraintVertical_bias="0.35"
             app:layout_constraintVertical_chainStyle="packed"
-            app:srcCompat="@drawable/ic_icons8_google_web_search" />
+            app:srcCompat="@drawable/ic_empty_search_set" />
 
         <TextView
             android:id="@+id/emptySearchSetTextView"

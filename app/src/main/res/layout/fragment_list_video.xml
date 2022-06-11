@@ -51,8 +51,39 @@
                     layout="@layout/shimmer_video_list_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+
             </LinearLayout>
+
         </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <ImageView
+            android:id="@+id/emptyImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/emptyTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/videoRecyclerView"
+            app:layout_constraintVertical_bias="0.35"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:srcCompat="@drawable/ic_empty_playlist" />
+
+        <TextView
+            android:id="@+id/emptyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="표시할 동영상이 아직 없습니다."
+            app:layout_constraintBottom_toBottomOf="@+id/videoRecyclerView"
+            app:layout_constraintEnd_toEndOf="@+id/emptyImageView"
+            app:layout_constraintStart_toStartOf="@+id/emptyImageView"
+            app:layout_constraintTop_toBottomOf="@+id/emptyImageView" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/emptyGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="emptyImageView,emptyTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

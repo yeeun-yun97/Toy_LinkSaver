@@ -59,7 +59,7 @@ class SwapTagViewModel : BasicViewModelWithRepository() {
         }
     }
 
-    fun clearLists(){
+    private fun clearLists(){
         selectedBasicTags.clear()
         selectedTargetTags.clear()
     }

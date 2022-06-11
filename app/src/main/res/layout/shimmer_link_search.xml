@@ -21,7 +21,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/nameTextView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/nameTextView"
-            app:srcCompat="@drawable/ic_icons8_link" />
+            app:srcCompat="@drawable/ic_recycler_type_link" />
 
         <TextView
             android:id="@+id/nameTextView"

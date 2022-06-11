@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.ui.adapter
+package com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler
 
 import android.content.Context
 import android.graphics.Color
@@ -11,37 +11,35 @@ import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicAdapter
 import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicViewHolder
 import com.github.yeeun_yun97.toy.linksaver.data.model.VideoData
 import com.github.yeeun_yun97.toy.linksaver.databinding.ItemVideoListDetailBinding
-import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.Player
 
-class RecyclerVideoAdapter(
+class VideoListAdapter(
     private val player: ExoPlayer,
     private val detailOperation: (Int) -> Unit
 ) :
-    RecyclerBasicAdapter<VideoData, VideoRecyclerViewHolder>() {
+    RecyclerBasicAdapter<VideoData, VideoViewHolder>() {
     override fun onBindViewHolder(
-        holder: VideoRecyclerViewHolder,
+        holder: VideoViewHolder,
         item: VideoData
     ) {
     }
 
     override fun onBindViewHolder(
-        holder: VideoRecyclerViewHolder,
+        holder: VideoViewHolder,
         position: Int,
         payloads: MutableList<Any>
     ) {
         holder.setData(position, itemList[position], detailOperation)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoRecyclerViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
         val binding =
             ItemVideoListDetailBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return VideoRecyclerViewHolder(player, binding)
+        return VideoViewHolder(player, binding)
     }
 }
 
-class VideoRecyclerViewHolder(private val player: ExoPlayer, binding: ItemVideoListDetailBinding) :
+class VideoViewHolder(private val player: ExoPlayer, binding: ItemVideoListDetailBinding) :
     RecyclerBasicViewHolder<ItemVideoListDetailBinding>(binding) {
 
     private var index: Int = -1

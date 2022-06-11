@@ -59,7 +59,7 @@
             android:layout_margin="15dp"
             app:layout_constraintBottom_toBottomOf="@+id/previewImageView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_icons8_video__1_" />
+            app:srcCompat="@drawable/ic_icon_video" />
 
         <EditText
             android:id="@+id/nameEditText"

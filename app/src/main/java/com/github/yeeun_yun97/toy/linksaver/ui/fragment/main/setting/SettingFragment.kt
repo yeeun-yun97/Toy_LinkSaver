@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SettingItemValue
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSettingBinding
-import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerSettingAdapter
+import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.SettingListAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.app_info.AppInfoFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.domain.ListDomainFragment
@@ -20,7 +20,7 @@ class SettingFragment : SjBasicFragment<FragmentSettingBinding>() {
 
     override fun onCreateView() {
         binding.settingRecyclerView.layoutManager = LinearLayoutManager(context)
-        val adapter = RecyclerSettingAdapter()
+        val adapter = SettingListAdapter()
         binding.settingRecyclerView.adapter = adapter
         adapter.setList(getSettingList())
     }

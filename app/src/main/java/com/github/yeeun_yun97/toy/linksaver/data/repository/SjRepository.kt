@@ -1,12 +1,16 @@
 package com.github.yeeun_yun97.toy.linksaver.data.repository
 
 import android.util.Log
+import android.util.SparseArray
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDao
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.*
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjUtil
+import com.github.yeeun_yun97.toy.linksaver.ui.component.SjYoutubeExtractListener
+import com.github.yeeun_yun97.toy.linksaver.ui.component.SjYoutubeExtractor
+import com.google.android.exoplayer2.MediaItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -27,7 +31,7 @@ class SjRepository private constructor() {
     val defaultTagGroup: LiveData<SjTagGroupWithTags> = dao.getBasicTagGroupWithTags()
     val linkList: LiveData<List<SjLinksAndDomainsWithTags>> = dao.getAllLinksAndDomainsWithTags()
 
-    val linkTypeVideoList = dao.getAllLinksByType(ELinkType.video.name)
+
     val linkTypeLinkList = dao.getAllLinksByType(ELinkType.link.name)
 
     companion object {
@@ -217,40 +221,17 @@ class SjRepository private constructor() {
     private fun deleteLinks(list: List<SjLinksAndDomainsWithTags>) {
         for (link in list) {
             //TODO 이거 마음에 안드는데, 더 좋은 방법 생각해볼 것.
-            deleteLink(link.link, link.tags)
+            deleteLinkByLid(link.link.lid)
         }
     }
 
-    fun deleteLink(link: SjLink, tags: List<SjTag>) =
+    fun deleteLinkByLid(lid: Int) =
         CoroutineScope(Dispatchers.IO).launch {
-            if (tags.isNotEmpty()) {
                 //delete all related tag refs
                 val deleteRefs = launch {
-                    val linkTagCrossRefs = mutableListOf<LinkTagCrossRef>()
-                    for (tag in tags) {
-                        linkTagCrossRefs.add(LinkTagCrossRef(lid = link.lid, tid = tag.tid))
-                    }
-                    dao.deleteLinkTagCrossRefs(*linkTagCrossRefs.toTypedArray())
+                    dao.deleteLinkTagCrossRefsByLid(lid)
                 }
                 deleteRefs.join()
-            }
-            //wait and delete
-            dao.deleteLink(link)
-        }
-
-    fun deleteLinkByLid(lid: Int, tags: List<SjTag>) =
-        CoroutineScope(Dispatchers.IO).launch {
-            if (tags.isNotEmpty()) {
-                //delete all related tag refs
-                val deleteRefs = launch {
-                    val tids = mutableListOf<Int>()
-                    for (tag in tags) {
-                        tids.add(tag.tid)
-                    }
-                    dao.deleteLinkTagCrossRefsByLidAndTid(lid, tids)
-                }
-                deleteRefs.join()
-            }
             //wait and delete
             dao.deleteLinkByLid(lid)
         }

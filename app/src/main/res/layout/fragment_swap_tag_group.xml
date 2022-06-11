@@ -54,7 +54,7 @@
             app:layout_constraintStart_toStartOf="@+id/basicScrollView"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:layout_constraintVertical_bias="0.4"
-            app:srcCompat="@drawable/ic_icons8_up" />
+            app:srcCompat="@drawable/ic_button_move_up" />
 
         <ImageView
             android:id="@+id/moveToTargetImageView"
@@ -65,7 +65,7 @@
             app:layout_constraintEnd_toEndOf="@+id/basicScrollView"
             app:layout_constraintStart_toEndOf="@+id/moveToBasicImageView"
             app:layout_constraintTop_toTopOf="@+id/moveToBasicImageView"
-            app:srcCompat="@drawable/ic_icons8_down" />
+            app:srcCompat="@drawable/ic_button_move_down" />
 
         <ScrollView
             android:id="@+id/targetScrollView"

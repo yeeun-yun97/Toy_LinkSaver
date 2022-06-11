@@ -82,15 +82,19 @@ class SearchLinkViewModel : BasicViewModelWithRepository() {
         )
     }
 
+    fun clearSearchSet(){
+        initData()
+        searchLinkBySearchSet()
+    }
+
     private fun initData() {
         this.bindingSearchWord.postValue("")
         this.initTags()
     }
 
-
     // delete methods
     fun deleteAllSearch() = repository.deleteSearch()
 
-    fun deleteLink(link: SjLink, tags: List<SjTag>) = repository.deleteLink(link, tags)
+
 }
 

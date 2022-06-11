@@ -13,16 +13,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/emptyGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="emptyImageView,emptyTextView,emptyAddImageView,emptyAddGroupTextView" />
+
         <ScrollView
             android:id="@+id/basicTagGroupScrollView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_max="160dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+            app:layout_constraintTop_toBottomOf="@+id/emptyAddImageView">
 
             <com.google.android.material.chip.ChipGroup
                 chipDataList="@{viewModel.bindingBasicTagGroup.tags}"
@@ -34,6 +40,7 @@
             android:id="@+id/tagGroupRecyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/basicTagGroupScrollView"
             app:layout_constraintStart_toStartOf="@+id/basicTagGroupScrollView"
@@ -48,6 +55,48 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:toolbarTitle="태그 그룹 목록" />
+
+        <ImageView
+            android:id="@+id/emptyImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/emptyTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tagGroupRecyclerView"
+            app:layout_constraintVertical_bias="0.35"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:srcCompat="@drawable/ic_empty_tag_group" />
+
+        <TextView
+            android:id="@+id/emptyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="표시할 그룹이 아직 없습니다."
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/emptyImageView"
+            app:layout_constraintStart_toStartOf="@+id/emptyImageView"
+            app:layout_constraintTop_toBottomOf="@+id/emptyImageView" />
+
+        <ImageView
+            android:id="@+id/emptyAddImageView"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:srcCompat="@drawable/ic_icon_arrow_right_up" />
+
+        <TextView
+            android:id="@+id/emptyAddGroupTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:text="이곳을 눌러서 새 그룹을 만드세요."
+            app:layout_constraintBottom_toBottomOf="@+id/emptyAddImageView"
+            app:layout_constraintEnd_toStartOf="@+id/emptyAddImageView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

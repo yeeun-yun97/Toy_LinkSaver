@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.webkit.WebViewClient
 import androidx.fragment.app.activityViewModels
@@ -48,29 +49,35 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
         // set variable of binding
         binding.viewModel = viewModel
 
-        // set previewWebView
-        binding.previewWebView.webViewClient = WebViewClient()              // prevent opening browser
-        binding.previewWebView.settings.javaScriptEnabled = true            // show javascript needed pages
-        binding.previewWebView.setOnTouchListener { view, event -> true }   // prevent touch, view-only webView
+        // set toolbar menu
+        val handlerMap = hashMapOf<Int, () -> Unit>(
+            R.id.menu_edit_link to ::startEditActivityToUpdate,
+            R.id.menu_delete_link to ::deleteLink
+        )
+        binding.toolbar.setMenu(R.menu.toolbar_menu_detail_link, handlerMap)
 
         // set linkdata user to click event
         viewModel.link.observe(viewLifecycleOwner, { data ->
-            setUserClickHandlers(data)
             showPreviewOfLink(data)
             showOrHideTagChipGroup(data.tags)
         })
-    }
 
-    private fun setUserClickHandlers(data: LinkDetailValue) {
-        // edit
-        binding.editImageView.setOnClickListener { startEditActivityToUpdate(data.lid) }
-        // delete
-        binding.deleteImageView.setOnClickListener { deleteLink(data.lid, data.tags) }
-        // open url with browser
+        // set previewWebView
+        binding.previewWebView.webViewClient =
+            WebViewClient()              // prevent opening browser
+        binding.previewWebView.settings.javaScriptEnabled =
+            true            // show javascript needed pages
+
+        // set open web by views
         val openListener =
-            View.OnClickListener { startWebBrowser(data.fullUrl) }
+            View.OnClickListener { startWebBrowser() }
         binding.nameTextView.setOnClickListener(openListener)
         binding.fullUrlTextView.setOnClickListener(openListener)
+        binding.previewImageView.setOnClickListener(openListener)
+        binding.previewWebView.setOnTouchListener { view, event ->
+            startWebBrowser()
+            true
+        }   // prevent touch, view-only webView
     }
 
     private fun showOrHideTagChipGroup(tagList: List<SjTag>) {
@@ -115,23 +122,33 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
         }
     }
 
-    private fun deleteLink(lid: Int, tags: List<SjTag>) {
-        viewModel.deleteLink(lid, tags)
+    private fun deleteLink() {
+        viewModel.deleteLink()
         popBack()
     }
 
-    private fun startEditActivityToUpdate(lid: Int) {
-        val intent = Intent(requireContext(), EditLinkActivity::class.java)
-        intent.putExtra("lid", lid)
-        startActivity(intent)
-    }
-
-    private fun startWebBrowser(url: String) {
-        if (SjUtil.checkUrlPrefix(url)) {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    private fun startEditActivityToUpdate() {
+        val linkData = viewModel.link.value
+        if (linkData is LinkDetailValue) {
+            val intent = Intent(requireContext(), EditLinkActivity::class.java)
+            intent.putExtra("lid", linkData.lid)
             startActivity(intent)
         } else {
-            // string url is wrong
+            Log.e("cannot start EditActivity", "cause: link data is null")
         }
+
+    }
+
+    private fun startWebBrowser() {
+        val url = viewModel.link.value?.fullUrl
+        if (url is String) {
+            if (SjUtil.checkUrlPrefix(url)) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                startActivity(intent)
+            } else {
+                // string url is wrong
+            }
+        }
+
     }
 }

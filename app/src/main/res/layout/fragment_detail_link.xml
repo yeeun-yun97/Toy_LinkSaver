@@ -49,30 +49,6 @@
 
         </WebView>
 
-        <ImageView
-            android:id="@+id/editImageView"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_margin="15dp"
-            android:layout_marginBottom="205dp"
-            app:layout_constraintBottom_toBottomOf="@id/barrier"
-            app:layout_constraintEnd_toStartOf="@+id/deleteImageView"
-            app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="@+id/previewImageView"
-            app:srcCompat="@drawable/ic_icons8_edit__1_" />
-
-        <ImageView
-            android:id="@+id/deleteImageView"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginEnd="15dp"
-            app:layout_constraintBottom_toBottomOf="@+id/editImageView"
-            app:layout_constraintEnd_toEndOf="@+id/previewImageView"
-            app:layout_constraintStart_toEndOf="@id/editImageView"
-            app:layout_constraintTop_toTopOf="@+id/editImageView"
-            app:srcCompat="@drawable/ic_icons8_delete__4_" />
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -130,22 +106,23 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:paddingVertical="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/fullUrlTextView"
                     app:layout_constraintHeight_min="200dp"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/fullUrlTextView"
                     app:layout_constraintTop_toBottomOf="@id/view3" />
 
                 <ImageView
                     android:id="@+id/emptyImageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     app:layout_constraintBottom_toBottomOf="@+id/tagChipGroup"
                     app:layout_constraintEnd_toStartOf="@id/emptyTextView"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="@+id/tagChipGroup"
                     app:layout_constraintTop_toTopOf="@+id/tagChipGroup"
-                    app:srcCompat="@drawable/ic_icons8_empty__2_" />
+                    app:layout_constraintVertical_bias="0.35"
+                    app:srcCompat="@drawable/ic_empty_tag_group" />
 
                 <TextView
                     android:id="@+id/emptyTextView"

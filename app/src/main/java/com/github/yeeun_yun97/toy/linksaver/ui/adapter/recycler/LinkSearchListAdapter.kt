@@ -35,8 +35,8 @@ class LinkSearchListViewHolder(binding: ItemLinkSearchBinding) :
         binding.data = link
         binding.root.setOnClickListener { detailOperation(link.link.lid) }
         val drawable = when (link.link.type) {
-                ELinkType.video -> R.drawable.ic_icons8_video
-                ELinkType.link -> R.drawable.ic_icons8_link
+                ELinkType.video -> R.drawable.ic_recycler_type_video
+                ELinkType.link -> R.drawable.ic_recycler_type_link
             }
         Glide.with(itemView.context).load(drawable).into(binding.linkIconImageView)
     }
