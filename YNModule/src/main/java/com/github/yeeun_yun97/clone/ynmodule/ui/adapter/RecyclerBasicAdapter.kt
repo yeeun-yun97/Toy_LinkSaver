@@ -12,7 +12,7 @@ abstract class RecyclerBasicAdapter<T, C : RecyclerView.ViewHolder>(
     }
 
     final override fun onBindViewHolder(holder: C, position: Int) {
-        onBindViewHolder(holder,itemList[position])
+        onBindViewHolder(holder, itemList[position])
     }
 
     abstract fun onBindViewHolder(holder: C, item: T)

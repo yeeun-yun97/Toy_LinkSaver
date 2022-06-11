@@ -1,12 +1,16 @@
 package com.github.yeeun_yun97.toy.linksaver.data.repository
 
 import android.util.Log
+import android.util.SparseArray
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDao
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.*
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjUtil
+import com.github.yeeun_yun97.toy.linksaver.ui.component.SjYoutubeExtractListener
+import com.github.yeeun_yun97.toy.linksaver.ui.component.SjYoutubeExtractor
+import com.google.android.exoplayer2.MediaItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -27,7 +31,7 @@ class SjRepository private constructor() {
     val defaultTagGroup: LiveData<SjTagGroupWithTags> = dao.getBasicTagGroupWithTags()
     val linkList: LiveData<List<SjLinksAndDomainsWithTags>> = dao.getAllLinksAndDomainsWithTags()
 
-    val linkTypeVideoList = dao.getAllLinksByType(ELinkType.video.name)
+
     val linkTypeLinkList = dao.getAllLinksByType(ELinkType.link.name)
 
     companion object {

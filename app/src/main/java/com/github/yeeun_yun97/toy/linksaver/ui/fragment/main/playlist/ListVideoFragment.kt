@@ -1,8 +1,6 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.playlist
 
 import android.util.Log
-import android.util.SparseArray
-import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,8 +11,6 @@ import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListVideoBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerVideoAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.VideoRecyclerViewHolder
-import com.github.yeeun_yun97.toy.linksaver.ui.component.SjYoutubeExtractListener
-import com.github.yeeun_yun97.toy.linksaver.ui.component.SjYoutubeExtractor
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.detail_link.DetailLinkFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.ListVideoViewModel
@@ -29,10 +25,6 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
 
     // control view visibility
     private lateinit var viewUtil: ViewVisibilityUtil
-
-    private val START_MS: Long = 1000
-    private val END_MS: Long = 16000
-
     private lateinit var manager: LinearLayoutManager
     private lateinit var adapter: RecyclerVideoAdapter
 
@@ -42,14 +34,13 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
     override fun layoutId(): Int = R.layout.fragment_list_video
 
     override fun onCreateView() {
-
         // set toolbar
         val handlerMap = hashMapOf<Int, () -> Unit>(R.id.menu_playlist to ::moveToPlaylistFragment)
         binding.toolbar.setMenu(R.menu.toolbar_menu_video_list, handlerMap = handlerMap)
 
         // player
         _player = ExoPlayer.Builder(requireContext()).build()
-        player.repeatMode = Player.REPEAT_MODE_ONE
+        initPlayer(player)
 
         // set view Util
         viewUtil = ViewVisibilityUtil(
@@ -58,80 +49,44 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
             emptyView = binding.emptyGroup
         )
 
-        // disable track types or groups
-        player.trackSelectionParameters =
-            player.trackSelectionParameters.buildUpon()
-                .setDisabledTrackTypes(
-                    ImmutableSet.of(C.TRACK_TYPE_AUDIO)
-                ) // disable track type audio
-                .build()
-
-        // set adapter
+        // set recycler adapter
         manager = LinearLayoutManager(context)
-        binding.videoRecyclerView.layoutManager = manager
         adapter = RecyclerVideoAdapter(player, ::moveToDetailFragment)
+        binding.videoRecyclerView.layoutManager = manager
         binding.videoRecyclerView.adapter = adapter
+
+        // set recycler scroll listener
+        binding.videoRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            private var prevPosition: Int = -1
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                prevPosition = scrollAndPlay(prevPosition)
+            }
+        })
+
 
         // set view by liveData
         viewModel.playList.observe(viewLifecycleOwner, {
-            if (it.isNullOrEmpty()) {
-                viewUtil.state = DataState.EMPTY
-            } else if(adapter.itemCount!=0){
-                Log.d("playlist loaded", it.toString())
-                 viewUtil.state = DataState.LOADED
-                player.setMediaItems(it)
-                player.prepare()
+            if (adapter.itemCount != 0) {
+                viewUtil.state = DataState.LOADED
+                setMediaItemsAndPrepare(it)
             }
         })
         viewModel.allVideoData.observe(viewLifecycleOwner, {
             if (!it.isNullOrEmpty()) {
                 viewUtil.state = DataState.LOADING
+                viewModel.loadPlayList()
             } else {
                 viewUtil.state = DataState.EMPTY
             }
-            val mediaItems: SparseArray<MediaItem> = SparseArray()
-            for (i in it.indices) {
-                val videoData = it[i]
-                if (videoData.isYoutubeVideo) {
-                    val listener = object : SjYoutubeExtractListener {
-                        override fun onExtractionComplete(extractedUrl: String) {
-                            saveMediaItem(i, extractedUrl, mediaItems, it.size)
-                        }
-                    }
-                    SjYoutubeExtractor(requireContext(), listener).extract(videoData.url)
-                } else {
-                    saveMediaItem(i, videoData.url, mediaItems, it.size)
-                }
-            }
             adapter.setList(it)
         })
-
-        binding.videoRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            private var prevPosition: Int = -1
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                val position = manager.findFirstCompletelyVisibleItemPosition()
-                val currentViewHolder =
-                    binding.videoRecyclerView.findViewHolderForLayoutPosition(position)
-                Log.d("onScroll", "prev: $prevPosition, current: $position")
-                if (position != prevPosition && currentViewHolder is VideoRecyclerViewHolder) {
-                    if (prevPosition != -1) {
-                        val prevViewHolder =
-                            binding.videoRecyclerView.findViewHolderForAdapterPosition(prevPosition)
-                        if (prevViewHolder is VideoRecyclerViewHolder) {
-                            prevViewHolder.playStop()
-                        }
-                    }
-                    currentViewHolder.playStart()
-                }
-                prevPosition = position
-            }
-        })
-
     }
 
+    override fun onStart() {
+        super.onStart()
+        binding.videoRecyclerView.scrollToPosition(0)
+    }
 
     override fun onPause() {
         super.onPause()
@@ -146,31 +101,40 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
         _player = null
     }
 
-    private fun saveMediaItem(
-        position: Int,
-        url: String,
-        sparseArray: SparseArray<MediaItem>,
-        length: Int
-    ) {
-        sparseArray.append(position, getMediaItemFromUrl(url))
-        if (sparseArray.size() == length) {
-            val mediaItemList = mutableListOf<MediaItem>()
-            for (i in 0 until length) {
-                mediaItemList.add(i, sparseArray[i])
+    private fun scrollAndPlay(prevPosition: Int): Int {
+        val position = manager.findFirstCompletelyVisibleItemPosition()
+        val currentViewHolder =
+            binding.videoRecyclerView.findViewHolderForLayoutPosition(position)
+        Log.d("onScroll", "prev: $prevPosition, current: $position")
+        if (position != prevPosition && currentViewHolder is VideoRecyclerViewHolder) {
+            if (prevPosition != -1) {
+                val prevViewHolder =
+                    binding.videoRecyclerView.findViewHolderForAdapterPosition(prevPosition)
+                if (prevViewHolder is VideoRecyclerViewHolder) {
+                    prevViewHolder.playStop()
+                }
             }
-            viewModel.playList.postValue(mediaItemList)
+            currentViewHolder.playStart()
         }
+        return position
     }
 
-    private fun getMediaItemFromUrl(url: String): MediaItem {
-        return MediaItem.Builder()
-            .setUri(url)
-            .setClippingConfiguration(
-                MediaItem.ClippingConfiguration.Builder()
-                    .setStartPositionMs(START_MS)
-                    .setEndPositionMs(END_MS)
-                    .build()
-            ).build()
+    private fun setMediaItemsAndPrepare(mediaItems: List<MediaItem>) {
+        player.setMediaItems(mediaItems)
+        player.prepare()
+    }
+
+    private fun initPlayer(player: ExoPlayer) {
+        // player replays one video
+        player.repeatMode = Player.REPEAT_MODE_ONE
+
+        // disable track types or groups
+        player.trackSelectionParameters =
+            player.trackSelectionParameters.buildUpon()
+                .setDisabledTrackTypes(
+                    ImmutableSet.of(C.TRACK_TYPE_AUDIO)
+                ) // disable track type audio
+                .build()
     }
 
     private fun moveToDetailFragment(lid: Int) {
