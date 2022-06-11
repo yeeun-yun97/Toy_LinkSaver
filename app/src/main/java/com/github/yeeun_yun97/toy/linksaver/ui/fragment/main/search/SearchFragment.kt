@@ -24,13 +24,13 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
     private val deleteIcon by lazy {
         AppCompatResources.getDrawable(
             requireContext(),
-            R.drawable.ic_baseline_close_24
+            R.drawable.ic_button_cancel_search
         )
     }
     private val searchIcon by lazy {
         AppCompatResources.getDrawable(
             requireContext(),
-            R.drawable.ic_baseline_search_24
+            R.drawable.ic_button_search_start
         )
     }
 

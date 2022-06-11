@@ -37,8 +37,6 @@ class TagGroupEditViewModel : BasicViewModelWithRepository() {
         }
     }
 
-    fun deleteTagGroup(gid: Int) = repository.deleteTagGroup(gid)
-
     fun editTag(tag: SjTag? = null, name: String, gid: Int = 1) {
         if (tag != null) {
             updateTag(tag.copy(name = name, gid = gid))
@@ -63,5 +61,6 @@ class TagGroupEditViewModel : BasicViewModelWithRepository() {
             setGid(gid)
         }
     }
+
 
 }

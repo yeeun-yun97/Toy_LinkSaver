@@ -35,7 +35,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/itemNameTextView"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_arrow_forward_ios_24" />
+            app:srcCompat="@drawable/ic_recycler_type_sertting" />
 
         <View
             android:layout_width="match_parent"

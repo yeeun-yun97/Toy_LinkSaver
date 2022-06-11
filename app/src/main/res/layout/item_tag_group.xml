@@ -23,7 +23,7 @@
             android:padding="3dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_icons8_menu_vertical"
+            app:srcCompat="@drawable/ic_menu_menu"
             app:tint="?attr/colorOnPrimary" />
 
         <ImageView
@@ -36,7 +36,7 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/groupNameTextView"
-            app:srcCompat="@drawable/ic_icons8_lock" />
+            app:srcCompat="@drawable/ic_icon_lock" />
 
         <TextView
             android:id="@+id/groupNameTextView"

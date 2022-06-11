@@ -9,11 +9,11 @@ import com.github.yeeun_yun97.clone.ynmodule.ui.component.DataState
 import com.github.yeeun_yun97.clone.ynmodule.ui.component.ViewVisibilityUtil
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListVideoBinding
-import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerVideoAdapter
-import com.github.yeeun_yun97.toy.linksaver.ui.adapter.VideoRecyclerViewHolder
+import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.VideoListAdapter
+import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.VideoViewHolder
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.detail_link.DetailLinkFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.ListVideoViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.playlist.ListVideoViewModel
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -26,7 +26,7 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
     // control view visibility
     private lateinit var viewUtil: ViewVisibilityUtil
     private lateinit var manager: LinearLayoutManager
-    private lateinit var adapter: RecyclerVideoAdapter
+    private lateinit var adapter: VideoListAdapter
 
     private var _player: ExoPlayer? = null
     private val player: ExoPlayer get() = _player!!
@@ -51,7 +51,7 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
 
         // set recycler adapter
         manager = LinearLayoutManager(context)
-        adapter = RecyclerVideoAdapter(player, ::moveToDetailFragment)
+        adapter = VideoListAdapter(player, ::moveToDetailFragment)
         binding.videoRecyclerView.layoutManager = manager
         binding.videoRecyclerView.adapter = adapter
 
@@ -106,11 +106,11 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
         val currentViewHolder =
             binding.videoRecyclerView.findViewHolderForLayoutPosition(position)
         Log.d("onScroll", "prev: $prevPosition, current: $position")
-        if (position != prevPosition && currentViewHolder is VideoRecyclerViewHolder) {
+        if (position != prevPosition && currentViewHolder is VideoViewHolder) {
             if (prevPosition != -1) {
                 val prevViewHolder =
                     binding.videoRecyclerView.findViewHolderForAdapterPosition(prevPosition)
-                if (prevViewHolder is VideoRecyclerViewHolder) {
+                if (prevViewHolder is VideoViewHolder) {
                     prevViewHolder.playStop()
                 }
             }
