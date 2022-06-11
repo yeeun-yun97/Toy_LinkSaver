@@ -82,6 +82,11 @@ class SearchLinkViewModel : BasicViewModelWithRepository() {
         )
     }
 
+    fun clearSearchSet(){
+        initData()
+        searchLinkBySearchSet()
+    }
+
     private fun initData() {
         this.bindingSearchWord.postValue("")
         this.initTags()

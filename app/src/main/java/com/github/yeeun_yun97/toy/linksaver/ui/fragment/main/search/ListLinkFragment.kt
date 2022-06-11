@@ -2,6 +2,7 @@ package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search
 
 import android.content.Intent
 import android.util.Log
+import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.clone.ynmodule.ui.component.DataState
@@ -75,10 +76,21 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
             }
         )
 
+        viewModel.bindingTargetTags.observe(viewLifecycleOwner,{
+            if(it.isNullOrEmpty()){
+                binding.cancelSearchSetImageView.visibility= View.GONE
+            }else{
+                binding.cancelSearchSetImageView.visibility= View.VISIBLE
+            }
+        })
+
         // handle user click event
         binding.floatingActionView.setOnClickListener { startEditActivity() }
         binding.searchEditText.setOnClickListener {
             this.moveToSearchFragment()
+        }
+        binding.cancelSearchSetImageView.setOnClickListener {
+            viewModel.clearSearchSet()
         }
     }
 
