@@ -7,6 +7,8 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.yeeun_yun97.clone.ynmodule.ui.component.DataState
+import com.github.yeeun_yun97.clone.ynmodule.ui.component.ViewVisibilityUtil
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListVideoBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.RecyclerVideoAdapter
@@ -24,6 +26,9 @@ import com.google.common.collect.ImmutableSet
 
 class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
     private val viewModel: ListVideoViewModel by activityViewModels()
+
+    // control view visibility
+    private lateinit var viewUtil: ViewVisibilityUtil
 
     private val START_MS: Long = 1000
     private val END_MS: Long = 16000
@@ -46,6 +51,13 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
         _player = ExoPlayer.Builder(requireContext()).build()
         player.repeatMode = Player.REPEAT_MODE_ONE
 
+        // set view Util
+        viewUtil = ViewVisibilityUtil(
+            loadingView = binding.shimmer,
+            loadedView = binding.videoRecyclerView,
+            emptyView = binding.emptyGroup
+        )
+
         // disable track types or groups
         player.trackSelectionParameters =
             player.trackSelectionParameters.buildUpon()
@@ -60,20 +72,22 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
         adapter = RecyclerVideoAdapter(player, ::moveToDetailFragment)
         binding.videoRecyclerView.adapter = adapter
 
+        // set view by liveData
         viewModel.playList.observe(viewLifecycleOwner, {
-            binding.shimmer.visibility = View.INVISIBLE
-            binding.videoRecyclerView.visibility = View.VISIBLE
-            player.setMediaItems(it)
-            player.prepare()
+            if (it.isNullOrEmpty()) {
+                viewUtil.state = DataState.EMPTY
+            } else if(adapter.itemCount!=0){
+                Log.d("playlist loaded", it.toString())
+                 viewUtil.state = DataState.LOADED
+                player.setMediaItems(it)
+                player.prepare()
+            }
         })
         viewModel.allVideoData.observe(viewLifecycleOwner, {
             if (!it.isNullOrEmpty()) {
-                binding.emptyGroup.visibility=View.GONE
-                binding.shimmer.visibility = View.VISIBLE
-                binding.videoRecyclerView.visibility = View.INVISIBLE
-                binding.shimmer.startShimmer()
-            }else{
-                binding.emptyGroup.visibility=View.VISIBLE
+                viewUtil.state = DataState.LOADING
+            } else {
+                viewUtil.state = DataState.EMPTY
             }
             val mediaItems: SparseArray<MediaItem> = SparseArray()
             for (i in it.indices) {
@@ -118,6 +132,20 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
 
     }
 
+
+    override fun onPause() {
+        super.onPause()
+        // pause player
+        player.pause()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // release player
+        player.release()
+        _player = null
+    }
+
     private fun saveMediaItem(
         position: Int,
         url: String,
@@ -144,20 +172,6 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
                     .build()
             ).build()
     }
-
-    override fun onPause() {
-        super.onPause()
-        // pause player
-        player.pause()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        // release player
-        player.release()
-        _player = null
-    }
-
 
     private fun moveToDetailFragment(lid: Int) {
         moveToOtherFragment(DetailLinkFragment.newInstance(lid))

@@ -34,8 +34,6 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
         Log.d("onStart","search start, shimmer started")
         if(viewModel.mode==ListMode.MODE_SEARCH){
             viewUtil.state = DataState.LOADING
-            binding.shimmer.startShimmer()
-            viewModel.searchLinkBySearchSet()
         }
     }
 
@@ -52,7 +50,7 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
 
         // set view Util
         viewUtil = ViewVisibilityUtil(
-            loadingView = binding.shimmerRecylerView,
+            loadingView = binding.shimmer,
             loadedView = binding.recyclerView,
             emptyView = binding.emptyGroup
         )
