@@ -31,5 +31,5 @@ class DetailLinkViewModel : BasicViewModelWithRepository() {
         }
     }
 
-    fun deleteLink(lid: Int, tags: List<SjTag>) = repository.deleteLinkByLid(lid, tags)
+    fun deleteLink() = repository.deleteLinkByLid(link.value!!.lid)
 }

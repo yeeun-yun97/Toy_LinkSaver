@@ -221,40 +221,17 @@ class SjRepository private constructor() {
     private fun deleteLinks(list: List<SjLinksAndDomainsWithTags>) {
         for (link in list) {
             //TODO 이거 마음에 안드는데, 더 좋은 방법 생각해볼 것.
-            deleteLink(link.link, link.tags)
+            deleteLinkByLid(link.link.lid)
         }
     }
 
-    fun deleteLink(link: SjLink, tags: List<SjTag>) =
+    fun deleteLinkByLid(lid: Int) =
         CoroutineScope(Dispatchers.IO).launch {
-            if (tags.isNotEmpty()) {
                 //delete all related tag refs
                 val deleteRefs = launch {
-                    val linkTagCrossRefs = mutableListOf<LinkTagCrossRef>()
-                    for (tag in tags) {
-                        linkTagCrossRefs.add(LinkTagCrossRef(lid = link.lid, tid = tag.tid))
-                    }
-                    dao.deleteLinkTagCrossRefs(*linkTagCrossRefs.toTypedArray())
+                    dao.deleteLinkTagCrossRefsByLid(lid)
                 }
                 deleteRefs.join()
-            }
-            //wait and delete
-            dao.deleteLink(link)
-        }
-
-    fun deleteLinkByLid(lid: Int, tags: List<SjTag>) =
-        CoroutineScope(Dispatchers.IO).launch {
-            if (tags.isNotEmpty()) {
-                //delete all related tag refs
-                val deleteRefs = launch {
-                    val tids = mutableListOf<Int>()
-                    for (tag in tags) {
-                        tids.add(tag.tid)
-                    }
-                    dao.deleteLinkTagCrossRefsByLidAndTid(lid, tids)
-                }
-                deleteRefs.join()
-            }
             //wait and delete
             dao.deleteLinkByLid(lid)
         }

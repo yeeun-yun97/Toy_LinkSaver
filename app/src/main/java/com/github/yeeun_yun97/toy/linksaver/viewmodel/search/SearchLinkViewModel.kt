@@ -87,10 +87,9 @@ class SearchLinkViewModel : BasicViewModelWithRepository() {
         this.initTags()
     }
 
-
     // delete methods
     fun deleteAllSearch() = repository.deleteSearch()
 
-    fun deleteLink(link: SjLink, tags: List<SjTag>) = repository.deleteLink(link, tags)
+
 }
 

@@ -49,30 +49,6 @@
 
         </WebView>
 
-        <ImageView
-            android:id="@+id/editImageView"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_margin="15dp"
-            android:layout_marginBottom="205dp"
-            app:layout_constraintBottom_toBottomOf="@id/barrier"
-            app:layout_constraintEnd_toStartOf="@+id/deleteImageView"
-            app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="@+id/previewImageView"
-            app:srcCompat="@drawable/ic_button_edit" />
-
-        <ImageView
-            android:id="@+id/deleteImageView"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginEnd="15dp"
-            app:layout_constraintBottom_toBottomOf="@+id/editImageView"
-            app:layout_constraintEnd_toEndOf="@+id/previewImageView"
-            app:layout_constraintStart_toEndOf="@id/editImageView"
-            app:layout_constraintTop_toTopOf="@+id/editImageView"
-            app:srcCompat="@drawable/ic_button_delete" />
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -130,9 +106,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:paddingVertical="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/fullUrlTextView"
                     app:layout_constraintHeight_min="200dp"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/fullUrlTextView"
                     app:layout_constraintTop_toBottomOf="@id/view3" />
 
