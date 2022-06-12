@@ -2,6 +2,8 @@ package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting
 
 import android.content.Intent
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SettingItemValue
@@ -18,6 +20,8 @@ class SettingFragment : SjBasicFragment<FragmentSettingBinding>() {
     private val domainFragment = ListDomainFragment()
     private val appInfoFragment = AppInfoFragment()
 
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+
     override fun layoutId(): Int = R.layout.fragment_setting
 
     override fun onCreateView() {
@@ -25,6 +29,15 @@ class SettingFragment : SjBasicFragment<FragmentSettingBinding>() {
         val adapter = SettingListAdapter()
         binding.settingRecyclerView.adapter = adapter
         adapter.setList(getSettingList())
+
+        activityResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if (it.resultCode == RESULT_SUCCESS) {
+                    Toast.makeText(context, "비밀번호 맞음", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(context, "비밀번호 틀림", Toast.LENGTH_LONG).show()
+                }
+            }
     }
 
     private fun getSettingList(): List<SettingItemValue> {
@@ -39,7 +52,7 @@ class SettingFragment : SjBasicFragment<FragmentSettingBinding>() {
 
     private fun moveToPersonalSetting() {
         val intent = Intent(activity, LockActivity::class.java)
-        startActivity(intent)
+        activityResultLauncher.launch(intent)
     }
 
     private fun moveToViewDomains() {

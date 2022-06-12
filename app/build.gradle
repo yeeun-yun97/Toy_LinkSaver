@@ -53,6 +53,9 @@ dependencies {
     // For Kotlin
     implementation 'androidx.work:work-runtime-ktx:2.7.1'
 
+    // data store
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
     //exoplayer
     implementation 'com.google.android.exoplayer:exoplayer-core:2.17.1'
     implementation 'com.google.android.exoplayer:exoplayer-dash:2.17.1'

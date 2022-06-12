@@ -1,11 +1,18 @@
 package com.github.yeeun_yun97.toy.linksaver.viewmodel.lock
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.github.yeeun_yun97.toy.linksaver.data.repository.SjDataStoreRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
-class LockViewModel : ViewModel() {
+class LockViewModel(application: Application) : AndroidViewModel(application) {
+    val repository: SjDataStoreRepository = SjDataStoreRepository.getInstance()
 
     private val _bindingPassword1 = MutableLiveData("")
     private val _bindingPassword2 = MutableLiveData("")
@@ -21,16 +28,43 @@ class LockViewModel : ViewModel() {
     val bindingPassword5: LiveData<String> get() = _bindingPassword5
     val bindingPassword6: LiveData<String> get() = _bindingPassword6
 
+    private val _isPasswordCorrect = MutableLiveData<Boolean>()
+    val isPasswordCorrect: LiveData<Boolean> get() = _isPasswordCorrect
+    private val _password = MutableLiveData<String>()
+    val password: LiveData<String> get() = _password
+
     private var length = 0
     private val passwordBuilder = StringBuilder(6)
+    private var wrongCount = 0
 
     init {
         bindingPassword6.observeForever {
             if (!it.isNullOrEmpty() && length == 6) {
                 Log.d("password completed", passwordBuilder.toString())
-                clearNumbers()
+                viewModelScope.launch(Dispatchers.IO) {
+                    val expected = repository.getPassword(application.applicationContext).first()
+                    val actual = passwordBuilder.toString()
+                    _password.postValue(actual)
+                    checkPassword(expected, actual)
+                    clearNumbers()
+                }
             }
         }
+    }
+
+    private fun checkPassword(expected: String, actual: String) {
+        Log.d("check password", "expected $expected, actual $actual")
+        _password.postValue(actual)
+        if (Integer.parseInt(expected) == Integer.parseInt(actual)) {
+            _isPasswordCorrect.postValue(true)
+        } else {
+            _isPasswordCorrect.postValue(false)
+            wrongCount++
+        }
+    }
+
+    fun setPassword(password: String) {
+        repository.setPassword(getApplication<Application>().applicationContext, password)
     }
 
     private fun getLiveData(): MutableLiveData<String> {
@@ -55,12 +89,12 @@ class LockViewModel : ViewModel() {
     fun clearNumbers() {
         passwordBuilder.setLength(0)
         length = 0
-        _bindingPassword1.value = ""
-        _bindingPassword2.value = ""
-        _bindingPassword3.value = ""
-        _bindingPassword4.value = ""
-        _bindingPassword5.value = ""
-        _bindingPassword6.value = ""
+        _bindingPassword1.postValue("")
+        _bindingPassword2.postValue("")
+        _bindingPassword3.postValue("")
+        _bindingPassword4.postValue("")
+        _bindingPassword5.postValue("")
+        _bindingPassword6.postValue("")
     }
 
 

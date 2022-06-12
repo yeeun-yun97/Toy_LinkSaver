@@ -4,19 +4,11 @@ import android.app.Application
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
-import com.google.android.exoplayer2.database.ExoDatabaseProvider
-import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
+import com.github.yeeun_yun97.toy.linksaver.data.repository.SjDataStoreRepository
 import kotlinx.coroutines.*
 
 class LinkSaverApplication : Application() {
 
-    private val cacheSize: Long = 90 * 1024 * 1024
-    private lateinit var cacheEvictor: LeastRecentlyUsedCacheEvictor
-    private lateinit var exoplayerDatabaseProvider: ExoDatabaseProvider
-
-    companion object{
-//        lateinit var cache: SimpleCache
-    }
 
     override fun onCreate() {
         super.onCreate()
@@ -41,11 +33,6 @@ class LinkSaverApplication : Application() {
                 SjDatabaseUtil.getDao().insertTagGroup(SjTagGroup(gid = 1, name = "-", isPrivate = false))
             }
         }
-
-        //cache of video
-//        cacheEvictor = LeastRecentlyUsedCacheEvictor(cacheSize)
-//        exoplayerDatabaseProvider = ExoDatabaseProvider(this)
-//        cache = SimpleCache(cacheDir, cacheEvictor, exoplayerDatabaseProvider)
     }
 
     override fun onTerminate() {
@@ -56,4 +43,6 @@ class LinkSaverApplication : Application() {
         //백그라운드로 갔을 때도 닫아야 할까?
         SjDatabaseUtil.closeDatabase()
     }
+
+
 }
