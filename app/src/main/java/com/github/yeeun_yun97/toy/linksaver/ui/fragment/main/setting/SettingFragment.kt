@@ -1,10 +1,12 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting
 
+import android.content.Intent
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SettingItemValue
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSettingBinding
+import com.github.yeeun_yun97.toy.linksaver.ui.activity.LockActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.SettingListAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.app_info.AppInfoFragment
@@ -27,11 +29,17 @@ class SettingFragment : SjBasicFragment<FragmentSettingBinding>() {
 
     private fun getSettingList(): List<SettingItemValue> {
         return mutableListOf(
+            SettingItemValue("사용자 설정", ::moveToPersonalSetting),
             SettingItemValue("도메인 목록", ::moveToViewDomains),
             SettingItemValue("태그 그룹 목록", ::moveToViewTagGroups),
             SettingItemValue("플레이리스트", ::moveToViewPlayLists),
             SettingItemValue("앱 정보 보기", ::moveToViewData),
         )
+    }
+
+    private fun moveToPersonalSetting() {
+        val intent = Intent(activity, LockActivity::class.java)
+        startActivity(intent)
     }
 
     private fun moveToViewDomains() {

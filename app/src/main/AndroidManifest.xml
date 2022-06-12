@@ -25,6 +25,9 @@
             android:name=".ui.activity.EditLinkActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.activity.LockActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.SplashActivity"
             android:exported="true">
             <intent-filter>
