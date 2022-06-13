@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 
 class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
     val viewModel: SearchLinkViewModel by activityViewModels()
-    val settingViewModel: SettingViewModel by viewModels()
+    private val settingViewModel: SettingViewModel by viewModels()
 
     private var isPrivateMode: Boolean? = null
 

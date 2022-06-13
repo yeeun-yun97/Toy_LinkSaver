@@ -5,6 +5,7 @@ import android.util.SparseArray
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.github.yeeun_yun97.toy.linksaver.data.model.VideoData
 import com.github.yeeun_yun97.toy.linksaver.data.repository.SjVideoRepository
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjYoutubeExtractListener
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjYoutubeExtractor
@@ -19,27 +20,38 @@ class ListVideoViewModel(application: Application) : AndroidViewModel(applicatio
     // repository
     val repository = SjVideoRepository.getInstance()
 
-    // liveDatats
+    // liveDataList
     private val _playList = MutableLiveData(mutableListOf<MediaItem>())
-    val allVideoData = repository.allVideoData
     val playList: LiveData<MutableList<MediaItem>> get() = _playList
+    val videoDatas = repository.allVideoData
+    val publicVideoDatas = repository.publicVideoData
 
-    fun loadPlayList() {
-        val videoDatas = allVideoData.value!!
+    fun loadPlayList(privateMode: Boolean) {
+        if (privateMode) {
+            loadIntoPlayList(publicVideoDatas.value!!)
+        } else {
+            loadIntoPlayList(videoDatas.value!!)
+        }
+    }
+
+    private fun loadIntoPlayList(
+        dataList: List<VideoData>
+    ) {
         val mediaItems: SparseArray<MediaItem> = SparseArray()
-        for (i in videoDatas.indices) {
-            val videoData = videoDatas[i]
+        for (i in dataList.indices) {
+            val videoData = dataList[i]
             if (videoData.isYoutubeVideo) {
                 val listener = object : SjYoutubeExtractListener {
                     override fun onExtractionComplete(extractedUrl: String) {
-                        saveMediaItem(i, extractedUrl, mediaItems, videoDatas.size)
+                        saveMediaItem(i, extractedUrl, mediaItems, dataList.size)
                     }
                 }
                 SjYoutubeExtractor(getApplication(), listener).extract(videoData.url)
             } else {
-                saveMediaItem(i, videoData.url, mediaItems, videoDatas.size)
+                saveMediaItem(i, videoData.url, mediaItems, dataList.size)
             }
         }
+
     }
 
     private fun saveMediaItem(
