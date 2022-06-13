@@ -16,6 +16,7 @@ class EditVideoViewModel : BasicViewModelWithRepository() {
 
     // model list
     val tagGroups = repository.tagGroups
+    val publicTagGroups = repository.publicTagGroups
     val tagDefaultGroup = repository.defaultTagGroup
 
     // default type
