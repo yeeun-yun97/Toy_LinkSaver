@@ -7,6 +7,7 @@ import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.BasicViewModelWithRe
 
 class ListGroupViewModel : BasicViewModelWithRepository() {
     val tagGroups = repository.tagGroups
+    val publicTagGroups = repository.publicTagGroups
 
     // data binding live data
     private val _bindingBasicTagGroup = repository.defaultTagGroup

@@ -38,6 +38,10 @@ interface SjDao {
             : LiveData<List<SjTagGroupWithTags>>
 
     @Transaction
+    @Query("SELECT * FROM SjTagGroup WHERE gid != 1 AND is_private = 0 ORDER BY name")
+    fun getTagGroupsWithTagsNotPrivate(): LiveData<List<SjTagGroupWithTags>>
+
+    @Transaction
     @Query("SELECT * FROM SjTagGroup ORDER BY name")
     fun getAllTagGroupsWithTags()
             : LiveData<List<SjTagGroupWithTags>>
@@ -255,6 +259,8 @@ interface SjDao {
     @Transaction
     @Query("SELECT * FROM SjTagGroup WHERE gid= 1")
     fun getBasicTagGroupWithTags(): LiveData<SjTagGroupWithTags>
+
+
 
 
 }

@@ -27,6 +27,7 @@ class SjRepository private constructor() {
     val domainsExceptDefault: LiveData<List<SjDomain>> = dao.getAllDomainsExceptDefault()
     val tags: LiveData<List<SjTag>> = dao.getAllTags()
     val tagGroups: LiveData<List<SjTagGroupWithTags>> = dao.getTagGroupsWithTags()
+    val publicTagGroups: LiveData<List<SjTagGroupWithTags>> = dao.getTagGroupsWithTagsNotPrivate()
     val tagGroupsWithDefault: LiveData<List<SjTagGroupWithTags>> = dao.getAllTagGroupsWithTags()
     val defaultTagGroup: LiveData<SjTagGroupWithTags> = dao.getBasicTagGroupWithTags()
     val linkList: LiveData<List<SjLinksAndDomainsWithTags>> = dao.getAllLinksAndDomainsWithTags()

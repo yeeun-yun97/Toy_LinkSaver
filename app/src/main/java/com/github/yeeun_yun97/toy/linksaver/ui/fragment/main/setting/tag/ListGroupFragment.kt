@@ -2,19 +2,24 @@ package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.tag
 
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListTagGroupBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.TagGroupListAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.ListGroupViewModel
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
-import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagDialogFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagGroupDialogFragment
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.SettingViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class ListGroupFragment : SjBasicFragment<FragmentListTagGroupBinding>() {
     val viewModel: ListGroupViewModel by activityViewModels()
+    val settingViewModel: SettingViewModel by viewModels()
 
     // override methods
     override fun layoutId(): Int = R.layout.fragment_list_tag_group
@@ -37,14 +42,25 @@ class ListGroupFragment : SjBasicFragment<FragmentListTagGroupBinding>() {
             renameOperation = ::showEditTagGroupDialogToEdit,
         )
         binding.tagGroupRecyclerView.adapter = adapter
-        viewModel.tagGroups.observe(viewLifecycleOwner, {
-            if (it.isNullOrEmpty()) {
-                binding.emptyGroup.visibility = View.VISIBLE
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val isPrivateMode = settingViewModel.privateFlow.first()
+            val liveData = if (isPrivateMode) {
+                viewModel.publicTagGroups
             } else {
-                binding.emptyGroup.visibility = View.GONE
+                viewModel.tagGroups
             }
-            adapter.setList(it)
-        })
+            launch(Dispatchers.Main){
+                liveData.observe(viewLifecycleOwner, {
+                    if (it.isNullOrEmpty()) {
+                        binding.emptyGroup.visibility = View.VISIBLE
+                    } else {
+                        binding.emptyGroup.visibility = View.GONE
+                    }
+                    adapter.setList(it)
+                })
+            }
+        }
     }
 
     // handle menu event
