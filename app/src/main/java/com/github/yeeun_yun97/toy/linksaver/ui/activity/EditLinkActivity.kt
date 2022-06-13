@@ -9,7 +9,6 @@ import com.github.yeeun_yun97.toy.linksaver.ui.fragment.edit_link.EditLinkAndVid
 
 class EditLinkActivity : SjBasicActivity<ActivityPlainBinding>() {
 
-
     override fun viewBindingInflate(inflater: LayoutInflater): ActivityPlainBinding =
         ActivityPlainBinding.inflate(layoutInflater)
 
@@ -24,7 +23,6 @@ class EditLinkActivity : SjBasicActivity<ActivityPlainBinding>() {
     }
 
     override fun onCreate() {}
-//    override fun homeFragment(): Fragment = EditPasteFragment()
 
 
 }

@@ -1,11 +1,9 @@
 package com.github.yeeun_yun97.toy.linksaver.data.repository
 
-import android.annotation.SuppressLint
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.CoroutineScope
@@ -35,7 +33,7 @@ private constructor() {
         val EXAMPLE_COUNTER = stringPreferencesKey(PASSWORD_KEY)
         val exampleCounterFlow: Flow<String> = context.dataStore.data
             .map { preferences ->
-                preferences[EXAMPLE_COUNTER] ?: "0"
+                preferences[EXAMPLE_COUNTER] ?: ""
             }
         return exampleCounterFlow
     }

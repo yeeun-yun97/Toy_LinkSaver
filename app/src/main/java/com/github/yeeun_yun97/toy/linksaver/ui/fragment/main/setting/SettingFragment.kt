@@ -4,21 +4,32 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SettingItemValue
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSettingBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.LockActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.SettingListAdapter
+import com.github.yeeun_yun97.toy.linksaver.ui.component.BasicDialogFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.app_info.AppInfoFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.domain.ListDomainFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.personal.PersonalSettingFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.tag.ListGroupFragment
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.SettingViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class SettingFragment : SjBasicFragment<FragmentSettingBinding>() {
+    private val viewModel: SettingViewModel by activityViewModels()
+
     private val groupFragment = ListGroupFragment()
     private val domainFragment = ListDomainFragment()
     private val appInfoFragment = AppInfoFragment()
+    private val personalSettingFragment = PersonalSettingFragment()
 
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
@@ -33,9 +44,10 @@ class SettingFragment : SjBasicFragment<FragmentSettingBinding>() {
         activityResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 if (it.resultCode == RESULT_SUCCESS) {
-                    Toast.makeText(context, "비밀번호 맞음", Toast.LENGTH_LONG).show()
+                    moveToPersonalSettingWithOutPassword()
                 } else {
-                    Toast.makeText(context, "비밀번호 틀림", Toast.LENGTH_LONG).show()
+                   val messageDialog =  BasicDialogFragment("실패","비밀번호가 틀렸습니다.",null)
+                    messageDialog.show(childFragmentManager,"비밀번호 틀림")
                 }
             }
     }
@@ -50,9 +62,21 @@ class SettingFragment : SjBasicFragment<FragmentSettingBinding>() {
         )
     }
 
+    private fun moveToPersonalSettingWithOutPassword() {
+        moveToOtherFragment(personalSettingFragment)
+    }
+
     private fun moveToPersonalSetting() {
-        val intent = Intent(activity, LockActivity::class.java)
-        activityResultLauncher.launch(intent)
+        lifecycleScope.launch(Dispatchers.IO) {
+            val password = viewModel.passwordFlow.first()
+            if (password.isEmpty()) {
+                moveToPersonalSettingWithOutPassword()
+            } else {
+                val intent = Intent(activity, LockActivity::class.java)
+                activityResultLauncher.launch(intent)
+            }
+        }
+
     }
 
     private fun moveToViewDomains() {

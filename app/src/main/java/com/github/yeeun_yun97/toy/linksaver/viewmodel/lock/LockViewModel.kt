@@ -40,11 +40,9 @@ class LockViewModel(application: Application) : AndroidViewModel(application) {
     init {
         bindingPassword6.observeForever {
             if (!it.isNullOrEmpty() && length == 6) {
-                Log.d("password completed", passwordBuilder.toString())
                 viewModelScope.launch(Dispatchers.IO) {
                     val expected = repository.getPassword(application.applicationContext).first()
                     val actual = passwordBuilder.toString()
-                    _password.postValue(actual)
                     checkPassword(expected, actual)
                     clearNumbers()
                 }
@@ -53,9 +51,8 @@ class LockViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun checkPassword(expected: String, actual: String) {
-        Log.d("check password", "expected $expected, actual $actual")
         _password.postValue(actual)
-        if (Integer.parseInt(expected) == Integer.parseInt(actual)) {
+        if (expected.isNotEmpty()&&Integer.parseInt(expected) == Integer.parseInt(actual)) {
             _isPasswordCorrect.postValue(true)
         } else {
             _isPasswordCorrect.postValue(false)

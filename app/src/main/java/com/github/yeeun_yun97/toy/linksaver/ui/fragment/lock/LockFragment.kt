@@ -1,7 +1,6 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment.lock
 
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentLockBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
@@ -14,9 +13,5 @@ class LockFragment : SjBasicFragment<FragmentLockBinding>() {
 
     override fun onCreateView() {
         binding.viewModel = viewModel
-
-        binding.cancelTextView.setOnClickListener { viewModel.clearNumbers() }
-        viewModel.setPassword("123456")
-
     }
 }
