@@ -31,6 +31,7 @@ class SjRepository private constructor() {
     val tagGroupsWithDefault: LiveData<List<SjTagGroupWithTags>> = dao.getAllTagGroupsWithTags()
     val defaultTagGroup: LiveData<SjTagGroupWithTags> = dao.getBasicTagGroupWithTags()
     val linkList: LiveData<List<SjLinksAndDomainsWithTags>> = dao.getAllLinksAndDomainsWithTags()
+    val publicLinkList: LiveData<List<SjLinksAndDomainsWithTags>> = dao.getPublicLinksAndDomainsWithTags()
 
 
     val linkTypeLinkList = dao.getAllLinksByType(ELinkType.link.name)
@@ -142,36 +143,46 @@ class SjRepository private constructor() {
 
 
     // search methods
-    fun searchLinksBySearchSet(keyword: String, selectedTags: List<SjTag>) {
+    fun searchLinksBySearchSet(keyword: String, selectedTags: List<SjTag>, isPrivateMode: Boolean) {
         CoroutineScope(Dispatchers.IO).launch {
             if (selectedTags.isEmpty()) {
-                searchByLinkName(keyword)
+                searchByLinkName(keyword, isPrivateMode)
             } else {
-                searchByLinkNameAndTags(keyword, selectedTags)
+                searchByLinkNameAndTags(keyword, selectedTags, isPrivateMode)
             }
         }
     }
 
-    private suspend fun searchByLinkName(keyword: String) {
-        val result = dao.searchLinksAndDomainsWithTagsByLinkName(
-            "%$keyword%"
-        )
+    private suspend fun searchByLinkName(keyword: String, isPrivateMode: Boolean) {
+        val result = if (isPrivateMode) {
+            dao.searchPublicLinksAndDomainsWithTagsByLinkName("%$keyword%")
+        } else {
+            dao.searchLinksAndDomainsWithTagsByLinkName(
+                "%$keyword%"
+            )
+        }
         _searchLinkList.postValue(result)
-        Log.d("repository search", "with keyword")
-        Log.d("repository search", "result $result")
     }
 
-    private suspend fun searchByLinkNameAndTags(keyword: String, selectedTags: List<SjTag>) {
+    private suspend fun searchByLinkNameAndTags(
+        keyword: String,
+        selectedTags: List<SjTag>,
+        isPrivateMode: Boolean
+    ) {
         val list: MutableList<Int> = mutableListOf()
         for (tag in selectedTags) {
             list.add(tag.tid)
         }
-        val result = dao.searchLinksAndDomainsWithTagsByLinkNameAndTags(
-            "%$keyword%", list, list.size
-        )
+        val result = if (isPrivateMode) {
+            dao.searchPublicLinksAndDomainsWithTagsByLinkNameAndTags(
+                "%$keyword%", list, list.size
+            )
+        } else {
+            dao.searchLinksAndDomainsWithTagsByLinkNameAndTags(
+                "%$keyword%", list, list.size
+            )
+        }
         _searchLinkList.postValue(result)
-        Log.d("repository search", "with keyword and tags")
-        Log.d("repository search", "result $result")
     }
 
 
@@ -228,11 +239,11 @@ class SjRepository private constructor() {
 
     fun deleteLinkByLid(lid: Int) =
         CoroutineScope(Dispatchers.IO).launch {
-                //delete all related tag refs
-                val deleteRefs = launch {
-                    dao.deleteLinkTagCrossRefsByLid(lid)
-                }
-                deleteRefs.join()
+            //delete all related tag refs
+            val deleteRefs = launch {
+                dao.deleteLinkTagCrossRefsByLid(lid)
+            }
+            deleteRefs.join()
             //wait and delete
             dao.deleteLinkByLid(lid)
         }

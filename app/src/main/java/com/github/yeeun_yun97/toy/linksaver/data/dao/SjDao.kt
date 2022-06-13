@@ -33,6 +33,11 @@ interface SjDao {
             : LiveData<List<SjLinksAndDomainsWithTags>>
 
     @Transaction
+    @Query("SELECT * FROM SjLink WHERE lid NOT IN (SELECT ref.lid FROM LinkTagCrossRef as ref WHERE ref.tid NOT IN (SELECT tag.tid FROM SjTag as tag WHERE tag.gid NOT IN (SELECT g.gid FROM SjTagGroup as g WHERE is_private = 1))) ORDER BY lid DESC")
+    fun getPublicLinksAndDomainsWithTags()
+            : LiveData<List<SjLinksAndDomainsWithTags>>
+
+    @Transaction
     @Query("SELECT * FROM SjTagGroup WHERE gid != 1 ORDER BY name")
     fun getTagGroupsWithTags()
             : LiveData<List<SjTagGroupWithTags>>
@@ -123,10 +128,32 @@ interface SjDao {
         keyword: String, tags: List<Int>, size: Int
     ): List<SjLinksAndDomainsWithTags>
 
+    @Transaction
+    @Query(
+        "SELECT link.lid, link.name, link.did, link.url, link.icon, link.preview, link.type FROM SjLink as link "
+                + "INNER JOIN linkTagCrossRef as ref ON link.lid = ref.lid "
+                + "INNER JOIN SjTag as tag ON ref.tid = tag.tid "
+                + "WHERE link.name LIKE :keyword "
+                + "AND tag.tid IN(:tags) " +
+                "AND link.lid NOT IN(SELECT ref.lid FROM LinkTagCrossRef as ref WHERE ref.tid NOT IN (SELECT tag.tid FROM SjTag as tag WHERE tag.gid NOT IN (SELECT g.gid FROM SjTagGroup as g WHERE is_private = 1))) "
+                + "GROUP BY link.lid " //prevent duplicates
+                + "HAVING count(*) == :size "
+                + "ORDER BY link.lid desc"
+    )
+    suspend fun searchPublicLinksAndDomainsWithTagsByLinkNameAndTags(
+        keyword: String, tags: List<Int>, size: Int
+    ): List<SjLinksAndDomainsWithTags>
+
     // search link query by link name
     @Transaction
     @Query("SELECT * FROM SjLink WHERE name LIKE :keyword ORDER BY lid desc")
     suspend fun searchLinksAndDomainsWithTagsByLinkName(
+        keyword: String
+    ): List<SjLinksAndDomainsWithTags>
+
+    @Transaction
+    @Query("SELECT * FROM SjLink WHERE name LIKE :keyword AND lid NOT IN(SELECT ref.lid FROM LinkTagCrossRef as ref WHERE ref.tid NOT IN (SELECT tag.tid FROM SjTag as tag WHERE tag.gid NOT IN (SELECT g.gid FROM SjTagGroup as g WHERE is_private = 1))) ORDER BY lid desc")
+    suspend fun searchPublicLinksAndDomainsWithTagsByLinkName(
         keyword: String
     ): List<SjLinksAndDomainsWithTags>
 

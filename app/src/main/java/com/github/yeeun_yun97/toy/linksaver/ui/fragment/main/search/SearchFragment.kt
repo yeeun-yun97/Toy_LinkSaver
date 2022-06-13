@@ -29,8 +29,6 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
     val viewModel: SearchLinkViewModel by activityViewModels()
     private val settingViewModel: SettingViewModel by viewModels()
 
-    private var isPrivateMode: Boolean? = null
-
     // drawable resources
     private val deleteIcon by lazy {
         AppCompatResources.getDrawable(
@@ -68,9 +66,11 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
 
         // set tag list
         lifecycleScope.launch {
-            val isPrivateMode = async(Dispatchers.IO) { settingViewModel.privateFlow.first() }
+            val isPrivateModeDeffer = async(Dispatchers.IO) { settingViewModel.privateFlow.first() }
+            val isPrivateMode = isPrivateModeDeffer.await()
+            viewModel.isPrivateMode = isPrivateMode
             val tagGroupsLiveData =
-                selectLiveDataBySettingValue(isPrivateMode.await())
+                selectLiveDataBySettingValue(isPrivateMode)
             tagGroupsLiveData.observe(viewLifecycleOwner, {
                 if (viewModel.tagDefaultGroup.value != null)
                     setTagList(viewModel.tagDefaultGroup.value!!, it)
@@ -83,8 +83,8 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
                 if (tagGroupsLiveData.value != null && viewModel.tagDefaultGroup.value != null)
                     setTagList(viewModel.tagDefaultGroup.value!!, tagGroupsLiveData.value!!)
             })
-        }
 
+        }
 
         // user input enter(action search) -> search start.
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->

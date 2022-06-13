@@ -16,6 +16,7 @@ enum class ListMode {
 class SearchLinkViewModel : BasicViewModelWithRepository() {
 
     val linkList = repository.linkList
+    val publicLinkList = repository.publicLinkList
     val searchLinkList = repository.searchLinkList
     val searchList = repository.searches
 
@@ -28,6 +29,7 @@ class SearchLinkViewModel : BasicViewModelWithRepository() {
 
     // mode
     var mode: ListMode = ListMode.MODE_ALL
+    var isPrivateMode: Boolean? = null
 
     // to save
     val bindingSearchWord = MutableLiveData("")
@@ -70,9 +72,9 @@ class SearchLinkViewModel : BasicViewModelWithRepository() {
         }
     }
 
-    fun searchLinkBySearchSet() {
+    private fun searchLinkBySearchSet() {
         val keyword = bindingSearchWord.value!!
-        repository.searchLinksBySearchSet(keyword, _selectedTags)
+        repository.searchLinksBySearchSet(keyword, _selectedTags, isPrivateMode!!)
         Log.d("viewModel search start", "keyword $keyword")
         Log.d("viewModel search start", "tags $_selectedTags")
     }
