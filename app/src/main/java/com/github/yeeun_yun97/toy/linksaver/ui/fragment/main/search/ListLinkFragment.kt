@@ -40,6 +40,12 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.mode == ListMode.MODE_SEARCH)
+            viewModel.searchLinkBySearchSet()
+    }
+
     override fun onCreateView() {
         // set binding variable
         binding.viewModel = viewModel

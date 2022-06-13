@@ -72,7 +72,7 @@ class SearchLinkViewModel : BasicViewModelWithRepository() {
         }
     }
 
-    private fun searchLinkBySearchSet() {
+     fun searchLinkBySearchSet() {
         val keyword = bindingSearchWord.value!!
         repository.searchLinksBySearchSet(keyword, _selectedTags, isPrivateMode!!)
         Log.d("viewModel search start", "keyword $keyword")
