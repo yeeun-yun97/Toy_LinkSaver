@@ -1,16 +1,11 @@
 package com.github.yeeun_yun97.toy.linksaver.data.repository
 
-import android.util.Log
-import android.util.SparseArray
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDao
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.*
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjUtil
-import com.github.yeeun_yun97.toy.linksaver.ui.component.SjYoutubeExtractListener
-import com.github.yeeun_yun97.toy.linksaver.ui.component.SjYoutubeExtractor
-import com.google.android.exoplayer2.MediaItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -23,6 +18,7 @@ class SjRepository private constructor() {
     private val _searchLinkList = MutableLiveData<List<SjLinksAndDomainsWithTags>>()
     val searchLinkList: LiveData<List<SjLinksAndDomainsWithTags>> get() = _searchLinkList
     val searches: LiveData<List<SjSearchWithTags>> = dao.getAllSearch()
+    val publicSearches: LiveData<List<SjSearchWithTags>> = dao.getPublicSearch()
     val domains: LiveData<List<SjDomain>> = dao.getAllDomains()
     val domainsExceptDefault: LiveData<List<SjDomain>> = dao.getAllDomainsExceptDefault()
     val tags: LiveData<List<SjTag>> = dao.getAllTags()

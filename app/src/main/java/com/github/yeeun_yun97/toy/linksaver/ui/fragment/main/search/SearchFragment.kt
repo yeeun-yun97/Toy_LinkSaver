@@ -64,11 +64,35 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
         binding.emptySearchSetGroup.visibility = View.GONE
         binding.emptyTagGroup.visibility = View.GONE
 
-        // set tag list
+        // set recyclerview search set
+        binding.recentSearchedRecyclerView.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        val adapter = SearchSetAdapter(::setSearch, ::searchAndPopBack)
+        binding.recentSearchedRecyclerView.addItemDecoration(
+            object : RecyclerView.ItemDecoration() {
+                override fun getItemOffsets(
+                    outRect: Rect,
+                    view: View,
+                    parent: RecyclerView,
+                    state: RecyclerView.State
+                ) {
+                    outRect.left = 15
+                    outRect.right = 15
+                    outRect.bottom = 20
+                    outRect.top = 20
+                }
+            }
+        )
+        binding.recentSearchedRecyclerView.adapter = adapter
+
+
+
         lifecycleScope.launch {
             val isPrivateModeDeffer = async(Dispatchers.IO) { settingViewModel.privateFlow.first() }
             val isPrivateMode = isPrivateModeDeffer.await()
             viewModel.isPrivateMode = isPrivateMode
+
+            // set tag list
             val tagGroupsLiveData =
                 selectLiveDataBySettingValue(isPrivateMode)
             tagGroupsLiveData.observe(viewLifecycleOwner, {
@@ -84,6 +108,21 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
                     setTagList(viewModel.tagDefaultGroup.value!!, tagGroupsLiveData.value!!)
             })
 
+            // set searchSet list
+            val searchSetsLiveData =
+                if (isPrivateMode) {
+                    viewModel.publicSearchList
+                } else viewModel.searchList
+            searchSetsLiveData.observe(viewLifecycleOwner,
+                {
+                    if (it.isNullOrEmpty()) {
+                        binding.emptySearchSetGroup.visibility = View.VISIBLE
+                    } else {
+                        binding.emptySearchSetGroup.visibility = View.GONE
+                    }
+                    adapter.setList(it)
+                }
+            )
         }
 
         // user input enter(action search) -> search start.
@@ -108,36 +147,6 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
             searchAndPopBack()
         }
 
-        // set recyclerview search set
-        binding.recentSearchedRecyclerView.layoutManager =
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        val adapter = SearchSetAdapter(::setSearch, ::searchAndPopBack)
-        binding.recentSearchedRecyclerView.addItemDecoration(
-            object : RecyclerView.ItemDecoration() {
-                override fun getItemOffsets(
-                    outRect: Rect,
-                    view: View,
-                    parent: RecyclerView,
-                    state: RecyclerView.State
-                ) {
-                    outRect.left = 15
-                    outRect.right = 15
-                    outRect.bottom = 20
-                    outRect.top = 20
-                }
-            }
-        )
-        binding.recentSearchedRecyclerView.adapter = adapter
-        viewModel.searchList.observe(viewLifecycleOwner,
-            {
-                if (it.isNullOrEmpty()) {
-                    binding.emptySearchSetGroup.visibility = View.VISIBLE
-                } else {
-                    binding.emptySearchSetGroup.visibility = View.GONE
-                }
-                adapter.setList(it)
-            }
-        )
 
         // handle user click event
         val onClickListener = View.OnClickListener { deleteAllSearchSet() }

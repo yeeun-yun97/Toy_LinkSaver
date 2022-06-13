@@ -24,6 +24,10 @@ interface SjDao {
     fun getAllSearch(): LiveData<List<SjSearchWithTags>>
 
     @Transaction
+    @Query("SELECT * FROM SjSearch WHERE sid NOT IN (SELECT sid FROM SearchTagCrossRef as ref WHERE ref.tid NOT IN (SELECT tag.tid FROM SjTag as tag WHERE tag.gid NOT IN (SELECT g.gid FROM SjTagGroup as g WHERE is_private = 1))) ORDER BY sid DESC")
+    fun getPublicSearch(): LiveData<List<SjSearchWithTags>>
+
+    @Transaction
     @Query("SELECT * FROM SjSearch ORDER BY sid DESC")
     fun getAllSearchForTest(): List<SjSearchWithTags>
 
