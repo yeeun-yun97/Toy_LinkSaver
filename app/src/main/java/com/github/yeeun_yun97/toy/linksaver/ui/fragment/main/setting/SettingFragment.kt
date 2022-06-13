@@ -55,8 +55,8 @@ class SettingFragment : SjBasicFragment<FragmentSettingBinding>() {
     private fun getSettingList(): List<SettingItemValue> {
         return mutableListOf(
             SettingItemValue("사용자 설정", ::moveToPersonalSetting),
-            SettingItemValue("도메인 목록", ::moveToViewDomains),
             SettingItemValue("태그 그룹 목록", ::moveToViewTagGroups),
+            SettingItemValue("도메인 목록", ::moveToViewDomains),
             SettingItemValue("플레이리스트", ::moveToViewPlayLists),
             SettingItemValue("앱 정보 보기", ::moveToViewData),
         )
