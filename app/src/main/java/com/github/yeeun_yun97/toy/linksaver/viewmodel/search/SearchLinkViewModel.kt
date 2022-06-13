@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
+import com.github.yeeun_yun97.toy.linksaver.data.repository.SjDataStoreRepository
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.BasicViewModelWithRepository
 
 // enum to save mode status
@@ -13,11 +14,16 @@ enum class ListMode {
 }
 
 class SearchLinkViewModel : BasicViewModelWithRepository() {
+
     val linkList = repository.linkList
     val searchLinkList = repository.searchLinkList
     val searchList = repository.searches
 
+    // mode all
     val tagGroups = repository.tagGroups
+
+    // private mode on
+    val publicTagGroups = repository.publicTagGroups
     val tagDefaultGroup = repository.defaultTagGroup
 
     // mode
@@ -82,7 +88,7 @@ class SearchLinkViewModel : BasicViewModelWithRepository() {
         )
     }
 
-    fun clearSearchSet(){
+    fun clearSearchSet() {
         initData()
         searchLinkBySearchSet()
     }

@@ -6,6 +6,9 @@ import android.view.inputmethod.EditorInfo
 import android.widget.CompoundButton
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
@@ -15,10 +18,18 @@ import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSearchBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.SearchSetAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.SettingViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
     val viewModel: SearchLinkViewModel by activityViewModels()
+    val settingViewModel: SettingViewModel by viewModels()
+
+    private var isPrivateMode: Boolean? = null
 
     // drawable resources
     private val deleteIcon by lazy {
@@ -32,6 +43,12 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
             requireContext(),
             R.drawable.ic_button_search_start
         )
+    }
+
+
+    private fun selectLiveDataBySettingValue(isPrivateMode: Boolean): LiveData<List<SjTagGroupWithTags>> {
+        return if (isPrivateMode) viewModel.publicTagGroups
+        else viewModel.tagGroups
     }
 
 
@@ -50,18 +67,24 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
         binding.emptyTagGroup.visibility = View.GONE
 
         // set tag list
-        viewModel.tagGroups.observe(viewLifecycleOwner, {
-            if (viewModel.tagDefaultGroup.value != null)
-                setTagList(viewModel.tagDefaultGroup.value!!, it)
-        })
-        viewModel.tagDefaultGroup.observe(viewLifecycleOwner, {
-            if (viewModel.tagGroups.value != null)
-                setTagList(it, viewModel.tagGroups.value!!)
-        })
-        viewModel.bindingTargetTags.observe(viewLifecycleOwner, {
-            if (viewModel.tagGroups.value != null && viewModel.tagDefaultGroup.value != null)
-                setTagList(viewModel.tagDefaultGroup.value!!, viewModel.tagGroups.value!!)
-        })
+        lifecycleScope.launch {
+            val isPrivateMode = async(Dispatchers.IO) { settingViewModel.privateFlow.first() }
+            val tagGroupsLiveData =
+                selectLiveDataBySettingValue(isPrivateMode.await())
+            tagGroupsLiveData.observe(viewLifecycleOwner, {
+                if (viewModel.tagDefaultGroup.value != null)
+                    setTagList(viewModel.tagDefaultGroup.value!!, it)
+            })
+            viewModel.tagDefaultGroup.observe(viewLifecycleOwner, {
+                if (tagGroupsLiveData.value != null)
+                    setTagList(it, tagGroupsLiveData.value!!)
+            })
+            viewModel.bindingTargetTags.observe(viewLifecycleOwner, {
+                if (tagGroupsLiveData.value != null && viewModel.tagDefaultGroup.value != null)
+                    setTagList(viewModel.tagDefaultGroup.value!!, tagGroupsLiveData.value!!)
+            })
+        }
+
 
         // user input enter(action search) -> search start.
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
