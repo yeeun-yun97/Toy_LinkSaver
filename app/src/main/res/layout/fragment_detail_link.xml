@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.github.yeeun_yun97.toy.linksaver.viewmodel.detail_link.DetailLinkViewModel" />
@@ -22,42 +23,26 @@
             app:layout_constraintTop_toTopOf="parent"
             app:toolbarTitle="상세보기" />
 
-        <ImageView
-            android:id="@+id/previewImageView"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:srcCompat="@drawable/ic_icons8_no_image_100" />
-
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="previewImageView,previewWebView"
-            tools:layout_editor_absoluteY="731dp" />
-
-        <WebView
-            android:id="@+id/previewWebView"
+        <com.github.yeeun_yun97.toy.linksaver.ui.component.SjPreview
+            android:id="@+id/previewPreview"
             android:layout_width="0dp"
-            android:layout_height="300dp"
+            android:layout_height="200dp"
+            app:previewContent="@{viewModel.link}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar">
-
-        </WebView>
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+           />
+<!--        app:isVideo="@{viewModel.link.isVideo}"-->
+<!--        app:contentUrl="@{viewModel.link.fullUrl}"-->
+<!--        app:previewUrl="@{viewModel.link.preview}"-->
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/barrier"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintTop_toBottomOf="@+id/previewPreview">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

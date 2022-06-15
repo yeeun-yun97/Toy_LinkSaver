@@ -6,12 +6,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.webkit.WebViewClient
 import androidx.fragment.app.activityViewModels
-import com.bumptech.glide.Glide
-import com.github.yeeun_yun97.clone.ynmodule.ui.component.SjImageViewUtil
 import com.github.yeeun_yun97.toy.linksaver.R
-import com.github.yeeun_yun97.toy.linksaver.data.model.FullNameTagValue
 import com.github.yeeun_yun97.toy.linksaver.data.model.LinkDetailValue
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentDetailLinkBinding
@@ -58,67 +54,22 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
 
         // set linkdata user to click event
         viewModel.link.observe(viewLifecycleOwner, { data ->
-            showPreviewOfLink(data)
-            showOrHideTagChipGroup(data.tags)
+            setEmptyGroupVisibilityByList(data.tags)
         })
-
-        // set previewWebView
-        binding.previewWebView.webViewClient =
-            WebViewClient()              // prevent opening browser
-        binding.previewWebView.settings.javaScriptEnabled =
-            true            // show javascript needed pages
 
         // set open web by views
         val openListener =
             View.OnClickListener { startWebBrowser() }
         binding.nameTextView.setOnClickListener(openListener)
         binding.fullUrlTextView.setOnClickListener(openListener)
-        binding.previewImageView.setOnClickListener(openListener)
-        binding.previewWebView.setOnTouchListener { view, event ->
-            startWebBrowser()
-            true
-        }   // prevent touch, view-only webView
+        binding.previewPreview.setOnClickListener(openListener)
     }
 
-    private fun showOrHideTagChipGroup(tagList: List<SjTag>) {
+    private fun setEmptyGroupVisibilityByList(tagList: List<SjTag>) {
         if (tagList.isEmpty()) {
             binding.tagEmptyGroup.visibility = View.VISIBLE
         } else {
             binding.tagEmptyGroup.visibility = View.GONE
-        }
-    }
-
-    private fun showPreviewOfLink(data: LinkDetailValue) {
-        // show preview
-        if (data.isVideo && !data.isYoutubeVideo) {
-            // case simple video
-            binding.previewImageView.visibility = View.VISIBLE
-            binding.previewWebView.visibility = View.GONE
-            Glide.with(requireContext())
-                .load(data.fullUrl)
-                .centerCrop()
-                .override(720, 360)
-                .into(binding.previewImageView)
-        } else {
-            if (data.preview.isNotEmpty()) {
-                // case has preview image
-                binding.previewImageView.visibility = View.VISIBLE
-                binding.previewWebView.visibility = View.GONE
-                SjImageViewUtil.setImage(
-                    fragment = this,
-                    binding.previewImageView,
-                    data.preview,
-                    R.drawable.ic_icons8_no_image_100
-                )
-            } else {
-                // case has no preview image, show webView
-                val fullUrl = viewModel.bindingFullUrl.value ?: ""
-                if (SjUtil.checkUrlPrefix(fullUrl)) {
-                    binding.previewWebView.visibility = View.VISIBLE
-                    binding.previewImageView.visibility = View.GONE
-                    binding.previewWebView.loadUrl(fullUrl)
-                }
-            }
         }
     }
 
@@ -136,7 +87,6 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
         } else {
             Log.e("cannot start EditActivity", "cause: link data is null")
         }
-
     }
 
     private fun startWebBrowser() {

@@ -4,7 +4,9 @@ import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.github.yeeun_yun97.toy.linksaver.data.model.FullNameTagValue
+import com.github.yeeun_yun97.toy.linksaver.data.model.LinkDetailValue
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
+import com.github.yeeun_yun97.toy.linksaver.ui.component.SjPreview
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.google.android.material.chip.ChipGroup
 
@@ -15,7 +17,7 @@ class DataBindingSjAdapter {
         fun setChipByList(view: ChipGroup, tags: List<SjTag>?) {
             view.removeAllViews()
             if (!tags.isNullOrEmpty()) {
-                for( tag in tags) {
+                for (tag in tags) {
                     val chip = SjTagChip(view.context, tag)
                     chip.setViewMode()
                     view.addView(chip)
@@ -24,11 +26,22 @@ class DataBindingSjAdapter {
         }
 
         @JvmStatic
+        @BindingAdapter("previewContent")
+        fun setPreviewByLinkDetailValue(view: SjPreview, linkDetailValue: LinkDetailValue?) {
+            if (linkDetailValue != null)
+                view.setPreview(
+                    linkDetailValue.isVideo,
+                    linkDetailValue.fullUrl,
+                    linkDetailValue.preview
+                )
+        }
+
+        @JvmStatic
         @BindingAdapter("chipValueList")
         fun setChipByValueList(view: ChipGroup, tags: List<FullNameTagValue>?) {
             view.removeAllViews()
             if (!tags.isNullOrEmpty()) {
-                for(value in tags) {
+                for (value in tags) {
                     val chip = SjTagChip(view.context, value.tag)
                     chip.setViewMode()
                     chip.setText(value.fullName)
@@ -42,7 +55,7 @@ class DataBindingSjAdapter {
         fun setCheckableChipByList(view: ChipGroup, tags: List<SjTag>?) {
             view.removeAllViews()
             if (!tags.isNullOrEmpty()) {
-                for( tag in tags) {
+                for (tag in tags) {
                     val chip = SjTagChip(view.context, tag)
                     view.addView(chip)
                 }
