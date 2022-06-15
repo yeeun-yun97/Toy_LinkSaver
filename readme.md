@@ -38,6 +38,7 @@ log
 - coroutine
 - junit
 - exoplayer
+- Glide
 
 ## 내부 설계 소개
 ### Room DB
