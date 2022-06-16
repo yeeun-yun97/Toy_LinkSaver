@@ -18,7 +18,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.github.yeeun_yun97.toy.linksaver.R
-
+ 
 enum class SjPreviewMode {
     LOADING, WEB, IMAGE;
 }

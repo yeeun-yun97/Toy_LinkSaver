@@ -26,6 +26,16 @@ class EditLinkAndVideoFragment : SjBasicFragment<FragmentEditLinkBinding>() {
     val viewModel: EditVideoViewModel by activityViewModels()
     private val settingViewModel: SettingViewModel by viewModels()
 
+    private val onCheckListener =
+        CompoundButton.OnCheckedChangeListener { btn, isChecked ->
+            val chip = btn as SjTagChip
+            if (isChecked) {
+                viewModel.selectTag(chip.tag)
+            } else {
+                viewModel.unselectTag(chip.tag)
+            }
+        }
+
     companion object {
         fun newInstance(lid: Int, url: String): EditLinkAndVideoFragment {
             val fragment = EditLinkAndVideoFragment()
@@ -79,15 +89,15 @@ class EditLinkAndVideoFragment : SjBasicFragment<FragmentEditLinkBinding>() {
             val isPrivateModeDeffer = async(Dispatchers.IO) { settingViewModel.privateFlow.first() }
             val isPrivateMode = isPrivateModeDeffer.await()
 
-            val tagGroupsLiveData = if(isPrivateMode)viewModel.publicTagGroups
+            val tagGroupsLiveData = if (isPrivateMode) viewModel.publicTagGroups
             else viewModel.tagGroups
             tagGroupsLiveData.observe(viewLifecycleOwner, {
                 if (viewModel.tagDefaultGroup.value != null)
-                    addTagsToChipGroupChildren(viewModel.tagDefaultGroup.value!!, it)
+                    setCheckableTagsToChipGroupChildren(viewModel.tagDefaultGroup.value!!, it)
             })
             viewModel.tagDefaultGroup.observe(viewLifecycleOwner, {
                 if (tagGroupsLiveData.value != null)
-                    addTagsToChipGroupChildren(it, tagGroupsLiveData.value!!)
+                    setCheckableTagsToChipGroupChildren(it, tagGroupsLiveData.value!!)
             })
         }
 
@@ -111,36 +121,19 @@ class EditLinkAndVideoFragment : SjBasicFragment<FragmentEditLinkBinding>() {
         }
     }
 
-    private fun addTagsToChipGroupChildren(
+    private fun isTagSelected(tag: SjTag) = viewModel.isTagSelected(tag)
+
+    private fun setCheckableTagsToChipGroupChildren(
         defaultGroup: SjTagGroupWithTags,
         groups: List<SjTagGroupWithTags>
     ) {
-        val onCheckListener =
-            CompoundButton.OnCheckedChangeListener { btn, isChecked ->
-                val chip = btn as SjTagChip
-                if (isChecked) {
-                    viewModel.selectTag(chip.tag)
-                } else {
-                    viewModel.unselectTag(chip.tag)
-                }
-            }
-
-        binding.tagChipGroup.removeAllViews()
-        for (def in defaultGroup.tags) {
-            val chip = SjTagChip(context!!, def)
-            chip.isChecked = viewModel.isTagSelected(def)
-            chip.setOnCheckedChangeListener(onCheckListener)
-            binding.tagChipGroup.addView(chip)
-        }
-        for (group in groups) {
-            for (tag in group.tags) {
-                val chip = SjTagChip(context!!, tag)
-                chip.isChecked = viewModel.isTagSelected(tag)
-                chip.setOnCheckedChangeListener(onCheckListener)
-                chip.setText("${group.tagGroup.name}: ${tag.name}")
-                binding.tagChipGroup.addView(chip)
-            }
-        }
+        setTagsToChipGroupChildren(
+            defaultGroup,
+            groups,
+            ::isTagSelected,
+            binding.tagChipGroup,
+            onCheckListener
+        )
     }
 
     private fun saveVideo() {

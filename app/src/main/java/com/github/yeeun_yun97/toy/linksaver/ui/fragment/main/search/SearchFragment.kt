@@ -43,6 +43,20 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
         )
     }
 
+    val onCheckedListener =
+        CompoundButton.OnCheckedChangeListener { btn, isChecked ->
+            val chip = btn as SjTagChip
+            if (isChecked) {
+                viewModel.addTag(chip.tag)
+                binding.searchImageView.setImageDrawable(searchIcon)
+            } else {
+                viewModel.removeTag(chip.tag)
+                if (viewModel.isSearchSetEmpty()) {
+                    binding.searchImageView.setImageDrawable(deleteIcon)
+                }
+            }
+        }
+
 
     private fun selectLiveDataBySettingValue(isPrivateMode: Boolean): LiveData<List<SjTagGroupWithTags>> {
         return if (isPrivateMode) viewModel.publicTagGroups
@@ -163,37 +177,17 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
         } else {
             binding.emptyTagGroup.visibility = View.GONE
         }
-        val onCheckedListener =
-            CompoundButton.OnCheckedChangeListener { btn, isChecked ->
-                val chip = btn as SjTagChip
-                if (isChecked) {
-                    viewModel.addTag(chip.tag)
-                    binding.searchImageView.setImageDrawable(searchIcon)
-                } else {
-                    viewModel.removeTag(chip.tag)
-                    if (viewModel.isSearchSetEmpty()) {
-                        binding.searchImageView.setImageDrawable(deleteIcon)
-                    }
-                }
-            }
 
-        binding.tagChipGroup.removeAllViews()
-        for (def in defaultGroup.tags) {
-            val chip = SjTagChip(requireContext(), def)
-            chip.isChecked = viewModel.containsTag(def)
-            chip.setOnCheckedChangeListener(onCheckedListener)
-            binding.tagChipGroup.addView(chip)
-        }
-        for (group in groups) {
-            for (tag in group.tags) {
-                val chip = SjTagChip(requireContext(), tag)
-                chip.isChecked = viewModel.containsTag(tag)
-                chip.setOnCheckedChangeListener(onCheckedListener)
-                chip.setText("${group.tagGroup.name}: ${tag.name}")
-                binding.tagChipGroup.addView(chip)
-            }
-        }
+        setTagsToChipGroupChildren(
+            defaultGroup,
+            groups,
+            ::isTagSelected,
+            binding.tagChipGroup,
+            onCheckedListener
+        )
     }
+
+    private fun isTagSelected(tag: SjTag) = viewModel.containsTag(tag)
 
 
     // search methods

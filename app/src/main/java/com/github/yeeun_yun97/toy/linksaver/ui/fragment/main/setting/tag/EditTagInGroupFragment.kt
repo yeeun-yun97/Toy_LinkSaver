@@ -8,6 +8,7 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListTagBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagDialogFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
+import com.github.yeeun_yun97.toy.linksaver.ui.component.TagValue
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.TagGroupEditViewModel
 
@@ -83,10 +84,11 @@ class EditTagInGroupFragment : SjBasicFragment<FragmentListTagBinding>() {
     private fun addTagChipsToTagChipGroup(it: List<SjTag>) {
         binding.tagChipGroup.removeAllViews()
         for (tag in it) {
-            val chip = SjTagChip(requireContext(), tag)
-            chip.setCheckableAndLongClickableMode(
+            val chip = SjTagChip(requireContext())
+            chip.setTagValue(TagValue(tag))
+            chip.setDeletableAndLongClickableMode(
                 deleteOperation = ::deleteTag,
-                editOperation = ::renameTag
+                longClickOperation = ::renameTag
             )
             binding.tagChipGroup.addView(chip)
         }

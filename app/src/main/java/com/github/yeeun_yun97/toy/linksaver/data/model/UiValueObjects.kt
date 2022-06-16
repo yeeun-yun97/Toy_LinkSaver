@@ -15,11 +15,6 @@ data class LinkDetailValue(
     val tags: List<SjTag>
 )
 
-data class FullNameTagValue(
-    val tag: SjTag,
-    val fullName: String
-)
-
 data class VideoData(
     val lid: Int = 0,
     val url: String,
