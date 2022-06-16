@@ -84,7 +84,7 @@ class EditTagInGroupFragment : SjBasicFragment<FragmentListTagBinding>() {
         binding.tagChipGroup.removeAllViews()
         for (tag in it) {
             val chip = SjTagChip(requireContext(), tag)
-            chip.setEditMode(
+            chip.setCheckableAndLongClickableMode(
                 deleteOperation = ::deleteTag,
                 editOperation = ::renameTag
             )

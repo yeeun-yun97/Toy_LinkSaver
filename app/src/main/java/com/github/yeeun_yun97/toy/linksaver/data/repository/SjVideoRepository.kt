@@ -1,6 +1,5 @@
 package com.github.yeeun_yun97.toy.linksaver.data.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDao

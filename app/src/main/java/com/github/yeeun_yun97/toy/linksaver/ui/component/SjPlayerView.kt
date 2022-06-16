@@ -12,5 +12,4 @@ class SjPlayerView(context: Context, attr:AttributeSet) : SurfaceView(context, a
         this.draw(canvas)
     }
 
-
 }

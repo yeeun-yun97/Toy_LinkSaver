@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.github.yeeun_yun97.toy.linksaver.R
 import java.lang.IllegalStateException
 
 class BasicDialogFragment(

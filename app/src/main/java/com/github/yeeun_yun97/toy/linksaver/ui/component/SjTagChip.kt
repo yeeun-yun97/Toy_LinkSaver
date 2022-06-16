@@ -1,21 +1,29 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.component
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.util.AttributeSet
 import com.github.yeeun_yun97.clone.ynmodule.ui.component.CustomComponentStyleUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.google.android.material.chip.Chip
 
-class SjTagChip(context: Context, val tag: SjTag) : Chip(context, null) {
+class SjTagChip
+@JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0,
+    val tag: SjTag
+) : Chip(context, attrs, defStyleAttr) {
 
     init {
         setText(tag.name)
-        setBasicMode()
+        setCheckableMode()
         isCheckedIconVisible = false
 
         CustomComponentStyleUtil.setMaterialCustomChipStyle(this)
     }
 
-    fun setBasicMode() {
+    fun setCheckableMode() {
         isCheckable = true
         id = tag.tid
     }
@@ -26,7 +34,7 @@ class SjTagChip(context: Context, val tag: SjTag) : Chip(context, null) {
         isCheckable = false
     }
 
-    fun setEditMode(
+    fun setCheckableAndLongClickableMode(
         deleteOperation: (SjTag) -> Unit,
         editOperation: (SjTag) -> Unit
     ) {

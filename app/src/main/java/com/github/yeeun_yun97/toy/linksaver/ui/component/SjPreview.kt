@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.webkit.WebView
@@ -74,9 +75,10 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun setOnClickListener(l: OnClickListener?) {
         super.setOnClickListener(l)
-        previewWebView.setOnTouchListener { view, motionEvent ->
+        previewWebView.setOnTouchListener { view, _ ->
             l!!.onClick(view)
             true
         }
@@ -87,6 +89,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
         when (mode) {
             SjPreviewMode.WEB -> previewWebView.visibility = View.VISIBLE
             SjPreviewMode.IMAGE -> previewImageView.visibility = View.VISIBLE
+            else -> Log.d("onPreviewLoadFinished","SjPreview NONE")
         }
     }
 
