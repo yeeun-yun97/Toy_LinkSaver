@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDao
+import com.github.yeeun_yun97.toy.linksaver.data.dao.SjLinkDao
 
 class SjDatabaseUtil {
     companion object {
@@ -44,6 +45,13 @@ class SjDatabaseUtil {
                 throw Exception("Database is not yet initialized")
             }
             return this.db.getDao()
+        }
+
+        fun getLinkDao(): SjLinkDao {
+            if (!this::db.isInitialized) {
+                throw Exception("Database is not yet initialized")
+            }
+            return this.db.getLinkDao()
         }
 
     }
