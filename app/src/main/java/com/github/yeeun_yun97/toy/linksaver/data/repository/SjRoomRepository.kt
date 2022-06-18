@@ -1,7 +1,5 @@
 package com.github.yeeun_yun97.toy.linksaver.data.repository
 
-import android.util.Log
-import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDao
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjLinkDao
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinksAndDomainsWithTags
@@ -9,9 +7,7 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 
 // refactor SjRepository and move use this
 class SjRoomRepository private constructor() {
-
     private val dao: SjLinkDao = SjDatabaseUtil.getLinkDao()
-    private val dao2: SjDao = SjDatabaseUtil.getDao()
 
     companion object {
         // singleton object

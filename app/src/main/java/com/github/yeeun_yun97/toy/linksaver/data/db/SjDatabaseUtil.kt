@@ -39,6 +39,13 @@ class SjDatabaseUtil {
             }
         }
 
+        fun getDatabase(): SjDatabase {
+            if (!this::db.isInitialized) {
+                throw Exception("Database is not yet initialized")
+            }
+            return this.db
+        }
+
         // get dao for rest of application
         fun getDao(): SjDao {
             if (!this::db.isInitialized) {

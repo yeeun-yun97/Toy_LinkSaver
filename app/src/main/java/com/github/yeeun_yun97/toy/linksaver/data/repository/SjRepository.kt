@@ -74,22 +74,6 @@ class SjRepository private constructor() {
         dao.insertLinkTagCrossRefs(*linkTagCrossRefs.toTypedArray())
     }
 
-    fun insertSearchAndTags(searchWord: String, selectedTags: List<SjTag>) {
-        CoroutineScope(Dispatchers.IO).launch {
-            //find if there is already same searchData and delete them
-            val sids = async {
-                getSearchBySearchWordAndTags(searchWord, selectedTags)
-            }
-            deleteSearchesBySids(sids.await())
-
-            //insert new searchData
-            val newSid = async {
-                sids.await()
-                dao.insertSearch(SjSearch(keyword = searchWord)).toInt()
-            }
-            insertSearchTagCrossRef(newSid.await(), selectedTags)
-        }
-    }
 
     fun editTagGroup(name: String, isPrivate: Boolean, group: SjTagGroup?) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -109,33 +93,8 @@ class SjRepository private constructor() {
         dao.insertTagGroup(tagGroup)
     }
 
-    private suspend fun deleteSearchesBySids(sids: List<Int>) {
-        dao.deleteSearchTagCrossRefsBySid(sids)
-        dao.deleteSearches(sids)
-    }
 
-    private suspend fun getSearchBySearchWordAndTags(
-        searchWord: String,
-        selectedTags: List<SjTag>
-    ): List<Int> {
-        return if (selectedTags.isEmpty()) {
-            dao.getSearchWithTagsBySearchWord(searchWord)
-        } else {
-            val tids = mutableListOf<Int>()
-            for (tag in selectedTags) {
-                tids.add(tag.tid)
-            }
-            dao.getSearchWithTagsBySearchWordAndTags(searchWord, tids)
-        }
-    }
 
-    private suspend fun insertSearchTagCrossRef(sid: Int, tags: List<SjTag>) {
-        val searchTagCrossRefs = mutableListOf<SearchTagCrossRef>()
-        for (tag in tags) {
-            searchTagCrossRefs.add(SearchTagCrossRef(sid = sid, tid = tag.tid))
-        }
-        dao.insertSearchTagCrossRefs(*searchTagCrossRefs.toTypedArray())
-    }
 
 
     // search methods
@@ -243,16 +202,6 @@ class SjRepository private constructor() {
             //wait and delete
             dao.deleteLinkByLid(lid)
         }
-
-    fun deleteSearch() {
-        CoroutineScope(Dispatchers.IO).launch {
-            //delete all refs
-            val job = launch { dao.deleteAllSearchTagCrossRefs() }
-            job.join()
-            // wait and delete
-            dao.deleteAllSearch()
-        }
-    }
 
     suspend fun deleteTagRefs(tag: SjTag) {
         //delete all refs

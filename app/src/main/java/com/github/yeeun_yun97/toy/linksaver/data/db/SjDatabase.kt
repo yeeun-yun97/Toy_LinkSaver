@@ -4,6 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDao
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjLinkDao
+import com.github.yeeun_yun97.toy.linksaver.data.dao.SjSearchSetDao
 import com.github.yeeun_yun97.toy.linksaver.data.model.*
 
 @Database(
@@ -21,6 +22,7 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.*
 abstract class SjDatabase : RoomDatabase() {
     abstract fun getDao(): SjDao
     abstract fun getLinkDao(): SjLinkDao
+    abstract fun getSearchSetDao(): SjSearchSetDao
 }
 
 

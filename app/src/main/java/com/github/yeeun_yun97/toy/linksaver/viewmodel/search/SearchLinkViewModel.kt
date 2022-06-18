@@ -3,11 +3,12 @@ package com.github.yeeun_yun97.toy.linksaver.viewmodel.search
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinksAndDomainsWithTags
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.data.repository.SjRoomRepository
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.BasicViewModelWithRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjSearchSetRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -16,9 +17,9 @@ enum class ListMode {
     MODE_ALL, MODE_SEARCH;
 }
 
-class SearchLinkViewModel : BasicViewModelWithRepository() {
+class SearchLinkViewModel : ViewModel() {
+    private val searchSetRepository = SjSearchSetRepository.getInstance()
     private val roomRepository = SjRoomRepository.getInstance()
-
 
     // mode
     private var mode: ListMode = ListMode.MODE_ALL
@@ -35,13 +36,20 @@ class SearchLinkViewModel : BasicViewModelWithRepository() {
     // data
     private val _dataList = MutableLiveData<List<SjLinksAndDomainsWithTags>>()
     val dataList: LiveData<List<SjLinksAndDomainsWithTags>> get() = _dataList
+    val searchSets = searchSetRepository.searchSetList
 
 
     fun refreshData() {
-        //if (isSearchSetEmpty()) mode = ListMode.MODE_ALL
         when (mode) {
             ListMode.MODE_ALL -> loadAllLinks()
             ListMode.MODE_SEARCH -> loadSearchLinks()
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            when (isPrivateMode) {
+                true -> searchSetRepository.loadSearchSetPublic()
+                false -> searchSetRepository.loadAllSearchSet()
+            }
         }
     }
 
@@ -49,13 +57,10 @@ class SearchLinkViewModel : BasicViewModelWithRepository() {
         viewModelScope.launch(Dispatchers.IO) {
             val links =
                 if (isPrivateMode == true) {
-                    Log.d("똥", "숨김/전체모드")
                     roomRepository.selectLinksPublic()
                 } else {
-                    Log.d("똥", "전체모드")
                     roomRepository.selectAllLinks()
                 }
-            Log.d("똥", "값= ${links.toString()}")
             _dataList.postValue(links)
         }
     }
@@ -64,13 +69,11 @@ class SearchLinkViewModel : BasicViewModelWithRepository() {
         viewModelScope.launch(Dispatchers.IO) {
             val links =
                 if (isPrivateMode == true) {
-                    Log.d("똥", "숨김/검색모드 ${bindingSearchWord.value!!}")
                     roomRepository.selectLinksByNameAndTagsPublic(
                         bindingSearchWord.value!!,
                         _searchTags
                     )
                 } else {
-                    Log.d("똥", "검색모드 ${bindingSearchWord.value!!}")
                     roomRepository.selectLinksByNameAndTags(
                         bindingSearchWord.value!!,
                         _searchTags
@@ -103,8 +106,10 @@ class SearchLinkViewModel : BasicViewModelWithRepository() {
     }
 
     private fun searchAndSave() {
-        refreshData()
-        repository.insertSearchAndTags(this.bindingSearchWord.value!!, this._searchTags)
+        viewModelScope.launch(Dispatchers.IO) {
+            refreshData()
+            searchSetRepository.insertSearchSet(bindingSearchWord.value!!, _searchTags)
+        }
     }
 
     //  update tag selection
@@ -129,21 +134,24 @@ class SearchLinkViewModel : BasicViewModelWithRepository() {
     fun isSearchSetEmpty(): Boolean =
         bindingSearchWord.value.isNullOrEmpty() && _searchTags.isEmpty()
 
-    // delete methods
-    fun deleteAllSearch() = repository.deleteSearch()
 
-    //////////
+    fun deleteAllSearchSet() =
+        viewModelScope.launch(Dispatchers.IO) { searchSetRepository.deleteAllSearchSet() }
 
-    // search lists
-    val searchList = repository.searches
-    val publicSearchList = repository.publicSearches
+    fun insertSearchSet(keyword: String, tags: List<SjTag>) =
+        viewModelScope.launch(Dispatchers.IO) {
+            searchSetRepository.insertSearchSet(keyword, tags)
+        }
+
+
+    /////////
 
     // default group
-    val tagDefaultGroup = repository.defaultTagGroup
-
-    // tag groups
-    val tagGroups = repository.tagGroups
-    val publicTagGroups = repository.publicTagGroups
+//    val tagDefaultGroup = repository.defaultTagGroup
+//
+//    // tag groups
+//    val tagGroups = repository.tagGroups
+//    val publicTagGroups = repository.publicTagGroups
 
 
 //    private fun refreshSearch() {
