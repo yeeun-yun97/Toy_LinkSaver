@@ -15,10 +15,6 @@ class SjRepository private constructor() {
 
     private val dao: SjDao = SjDatabaseUtil.getDao()
 
-    private val _searchLinkList = MutableLiveData<List<SjLinksAndDomainsWithTags>>()
-    val searchLinkList: LiveData<List<SjLinksAndDomainsWithTags>> get() = _searchLinkList
-    val searches: LiveData<List<SjSearchWithTags>> = dao.getAllSearch()
-    val publicSearches: LiveData<List<SjSearchWithTags>> = dao.getPublicSearch()
     val domains: LiveData<List<SjDomain>> = dao.getAllDomains()
     val domainsExceptDefault: LiveData<List<SjDomain>> = dao.getAllDomainsExceptDefault()
     val tags: LiveData<List<SjTag>> = dao.getAllTags()
@@ -91,53 +87,6 @@ class SjRepository private constructor() {
 
     suspend fun insertTagGroup(tagGroup: SjTagGroup) {
         dao.insertTagGroup(tagGroup)
-    }
-
-
-
-
-
-    // search methods
-    fun searchLinksBySearchSet(keyword: String, selectedTags: List<SjTag>, isPrivateMode: Boolean) {
-        CoroutineScope(Dispatchers.IO).launch {
-            if (selectedTags.isEmpty()) {
-                searchByLinkName(keyword, isPrivateMode)
-            } else {
-                searchByLinkNameAndTags(keyword, selectedTags, isPrivateMode)
-            }
-        }
-    }
-
-    private suspend fun searchByLinkName(keyword: String, isPrivateMode: Boolean) {
-        val result = if (isPrivateMode) {
-            dao.searchPublicLinksAndDomainsWithTagsByLinkName("%$keyword%")
-        } else {
-            dao.searchLinksAndDomainsWithTagsByLinkName(
-                "%$keyword%"
-            )
-        }
-        _searchLinkList.postValue(result)
-    }
-
-    private suspend fun searchByLinkNameAndTags(
-        keyword: String,
-        selectedTags: List<SjTag>,
-        isPrivateMode: Boolean
-    ) {
-        val list: MutableList<Int> = mutableListOf()
-        for (tag in selectedTags) {
-            list.add(tag.tid)
-        }
-        val result = if (isPrivateMode) {
-            dao.searchPublicLinksAndDomainsWithTagsByLinkNameAndTags(
-                "%$keyword%", list, list.size
-            )
-        } else {
-            dao.searchLinksAndDomainsWithTagsByLinkNameAndTags(
-                "%$keyword%", list, list.size
-            )
-        }
-        _searchLinkList.postValue(result)
     }
 
 

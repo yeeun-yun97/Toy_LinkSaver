@@ -4,11 +4,9 @@ import android.app.Application
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
-import com.github.yeeun_yun97.toy.linksaver.data.repository.SjDataStoreRepository
 import kotlinx.coroutines.*
 
 class LinkSaverApplication : Application() {
-
 
     override fun onCreate() {
         super.onCreate()

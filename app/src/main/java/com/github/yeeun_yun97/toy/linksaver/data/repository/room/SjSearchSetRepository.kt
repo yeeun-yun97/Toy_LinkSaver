@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
 
 
 class SjSearchSetRepository private constructor() {
-
     private val dao: SjSearchSetDao = SjDatabaseUtil.getDatabase().getSearchSetDao()
 
     private val _searchSetList = MutableLiveData<List<SjSearchWithTags>>()
@@ -34,13 +33,11 @@ class SjSearchSetRepository private constructor() {
     }
 
     suspend fun loadSearchSetPublic() {
-
-        _searchSetList.postValue()
+        _searchSetList.postValue(dao.selectSearchSetsPublic())
     }
 
     suspend fun loadAllSearchSet() {
-
-        _searchSetList.postValue()
+        _searchSetList.postValue(dao.selectAllSearchSets())
     }
 
     suspend fun deleteAllSearchSet() =
@@ -49,23 +46,23 @@ class SjSearchSetRepository private constructor() {
             val job = launch { dao.deleteAllSearchTagCrossRefs() }
             job.join()
             // wait and delete
-            dao.deleteAllSearch()
+            dao.deleteAllSearchSet()
         }
 
     suspend fun insertSearchSet(keyword: String, tags: List<SjTag>) {
         CoroutineScope(Dispatchers.IO).launch {
             //find if there is already same searchData and delete them
             val sids = async {
-                getSearchBySearchWordAndTags(searchWord, selectedTags)
+                getSearchBySearchWordAndTags(keyword, tags)
             }
             deleteSearchesBySids(sids.await())
 
             //insert new searchData
             val newSid = async {
                 sids.await()
-                dao.insertSearch(SjSearch(keyword = searchWord)).toInt()
+                dao.insertSearchSet(SjSearch(keyword = keyword)).toInt()
             }
-            insertSearchTagCrossRef(newSid.await(), selectedTags)
+            insertSearchTagCrossRef(newSid.await(), tags)
         }
     }
 
@@ -74,19 +71,19 @@ class SjSearchSetRepository private constructor() {
         selectedTags: List<SjTag>
     ): List<Int> {
         return if (selectedTags.isEmpty()) {
-            dao.getSearchWithTagsBySearchWord(searchWord)
+            dao.selectSearchSetByKeyword(searchWord)
         } else {
             val tids = mutableListOf<Int>()
             for (tag in selectedTags) {
                 tids.add(tag.tid)
             }
-            dao.getSearchWithTagsBySearchWordAndTags(searchWord, tids)
+            dao.selectSearchSetByKeywordAndTags(searchWord, tids)
         }
     }
 
     private suspend fun deleteSearchesBySids(sids: List<Int>) {
         dao.deleteSearchTagCrossRefsBySid(sids)
-        dao.deleteSearches(sids)
+        dao.deleteSearchSets(sids)
     }
 
     private suspend fun insertSearchTagCrossRef(sid: Int, tags: List<SjTag>) {
