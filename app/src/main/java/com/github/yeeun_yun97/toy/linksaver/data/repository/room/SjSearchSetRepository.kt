@@ -7,15 +7,13 @@ import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.SearchTagCrossRef
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjSearch
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjSearchWithTags
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-
 class SjSearchSetRepository private constructor() {
-    private val dao: SjSearchSetDao = SjDatabaseUtil.getDatabase().getSearchSetDao()
+    private val dao: SjSearchSetDao = SjDatabaseUtil.getSearchSetDao()
 
     private val _searchSetList = MutableLiveData<List<SjSearchWithTags>>()
     val searchSetList: LiveData<List<SjSearchWithTags>> get() = _searchSetList
@@ -32,67 +30,59 @@ class SjSearchSetRepository private constructor() {
         }
     }
 
-    suspend fun loadSearchSetPublic() {
-        _searchSetList.postValue(dao.selectSearchSetsPublic())
-    }
-
-    suspend fun loadAllSearchSet() {
-        _searchSetList.postValue(dao.selectAllSearchSets())
-    }
-
-    suspend fun deleteAllSearchSet() =
+    // manage liveData
+    fun postSearchSetPublic() =
         CoroutineScope(Dispatchers.IO).launch {
-            //delete all refs
-            val job = launch { dao.deleteAllSearchTagCrossRefs() }
-            job.join()
-            // wait and delete
-            dao.deleteAllSearchSet()
+            _searchSetList.postValue(dao.selectSearchSetsPublic())
         }
 
-    suspend fun insertSearchSet(keyword: String, tags: List<SjTag>) {
+    fun postAllSearchSet() =
         CoroutineScope(Dispatchers.IO).launch {
-            //find if there is already same searchData and delete them
-            val sids = async {
-                getSearchBySearchWordAndTags(keyword, tags)
-            }
-            deleteSearchesBySids(sids.await())
+            _searchSetList.postValue(dao.selectAllSearchSets())
+        }
 
-            //insert new searchData
-            val newSid = async {
-                sids.await()
+    // insert
+    fun insertSearchSet(keyword: String, tids: List<Int>) =
+        CoroutineScope(Dispatchers.IO).launch {
+            // if there is conflict, delete
+            val deleteConflictJob = launch {
+                val conflictedSearchSetSids =
+                    if (tids.isEmpty()) dao.selectSearchSetByKeyword(keyword)
+                    else dao.selectSearchSetByKeywordAndTags(keyword, tids)
+                dao.deleteSearchTagCrossRefsBySids(conflictedSearchSetSids)
+                dao.deleteSearchSetBySids(conflictedSearchSetSids)
+            }
+
+            // insert new searchSet
+            val newSearchSetSid = async {
+                deleteConflictJob.join()
                 dao.insertSearchSet(SjSearch(keyword = keyword)).toInt()
             }
-            insertSearchTagCrossRef(newSid.await(), tags)
-        }
-    }
 
-    private suspend fun getSearchBySearchWordAndTags(
-        searchWord: String,
-        selectedTags: List<SjTag>
-    ): List<Int> {
-        return if (selectedTags.isEmpty()) {
-            dao.selectSearchSetByKeyword(searchWord)
-        } else {
-            val tids = mutableListOf<Int>()
-            for (tag in selectedTags) {
-                tids.add(tag.tid)
+            // insert TagCrossRef after insert
+            val insertTagCrossRefJob = launch {
+                val sid = newSearchSetSid.await()
+                val searchTagCrossRefs = mutableListOf<SearchTagCrossRef>()
+                for (tid in tids) {
+                    searchTagCrossRefs.add(SearchTagCrossRef(sid = sid, tid = tid))
+                }
+                dao.insertSearchTagCrossRefs(*searchTagCrossRefs.toTypedArray())
             }
-            dao.selectSearchSetByKeywordAndTags(searchWord, tids)
+            insertTagCrossRefJob.join()
         }
-    }
 
-    private suspend fun deleteSearchesBySids(sids: List<Int>) {
-        dao.deleteSearchTagCrossRefsBySid(sids)
-        dao.deleteSearchSets(sids)
-    }
 
-    private suspend fun insertSearchTagCrossRef(sid: Int, tags: List<SjTag>) {
-        val searchTagCrossRefs = mutableListOf<SearchTagCrossRef>()
-        for (tag in tags) {
-            searchTagCrossRefs.add(SearchTagCrossRef(sid = sid, tid = tag.tid))
+    // delete
+    fun deleteAllSearchSet() =
+        CoroutineScope(Dispatchers.IO).launch {
+            // delete all refs
+            val deleteSearchTagCrossRefJob = launch { dao.deleteAllSearchTagCrossRefs() }
+
+            //  delete after delete
+            val deleteSearchSetJob = launch {
+                deleteSearchTagCrossRefJob.join()
+                dao.deleteAllSearchSets()
+            }
+            deleteSearchSetJob.join()
         }
-        dao.insertSearchTagCrossRefs(*searchTagCrossRefs.toTypedArray())
-    }
-
-
 }

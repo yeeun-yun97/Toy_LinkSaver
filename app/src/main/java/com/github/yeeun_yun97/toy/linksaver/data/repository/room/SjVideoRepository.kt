@@ -1,8 +1,8 @@
-package com.github.yeeun_yun97.toy.linksaver.data.repository
+package com.github.yeeun_yun97.toy.linksaver.data.repository.room
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDao
+import com.github.yeeun_yun97.toy.linksaver.data.dao.SjLinkDao
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.ELinkType
 import com.github.yeeun_yun97.toy.linksaver.data.model.LinkModelUtil
@@ -11,7 +11,7 @@ import com.github.yeeun_yun97.toy.linksaver.ui.component.SjUtil
 
 class SjVideoRepository private constructor() {
     // dao
-    private val dao: SjDao = SjDatabaseUtil.getDao()
+    private val dao: SjLinkDao = SjDatabaseUtil.getLinkDao()
 
     // for video list fragment
     private val linkTypeVideoList = dao.getAllLinksByType(ELinkType.video.name)
