@@ -3,8 +3,7 @@ package com.github.yeeun_yun97.toy.linksaver.data.db
 import android.content.Context
 import android.util.Log
 import androidx.room.Room
-import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDao
-import com.github.yeeun_yun97.toy.linksaver.data.dao.SjLinkDao
+import com.github.yeeun_yun97.toy.linksaver.data.dao.*
 
 class SjDatabaseUtil {
     companion object {
@@ -39,13 +38,6 @@ class SjDatabaseUtil {
             }
         }
 
-        fun getDatabase(): SjDatabase {
-            if (!this::db.isInitialized) {
-                throw Exception("Database is not yet initialized")
-            }
-            return this.db
-        }
-
         // get dao for rest of application
         fun getDao(): SjDao {
             if (!this::db.isInitialized) {
@@ -59,6 +51,27 @@ class SjDatabaseUtil {
                 throw Exception("Database is not yet initialized")
             }
             return this.db.getLinkDao()
+        }
+
+        fun getCountDao(): SjCountDao {
+            if (!this::db.isInitialized) {
+                throw Exception("Database is not yet initialized")
+            }
+            return this.db.getCountDao()
+        }
+
+        fun getSearchSetDao(): SjSearchSetDao {
+            if (!this::db.isInitialized) {
+                throw Exception("Database is not yet initialized")
+            }
+            return this.db.getSearchSetDao()
+        }
+
+        fun getTagDao(): SjTagDao {
+            if (!this::db.isInitialized) {
+                throw Exception("Database is not yet initialized")
+            }
+            return this.db.getTagDao()
         }
 
     }
