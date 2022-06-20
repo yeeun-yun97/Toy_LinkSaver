@@ -7,20 +7,26 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjSearchWithTags
 
 @Dao
 interface SjSearchSetDao {
-
-    // select
-    @Query("SELECT COUNT(*) FROM SearchTagCrossRef")
-    suspend fun countAllSearchTagCrossRefs(): Int
-
+    // select data list
     @Transaction
     @Query("SELECT * FROM SjSearch ORDER BY sid DESC")
     fun selectAllSearchSets(): List<SjSearchWithTags>
 
     @Transaction
-    @Query("SELECT * FROM SjSearch WHERE sid NOT IN (SELECT sid FROM SearchTagCrossRef as ref WHERE ref.tid NOT IN (SELECT tag.tid FROM SjTag as tag WHERE tag.gid NOT IN (SELECT g.gid FROM SjTagGroup as g WHERE is_private = 1))) ORDER BY sid DESC")
+    @Query("SELECT * FROM SjSearch " +
+            "WHERE sid NOT IN (" +
+                "SELECT sid FROM SearchTagCrossRef as ref " +
+                "WHERE ref.tid NOT IN (" +
+                    "SELECT tag.tid FROM SjTag as tag " +
+                    "WHERE tag.gid NOT IN (" +
+                        "SELECT g.gid FROM SjTagGroup as g " +
+                        "WHERE is_private = 1" +
+                    ")" +
+                ")" +
+            ") " +
+            "ORDER BY sid DESC")
     fun selectSearchSetsPublic(): List<SjSearchWithTags>
-
-    // search search query by search word
+    
     @Query(
         "SELECT search.sid FROM SjSearch as search "
                 + "WHERE search.keyword = :keyword "
@@ -34,7 +40,6 @@ interface SjSearchSetDao {
         keyword: String,
     ): List<Int>
 
-    //search search query by search word and tags
     @Query(
         "SELECT search.sid FROM SjSearch as search "
                 + "INNER JOIN SearchTagCrossRef as ref ON search.sid = ref.sid "
@@ -49,7 +54,6 @@ interface SjSearchSetDao {
                 + ")"
                 + "GROUP BY search.sid "
                 + "HAVING count(*) == :size"
-        //prevent duplicates
     )
     suspend fun selectSearchSetByKeywordAndTags(
         keyword: String,
@@ -71,14 +75,13 @@ interface SjSearchSetDao {
     suspend fun deleteAllSearchTagCrossRefs()
 
     @Query("Delete FROM SjSearch")
-    suspend fun deleteAllSearchSet()
-
+    suspend fun deleteAllSearchSets()
 
     @Query("DELETE FROM SearchTagCrossRef WHERE sid IN (:sids)")
-    suspend fun deleteSearchTagCrossRefsBySid(sids: List<Int>)
+    suspend fun deleteSearchTagCrossRefsBySids(sids: List<Int>)
 
     @Query("DELETE FROM SjSearch WHERE sid IN(:sids)")
-    suspend fun deleteSearchSets(sids: List<Int>)
+    suspend fun deleteSearchSetBySids(sids: List<Int>)
 
 
 }
