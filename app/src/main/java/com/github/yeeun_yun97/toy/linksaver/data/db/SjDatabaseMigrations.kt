@@ -31,3 +31,9 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
         database.execSQL("INSERT INTO SjTagGroup (`gid`, `name`, `is_private`) VALUES (1,'기본',0)")
     }
 }
+
+val MIGRATION_3_4 = object : Migration(3, 4) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("CREATE TABLE `DomainTagCrossRef` (`did` INTEGER NOT NULL, `tid` INTEGER NOT NULL, PRIMARY KEY(`did`, `tid`))")
+    }
+}

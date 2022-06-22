@@ -28,6 +28,12 @@ data class SjDomain(
     @ColumnInfo(name = "url") var url: String
 )
 
+@Entity(primaryKeys = ["did", "tid"])
+data class DomainTagCrossRef(
+    val did: Int,
+    val tid: Int
+)
+
 @Entity(
     indices = [
         Index(value = ["name"]),
@@ -137,7 +143,7 @@ data class SjTagGroupWithTags(
     ) var tags: List<SjTag>
 )
 
-class LinkModelUtil{
+class LinkModelUtil {
     companion object {
         fun getFullUrl(data: SjLinksAndDomainsWithTags): String {
             val domainUrl = data.domain.url

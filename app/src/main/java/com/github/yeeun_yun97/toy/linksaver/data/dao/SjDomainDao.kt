@@ -33,6 +33,9 @@ interface SjDomainDao {
     @Update
     suspend fun updateLinks(vararg link: SjLink)
 
+    @Query("UPDATE SjLink SET did=1 WHERE did = :did")
+    suspend fun updateLinksToDefaultDomainByDid(did: Int)
+
 
     //delete
     @Delete

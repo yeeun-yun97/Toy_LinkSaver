@@ -27,13 +27,12 @@ data class VideoData(
 ) {
     companion object {
         fun getVideoDataBy(link: SjLinksAndDomainsWithTags): VideoData {
-            val fullUrl = LinkModelUtil.getFullUrl(link)
             return VideoData(
                 link.link.lid,
-                fullUrl,
+                link.link.url,
                 link.link.name,
                 link.link.preview,
-                SjUtil.checkYoutubePrefix(fullUrl),
+                SjUtil.checkYoutubePrefix(link.link.url),
                 link.tags
             )
         }

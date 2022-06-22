@@ -84,7 +84,7 @@ class SjLinkRepository private constructor() {
             isYoutubeVideo =
             entity.link.type == ELinkType.video &&
                     SjUtil.checkYoutubePrefix(
-                        LinkModelUtil.getFullUrl(entity)
+                        entity.link.url
                     ),
             tags = entity.tags
         )
