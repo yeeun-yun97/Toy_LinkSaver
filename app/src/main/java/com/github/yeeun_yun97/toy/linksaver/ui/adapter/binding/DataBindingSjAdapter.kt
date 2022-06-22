@@ -27,6 +27,26 @@ class DataBindingSjAdapter {
         }
 
         @JvmStatic
+        @BindingAdapter("visibilityByList")
+        fun setVisibilityByList(view: View, list: List<Any?>?) {
+            view.visibility =
+                when (list.isNullOrEmpty()) {
+                    true -> View.GONE
+                    false -> View.VISIBLE
+                }
+        }
+
+        @JvmStatic
+        @BindingAdapter("listEmptyView")
+        fun setEmptyViewByList(view: View, list: List<Any?>?) {
+            view.visibility =
+                when (list.isNullOrEmpty()) {
+                    true -> View.VISIBLE
+                    false -> View.GONE
+                }
+        }
+
+        @JvmStatic
         @BindingAdapter("previewContent")
         fun setPreviewByLinkDetailValue(view: SjPreview, linkDetailValue: LinkDetailValue?) {
             if (linkDetailValue != null)
@@ -36,21 +56,6 @@ class DataBindingSjAdapter {
                     linkDetailValue.preview
                 )
         }
-
-//        @JvmStatic
-//        @BindingAdapter("chipValueList")
-//        fun setChipByValueList(view: ChipGroup, tags: List<*>?) {
-//            view.removeAllViews()
-//            if (!tags.isNullOrEmpty()) {
-//                for (value in tags) {
-//                    val chip = SjTagChip(view.context)
-//                    chip.setTagValue(TagValue(,value.name,value.tid))
-//                    chip.setViewMode()
-//                    chip.setText(value.fullName)
-//                    view.addView(chip)
-//                }
-//            }
-//        }
 
         @JvmStatic
         @BindingAdapter("textOrHide")
