@@ -23,6 +23,7 @@ abstract class SjDatabase : RoomDatabase() {
     abstract fun getCountDao(): SjCountDao
     abstract fun getTagDao(): SjTagDao
     abstract fun getSearchSetDao(): SjSearchSetDao
+    abstract fun getDomainDao(): SjDomainDao
 }
 
 

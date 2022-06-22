@@ -6,14 +6,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.yeeun_yun97.toy.linksaver.data.model.*
 import com.github.yeeun_yun97.toy.linksaver.data.repository.SjNetworkRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjLinkRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class EditVideoViewModel : ViewModel() {
+class EditLinkViewModel : ViewModel() {
     // repo
     private val tagRepo = SjTagRepository.getInstance()
+    private val linkRepo = SjLinkRepository.getInstance()
     private val networkRepository = SjNetworkRepository.newInstance()
+
+    var url : String = ""
+        set(value){field=value}
 
     // model list
     val tagGroups = tagRepo.tagGroupsWithoutDefault
@@ -76,8 +82,8 @@ class EditVideoViewModel : ViewModel() {
     // when updating existing SjLink
     fun setLinkByLid(lid: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-//            val link = async { repository.getLinkAndDomainWithTagsByLid(lid) }
-//            setData(link.await())
+            val link = async { linkRepo.selectLinkByLid(lid) }
+            setData(link.await())
         }
     }
 
@@ -105,7 +111,7 @@ class EditVideoViewModel : ViewModel() {
     }
 
     fun createTag(name: String) {
-//        repository.insertTag(SjTag(name = name))
+        tagRepo.insertTag(name)
     }
 
 
@@ -118,9 +124,9 @@ class EditVideoViewModel : ViewModel() {
     // save link
     fun saveVideo() {
         if (targetLink.lid != 0) {
-//            repository.updateLinkAndTags(targetDomain, targetLink, targetTags)
+            linkRepo.updateLinkAndTags(targetDomain, targetLink, targetTags)
         } else {
-//            repository.insertLinkAndTags(targetDomain, targetLink, targetTags)
+            linkRepo.insertLinkAndTags(targetDomain, targetLink, targetTags)
         }
     }
 

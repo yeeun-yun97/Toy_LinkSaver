@@ -22,7 +22,7 @@ class LinkSaverApplication : Application() {
                dao.getDomainCount()
             }
             if (countDomain.await() == 0) {
-                SjDatabaseUtil.getDao().insertDomain(SjDomain(did = 1, name = "-", url = ""))
+                SjDatabaseUtil.getDomainDao().insertDomain(SjDomain(did = 1, name = "-", url = ""))
             }
 
             val countTagGroup = async {

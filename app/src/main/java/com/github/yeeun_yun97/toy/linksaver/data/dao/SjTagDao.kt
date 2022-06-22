@@ -15,18 +15,18 @@ interface SjTagDao {
 
     @Transaction
     @Query("SELECT * FROM SjTagGroup WHERE gid != 1 ORDER BY name")
-    fun selectTagGroupsNotDefault()
+    suspend fun selectTagGroupsNotDefault()
             : List<SjTagGroupWithTags>
 
     @Transaction
     @Query("SELECT * FROM SjTagGroup WHERE gid != 1 AND is_private = 0 ORDER BY name")
-    fun selectTagGroupsPublicNotDefault(): List<SjTagGroupWithTags>
+    suspend fun selectTagGroupsPublicNotDefault(): List<SjTagGroupWithTags>
 
 
     // select single
     @Transaction
     @Query("SELECT * FROM SjTagGroup WHERE gid= :gid")
-    fun selectTagGroupByGid(gid: Int): SjTagGroupWithTags
+    suspend fun selectTagGroupByGid(gid: Int): SjTagGroupWithTags
 
     @Query("SELECT * FROM SjTag WHERE tid = :tid")
     suspend fun selectTagByTid(tid: Int): SjTag
@@ -60,6 +60,9 @@ interface SjTagDao {
 
     @Query("DELETE FROM LinkTagCrossRef WHERE tid= :tid")
     suspend fun deleteLinkTagCrossRefsByTid(tid: Int)
+
+    @Query("DELETE FROM SearchTagCrossRef WHERE tid= :tid")
+    suspend fun deleteSearchTagCrossRefsByTid(tid: Int)
 
 
 }

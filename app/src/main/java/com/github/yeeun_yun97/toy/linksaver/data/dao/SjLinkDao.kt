@@ -68,13 +68,13 @@ interface SjLinkDao {
     ): List<SjLinksAndDomainsWithTags>
 
 
-    // XXX not yet (get video type)
     @Transaction
     @Query("SELECT * FROM SjLink WHERE Type = :type ORDER BY lid desc")
-    fun getAllLinksByType(type: String): LiveData<List<SjLinksAndDomainsWithTags>>
+    fun selectLinksByType(type: String): List<SjLinksAndDomainsWithTags>
+
     @Transaction
     @Query("SELECT * FROM SjLink WHERE Type = :type AND lid not in (SELECT ref.lid FROM LinkTagCrossRef as ref WHERE ref.tid NOT IN (SELECT tag.tid FROM SjTag as tag WHERE tag.gid NOT IN (SELECT g.gid FROM SjTagGroup as g WHERE is_private = 1))) ORDER BY lid desc")
-    fun getPublicLinksByType(type: String): LiveData<List<SjLinksAndDomainsWithTags>>
+    fun selectLinksPublicByType(type: String): List<SjLinksAndDomainsWithTags>
 
 
     // select single
@@ -97,6 +97,7 @@ interface SjLinkDao {
     // update
     @Update
     suspend fun updateLink(link: SjLink)
+
     @Update
     suspend fun updateLinks(vararg links: SjLink)
 

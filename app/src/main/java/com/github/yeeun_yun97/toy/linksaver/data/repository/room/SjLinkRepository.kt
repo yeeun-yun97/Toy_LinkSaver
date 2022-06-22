@@ -64,6 +64,7 @@ class SjLinkRepository private constructor() {
             _links.postValue(links)
         }
 
+
     // select single
     suspend fun selectLinkByLid(lid: Int): SjLinksAndDomainsWithTags =
         dao.selectLinkByLid(lid)
@@ -88,6 +89,7 @@ class SjLinkRepository private constructor() {
         )
         return vo
     }
+
 
     // insert
     fun insertLinkAndTags(domain: SjDomain?, newLink: SjLink, tags: List<SjTag>) =
@@ -124,6 +126,7 @@ class SjLinkRepository private constructor() {
         }
     }
 
+
     // delete
     fun deleteLinkByLid(lid: Int) =
         CoroutineScope(Dispatchers.IO).launch {
@@ -135,5 +138,6 @@ class SjLinkRepository private constructor() {
             //wait and delete
             dao.deleteLinkByLid(lid)
         }
+
 
 }

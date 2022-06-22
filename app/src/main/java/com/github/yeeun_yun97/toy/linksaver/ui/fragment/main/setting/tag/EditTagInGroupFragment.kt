@@ -1,7 +1,6 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.tag
 
-import android.os.Bundle
-import android.view.View
+import android.util.Log
 import androidx.fragment.app.activityViewModels
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
@@ -14,29 +13,17 @@ import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.TagGroupEditViewModel
 
 class EditTagInGroupFragment : SjBasicFragment<FragmentListTagBinding>() {
     val viewModel: TagGroupEditViewModel by activityViewModels()
-    private var gid: Int = -1
-    private var groupName: String = ""
-
-    companion object {
-        fun newInstance(gid: Int): EditTagInGroupFragment {
-            val fragment = EditTagInGroupFragment()
-            fragment.arguments = Bundle().apply {
-                putInt("gid", gid)
-            }
-            return fragment
-        }
-    }
 
     // override methods
     override fun layoutId(): Int = R.layout.fragment_list_tag
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.setGid(gid)
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadTagGroup()
     }
 
     override fun onCreateView() {
-        gid = requireArguments().getInt("gid", -1)
+        binding.viewModel = viewModel
 
         val handlerMap = hashMapOf<Int, () -> Unit>(
             R.id.menu_group_new_tag to ::createNewTag,
@@ -44,41 +31,33 @@ class EditTagInGroupFragment : SjBasicFragment<FragmentListTagBinding>() {
         )
         binding.toolbar.setMenu(R.menu.toolbar_menu_tag_group, handlerMap)
 
-        viewModel.tagGroupWithTags.observe(viewLifecycleOwner, {
-            groupName = it.tagGroup.name
+        viewModel.tagGroup.observe(viewLifecycleOwner) {
             binding.toolbar.toolbarTitle = it.tagGroup.name
-            if (it.tags.isEmpty()) {
-                binding.emptyGroup.visibility = View.VISIBLE
-            } else {
-                binding.emptyGroup.visibility = View.GONE
-            }
             addTagChipsToTagChipGroup(it.tags)
         }
-        )
     }
 
     private fun createNewTag() {
-        val tagGroupWithTag = viewModel.tagGroupWithTags.value
+        val tagGroupWithTag = viewModel.tagGroup.value
         val dialogFragment = EditTagDialogFragment(::editTag, tagGroupWithTag?.tagGroup)
-        dialogFragment.show(childFragmentManager, "그룹에 새 태그 생성하기")
+        dialogFragment.show(childFragmentManager, "새 태그 만들기")
     }
 
     // handle user click event
     private fun renameTag(tag: SjTag) {
-        val tagGroupWithTag = viewModel.tagGroupWithTags.value
+        val tagGroupWithTag = viewModel.tagGroup.value
         val dialogFragment = EditTagDialogFragment(::editTag, tagGroupWithTag?.tagGroup, tag)
-        dialogFragment.show(childFragmentManager, "그룹에 새 태그 생성하기")
+        dialogFragment.show(childFragmentManager, "태그 이름 수정하기")
     }
 
     private fun editTag(name: String, tag: SjTag?) {
-        viewModel.editTag(tag, name, gid)
-        viewModel.setGid(gid)
+        viewModel.editTag(tag, name)
+        viewModel.loadTagGroup()
     }
 
     private fun moveToSwapTagGroupFragment() {
-        moveToOtherFragment(SwapTagGroupFragment.newInstance(gid))
+        moveToOtherFragment(SwapTagGroupFragment.newInstance(viewModel.gid))
     }
-
 
     // add chipGroup chips
     private fun addTagChipsToTagChipGroup(it: List<SjTag>) {

@@ -1,24 +1,41 @@
 package com.github.yeeun_yun97.toy.linksaver.viewmodel.tag
 
-import androidx.lifecycle.LiveData
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroupWithTags
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.BasicViewModelWithRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagRepository
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.SjBaseViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class ListGroupViewModel : BasicViewModelWithRepository() {
-    val tagGroups = repository.tagGroups
-    val publicTagGroups = repository.publicTagGroups
+class ListGroupViewModel : SjBaseViewModel() {
+    private val tagRepo = SjTagRepository.getInstance()
 
     // data binding live data
-    private val _bindingBasicTagGroup = repository.defaultTagGroup
-    val bindingBasicTagGroup: LiveData<SjTagGroupWithTags> get() = _bindingBasicTagGroup
+    val bindingTagGroups = tagRepo.tagGroupsWithoutDefault
+    val bindingBasicTagGroup = tagRepo.defaultTagGroup
 
-    fun editTagGroup(name: String, isPrivate: Boolean, group: SjTagGroup?) {
-        repository.editTagGroup(name, isPrivate, group)
+    override fun refreshData() {
+        when (isPrivateMode) {
+            true -> tagRepo.postTagGroupsPublicNotDefault()
+            false -> tagRepo.postTagGroupsNotDefault()
+        }
     }
 
-    fun deleteTagGroup(gid:Int){
-        repository.deleteTagGroup(gid)
+    fun editTagGroup(name: String, isPrivate: Boolean, group: SjTagGroup?) =
+        CoroutineScope(Dispatchers.IO).launch {
+            val job = launch {
+                if (group == null) {
+                    tagRepo.insertTagGroup(name, isPrivate)
+                } else {
+                    tagRepo.updateTagGroup(group.copy(name = name, isPrivate = isPrivate))
+                }
+            }
+            job.join()
+            refreshData()
+        }
+
+    fun deleteTagGroup(gid: Int) {
+        tagRepo.deleteTagGroupByGid(gid)
     }
 
 

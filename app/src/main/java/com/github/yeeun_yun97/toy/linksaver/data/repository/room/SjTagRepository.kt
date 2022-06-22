@@ -16,7 +16,6 @@ class SjTagRepository private constructor() {
 
     private val _tagGroupsWithoutDefault = MutableLiveData<List<SjTagGroupWithTags>>()
     val tagGroupsWithoutDefault: LiveData<List<SjTagGroupWithTags>> get() = _tagGroupsWithoutDefault
-
     val defaultTagGroup = dao.getDefaultTagGroupData()
 
     companion object {
@@ -54,8 +53,8 @@ class SjTagRepository private constructor() {
 
 
     // insert
-    private suspend fun insertTagGroup(tagGroup: SjTagGroup) {
-        dao.insertTagGroup(tagGroup)
+    suspend fun insertTagGroup(name: String, isPrivate:Boolean) {
+        dao.insertTagGroup(SjTagGroup(name = name, isPrivate = isPrivate))
     }
 
     private fun insertTag(newTag: SjTag) =
@@ -63,25 +62,11 @@ class SjTagRepository private constructor() {
             dao.insertTag(newTag)
         }
 
-    fun insertTag(name:String)=insertTag(SjTag(name=name))
+    fun insertTag(name: String, gid: Int = 1) = insertTag(SjTag(name = name, gid = gid))
 
     //  update
-    suspend fun updateTags(tags: List<SjTag>) {
-//        dao.updateTags(*tags.toTypedArray())
-    }
-
     suspend fun updateTag(tag: SjTag) {
         dao.updateTag(tag)
-    }
-
-    fun editTagGroup(name: String, isPrivate: Boolean, group: SjTagGroup?) {
-        CoroutineScope(Dispatchers.IO).launch {
-            if (group == null) {
-                insertTagGroup(SjTagGroup(name = name, isPrivate = isPrivate))
-            } else {
-                updateTagGroup(group.copy(name = name, isPrivate = isPrivate))
-            }
-        }
     }
 
     suspend fun updateTagGroup(tagGroup: SjTagGroup) {
@@ -101,9 +86,12 @@ class SjTagRepository private constructor() {
         }
     }
 
-    suspend fun deleteLinkTagCrossRefByTid(tid: Int) {
-        //delete all refs
+    suspend fun deleteLinkTagCrossRefsByTid(tid: Int) {
         dao.deleteLinkTagCrossRefsByTid(tid)
+    }
+
+    suspend fun deleteSearchTagCrossRefsByTid(tid: Int) {
+        dao.deleteSearchTagCrossRefsByTid(tid)
     }
 
     suspend fun deleteTag(tid: Int) {

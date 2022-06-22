@@ -6,7 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.model.VideoData
-import com.github.yeeun_yun97.toy.linksaver.data.repository.SjVideoRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjVideoRepository
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjYoutubeExtractListener
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjYoutubeExtractor
 import com.google.android.exoplayer2.MediaItem
@@ -17,26 +17,32 @@ class ListVideoViewModel(application: Application) : AndroidViewModel(applicatio
     private val START_MS: Long = 1000
     private val END_MS: Long = 16000
 
+    private val isPrivateMode = false
+
     // repository
-    val repository = SjVideoRepository.getInstance()
+    val videoRepo = SjVideoRepository.getInstance()
+
 
     // liveDataList
     private val _playList = MutableLiveData(mutableListOf<MediaItem>())
     val playList: LiveData<MutableList<MediaItem>> get() = _playList
-    val videoDatas = repository.allVideoData
-    val publicVideoDatas = repository.publicVideoData
+    val videoDatas : LiveData<List<VideoData>> = videoRepo.linksVideo
 
-    fun loadPlayList(privateMode: Boolean) {
-        if (privateMode) {
-            loadIntoPlayList(publicVideoDatas.value!!)
-        } else {
-            loadIntoPlayList(videoDatas.value!!)
+    init {
+        videoDatas.observeForever{
+            loadIntoPlayList(it)
         }
     }
 
-    private fun loadIntoPlayList(
-        dataList: List<VideoData>
-    ) {
+    fun refreshData() {
+        if (isPrivateMode) {
+            videoRepo.postVideosPublic()
+        } else {
+            videoRepo.postAllVideos()
+        }
+    }
+
+    private fun loadIntoPlayList(dataList: List<VideoData>) {
         val mediaItems: SparseArray<MediaItem> = SparseArray()
         for (i in dataList.indices) {
             val videoData = dataList[i]
@@ -51,7 +57,6 @@ class ListVideoViewModel(application: Application) : AndroidViewModel(applicatio
                 saveMediaItem(i, videoData.url, mediaItems, dataList.size)
             }
         }
-
     }
 
     private fun saveMediaItem(

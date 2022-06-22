@@ -1,5 +1,7 @@
 package com.github.yeeun_yun97.toy.linksaver.data.model
 
+import com.github.yeeun_yun97.toy.linksaver.ui.component.SjUtil
+
 data class SettingItemValue(
     val name: String,
     val open: () -> Unit
@@ -22,5 +24,19 @@ data class VideoData(
     val thumbnail: String,
     val isYoutubeVideo: Boolean,
     val tagList: List<SjTag>
-)
+) {
+    companion object {
+        fun getVideoDataBy(link: SjLinksAndDomainsWithTags): VideoData {
+            val fullUrl = LinkModelUtil.getFullUrl(link)
+            return VideoData(
+                link.link.lid,
+                fullUrl,
+                link.link.name,
+                link.link.preview,
+                SjUtil.checkYoutubePrefix(fullUrl),
+                link.tags
+            )
+        }
+    }
+}
 

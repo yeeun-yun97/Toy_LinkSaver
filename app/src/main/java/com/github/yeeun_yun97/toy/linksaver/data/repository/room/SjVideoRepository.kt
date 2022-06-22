@@ -10,19 +10,18 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.LinkModelUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinksAndDomainsWithTags
 import com.github.yeeun_yun97.toy.linksaver.data.model.VideoData
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SjVideoRepository private constructor() {
-    // dao
     private val dao: SjLinkDao = SjDatabaseUtil.getLinkDao()
 
-    // for video list fragment
-    private val _linksVideo = dao.getAllLinksByType(ELinkType.video.name)
-    private val _linksVideoPublic = dao.getPublicLinksByType(ELinkType.video.name)
+    private val videoType = ELinkType.video.name
 
-    val linksVideo: LiveData<List<VideoData>> =
-        Transformations.switchMap(_linksVideo) { convertToVideoData(it) }
-    val linksVideoPublic: LiveData<List<VideoData>> =
-        Transformations.switchMap(_linksVideoPublic) { convertToVideoData(it) }
+    // for video list fragment
+    private val _linksVideo = MutableLiveData<List<SjLinksAndDomainsWithTags>>()
+    val linksVideo: LiveData<List<VideoData>> = Transformations.switchMap(_linksVideo) { convertToVideoData(it) }
 
     companion object {
         // singleton object
@@ -34,25 +33,24 @@ class SjVideoRepository private constructor() {
             }
             return repo
         }
-
     }
+
+    // manage liveData
+    fun postVideosPublic() =
+        CoroutineScope(Dispatchers.IO).launch {
+            _linksVideo.postValue(dao.selectLinksPublicByType(videoType))
+        }
+
+    fun postAllVideos() =
+        CoroutineScope(Dispatchers.IO).launch {
+            _linksVideo.postValue(dao.selectLinksByType(videoType))
+        }
 
     private fun convertToVideoData(dataList: List<SjLinksAndDomainsWithTags>): MutableLiveData<List<VideoData>> {
         val list = mutableListOf<VideoData>()
-        for (i in dataList.indices) {
-            val vid = dataList[i]
-            val fullUrl = LinkModelUtil.getFullUrl(vid)
-            val videoData = VideoData(
-                vid.link.lid,
-                fullUrl,
-                vid.link.name,
-                vid.link.preview,
-                SjUtil.checkYoutubePrefix(fullUrl),
-                vid.tags
-            )
-            list.add(videoData)
-        }
+        for (i in dataList.indices) list.add(VideoData.getVideoDataBy(dataList[i]))
         return MutableLiveData(list)
     }
+
 
 }

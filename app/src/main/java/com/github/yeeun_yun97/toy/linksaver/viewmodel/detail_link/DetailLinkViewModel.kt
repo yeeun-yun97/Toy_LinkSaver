@@ -4,16 +4,17 @@ import androidx.lifecycle.*
 import com.github.yeeun_yun97.toy.linksaver.data.model.LinkDetailValue
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjLinkRepository
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.SjBaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class DetailLinkViewModel : ViewModel() {
+class DetailLinkViewModel : SjBaseViewModel() {
     private val linkRepo = SjLinkRepository.getInstance()
 
     var lid: Int? = null
         set(data) {
             field = data
-            loadLinkData()
+            refreshData()
         }
 
     private var _link = MutableLiveData<LinkDetailValue>()
@@ -24,7 +25,8 @@ class DetailLinkViewModel : ViewModel() {
     val bindingTags: LiveData<List<SjTag>> = Transformations.map(link) { it.tags }
     val bindingFullUrl: LiveData<String> = Transformations.map(link) { it.fullUrl }
 
-    fun loadLinkData() {
+
+    override fun refreshData() {
         viewModelScope.launch(Dispatchers.IO) {
             val data = linkRepo.selectLinkValueByLid(lid!!)
             _link.postValue(data)
@@ -34,4 +36,6 @@ class DetailLinkViewModel : ViewModel() {
     fun deleteLink() {
         linkRepo.deleteLinkByLid(lid!!)
     }
+
+
 }

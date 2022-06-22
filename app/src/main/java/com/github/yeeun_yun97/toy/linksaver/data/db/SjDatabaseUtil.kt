@@ -74,5 +74,12 @@ class SjDatabaseUtil {
             return this.db.getTagDao()
         }
 
+        fun getDomainDao(): SjDomainDao{
+            if (!this::db.isInitialized) {
+                throw Exception("Database is not yet initialized")
+            }
+            return this.db.getDomainDao()
+        }
+
     }
 }

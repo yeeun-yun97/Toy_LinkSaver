@@ -7,32 +7,9 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinksAndDomainsWithTags
 @Dao
 interface SjDao {
 
-    @Insert
-    suspend fun insertDomain(newDomain: SjDomain): Long
-
-    @Update
-    suspend fun updateDomain(domain: SjDomain)
-
-    @Delete
-    suspend fun deleteDomain(newDomain: SjDomain)
-
-    @Query("DELETE FROM SjLink WHERE did = :did")
-    suspend fun deleteLinksByDid(did: Int)
-
-    @Query("SELECT * FROM SjDomain WHERE did = :did")
-    suspend fun getDomainByDid(did: Int): SjDomain
-
-    @Transaction
-    @Query("SELECT * FROM SjLink WHERE did = :did")
-    fun getLinkAndDomainWithTagsByDid(did: Int): List<SjLinksAndDomainsWithTags>
-
 /*
     // get All Entities from Database
-    @Query("SELECT * FROM SjDomain WHERE did NOT IN (1)")
-    fun getAllDomainsExceptDefault(): LiveData<List<SjDomain>>
 
-    @Query("SELECT * FROM SjDomain")
-    fun getAllDomains(): LiveData<List<SjDomain>>
 
     @Query("SELECT * FROM SjTag ORDER BY name")
     fun getAllTags(): LiveData<List<SjTag>>

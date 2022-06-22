@@ -1,6 +1,5 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.domain
 
-import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
@@ -29,16 +28,16 @@ class ListDomainFragment : SjBasicFragment<FragmentListDomainBinding>() {
         binding.recyclerView.adapter = adapter
 
         // set domain item list
-        viewModel.domains.observe(
-            viewLifecycleOwner, {
-                if (it.isEmpty()) {
-                    binding.include.emptyView.visibility = View.VISIBLE
-                } else {
-                    binding.include.emptyView.visibility = View.GONE
-                }
-                adapter.setList(it)
-            }
-        )
+//        viewModel.domains.observe(
+//            viewLifecycleOwner, {
+//                if (it.isEmpty()) {
+//                    binding.include.emptyView.visibility = View.VISIBLE
+//                } else {
+//                    binding.include.emptyView.visibility = View.GONE
+//                }
+//                adapter.setList(it)
+//            }
+//        )
     }
 
 

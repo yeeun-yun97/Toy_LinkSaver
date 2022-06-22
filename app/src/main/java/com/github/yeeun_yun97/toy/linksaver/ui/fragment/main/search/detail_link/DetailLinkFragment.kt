@@ -21,7 +21,7 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
 
     override fun onStart() {
         super.onStart()
-        viewModel.loadLinkData()
+        viewModel.refreshData()
     }
 
     @SuppressLint("ClickableViewAccessibility")
