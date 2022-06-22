@@ -37,7 +37,7 @@ class SwapTagGroupFragment : SjBasicFragment<FragmentSwapTagGroupBinding>() {
         binding.viewModel = viewModel
 
         // observe basic tag group
-        viewModel.bindingBasicTagGroup.observe(viewLifecycleOwner, {
+        viewModel.bindingBasicTagGroup.observe(viewLifecycleOwner) {
             binding.basicChipGroup.removeAllViews()
             val basicOnCheckedListener =
                 CompoundButton.OnCheckedChangeListener { view, isChecked ->
@@ -52,12 +52,12 @@ class SwapTagGroupFragment : SjBasicFragment<FragmentSwapTagGroupBinding>() {
             for (tag in it.tags) {
                 val chip = SjTagChip(requireContext())
                 chip.setTagValue(TagValue(tag))
-                chip.setCheckableMode(basicOnCheckedListener)
+                chip.setCheckableMode(basicOnCheckedListener, false)
                 binding.basicChipGroup.addView(chip)
             }
-        })
+        }
 
-        viewModel.bindingTargetTagGroup.observe(viewLifecycleOwner, {
+        viewModel.bindingTargetTagGroup.observe(viewLifecycleOwner) {
             binding.include.tagChipGroup.removeAllViews()
             val targetOnCheckedListener =
                 CompoundButton.OnCheckedChangeListener { view, isChecked ->
@@ -82,10 +82,10 @@ class SwapTagGroupFragment : SjBasicFragment<FragmentSwapTagGroupBinding>() {
             for (tag in it.tags) {
                 val chip = SjTagChip(requireContext())
                 chip.setTagValue(TagValue(tag))
-                chip.setCheckableMode(targetOnCheckedListener)
+                chip.setCheckableMode(targetOnCheckedListener,false)
                 binding.include.tagChipGroup.addView(chip)
             }
-        })
+        }
 
         binding.moveToBasicImageView.setOnClickListener { moveSelectedTargetTagsToBasicGroup() }
         binding.moveToTargetImageView.setOnClickListener { moveSelectedBasicTagsToTargetGroup() }

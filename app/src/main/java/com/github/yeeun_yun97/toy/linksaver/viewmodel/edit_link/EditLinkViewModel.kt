@@ -1,5 +1,6 @@
 package com.github.yeeun_yun97.toy.linksaver.viewmodel.edit_link
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,18 +9,22 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.*
 import com.github.yeeun_yun97.toy.linksaver.data.repository.SjNetworkRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjLinkRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagRepository
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.SjBaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class EditLinkViewModel : ViewModel() {
+class EditLinkViewModel : SjBaseViewModel() {
     // repo
     private val tagRepo = SjTagRepository.getInstance()
     private val linkRepo = SjLinkRepository.getInstance()
     private val networkRepository = SjNetworkRepository.newInstance()
 
-    var url : String = ""
-        set(value){field=value}
+    var lid: Int? = null
+        set(value) {
+            field = value
+            refreshData()
+        }
 
     // model list
     val tagGroups = tagRepo.tagGroupsWithoutDefault
@@ -56,6 +61,14 @@ class EditLinkViewModel : ViewModel() {
         }
     }
 
+    override fun refreshData() {
+        if (isPrivateMode) {
+            tagRepo.postTagGroupsPublicNotDefault()
+        } else {
+            tagRepo.postTagGroupsNotDefault()
+        }
+    }
+
     // when create new with url address
     fun createLinkByUrl(url: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -74,8 +87,6 @@ class EditLinkViewModel : ViewModel() {
                 targetLink.preview = preview
                 _previewImage.postValue(preview)
             }
-
-            // 아이콘 불러오기
         }
     }
 
@@ -116,18 +127,21 @@ class EditLinkViewModel : ViewModel() {
 
 
     // handle tag selection
-    fun selectTag(tag: SjTag) = targetTags.add(tag)
-    fun unselectTag(tag: SjTag) = targetTags.remove(tag)
+    fun selectTag(tag: SjTag)=targetTags.add(tag)
+    fun unselectTag(tag: SjTag) =targetTags.remove(tag)
     fun isTagSelected(tag: SjTag) = targetTags.contains(tag)
 
 
     // save link
     fun saveVideo() {
-        if (targetLink.lid != 0) {
-            linkRepo.updateLinkAndTags(targetDomain, targetLink, targetTags)
-        } else {
-            linkRepo.insertLinkAndTags(targetDomain, targetLink, targetTags)
+        viewModelScope.launch {
+            if (targetLink.lid != 0) {
+                linkRepo.updateLinkAndTags(targetDomain, targetLink, targetTags)
+            } else {
+                linkRepo.insertLinkAndTags(targetDomain, targetLink, targetTags)
+            }
         }
+
     }
 
 

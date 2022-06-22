@@ -31,9 +31,9 @@ class EditLinkFragment : SjBasicFragment<FragmentEditLinkBinding>() {
 
     override fun layoutId(): Int = R.layout.fragment_edit_link
 
-    override fun onStart() {
-        super.onStart()
-        //TODO refresh
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshData()
     }
 
     override fun onCreateView() {
@@ -45,30 +45,29 @@ class EditLinkFragment : SjBasicFragment<FragmentEditLinkBinding>() {
         binding.toolbar.setMenu(R.menu.toolbar_menu_edit, handlerMap)
 
         // show or hide video icon
-        viewModel.bindingIsVideo.observe(viewLifecycleOwner,
-            {
-                binding.videoTypeIconImageView.visibility =
-                    if (it) View.VISIBLE
-                    else View.INVISIBLE
-            }
-        )
+        viewModel.bindingIsVideo.observe(viewLifecycleOwner
+        ) {
+            binding.videoTypeIconImageView.visibility =
+                if (it) View.VISIBLE
+                else View.INVISIBLE
+        }
 
         // set preview image
-        viewModel.bindingPreviewImage.observe(viewLifecycleOwner, {
+        viewModel.bindingPreviewImage.observe(viewLifecycleOwner) {
             Glide.with(requireContext())
                 .load(it)
                 .error(R.drawable.ic_icons8_no_image_100)
                 .centerCrop()
                 .into(binding.previewImageView)
-        })
+        }
 
         // set tagList
-        viewModel.tagGroups.observe(viewLifecycleOwner, {
+        viewModel.tagGroups.observe(viewLifecycleOwner) {
             setCheckableTagsToChipGroupChildren(viewModel.tagDefaultGroup.value, it)
-        })
-        viewModel.tagDefaultGroup.observe(viewLifecycleOwner, {
+        }
+        viewModel.tagDefaultGroup.observe(viewLifecycleOwner) {
             setCheckableTagsToChipGroupChildren(it, viewModel.tagGroups.value)
-        })
+        }
 
         setOnClickListeners()
 

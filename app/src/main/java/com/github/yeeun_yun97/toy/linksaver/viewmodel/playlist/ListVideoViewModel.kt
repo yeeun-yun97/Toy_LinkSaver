@@ -17,7 +17,11 @@ class ListVideoViewModel(application: Application) : AndroidViewModel(applicatio
     private val START_MS: Long = 1000
     private val END_MS: Long = 16000
 
-    private val isPrivateMode = false
+    var isPrivateMode = false
+    set(value){
+        field = value
+        refreshData()
+    }
 
     // repository
     val videoRepo = SjVideoRepository.getInstance()

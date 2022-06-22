@@ -43,8 +43,7 @@ abstract class SjBasicFragment<T : ViewDataBinding> : DataBindingBasicFragment<T
             for (def in defaultGroup.tags) {
                 val chip = SjTagChip(context!!)
                 chip.setTagValue(TagValue(def))
-                chip.setCheckableMode(onCheckedChangeListener)
-                chip.isChecked = isCheckedOperation(def)
+                chip.setCheckableMode(onCheckedChangeListener,isCheckedOperation(def))
                 chipGroup.addView(chip)
                 Log.d("태그 그룹","${chip.text} ${isCheckedOperation(def)}")
             }
@@ -56,8 +55,7 @@ abstract class SjBasicFragment<T : ViewDataBinding> : DataBindingBasicFragment<T
                 for (tag in group.tags) {
                     val chip = SjTagChip(context!!)
                     chip.setTagValue(TagValue(tag, group.tagGroup.name))
-                    chip.setCheckableMode(onCheckedChangeListener)
-                    chip.isChecked = isCheckedOperation(tag)
+                    chip.setCheckableMode(onCheckedChangeListener,isCheckedOperation(tag))
                     chipGroup.addView(chip)
                     Log.d("태그 그룹","태그 ${chip.text} ${isCheckedOperation(tag)}")
                 }

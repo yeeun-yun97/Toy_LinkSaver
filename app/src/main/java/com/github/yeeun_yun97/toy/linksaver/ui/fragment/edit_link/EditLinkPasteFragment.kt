@@ -4,7 +4,6 @@ import android.content.ClipDescription
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditPasteBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.component.LinkPasteBottomSheet
@@ -14,7 +13,6 @@ import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.edit_link.EditLinkViewModel
 
 class EditLinkPasteFragment : SjBasicFragment<FragmentEditPasteBinding>() {
-
     private val editFragment = EditLinkFragment()
     private val editViewModel: EditLinkViewModel by activityViewModels()
 

@@ -106,9 +106,6 @@ interface SjLinkDao {
     @Query("DELETE FROM LinkTagCrossRef WHERE lid= :lid")
     suspend fun deleteLinkTagCrossRefsByLid(lid: Int)
 
-    @Query("DELETE FROM LinkTagCrossRef WHERE lid = :lid AND tid IN(:tids)")
-    suspend fun deleteLinkTagCrossRefsByLidAndTids(lid: Int, tids: List<Int>)
-
     @Query("DELETE FROM SjLink WHERE lid = :lid")
     suspend fun deleteLinkByLid(lid: Int)
 

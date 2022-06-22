@@ -4,7 +4,11 @@ import androidx.lifecycle.ViewModel
 
 abstract class SjBaseViewModel : ViewModel() {
 
-    protected var isPrivateMode: Boolean = false
+    var isPrivateMode: Boolean = false
+        set(value) {
+            field = value
+            refreshData()
+        }
 
     abstract fun refreshData()
 

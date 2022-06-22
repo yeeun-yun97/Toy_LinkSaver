@@ -19,6 +19,7 @@
             android:id="@+id/emptySearchSetGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            listEmptyView="@{viewModel.bindingSearchSets}"
             app:constraint_referenced_ids="emptySearchSetImageView,emptySearchSetTextView" />
 
         <TextView

@@ -1,5 +1,6 @@
 package com.github.yeeun_yun97.toy.linksaver.data.repository.room
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjLinkDao
@@ -112,6 +113,7 @@ class SjLinkRepository private constructor() {
 
     // update
     fun updateLinkAndTags(domain: SjDomain?, link: SjLink, tags: MutableList<SjTag>) {
+        Log.d("링크 업데이트", tags.toString())
         CoroutineScope(Dispatchers.IO).launch {
             if (domain != null) link.did = domain.did
             dao.updateLink(link)

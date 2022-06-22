@@ -3,12 +3,12 @@ package com.github.yeeun_yun97.toy.linksaver.viewmodel.search
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjLinkRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjSearchSetRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagRepository
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.SjBaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -17,14 +17,13 @@ enum class ListMode {
     MODE_ALL, MODE_SEARCH;
 }
 
-class SearchLinkViewModel : ViewModel() {
+class SearchLinkViewModel : SjBaseViewModel() {
     private val searchSetRepo = SjSearchSetRepository.getInstance()
     private val linkRepo = SjLinkRepository.getInstance()
     private val tagRepo = SjTagRepository.getInstance()
 
     // mode
     private lateinit var mode: ListMode
-    var isPrivateMode: Boolean = false
 
     // binding
     val bindingSearchWord = MutableLiveData<String>()
@@ -37,7 +36,7 @@ class SearchLinkViewModel : ViewModel() {
 
     // data
     val links = linkRepo.links
-    val searchSets = searchSetRepo.searchSetList
+    val bindingSearchSets = searchSetRepo.searchSetList
 
     val defaultTags = tagRepo.defaultTagGroup
     val tagGroups = tagRepo.tagGroupsWithoutDefault
@@ -53,7 +52,7 @@ class SearchLinkViewModel : ViewModel() {
         updateTags()
     }
 
-    fun refreshData() {
+    override fun refreshData() {
         refreshLinks()
         refreshSearchSets()
         refreshTags()
@@ -97,6 +96,20 @@ class SearchLinkViewModel : ViewModel() {
         }
     }
 
+    // set search data
+    fun setSearch(keyword: String, tags: List<SjTag>) =
+        viewModelScope.launch(Dispatchers.Main) {
+            val keywordJob = launch{bindingSearchWord.postValue(keyword)}
+            val tagsJob = launch {
+                _searchTagMap.clear()
+                for (tag in tags) _searchTagMap[tag.tid] = tag
+            }
+            keywordJob.join()
+            tagsJob.join()
+            updateTags()
+        }
+
+
     // search methods
     fun isSearchSetEmpty(): Boolean =
         bindingSearchWord.value!!.isEmpty() && _searchTagMap.isEmpty()
@@ -133,14 +146,6 @@ class SearchLinkViewModel : ViewModel() {
     // manage tag selection
     fun addTag(tag: SjTag) {
         _searchTagMap[tag.tid] = tag
-    }
-
-    fun setTags(tags: List<SjTag>) {
-        _searchTagMap.clear()
-        for (tag in tags) {
-            _searchTagMap[tag.tid] = tag
-        }
-        updateTags()
     }
 
     private fun updateTags() {

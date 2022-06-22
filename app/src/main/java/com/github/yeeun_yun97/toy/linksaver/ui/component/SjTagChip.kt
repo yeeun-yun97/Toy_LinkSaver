@@ -61,10 +61,11 @@ class SjTagChip : Chip {
 
     // only checkable chip Mode
     fun setCheckableMode(
-        onCheckedChangeListener: OnCheckedChangeListener
+        onCheckedChangeListener: OnCheckedChangeListener, checked : Boolean
     ) {
         isCheckedIconVisible = false
         isCheckable = true
+        isChecked = checked
         id = tagValue.tag.tid
         setOnCheckedChangeListener(onCheckedChangeListener)
     }

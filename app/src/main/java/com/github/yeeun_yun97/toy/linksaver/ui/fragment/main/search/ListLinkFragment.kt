@@ -13,13 +13,14 @@ import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.LinkSearchListAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.detail_link.DetailLinkFragment
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.SettingViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.detail_link.DetailLinkViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel
 import kotlinx.coroutines.*
 
-
 class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
     private val viewModel: SearchLinkViewModel by activityViewModels()
+    private val settingViewModel: SettingViewModel by activityViewModels()
 
     // fragments
     private val detailFragment = DetailLinkFragment()
@@ -38,12 +39,17 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
     override fun onStart() {
         super.onStart()
         viewUtil.state = DataState.LOADING
+        viewModel.isPrivateMode=settingViewModel.isPrivateMode.value ?: false
         viewModel.refreshData()
     }
 
     override fun onCreateView() {
         // set binding variable
         binding.viewModel = viewModel
+
+        settingViewModel.isPrivateMode.observe(viewLifecycleOwner){
+            viewModel.isPrivateMode = it
+        }
 
         // set recycler view
         initRecyclerView()
@@ -59,9 +65,9 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
         setOnClickListeners()
 
         // set adapter list
-        viewModel.links.observe(viewLifecycleOwner, {
+        viewModel.links.observe(viewLifecycleOwner) {
             if (it != null) setAdapterList(it)
-        })
+        }
     }
 
     private fun setAdapterList(list: List<SjLinksAndDomainsWithTags>) {

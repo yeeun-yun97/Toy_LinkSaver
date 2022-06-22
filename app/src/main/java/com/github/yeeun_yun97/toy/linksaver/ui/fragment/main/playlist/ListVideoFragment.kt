@@ -51,6 +51,10 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
         val handlerMap = hashMapOf<Int, () -> Unit>(R.id.menu_playlist to ::moveToPlaylistFragment)
         binding.toolbar.setMenu(R.menu.toolbar_menu_video_list, handlerMap = handlerMap)
 
+        settingViewModel.isPrivateMode.observe(viewLifecycleOwner){
+            viewModel.isPrivateMode = it
+        }
+
         // player
         _player = ExoPlayer.Builder(requireContext()).build()
         initPlayer(player)
@@ -100,6 +104,7 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
     override fun onStart() {
         super.onStart()
         viewModel.refreshData()
+        viewModel.isPrivateMode = settingViewModel.isPrivateMode.value ?: false
         binding.videoRecyclerView.scrollToPosition(0)
     }
 

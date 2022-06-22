@@ -18,11 +18,13 @@ import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSearchBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.SearchSetAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.SettingViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel
 import kotlinx.coroutines.launch
 
 class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
     private val viewModel: SearchLinkViewModel by activityViewModels()
+    private val settingViewModel: SettingViewModel by activityViewModels()
     private lateinit var adapter: SearchSetAdapter
 
     // drawable resources
@@ -78,12 +80,17 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
 
     override fun onResume() {
         super.onResume()
+        viewModel.isPrivateMode = settingViewModel.isPrivateMode.value!!
         viewModel.refreshData()
     }
 
     override fun onCreateView() {
         //set binding
         binding.viewModel = viewModel
+
+        settingViewModel.isPrivateMode.observe(viewLifecycleOwner) {
+            viewModel.isPrivateMode = it
+        }
 
         // set auto focus on Search Field
         binding.searchEditText.requestFocus()
@@ -95,26 +102,15 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
         // set recyclerview search set
         initRecyclerView()
 
-        viewModel.tagGroups.observe(viewLifecycleOwner, {
+        viewModel.tagGroups.observe(viewLifecycleOwner) {
             setTagList(viewModel.defaultTags.value, it)
-        })
-        viewModel.defaultTags.observe(viewLifecycleOwner, {
+        }
+        viewModel.defaultTags.observe(viewLifecycleOwner) {
             setTagList(it, viewModel.tagGroups.value)
-        })
-        viewModel.bindingSearchTags.observe(viewLifecycleOwner, {
+        }
+        viewModel.bindingSearchTags.observe(viewLifecycleOwner) {
             setTagList(viewModel.defaultTags.value, viewModel.tagGroups.value)
-        })
-
-        viewModel.searchSets.observe(viewLifecycleOwner,
-            {
-                if (it.isNullOrEmpty()) {
-                    binding.emptySearchSetGroup.visibility = View.VISIBLE
-                } else {
-                    binding.emptySearchSetGroup.visibility = View.GONE
-                }
-                adapter.setList(it)
-            }
-        )
+        }
 
         // user input enter(action search) -> search start.
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -125,13 +121,13 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
         }
 
         // user input -> set search icon
-        viewModel.bindingSearchWord.observe(viewLifecycleOwner, {
+        viewModel.bindingSearchWord.observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty() && viewModel.isSearchSetEmpty()) {
                 binding.searchImageView.setImageDrawable(deleteIcon)
             } else {
                 binding.searchImageView.setImageDrawable(searchIcon)
             }
-        })
+        }
 
         setOnClickListeners()
     }
@@ -157,6 +153,9 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
             }
         )
         binding.recentSearchedRecyclerView.adapter = this.adapter
+        viewModel.bindingSearchSets.observe(viewLifecycleOwner) {
+            adapter.setList(it)
+        }
     }
 
     private fun setTagList(
@@ -192,14 +191,10 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
     }
 
     private fun setSearch(keyword: String, tags: List<SjTag>) =
-        lifecycleScope.launch {
-            viewModel.bindingSearchWord.postValue(keyword)
-            viewModel.setTags(tags)
-        }
+        viewModel.setSearch(keyword,tags)
 
-    private fun deleteAllSearchSet() {
+    private fun deleteAllSearchSet() =
         viewModel.deleteAllSearchSet()
-    }
 
     private fun searchAndPopBack() {
         viewModel.startSearchAndSaveIfNotEmpty()
