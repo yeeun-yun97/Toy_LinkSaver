@@ -1,20 +1,25 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search
 
+import android.content.Context
 import android.graphics.Rect
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.CompoundButton
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroupWithTags
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSearchBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.SearchSetAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel
+import kotlinx.coroutines.launch
 
 class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
     private val viewModel: SearchLinkViewModel by activityViewModels()
@@ -48,14 +53,27 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
             }
         }
 
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if (viewModel.isSearchSetEmpty()) {
+                viewModel.initValuesAndSetModeAll()
+            } else {
+                viewModel.startSearchAndSaveIfNotEmpty()
+            }
+            popBack()
+        }
+    }
 
-//    private fun selectLiveDataBySettingValue(isPrivateMode: Boolean): LiveData<List<SjTagGroupWithTags>> {
-//        return if (isPrivateMode) viewModel.publicTagGroups
-//        else viewModel.tagGroups
-//    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
 
+    override fun onDetach() {
+        super.onDetach()
+        onBackPressedCallback.remove()
+    }
 
-    // override methods
     override fun layoutId(): Int = R.layout.fragment_search
 
     override fun onResume() {
@@ -77,31 +95,15 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
         // set recyclerview search set
         initRecyclerView()
 
-/*
-lifecycleScope.launch {
-            val isPrivateModeDeffer = async(Dispatchers.IO) { settingViewModel.privateFlow.first() }
-            val isPrivateMode = isPrivateModeDeffer.await()
-            viewModel.isPrivateMode = isPrivateMode
-
-            // set tag list
-            val tagGroupsLiveData =
-                selectLiveDataBySettingValue(isPrivateMode)
-            tagGroupsLiveData.observe(viewLifecycleOwner, {
-                if (viewModel.tagDefaultGroup.value != null)
-                    setTagList(viewModel.tagDefaultGroup.value!!, it)
-            })
-            viewModel.tagDefaultGroup.observe(viewLifecycleOwner, {
-                if (tagGroupsLiveData.value != null)
-                    setTagList(it, tagGroupsLiveData.value!!)
-            })
-            viewModel.bindingSearchTags.observe(viewLifecycleOwner, {
-                if (tagGroupsLiveData.value != null && viewModel.tagDefaultGroup.value != null)
-                    setTagList(viewModel.tagDefaultGroup.value!!, tagGroupsLiveData.value!!)
-            })
-
-        }
-
-*/
+        viewModel.tagGroups.observe(viewLifecycleOwner, {
+            setTagList(viewModel.defaultTags.value, it)
+        })
+        viewModel.defaultTags.observe(viewLifecycleOwner, {
+            setTagList(it, viewModel.tagGroups.value)
+        })
+        viewModel.bindingSearchTags.observe(viewLifecycleOwner, {
+            setTagList(viewModel.defaultTags.value, viewModel.tagGroups.value)
+        })
 
         viewModel.searchSets.observe(viewLifecycleOwner,
             {
@@ -157,24 +159,25 @@ lifecycleScope.launch {
         binding.recentSearchedRecyclerView.adapter = this.adapter
     }
 
-//    private fun setTagList(
-//        defaultGroup: SjTagGroupWithTags,
-//        groups: List<SjTagGroupWithTags>
-//    ) {
-//        if (groups.isNullOrEmpty() && defaultGroup.tags.isEmpty()) {
-//            binding.emptyTagGroup.visibility = View.VISIBLE
-//        } else {
-//            binding.emptyTagGroup.visibility = View.GONE
-//        }
-//
-//        setTagsToChipGroupChildren(
-//            defaultGroup,
-//            groups,
-//            ::isTagSelected,
-//            binding.tagChipGroup,
-//            onCheckedListener
-//        )
-//    }
+    private fun setTagList(
+        defaultGroup: SjTagGroupWithTags?,
+        groups: List<SjTagGroupWithTags>?
+    ) {
+        if (groups.isNullOrEmpty() && defaultGroup != null) {
+            binding.emptyTagGroup.visibility = View.VISIBLE
+        } else {
+            binding.emptyTagGroup.visibility = View.GONE
+        }
+
+        setTagsToChipGroupChildren(
+            defaultGroup,
+            groups,
+            ::isTagSelected,
+            binding.tagChipGroup,
+            onCheckedListener
+        )
+    }
+
     private fun isTagSelected(tag: SjTag) = viewModel.containsTag(tag)
 
 
@@ -188,10 +191,11 @@ lifecycleScope.launch {
         binding.searchImageView.setOnClickListener { searchAndPopBack() }
     }
 
-    private fun setSearch(keyword: String, tags: List<SjTag>) {
-        viewModel.bindingSearchWord.postValue(keyword)
-        viewModel.setTags(tags)
-    }
+    private fun setSearch(keyword: String, tags: List<SjTag>) =
+        lifecycleScope.launch {
+            viewModel.bindingSearchWord.postValue(keyword)
+            viewModel.setTags(tags)
+        }
 
     private fun deleteAllSearchSet() {
         viewModel.deleteAllSearchSet()
@@ -201,6 +205,7 @@ lifecycleScope.launch {
         viewModel.startSearchAndSaveIfNotEmpty()
         popBack()
     }
+
 
 }
 

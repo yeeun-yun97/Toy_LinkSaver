@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.github.yeeun_yun97.toy.linksaver.viewmodel.detail_link.DetailLinkViewModel" />
@@ -27,14 +26,10 @@
             android:id="@+id/previewPreview"
             android:layout_width="0dp"
             android:layout_height="200dp"
-            app:previewContent="@{viewModel.link}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
-           />
-<!--        app:isVideo="@{viewModel.link.isVideo}"-->
-<!--        app:contentUrl="@{viewModel.link.fullUrl}"-->
-<!--        app:previewUrl="@{viewModel.link.preview}"-->
+            app:previewContent="@{viewModel.link}" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -48,11 +43,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.constraintlayout.widget.Group
-                    android:id="@+id/tagEmptyGroup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:constraint_referenced_ids="emptyImageView,emptyTextView" />
 
                 <TextView
                     android:id="@+id/nameTextView"
@@ -87,15 +77,22 @@
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/tagChipGroup"
-                    chipDataList="@{viewModel.bindingTags}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:paddingVertical="10dp"
+                    app:chipDataList="@{viewModel.bindingTags}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/fullUrlTextView"
                     app:layout_constraintHeight_min="200dp"
                     app:layout_constraintStart_toStartOf="@+id/fullUrlTextView"
                     app:layout_constraintTop_toBottomOf="@id/view3" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/tagEmptyGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="emptyImageView,emptyTextView"
+                    app:listEmptyView="@{viewModel.bindingTags}" />
 
                 <ImageView
                     android:id="@+id/emptyImageView"

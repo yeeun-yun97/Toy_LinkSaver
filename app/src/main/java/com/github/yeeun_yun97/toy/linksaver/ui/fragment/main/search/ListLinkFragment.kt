@@ -1,8 +1,6 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search
 
 import android.content.Intent
-import android.util.Log
-import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +13,7 @@ import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.LinkSearchListAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.detail_link.DetailLinkFragment
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.detail_link.DetailLinkViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel
 import kotlinx.coroutines.*
 
@@ -22,13 +21,17 @@ import kotlinx.coroutines.*
 class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
     private val viewModel: SearchLinkViewModel by activityViewModels()
 
+    // fragments
+    private val detailFragment = DetailLinkFragment()
+    private val detailViewModel: DetailLinkViewModel by activityViewModels()
+    private val searchFragment = SearchFragment()
+
     // control view visibility
     private lateinit var viewUtil: ViewVisibilityUtil
 
     // for recyclerView
     private lateinit var adapter: LinkSearchListAdapter
     private lateinit var layoutManager: RecyclerView.LayoutManager
-
 
     override fun layoutId(): Int = R.layout.fragment_list_link
 
@@ -55,18 +58,8 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
         // handle user click event
         setOnClickListeners()
 
-        // show or hide Button
-        viewModel.bindingSearchTags.observe(viewLifecycleOwner, {
-            binding.cancelSearchSetImageView.visibility =
-                when (it.isNullOrEmpty()) {
-                    true -> View.GONE
-                    false -> View.VISIBLE
-                }
-        })
-
         // set adapter list
-        viewModel.dataList.observe(viewLifecycleOwner, {
-            Log.d("똥","데이터 리스트에 ${it.size}건 들어옴!")
+        viewModel.links.observe(viewLifecycleOwner, {
             if (it != null) setAdapterList(it)
         })
     }
@@ -99,11 +92,12 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
     }
 
     private fun moveToSearchFragment() {
-        moveToOtherFragment(SearchFragment())
+        moveToOtherFragment(searchFragment)
     }
 
     private fun moveToDetailFragment(lid: Int) {
-        moveToOtherFragment(DetailLinkFragment.newInstance(lid))
+        detailViewModel.lid = lid
+        moveToOtherFragment(detailFragment)
     }
 
     private fun startEditActivity() {

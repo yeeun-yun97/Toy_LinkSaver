@@ -1,13 +1,19 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.activity
 
 import android.view.LayoutInflater
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import com.github.yeeun_yun97.toy.linksaver.databinding.ActivityPlainBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.basic.SjBasicActivity
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.edit_link.EditLinkFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.edit_link.EditLinkPasteFragment
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.edit_link.EditLinkAndVideoFragment
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.edit_link.EditLinkViewModel
 
 class EditLinkActivity : SjBasicActivity<ActivityPlainBinding>() {
+
+    private val editPasteFragment = EditLinkPasteFragment()
+    private val editFragment = EditLinkFragment()
+    private val editViewModel: EditLinkViewModel by viewModels()
 
     override fun viewBindingInflate(inflater: LayoutInflater): ActivityPlainBinding =
         ActivityPlainBinding.inflate(layoutInflater)
@@ -15,11 +21,12 @@ class EditLinkActivity : SjBasicActivity<ActivityPlainBinding>() {
     override fun homeFragment(): Fragment {
         val lid = intent.getIntExtra("lid", -1)
         val url = intent.getStringExtra("url") ?: ""
-        return if (lid == -1 && url.isEmpty()) {
-            EditLinkPasteFragment()
-        } else {
-            EditLinkAndVideoFragment.newInstance(lid, url)
+        when {
+            lid != -1 -> editViewModel.setLinkByLid(lid)
+            url.isNotEmpty() -> editViewModel.createLinkByUrl(url)
+            else -> return editPasteFragment
         }
+        return editFragment
     }
 
     override fun onCreate() {}

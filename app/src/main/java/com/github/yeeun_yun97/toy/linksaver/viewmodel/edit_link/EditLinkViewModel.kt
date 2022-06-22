@@ -2,22 +2,22 @@ package com.github.yeeun_yun97.toy.linksaver.viewmodel.edit_link
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.yeeun_yun97.toy.linksaver.data.model.*
 import com.github.yeeun_yun97.toy.linksaver.data.repository.SjNetworkRepository
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.BasicViewModelWithRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class EditVideoViewModel : BasicViewModelWithRepository() {
+class EditVideoViewModel : ViewModel() {
     // repo
+    private val tagRepo = SjTagRepository.getInstance()
     private val networkRepository = SjNetworkRepository.newInstance()
 
     // model list
-    val tagGroups = repository.tagGroups
-    val publicTagGroups = repository.publicTagGroups
-    val tagDefaultGroup = repository.defaultTagGroup
+    val tagGroups = tagRepo.tagGroupsWithoutDefault
+    val tagDefaultGroup = tagRepo.defaultTagGroup
 
     // default type
     private val defaultType = ELinkType.link
@@ -76,8 +76,8 @@ class EditVideoViewModel : BasicViewModelWithRepository() {
     // when updating existing SjLink
     fun setLinkByLid(lid: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            val link = async { repository.getLinkAndDomainWithTagsByLid(lid) }
-            setData(link.await())
+//            val link = async { repository.getLinkAndDomainWithTagsByLid(lid) }
+//            setData(link.await())
         }
     }
 
@@ -105,7 +105,7 @@ class EditVideoViewModel : BasicViewModelWithRepository() {
     }
 
     fun createTag(name: String) {
-        repository.insertTag(SjTag(name = name))
+//        repository.insertTag(SjTag(name = name))
     }
 
 
@@ -118,9 +118,9 @@ class EditVideoViewModel : BasicViewModelWithRepository() {
     // save link
     fun saveVideo() {
         if (targetLink.lid != 0) {
-            repository.updateLinkAndTags(targetDomain, targetLink, targetTags)
+//            repository.updateLinkAndTags(targetDomain, targetLink, targetTags)
         } else {
-            repository.insertLinkAndTags(targetDomain, targetLink, targetTags)
+//            repository.insertLinkAndTags(targetDomain, targetLink, targetTags)
         }
     }
 

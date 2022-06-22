@@ -1,5 +1,6 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic
 
+import android.util.Log
 import android.widget.CompoundButton
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
@@ -42,9 +43,10 @@ abstract class SjBasicFragment<T : ViewDataBinding> : DataBindingBasicFragment<T
             for (def in defaultGroup.tags) {
                 val chip = SjTagChip(context!!)
                 chip.setTagValue(TagValue(def))
-                chip.isChecked = isCheckedOperation(def)
                 chip.setCheckableMode(onCheckedChangeListener)
+                chip.isChecked = isCheckedOperation(def)
                 chipGroup.addView(chip)
+                Log.d("태그 그룹","${chip.text} ${isCheckedOperation(def)}")
             }
         }
 
@@ -54,12 +56,14 @@ abstract class SjBasicFragment<T : ViewDataBinding> : DataBindingBasicFragment<T
                 for (tag in group.tags) {
                     val chip = SjTagChip(context!!)
                     chip.setTagValue(TagValue(tag, group.tagGroup.name))
-                    chip.isChecked = isCheckedOperation(tag)
                     chip.setCheckableMode(onCheckedChangeListener)
+                    chip.isChecked = isCheckedOperation(tag)
                     chipGroup.addView(chip)
+                    Log.d("태그 그룹","태그 ${chip.text} ${isCheckedOperation(tag)}")
                 }
             }
         }
     }
+
 
 }

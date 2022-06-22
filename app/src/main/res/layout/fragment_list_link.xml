@@ -110,7 +110,7 @@
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/tagChipGroup"
-                chipDataList="@{viewModel.bindingSearchTags}"
+                app:chipDataList="@{viewModel.bindingSearchTags}"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
         </HorizontalScrollView>
@@ -124,7 +124,8 @@
             app:layout_constraintEnd_toEndOf="@+id/searchEditText"
             app:layout_constraintStart_toEndOf="@+id/searchSetScrollView"
             app:layout_constraintTop_toTopOf="@+id/searchSetScrollView"
-            app:srcCompat="@drawable/ic_button_cancel_search" />
+            app:srcCompat="@drawable/ic_button_cancel_search"
+            app:visibilityByList="@{viewModel.bindingSearchTags}" />
 
         <ImageView
             android:id="@+id/emptyImageView"

@@ -5,10 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinksAndDomainsWithTags
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
-import com.github.yeeun_yun97.toy.linksaver.data.repository.SjRoomRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjLinkRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjSearchSetRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -18,146 +18,140 @@ enum class ListMode {
 }
 
 class SearchLinkViewModel : ViewModel() {
-    private val searchSetRepository = SjSearchSetRepository.getInstance()
-    private val roomRepository = SjRoomRepository.getInstance()
+    private val searchSetRepo = SjSearchSetRepository.getInstance()
+    private val linkRepo = SjLinkRepository.getInstance()
+    private val tagRepo = SjTagRepository.getInstance()
 
     // mode
-    private var mode: ListMode = ListMode.MODE_ALL
-    var isPrivateMode: Boolean? = false
-
+    private lateinit var mode: ListMode
+    var isPrivateMode: Boolean = false
 
     // binding
-    val bindingSearchWord = MutableLiveData("")
-    private var _searchTags = mutableListOf<SjTag>()
-    private val _bindingSearchTags = MutableLiveData(_searchTags)
-    val bindingSearchTags: LiveData<MutableList<SjTag>> get() = _bindingSearchTags
+    val bindingSearchWord = MutableLiveData<String>()
+    private val _bindingSearchTags = MutableLiveData<List<SjTag>>()
+    val bindingSearchTags: LiveData<List<SjTag>> get() = _bindingSearchTags
+
+    private lateinit var _searchTagMap: MutableMap<Int, SjTag>
+    private val _tids: List<Int> get() = _searchTagMap.keys.toList()
 
 
     // data
-    private val _dataList = MutableLiveData<List<SjLinksAndDomainsWithTags>>()
-    val dataList: LiveData<List<SjLinksAndDomainsWithTags>> get() = _dataList
-    val searchSets = searchSetRepository.searchSetList
+    val links = linkRepo.links
+    val searchSets = searchSetRepo.searchSetList
 
+    val defaultTags = tagRepo.defaultTagGroup
+    val tagGroups = tagRepo.tagGroupsWithoutDefault
+
+    init {
+        initValuesAndSetModeAll()
+    }
+
+    fun initValuesAndSetModeAll() {
+        this.mode = ListMode.MODE_ALL
+        this.bindingSearchWord.postValue("")
+        _searchTagMap = mutableMapOf()
+        updateTags()
+    }
 
     fun refreshData() {
-        when (mode) {
-            ListMode.MODE_ALL -> loadAllLinks()
-            ListMode.MODE_SEARCH -> loadSearchLinks()
-        }
+        refreshLinks()
+        refreshSearchSets()
+        refreshTags()
+    }
 
-        viewModelScope.launch(Dispatchers.IO) {
-            when (isPrivateMode) {
-                true -> searchSetRepository.loadSearchSetPublic()
-                false -> searchSetRepository.loadAllSearchSet()
+    private fun refreshTags() {
+        when (isPrivateMode) {
+            true -> {
+                tagRepo.postTagGroupsPublicNotDefault()
+            }
+            false -> {
+                tagRepo.postTagGroupsNotDefault()
             }
         }
     }
 
-    private fun loadAllLinks() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val links =
-                if (isPrivateMode == true) {
-                    roomRepository.selectLinksPublic()
-                } else {
-                    roomRepository.selectAllLinks()
-                }
-            _dataList.postValue(links)
+    private fun refreshSearchSets() {
+        when (isPrivateMode) {
+            true -> searchSetRepo.postSearchSetPublic()
+            false -> searchSetRepo.postAllSearchSet()
         }
     }
 
-    private fun loadSearchLinks() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val links =
-                if (isPrivateMode == true) {
-                    roomRepository.selectLinksByNameAndTagsPublic(
-                        bindingSearchWord.value!!,
-                        _searchTags
-                    )
-                } else {
-                    roomRepository.selectLinksByNameAndTags(
-                        bindingSearchWord.value!!,
-                        _searchTags
-                    )
+    private fun refreshLinks() {
+        when (mode) {
+            ListMode.MODE_ALL -> {
+                when (isPrivateMode) {
+                    true -> linkRepo.postLinksPublic()
+                    false -> linkRepo.postAllLinks()
                 }
-            _dataList.postValue(links)
+            }
+            ListMode.MODE_SEARCH -> {
+                when (isPrivateMode) {
+                    true -> linkRepo.postLinksPublicByKeywordAndTids(
+                        bindingSearchWord.value!!,
+                        _tids
+                    )
+                    false -> linkRepo.postLinksByKeywordAndTids(bindingSearchWord.value!!, _tids)
+                }
+            }
+        }
+    }
+
+    // search methods
+    fun isSearchSetEmpty(): Boolean =
+        bindingSearchWord.value!!.isEmpty() && _searchTagMap.isEmpty()
+
+    fun startSearchAndSaveIfNotEmpty() {
+        updateTags()
+        if (isSearchSetEmpty()) {
+            initValuesAndSetModeAll()
+        } else {
+            Log.d("모드 변경", "Search")
+            this.mode = ListMode.MODE_SEARCH
+            refreshLinks()
+            searchSetRepo.insertSearchSet(bindingSearchWord.value!!, _tids)
         }
     }
 
     fun clearSearchSet() {
-        initData()
-        refreshData()
+        initValuesAndSetModeAll()
+        refreshLinks()
     }
 
-    private fun initData() {
-        this.mode = ListMode.MODE_ALL
-        this.bindingSearchWord.postValue("")
-        _searchTags = mutableListOf()
-        _bindingSearchTags.postValue(_searchTags)
-    }
 
-    // search methods
-    fun startSearchAndSaveIfNotEmpty() {
-        if (isSearchSetEmpty()) {
-            initData()
-        } else {
-            this.mode = ListMode.MODE_SEARCH
-            searchAndSave()
+    // delete searchSets
+    fun deleteAllSearchSet() =
+        viewModelScope.launch {
+            val deleteJob = searchSetRepo.deleteAllSearchSet()
+            launch(Dispatchers.Main) {
+                deleteJob.join()
+                refreshSearchSets()
+            }
         }
-    }
 
-    private fun searchAndSave() {
-        viewModelScope.launch(Dispatchers.IO) {
-            refreshData()
-            searchSetRepository.insertSearchSet(bindingSearchWord.value!!, _searchTags)
-        }
-    }
 
-    //  update tag selection
+    // manage tag selection
     fun addTag(tag: SjTag) {
-        _searchTags.add(tag)
-        _bindingSearchTags.postValue(_searchTags)
+        _searchTagMap[tag.tid] = tag
+    }
+
+    fun setTags(tags: List<SjTag>) {
+        _searchTagMap.clear()
+        for (tag in tags) {
+            _searchTagMap[tag.tid] = tag
+        }
+        updateTags()
+    }
+
+    private fun updateTags() {
+        _bindingSearchTags.postValue(_searchTagMap.values.toList())
     }
 
     fun removeTag(tag: SjTag) {
-        _searchTags.remove(tag)
-        _bindingSearchTags.postValue(_searchTags)
+        _searchTagMap.remove(tag.tid)
     }
 
-    fun containsTag(tag: SjTag) = _searchTags.contains(tag)
-
-    fun setTags(tags: List<SjTag>) {
-        _searchTags.clear()
-        _searchTags.addAll(tags)
-        _bindingSearchTags.postValue(_searchTags)
-    }
-
-    fun isSearchSetEmpty(): Boolean =
-        bindingSearchWord.value.isNullOrEmpty() && _searchTags.isEmpty()
-
-
-    fun deleteAllSearchSet() =
-        viewModelScope.launch(Dispatchers.IO) { searchSetRepository.deleteAllSearchSet() }
-
-    fun insertSearchSet(keyword: String, tags: List<SjTag>) =
-        viewModelScope.launch(Dispatchers.IO) {
-            searchSetRepository.insertSearchSet(keyword, tags)
-        }
-
-
-    /////////
-
-    // default group
-//    val tagDefaultGroup = repository.defaultTagGroup
-//
-//    // tag groups
-//    val tagGroups = repository.tagGroups
-//    val publicTagGroups = repository.publicTagGroups
-
-
-//    private fun refreshSearch() {
-//        val keyword = bindingSearchWord.value!!
-//        repository.searchLinksBySearchSet(keyword, _searchTags, isPrivateMode!!)
-//    }
+    fun containsTag(tag: SjTag) = _searchTagMap.containsKey(tag.tid)
 
 
 }

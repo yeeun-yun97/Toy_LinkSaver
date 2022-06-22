@@ -58,10 +58,12 @@ class SjTagRepository private constructor() {
         dao.insertTagGroup(tagGroup)
     }
 
-    fun insertTag(newTag: SjTag) =
+    private fun insertTag(newTag: SjTag) =
         CoroutineScope(Dispatchers.IO).launch {
             dao.insertTag(newTag)
         }
+
+    fun insertTag(name:String)=insertTag(SjTag(name=name))
 
     //  update
     suspend fun updateTags(tags: List<SjTag>) {

@@ -3,13 +3,11 @@ package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.detail_link
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.LinkDetailValue
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentDetailLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjUtil
@@ -18,30 +16,16 @@ import com.github.yeeun_yun97.toy.linksaver.viewmodel.detail_link.DetailLinkView
 
 class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
     private val viewModel: DetailLinkViewModel by activityViewModels()
-    private var lid: Int = -1
-
-    companion object {
-        fun newInstance(lid: Int): DetailLinkFragment {
-            val fragment = DetailLinkFragment()
-            fragment.arguments = Bundle().apply {
-                putInt("lid", lid)
-            }
-            return fragment
-        }
-    }
 
     override fun layoutId(): Int = R.layout.fragment_detail_link
 
     override fun onStart() {
         super.onStart()
-        viewModel.loadLinkData(lid)
+        viewModel.loadLinkData()
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView() {
-        // get lid from argument
-        lid = requireArguments().getInt("lid")
-
         // set variable of binding
         binding.viewModel = viewModel
 
@@ -52,25 +36,15 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
         )
         binding.toolbar.setMenu(R.menu.toolbar_menu_detail_link, handlerMap)
 
-        // set linkdata user to click event
-        viewModel.link.observe(viewLifecycleOwner, { data ->
-            setEmptyGroupVisibilityByList(data.tags)
-        })
+        setOnClickListeners()
 
-        // set open web by views
-        val openListener =
-            View.OnClickListener { startWebBrowser() }
+    }
+
+    override fun setOnClickListeners() {
+        val openListener = View.OnClickListener { startWebBrowser() }
         binding.nameTextView.setOnClickListener(openListener)
         binding.fullUrlTextView.setOnClickListener(openListener)
         binding.previewPreview.setOnClickListener(openListener)
-    }
-
-    private fun setEmptyGroupVisibilityByList(tagList: List<SjTag>) {
-        if (tagList.isEmpty()) {
-            binding.tagEmptyGroup.visibility = View.VISIBLE
-        } else {
-            binding.tagEmptyGroup.visibility = View.GONE
-        }
     }
 
     private fun deleteLink() {
@@ -99,6 +73,7 @@ class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
                 // string url is wrong
             }
         }
-
     }
+
+
 }

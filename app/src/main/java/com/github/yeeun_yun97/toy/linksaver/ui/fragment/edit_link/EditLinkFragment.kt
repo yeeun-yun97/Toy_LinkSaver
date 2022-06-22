@@ -1,11 +1,8 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment.edit_link
 
-import android.os.Bundle
 import android.view.View
 import android.widget.CompoundButton
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
@@ -14,17 +11,13 @@ import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagDialogFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.SettingViewModel
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.edit_link.EditVideoViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.edit_link.EditLinkViewModel
 
-class EditLinkAndVideoFragment : SjBasicFragment<FragmentEditLinkBinding>() {
+class EditLinkFragment : SjBasicFragment<FragmentEditLinkBinding>() {
 
-    val viewModel: EditVideoViewModel by activityViewModels()
-    private val settingViewModel: SettingViewModel by viewModels()
+    val viewModel: EditLinkViewModel by activityViewModels()
+
+    private val dialogFragment = EditTagDialogFragment(::createTag, null)
 
     private val onCheckListener =
         CompoundButton.OnCheckedChangeListener { btn, isChecked ->
@@ -36,25 +29,14 @@ class EditLinkAndVideoFragment : SjBasicFragment<FragmentEditLinkBinding>() {
             }
         }
 
-    companion object {
-        fun newInstance(lid: Int, url: String): EditLinkAndVideoFragment {
-            val fragment = EditLinkAndVideoFragment()
-            fragment.arguments = Bundle().apply {
-                putInt("lid", lid)
-                putString("url", url)
-            }
-            return fragment
-        }
-    }
-
     override fun layoutId(): Int = R.layout.fragment_edit_link
 
+    override fun onStart() {
+        super.onStart()
+        //TODO refresh
+    }
+
     override fun onCreateView() {
-
-        // handle arguments
-        val arguments = requireArguments()
-        handleArguments(arguments)
-
         // set binding variable
         binding.viewModel = viewModel
 
@@ -71,10 +53,6 @@ class EditLinkAndVideoFragment : SjBasicFragment<FragmentEditLinkBinding>() {
             }
         )
 
-        binding.addTagTextView.setOnClickListener {
-            showEditTagDialog()
-        }
-
         // set preview image
         viewModel.bindingPreviewImage.observe(viewLifecycleOwner, {
             Glide.with(requireContext())
@@ -85,48 +63,35 @@ class EditLinkAndVideoFragment : SjBasicFragment<FragmentEditLinkBinding>() {
         })
 
         // set tagList
-        lifecycleScope.launch {
-            val isPrivateModeDeffer = async(Dispatchers.IO) { settingViewModel.privateFlow.first() }
-            val isPrivateMode = isPrivateModeDeffer.await()
+        viewModel.tagGroups.observe(viewLifecycleOwner, {
+            setCheckableTagsToChipGroupChildren(viewModel.tagDefaultGroup.value, it)
+        })
+        viewModel.tagDefaultGroup.observe(viewLifecycleOwner, {
+            setCheckableTagsToChipGroupChildren(it, viewModel.tagGroups.value)
+        })
 
-            val tagGroupsLiveData = if (isPrivateMode) viewModel.publicTagGroups
-            else viewModel.tagGroups
-            tagGroupsLiveData.observe(viewLifecycleOwner, {
-                if (viewModel.tagDefaultGroup.value != null)
-                    setCheckableTagsToChipGroupChildren(viewModel.tagDefaultGroup.value!!, it)
-            })
-            viewModel.tagDefaultGroup.observe(viewLifecycleOwner, {
-                if (tagGroupsLiveData.value != null)
-                    setCheckableTagsToChipGroupChildren(it, tagGroupsLiveData.value!!)
-            })
-        }
+        setOnClickListeners()
 
     }
 
+    override fun setOnClickListeners() {
+        binding.addTagTextView.setOnClickListener {
+            showEditTagDialog()
+        }
+    }
+
     private fun showEditTagDialog() {
-        val dialogFragment = EditTagDialogFragment(::createTag, null)
         dialogFragment.show(childFragmentManager, "그룹 없는 새 태그 생성하기")
     }
 
     private fun createTag(name: String, tag: SjTag?) = viewModel.createTag(name)
 
-    private fun handleArguments(arguments: Bundle) {
-        val lid = arguments.getInt("lid", -1)
-        val url = arguments.getString("url") ?: ""
-
-        if (lid != -1) {
-            viewModel.setLinkByLid(lid)
-        } else {
-            viewModel.createLinkByUrl(url)
-        }
-    }
-
     private fun isTagSelected(tag: SjTag) = viewModel.isTagSelected(tag)
 
     private fun setCheckableTagsToChipGroupChildren(
-        defaultGroup: SjTagGroupWithTags,
-        groups: List<SjTagGroupWithTags>
-    ) {
+        defaultGroup: SjTagGroupWithTags?,
+        groups: List<SjTagGroupWithTags>?
+    ) =
         setTagsToChipGroupChildren(
             defaultGroup,
             groups,
@@ -134,10 +99,11 @@ class EditLinkAndVideoFragment : SjBasicFragment<FragmentEditLinkBinding>() {
             binding.tagChipGroup,
             onCheckListener
         )
-    }
 
     private fun saveVideo() {
         viewModel.saveVideo()
         this.requireActivity().finish()
     }
+
+
 }
