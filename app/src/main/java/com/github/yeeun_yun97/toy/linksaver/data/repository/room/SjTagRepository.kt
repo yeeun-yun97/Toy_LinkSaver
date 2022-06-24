@@ -53,7 +53,7 @@ class SjTagRepository private constructor() {
 
 
     // insert
-    suspend fun insertTagGroup(name: String, isPrivate:Boolean) {
+    suspend fun insertTagGroup(name: String, isPrivate: Boolean) {
         dao.insertTagGroup(SjTagGroup(name = name, isPrivate = isPrivate))
     }
 
@@ -67,6 +67,13 @@ class SjTagRepository private constructor() {
     //  update
     suspend fun updateTag(tag: SjTag) {
         dao.updateTag(tag)
+    }
+
+    suspend fun updateTagsToGid(tags: List<SjTag>, gid: Int) {
+        for (tag in tags) tag.gid = gid
+
+        dao.updateTags(*tags.toTypedArray())
+
     }
 
     suspend fun updateTagGroup(tagGroup: SjTagGroup) {

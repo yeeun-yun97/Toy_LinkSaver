@@ -45,6 +45,9 @@ interface SjTagDao {
     suspend fun updateTag(tag: SjTag)
 
     @Update
+    suspend fun updateTags(vararg tag: SjTag)
+
+    @Update
     suspend fun updateTagGroup(tagGroup: SjTagGroup)
 
     @Query("UPDATE SjTag SET gid = 1 WHERE gid = :gid")

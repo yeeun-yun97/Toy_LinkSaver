@@ -31,8 +31,8 @@ class SwapTagViewModel : ViewModel() {
 
     private fun loadTargetTagGroup() {
         viewModelScope.launch(Dispatchers.IO) {
-//            val result = repository.getTagGroupWithTagsByGid(targetGid)
-//            _bindingTargetTagGroup.postValue(result)
+            val result = tagRepo.selectTagGroupByGid(targetGid)
+            _bindingTargetTagGroup.postValue(result)
         }
     }
 
@@ -40,11 +40,8 @@ class SwapTagViewModel : ViewModel() {
     // move tags and save
     fun moveSelectedTargetTagsToBasicGroup() {
         viewModelScope.launch(Dispatchers.IO) {
-            for (tag in selectedTargetTags) {
-                tag.gid = 1 // basicGid
-            }
-//            val updateJob = launch { repository.updateTags(selectedTargetTags) }
-//            updateJob.join()
+            val updateJob = launch { tagRepo.updateTagsToGid(selectedTargetTags,1) }
+            updateJob.join()
             loadTargetTagGroup()
             clearLists()
         }
@@ -52,11 +49,8 @@ class SwapTagViewModel : ViewModel() {
 
     fun moveSelectedBasicTagsToTargetGroup() {
         viewModelScope.launch(Dispatchers.IO) {
-            for (tag in selectedBasicTags) {
-                tag.gid = targetGid
-            }
-//            val updateJob = launch { repository.updateTags(selectedBasicTags) }
-//            updateJob.join()
+            val updateJob = launch { tagRepo.updateTagsToGid(selectedBasicTags,targetGid) }
+            updateJob.join()
             loadTargetTagGroup()
             clearLists()
         }
