@@ -4,10 +4,12 @@ import android.app.Application
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.fragmentModule
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.vmModule
 import kotlinx.coroutines.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.fragment.koin.fragmentFactory
 import org.koin.core.context.startKoin
 
 class LinkSaverApplication : Application() {
@@ -23,7 +25,7 @@ class LinkSaverApplication : Application() {
             val dao = SjDatabaseUtil.getCountDao()
 
             val countDomain = async {
-               dao.getDomainCount()
+                dao.getDomainCount()
             }
             if (countDomain.await() == 0) {
                 SjDatabaseUtil.getDomainDao().insertDomain(SjDomain(did = 1, name = "-", url = ""))
@@ -33,14 +35,16 @@ class LinkSaverApplication : Application() {
                 dao.getTagGroupCount()
             }
             if (countTagGroup.await() == 0) {
-               SjDatabaseUtil.getTagDao().insertTagGroup(SjTagGroup(gid = 1, name = "-", isPrivate = false))
+                SjDatabaseUtil.getTagDao()
+                    .insertTagGroup(SjTagGroup(gid = 1, name = "-", isPrivate = false))
             }
         }
 
         startKoin {
             androidLogger()
             androidContext(this@LinkSaverApplication)
-            modules(vmModule)
+            fragmentFactory()
+            modules(vmModule, fragmentModule)
         }
     }
 
