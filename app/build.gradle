@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'jacoco'
+    id 'dagger.hilt.android.plugin'
 }
 
 
@@ -46,6 +47,14 @@ android {
 
 dependencies {
 
+    implementation "com.google.dagger:hilt-android:2.37"
+    kapt "com.google.dagger:hilt-compiler:2.37"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:2.37"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:2.31.2-alpha"
+
+
+
     // Koin for Android
     implementation "io.insert-koin:koin-android:3.2.0"
 
@@ -53,10 +62,6 @@ dependencies {
     testImplementation "io.insert-koin:koin-test:3.2.0"
     testImplementation "io.insert-koin:koin-test-junit4:3.2.0"
 
-
-
-//    implementation "org.koin:koin-androidx-viewmodel:3.2.0"
-//    testImplementation "org.koin:koin-test:3.2.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //    kapt 'com.google.dagger:hilt-compiler:2.42'

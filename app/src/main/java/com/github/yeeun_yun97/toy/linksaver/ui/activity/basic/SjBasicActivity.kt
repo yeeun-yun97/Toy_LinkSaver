@@ -15,7 +15,7 @@ abstract class SjBasicActivity<T : ViewBinding> : ViewBindingBasicActivity<T>() 
 
     override fun fragmentContainer(): Int = R.id.fragmentContainer
 
-    protected fun replaceFragmentByKoin(cl: Class<out Fragment>) {
+    protected fun replaceFragmentByKoin(cl: Class<out   Fragment>) {
         val fragments = supportFragmentManager.fragments
         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         supportFragmentManager.commit {

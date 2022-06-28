@@ -6,12 +6,14 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.fragmentModule
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.vmModule
+import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.fragment.koin.fragmentFactory
 import org.koin.core.context.startKoin
 
+@HiltAndroidApp
 class LinkSaverApplication : Application() {
 
     override fun onCreate() {
