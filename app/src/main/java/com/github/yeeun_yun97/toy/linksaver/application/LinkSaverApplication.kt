@@ -4,7 +4,11 @@ import android.app.Application
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.vmModule
 import kotlinx.coroutines.*
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 
 class LinkSaverApplication : Application() {
 
@@ -31,6 +35,12 @@ class LinkSaverApplication : Application() {
             if (countTagGroup.await() == 0) {
                SjDatabaseUtil.getTagDao().insertTagGroup(SjTagGroup(gid = 1, name = "-", isPrivate = false))
             }
+        }
+
+        startKoin {
+            androidLogger()
+            androidContext(this@LinkSaverApplication)
+            modules(vmModule)
         }
     }
 

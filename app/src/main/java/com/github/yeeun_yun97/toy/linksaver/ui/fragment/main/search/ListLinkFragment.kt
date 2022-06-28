@@ -17,9 +17,10 @@ import com.github.yeeun_yun97.toy.linksaver.viewmodel.SettingViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.detail_link.DetailLinkViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel
 import kotlinx.coroutines.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
-    private val viewModel: SearchLinkViewModel by activityViewModels()
+    private val searchViewModel: SearchLinkViewModel by sharedViewModel()
     private val settingViewModel: SettingViewModel by activityViewModels()
 
     // fragments
@@ -39,16 +40,16 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
     override fun onStart() {
         super.onStart()
         viewUtil.state = DataState.LOADING
-        viewModel.isPrivateMode=settingViewModel.isPrivateMode.value ?: false
-        viewModel.refreshData()
+        searchViewModel.isPrivateMode=settingViewModel.isPrivateMode.value ?: false
+        searchViewModel.refreshData()
     }
 
     override fun onCreateView() {
         // set binding variable
-        binding.viewModel = viewModel
+        binding.viewModel = searchViewModel
 
         settingViewModel.isPrivateMode.observe(viewLifecycleOwner){
-            viewModel.isPrivateMode = it
+            searchViewModel.isPrivateMode = it
         }
 
         // set recycler view
@@ -65,7 +66,7 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
         setOnClickListeners()
 
         // set adapter list
-        viewModel.links.observe(viewLifecycleOwner) {
+        searchViewModel.links.observe(viewLifecycleOwner) {
             if (it != null) setAdapterList(it)
         }
     }
@@ -94,7 +95,7 @@ class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
     override fun setOnClickListeners() {
         binding.floatingActionView.setOnClickListener { startEditActivity() }
         binding.searchEditText.setOnClickListener { moveToSearchFragment() }
-        binding.cancelSearchSetImageView.setOnClickListener { viewModel.clearSearchSet() }
+        binding.cancelSearchSetImageView.setOnClickListener { searchViewModel.clearSearchSet() }
     }
 
     private fun moveToSearchFragment() {

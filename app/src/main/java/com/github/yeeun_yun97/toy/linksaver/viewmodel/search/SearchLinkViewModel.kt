@@ -99,7 +99,7 @@ class SearchLinkViewModel : SjBaseViewModel() {
     // set search data
     fun setSearch(keyword: String, tags: List<SjTag>) =
         viewModelScope.launch(Dispatchers.Main) {
-            val keywordJob = launch{bindingSearchWord.postValue(keyword)}
+            val keywordJob = launch { bindingSearchWord.postValue(keyword) }
             val tagsJob = launch {
                 _searchTagMap.clear()
                 for (tag in tags) _searchTagMap[tag.tid] = tag

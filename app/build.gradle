@@ -46,6 +46,18 @@ android {
 
 dependencies {
 
+    // Koin for Android
+    implementation "io.insert-koin:koin-android:3.2.0"
+
+    // Koin Test
+    testImplementation "io.insert-koin:koin-test:3.2.0"
+    testImplementation "io.insert-koin:koin-test-junit4:3.2.0"
+
+
+
+//    implementation "org.koin:koin-androidx-viewmodel:3.2.0"
+//    testImplementation "org.koin:koin-test:3.2.0"
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //    kapt 'com.google.dagger:hilt-compiler:2.42'
 
