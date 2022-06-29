@@ -4,13 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinksAndDomainsWithTags
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SjDomainRepository {
+class SjDomainRepository private constructor() {
 
     private val dao = SjDatabaseUtil.getDomainDao()
 

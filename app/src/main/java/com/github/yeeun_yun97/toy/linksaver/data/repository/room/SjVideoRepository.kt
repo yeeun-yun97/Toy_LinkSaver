@@ -6,10 +6,8 @@ import androidx.lifecycle.Transformations
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjLinkDao
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.ELinkType
-import com.github.yeeun_yun97.toy.linksaver.data.model.LinkModelUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinksAndDomainsWithTags
 import com.github.yeeun_yun97.toy.linksaver.data.model.VideoData
-import com.github.yeeun_yun97.toy.linksaver.ui.component.SjUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

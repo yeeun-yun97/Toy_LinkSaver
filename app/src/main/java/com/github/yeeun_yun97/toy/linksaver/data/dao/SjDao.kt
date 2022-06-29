@@ -1,8 +1,6 @@
 package com.github.yeeun_yun97.toy.linksaver.data.dao
 
-import androidx.room.*
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinksAndDomainsWithTags
+import androidx.room.Dao
 
 @Dao
 interface SjDao {

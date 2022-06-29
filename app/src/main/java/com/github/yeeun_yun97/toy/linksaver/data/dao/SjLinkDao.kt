@@ -1,8 +1,9 @@
 package com.github.yeeun_yun97.toy.linksaver.data.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.github.yeeun_yun97.toy.linksaver.data.model.*
+import com.github.yeeun_yun97.toy.linksaver.data.model.LinkTagCrossRef
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjLink
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinksAndDomainsWithTags
 
 @Dao
 interface SjLinkDao {

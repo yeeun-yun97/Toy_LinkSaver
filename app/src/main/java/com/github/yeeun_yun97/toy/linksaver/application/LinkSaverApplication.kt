@@ -5,11 +5,10 @@ import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
 import dagger.hilt.android.HiltAndroidApp
-import kotlinx.coroutines.*
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.androidx.fragment.koin.fragmentFactory
-import org.koin.core.context.startKoin
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 const val RESULT_SUCCESS = 0
 const val RESULT_FAILED = 1
