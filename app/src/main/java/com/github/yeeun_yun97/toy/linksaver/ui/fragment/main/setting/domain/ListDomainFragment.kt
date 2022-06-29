@@ -8,8 +8,11 @@ import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListDomainBindin
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.DomainListAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.domain.DomainViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class ListDomainFragment : SjBasicFragment<FragmentListDomainBinding>() {
+@AndroidEntryPoint
+class ListDomainFragment @Inject constructor() : SjBasicFragment<FragmentListDomainBinding>() {
     val viewModel: DomainViewModel by activityViewModels()
 
 

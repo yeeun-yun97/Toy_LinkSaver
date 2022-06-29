@@ -14,17 +14,9 @@ import com.github.yeeun_yun97.toy.linksaver.ui.component.TagValue
 import com.google.android.material.chip.ChipGroup
 
 abstract class SjBasicFragment<T : ViewDataBinding> : DataBindingBasicFragment<T>() {
-    protected val RESULT_SUCCESS = 0
-    protected val RESULT_FAILED = 1
-    protected val RESULT_CANCELED = 2
-
-    protected open fun initRecyclerView(){
-        // 정리용 함수
-    }
-
-    protected open fun setOnClickListeners(){
-        // 정리용 함수
-    }
+    // organize code here (not must)
+    protected open fun initRecyclerView(){}
+    protected open fun setOnClickListeners(){}
 
     override fun fragmentContainer(): Int = R.id.fragmentContainer
 

@@ -6,17 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class LinkPasteBottomSheet(
-    val url: String,
     val saveOperation: (String) -> Unit
 ) : BottomSheetDialogFragment() {
 
     companion object {
-        fun newInstance(url: String, saveOperation: (String) -> Unit): LinkPasteBottomSheet {
-            return LinkPasteBottomSheet(url, saveOperation)
+        fun newInstance(saveOperation: (String) -> Unit): LinkPasteBottomSheet {
+            return LinkPasteBottomSheet(saveOperation)
         }
     }
 
@@ -26,11 +26,12 @@ class LinkPasteBottomSheet(
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.bottom_sheet, container, false)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val saveButton = view.findViewById<Button>(R.id.nextButton)
-        val urlTextView = view.findViewById<TextView>(R.id.urlTextView)
+    fun show(manager: FragmentManager, tag: String?, url:String) {
+        val saveButton = requireView().findViewById<Button>(R.id.nextButton)
         saveButton.setOnClickListener { saveOperation(url) }
+        val urlTextView = requireView().findViewById<TextView>(R.id.urlTextView)
         urlTextView.setText(url)
+        super.show(manager, tag)
     }
 
 }

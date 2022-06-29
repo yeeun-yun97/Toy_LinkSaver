@@ -4,14 +4,16 @@ import android.app.Application
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.fragmentModule
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.vmModule
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.fragment.koin.fragmentFactory
 import org.koin.core.context.startKoin
+
+const val RESULT_SUCCESS = 0
+const val RESULT_FAILED = 1
+const val RESULT_CANCELED = 2
 
 @HiltAndroidApp
 class LinkSaverApplication : Application() {
@@ -42,12 +44,12 @@ class LinkSaverApplication : Application() {
             }
         }
 
-        startKoin {
-            androidLogger()
-            androidContext(this@LinkSaverApplication)
-            fragmentFactory()
-            modules(vmModule, fragmentModule)
-        }
+//        startKoin {
+//            androidLogger()
+//            androidContext(this@LinkSaverApplication)
+//            fragmentFactory()
+//            modules(vmModule, fragmentModule)
+//        }
     }
 
     override fun onTerminate() {

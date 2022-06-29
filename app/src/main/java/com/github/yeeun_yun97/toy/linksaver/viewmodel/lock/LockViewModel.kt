@@ -6,11 +6,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.github.yeeun_yun97.toy.linksaver.data.repository.SjDataStoreRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LockViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class LockViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
     val repository: SjDataStoreRepository = SjDataStoreRepository.getInstance()
 
     private val _bindingPassword1 = MutableLiveData("")

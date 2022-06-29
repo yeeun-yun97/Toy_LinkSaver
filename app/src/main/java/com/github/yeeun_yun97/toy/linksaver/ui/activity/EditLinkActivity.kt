@@ -8,12 +8,15 @@ import com.github.yeeun_yun97.toy.linksaver.ui.activity.basic.SjBasicActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.edit_link.EditLinkFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.edit_link.EditLinkPasteFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.edit_link.EditLinkViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class EditLinkActivity : SjBasicActivity<ActivityPlainBinding>() {
-
-    private val editPasteFragment = EditLinkPasteFragment()
-    private val editFragment = EditLinkFragment()
     private val editViewModel: EditLinkViewModel by viewModels()
+
+    @Inject lateinit var editPasteFragment : EditLinkPasteFragment
+    @Inject lateinit var editFragment : EditLinkFragment
 
     override fun viewBindingInflate(inflater: LayoutInflater): ActivityPlainBinding =
         ActivityPlainBinding.inflate(layoutInflater)

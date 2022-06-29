@@ -8,6 +8,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
+import com.github.yeeun_yun97.toy.linksaver.application.RESULT_FAILED
+import com.github.yeeun_yun97.toy.linksaver.application.RESULT_SUCCESS
 import com.github.yeeun_yun97.toy.linksaver.data.model.SettingItemValue
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSettingBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.LockActivity
@@ -19,17 +21,20 @@ import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.domain.List
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.personal.PersonalSettingFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.tag.ListGroupFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.SettingViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SettingFragment : SjBasicFragment<FragmentSettingBinding>() {
+@AndroidEntryPoint
+class SettingFragment @Inject constructor() : SjBasicFragment<FragmentSettingBinding>() {
     private val viewModel: SettingViewModel by activityViewModels()
 
-    private val groupFragment = ListGroupFragment()
-    private val domainFragment = ListDomainFragment()
-    private val appInfoFragment = AppInfoFragment()
-    private val personalSettingFragment = PersonalSettingFragment()
+    @Inject lateinit var groupFragment : ListGroupFragment
+    @Inject lateinit var domainFragment : ListDomainFragment
+    @Inject lateinit var appInfoFragment : AppInfoFragment
+    @Inject lateinit var personalSettingFragment : PersonalSettingFragment
 
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
@@ -45,7 +50,7 @@ class SettingFragment : SjBasicFragment<FragmentSettingBinding>() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 if (it.resultCode == RESULT_SUCCESS) {
                     moveToPersonalSettingWithOutPassword()
-                } else {
+                } else if(it.resultCode == RESULT_FAILED) {
                    val messageDialog =  BasicDialogFragment("실패","비밀번호가 틀렸습니다.",null)
                     messageDialog.show(childFragmentManager,"비밀번호 틀림")
                 }

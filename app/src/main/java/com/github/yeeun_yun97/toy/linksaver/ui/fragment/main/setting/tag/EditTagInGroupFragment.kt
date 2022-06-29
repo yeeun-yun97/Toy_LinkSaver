@@ -1,6 +1,5 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.tag
 
-import android.util.Log
 import androidx.fragment.app.activityViewModels
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
@@ -10,8 +9,11 @@ import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.component.TagValue
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.TagGroupEditViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class EditTagInGroupFragment : SjBasicFragment<FragmentListTagBinding>() {
+@AndroidEntryPoint
+class EditTagInGroupFragment @Inject constructor() : SjBasicFragment<FragmentListTagBinding>() {
     val viewModel: TagGroupEditViewModel by activityViewModels()
 
     // override methods

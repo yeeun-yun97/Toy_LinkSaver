@@ -11,8 +11,11 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
 import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagGroupDialogFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.SettingViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.TagGroupEditViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class ListGroupFragment : SjBasicFragment<FragmentListTagGroupBinding>() {
+@AndroidEntryPoint
+class ListGroupFragment @Inject constructor() : SjBasicFragment<FragmentListTagGroupBinding>() {
     private val viewModel: ListGroupViewModel by activityViewModels()
     private val settingViewModel: SettingViewModel by activityViewModels()
 

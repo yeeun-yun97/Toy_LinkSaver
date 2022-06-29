@@ -9,18 +9,22 @@ import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjLinkRepositor
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjSearchSetRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagRepository
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.SjBaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 // enum to save mode status
 enum class ListMode {
     MODE_ALL, MODE_SEARCH;
 }
 
-class SearchLinkViewModel : SjBaseViewModel() {
-    private val searchSetRepo = SjSearchSetRepository.getInstance()
-    private val linkRepo = SjLinkRepository.getInstance()
-    private val tagRepo = SjTagRepository.getInstance()
+@HiltViewModel
+class SearchLinkViewModel @Inject constructor(
+    private val searchSetRepo: SjSearchSetRepository,
+    private val linkRepo: SjLinkRepository,
+    private val tagRepo: SjTagRepository
+) : SjBaseViewModel() {
 
     // mode
     private lateinit var mode: ListMode

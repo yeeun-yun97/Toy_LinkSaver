@@ -11,12 +11,16 @@ import com.github.yeeun_yun97.toy.linksaver.ui.component.SjClipboard
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjUtil
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.edit_link.EditLinkViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class EditLinkPasteFragment : SjBasicFragment<FragmentEditPasteBinding>() {
-    private val editFragment = EditLinkFragment()
+@AndroidEntryPoint
+class EditLinkPasteFragment @Inject constructor() : SjBasicFragment<FragmentEditPasteBinding>() {
     private val editViewModel: EditLinkViewModel by activityViewModels()
 
-    private var bottomSheet :LinkPasteBottomSheet? = null
+    @Inject lateinit var editFragment : EditLinkFragment
+
+    private val bottomSheet =LinkPasteBottomSheet.newInstance(::moveToPreviewFragment)
 
     override fun layoutId(): Int = R.layout.fragment_edit_paste
 
@@ -57,13 +61,12 @@ class EditLinkPasteFragment : SjBasicFragment<FragmentEditPasteBinding>() {
     }
 
     private fun showBottomSheet(url: String) {
-        bottomSheet = LinkPasteBottomSheet.newInstance(url, ::moveToPreviewFragment)
-        bottomSheet!!.show(parentFragmentManager, "TAG")
+        bottomSheet.show(parentFragmentManager, "TAG",url)
     }
 
     private fun moveToPreviewFragment(text: String) {
         if (SjUtil.checkUrlPrefix(text)) {
-            bottomSheet?.dismiss()
+            bottomSheet.dismiss()
             editViewModel.createLinkByUrl(text)
             moveToOtherFragment(editFragment)
         } else {

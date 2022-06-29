@@ -16,11 +16,14 @@ import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.detail_link.
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.SettingViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.detail_link.DetailLinkViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import javax.inject.Inject
 
-class ListLinkFragment : SjBasicFragment<FragmentListLinkBinding>() {
-    private val searchViewModel: SearchLinkViewModel by sharedViewModel()
+// FIXME 바텀 내비를 클릭하여 들어갈 시, 이미지가 사라지는 오류가 있음
+@AndroidEntryPoint
+class ListLinkFragment @Inject constructor() : SjBasicFragment<FragmentListLinkBinding>() {
+    private val searchViewModel: SearchLinkViewModel by activityViewModels()
     private val settingViewModel: SettingViewModel by activityViewModels()
 
     // fragments

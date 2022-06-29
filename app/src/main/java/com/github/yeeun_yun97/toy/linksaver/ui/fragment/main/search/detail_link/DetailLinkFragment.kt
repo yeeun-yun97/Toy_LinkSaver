@@ -13,8 +13,11 @@ import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjUtil
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.detail_link.DetailLinkViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class DetailLinkFragment : SjBasicFragment<FragmentDetailLinkBinding>() {
+@AndroidEntryPoint
+class DetailLinkFragment @Inject constructor() : SjBasicFragment<FragmentDetailLinkBinding>() {
     private val viewModel: DetailLinkViewModel by activityViewModels()
 
     override fun layoutId(): Int = R.layout.fragment_detail_link

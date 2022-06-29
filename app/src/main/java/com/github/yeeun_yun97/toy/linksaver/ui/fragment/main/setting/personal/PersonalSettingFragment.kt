@@ -10,12 +10,15 @@ import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentPersonalSettingB
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.SettingListAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.SettingViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PersonalSettingFragment : SjBasicFragment<FragmentPersonalSettingBinding>() {
+@AndroidEntryPoint
+class PersonalSettingFragment @Inject constructor() : SjBasicFragment<FragmentPersonalSettingBinding>() {
     private val viewModel: SettingViewModel by viewModels()
     override fun layoutId(): Int = R.layout.fragment_personal_setting
 

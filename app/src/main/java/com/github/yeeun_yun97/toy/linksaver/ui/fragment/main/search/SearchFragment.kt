@@ -19,12 +19,13 @@ import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.SettingViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
-    private val searchViewModel: SearchLinkViewModel by sharedViewModel()
+@AndroidEntryPoint
+class SearchFragment @Inject constructor() : SjBasicFragment<FragmentSearchBinding>() {
+    private val searchViewModel: SearchLinkViewModel by activityViewModels()
     private val settingViewModel: SettingViewModel by activityViewModels()
-    private lateinit var adapter: SearchSetAdapter
 
     // drawable resources
     private val deleteIcon by lazy {
@@ -135,7 +136,7 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
     override fun initRecyclerView() {
         binding.recentSearchedRecyclerView.layoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        this.adapter = SearchSetAdapter(::setSearch, ::searchAndPopBack)
+        val adapter = SearchSetAdapter(::setSearch, ::searchAndPopBack)
         binding.recentSearchedRecyclerView.addItemDecoration(
             object : RecyclerView.ItemDecoration() {
                 override fun getItemOffsets(
@@ -151,7 +152,7 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
                 }
             }
         )
-        binding.recentSearchedRecyclerView.adapter = this.adapter
+        binding.recentSearchedRecyclerView.adapter = adapter
         searchViewModel.bindingSearchSets.observe(viewLifecycleOwner) {
             adapter.setList(it)
         }
@@ -190,7 +191,7 @@ class SearchFragment : SjBasicFragment<FragmentSearchBinding>() {
     }
 
     private fun setSearch(keyword: String, tags: List<SjTag>) =
-        searchViewModel.setSearch(keyword,tags)
+        searchViewModel.setSearch(keyword, tags)
 
     private fun deleteAllSearchSet() =
         searchViewModel.deleteAllSearchSet()

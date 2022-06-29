@@ -12,10 +12,12 @@ import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagDialogFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.edit_link.EditLinkViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class EditLinkFragment : SjBasicFragment<FragmentEditLinkBinding>() {
-
-    val viewModel: EditLinkViewModel by activityViewModels()
+@AndroidEntryPoint
+class EditLinkFragment @Inject constructor() : SjBasicFragment<FragmentEditLinkBinding>() {
+    private val viewModel: EditLinkViewModel by activityViewModels()
 
     private val dialogFragment = EditTagDialogFragment(::createTag, null)
 
@@ -70,7 +72,6 @@ class EditLinkFragment : SjBasicFragment<FragmentEditLinkBinding>() {
         }
 
         setOnClickListeners()
-
     }
 
     override fun setOnClickListeners() {

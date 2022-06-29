@@ -7,8 +7,11 @@ import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentLockBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.lock.LockViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class ChangePasswordFragment : SjBasicFragment<FragmentLockBinding>() {
+@AndroidEntryPoint
+class ChangePasswordFragment @Inject constructor() : SjBasicFragment<FragmentLockBinding>() {
     private val viewModel: LockViewModel by viewModels()
 
     private var password: String? = null
@@ -18,7 +21,7 @@ class ChangePasswordFragment : SjBasicFragment<FragmentLockBinding>() {
         binding.viewModel = viewModel
         binding.passwordTextView.setText("새로운 비밀번호")
 
-        viewModel.password.observe(this, {
+        viewModel.password.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
                 if (password.isNullOrEmpty()) {
                     handleFirstInput(it)
@@ -26,7 +29,7 @@ class ChangePasswordFragment : SjBasicFragment<FragmentLockBinding>() {
                     handleSecondInput(it)
                 }
             }
-        })
+        }
     }
 
     private fun handleFirstInput(input: String) {

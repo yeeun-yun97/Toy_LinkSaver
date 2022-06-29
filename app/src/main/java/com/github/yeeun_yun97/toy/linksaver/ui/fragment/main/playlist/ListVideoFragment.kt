@@ -4,7 +4,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.yeeun_yun97.clone.ynmodule.ui.component.DataState
@@ -23,13 +22,12 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.common.collect.ImmutableSet
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 // FIXME 스크롤 내릴 때는 괜찮은데 올릴 때 오류남.
-class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
+@AndroidEntryPoint
+class ListVideoFragment @Inject constructor() : SjBasicFragment<FragmentListVideoBinding>() {
     private val viewModel: ListVideoViewModel by activityViewModels()
     private val settingViewModel: SettingViewModel by viewModels()
 
