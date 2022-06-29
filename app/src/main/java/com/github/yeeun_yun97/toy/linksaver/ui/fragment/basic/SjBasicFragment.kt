@@ -3,8 +3,6 @@ package com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic
 import android.util.Log
 import android.widget.CompoundButton
 import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.widget.RecyclerView
-import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicAdapter
 import com.github.yeeun_yun97.clone.ynmodule.ui.fragment.DataBindingBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag

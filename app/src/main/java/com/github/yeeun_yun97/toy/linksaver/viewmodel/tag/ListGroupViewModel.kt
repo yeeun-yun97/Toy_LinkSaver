@@ -2,7 +2,6 @@ package com.github.yeeun_yun97.toy.linksaver.viewmodel.tag
 
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagRepository
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjBaseViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjUsePrivateModeViewModelImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope

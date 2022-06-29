@@ -8,7 +8,6 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.DialogFragment
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
-import java.lang.IllegalStateException
 
 class EditTagGroupDialogFragment(
     private val saveOperation: (String, Boolean,SjTagGroup?) -> Unit,

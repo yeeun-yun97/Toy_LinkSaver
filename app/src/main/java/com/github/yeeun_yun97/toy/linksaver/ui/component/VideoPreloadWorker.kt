@@ -1,21 +1,5 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.component
 
-import android.content.Context
-import android.net.Uri
-import androidx.work.*
-import com.github.yeeun_yun97.toy.linksaver.application.LinkSaverApplication
-import com.google.android.exoplayer2.upstream.DataSpec
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
-import com.google.android.exoplayer2.upstream.HttpDataSource
-import com.google.android.exoplayer2.upstream.cache.CacheDataSource
-import com.google.android.exoplayer2.upstream.cache.CacheWriter
-import com.google.android.exoplayer2.upstream.cache.SimpleCache
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-
 //class VideoPreloadWorker(private val context: Context, workerParameters: WorkerParameters)
 //    : Worker(context, workerParameters)  {
 //    private var videoCachingJob: Job? = null

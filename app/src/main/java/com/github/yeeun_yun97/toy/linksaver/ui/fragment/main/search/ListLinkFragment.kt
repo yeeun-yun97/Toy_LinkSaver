@@ -16,7 +16,10 @@ import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.detail_link.
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.detail_link.DetailLinkViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 // FIXME 바텀 내비를 클릭하여 들어갈 시, 이미지가 사라지는 오류가 있음

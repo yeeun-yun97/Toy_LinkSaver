@@ -1,6 +1,5 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.adapter.binding
 
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter

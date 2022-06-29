@@ -2,7 +2,6 @@ package com.github.yeeun_yun97.toy.linksaver.viewmodel.playlist
 
 import android.app.Application
 import android.util.SparseArray
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.model.VideoData

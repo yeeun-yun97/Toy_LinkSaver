@@ -5,7 +5,6 @@ import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import com.github.yeeun_yun97.toy.linksaver.application.RESULT_FAILED
 import com.github.yeeun_yun97.toy.linksaver.application.RESULT_SUCCESS
-import com.github.yeeun_yun97.toy.linksaver.application.RESULT_CANCELED
 import com.github.yeeun_yun97.toy.linksaver.databinding.ActivityPlainBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.basic.SjBasicActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.lock.LockFragment

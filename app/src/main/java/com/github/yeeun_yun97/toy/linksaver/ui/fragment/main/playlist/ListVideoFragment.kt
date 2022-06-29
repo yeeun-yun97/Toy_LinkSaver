@@ -3,7 +3,6 @@ package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.playlist
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.yeeun_yun97.clone.ynmodule.ui.component.DataState

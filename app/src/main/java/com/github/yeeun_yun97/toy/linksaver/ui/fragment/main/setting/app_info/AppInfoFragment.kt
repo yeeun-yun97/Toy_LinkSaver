@@ -2,7 +2,6 @@ package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.app_info
 
 import android.content.Intent
 import android.net.Uri
-import android.text.Html
 import com.github.yeeun_yun97.toy.linksaver.BuildConfig
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentAppInfoBinding

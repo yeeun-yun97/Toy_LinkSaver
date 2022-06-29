@@ -3,12 +3,12 @@ package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.tag
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListTagGroupBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.TagGroupListAdapter
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.ListGroupViewModel
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
 import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagGroupDialogFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjUsePrivateModeFragment
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.ListGroupViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.TagGroupEditViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

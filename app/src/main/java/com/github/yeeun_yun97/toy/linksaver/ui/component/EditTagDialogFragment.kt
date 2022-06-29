@@ -9,7 +9,6 @@ import androidx.fragment.app.DialogFragment
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
-import java.lang.IllegalStateException
 
 class EditTagDialogFragment(
     private val saveOperation: (String, SjTag?) -> Unit,
