@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.github.yeeun_yun97.toy.linksaver.data.repository.SjDataStoreRepository
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjBaseAndroidViewModelImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -16,7 +17,7 @@ import javax.inject.Inject
 class LockViewModel @Inject constructor(
     application: Application,
     private val repository: SjDataStoreRepository
-) : AndroidViewModel(application) {
+) : SjBaseAndroidViewModelImpl(application) {
     private val _bindingPassword1 = MutableLiveData("")
     private val _bindingPassword2 = MutableLiveData("")
     private val _bindingPassword3 = MutableLiveData("")
@@ -51,6 +52,8 @@ class LockViewModel @Inject constructor(
             }
         }
     }
+
+    override fun refreshData() {}
 
     private fun checkPassword(expected: String, actual: String) {
         _password.postValue(actual)
@@ -95,6 +98,8 @@ class LockViewModel @Inject constructor(
         _bindingPassword5.postValue("")
         _bindingPassword6.postValue("")
     }
+
+
 
 
 }

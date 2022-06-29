@@ -21,7 +21,7 @@ class EditTagInGroupFragment @Inject constructor() : SjBasicFragment<FragmentLis
 
     override fun onResume() {
         super.onResume()
-        viewModel.loadTagGroup()
+        viewModel.refreshData()
     }
 
     override fun onCreateView() {
@@ -54,7 +54,7 @@ class EditTagInGroupFragment @Inject constructor() : SjBasicFragment<FragmentLis
 
     private fun editTag(name: String, tag: SjTag?) {
         viewModel.editTag(tag, name)
-        viewModel.loadTagGroup()
+        viewModel.refreshData()
     }
 
     private fun moveToSwapTagGroupFragment() {

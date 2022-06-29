@@ -4,7 +4,8 @@ import androidx.lifecycle.*
 import com.github.yeeun_yun97.toy.linksaver.data.model.LinkDetailValue
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjLinkRepository
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.SjBaseViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjBaseViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjBaseViewModelImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailLinkViewModel @Inject constructor(
     private val linkRepo : SjLinkRepository
-) : SjBaseViewModel() {
+) : SjBaseViewModelImpl() {
 
     var lid: Int? = null
         set(data) {

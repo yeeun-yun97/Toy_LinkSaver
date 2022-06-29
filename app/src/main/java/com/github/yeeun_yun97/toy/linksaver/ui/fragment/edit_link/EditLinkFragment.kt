@@ -10,17 +10,14 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroupWithTags
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagDialogFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.SettingViewModel
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjUsePrivateModeFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.edit_link.EditLinkViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class EditLinkFragment @Inject constructor() : SjBasicFragment<FragmentEditLinkBinding>() {
+class EditLinkFragment @Inject constructor() : SjUsePrivateModeFragment<FragmentEditLinkBinding>() {
     private val viewModel: EditLinkViewModel by activityViewModels()
-    private val settingViewModel: SettingViewModel by activityViewModels()
-
     private val dialogFragment = EditTagDialogFragment(::createTag, null)
 
     private val onCheckListener =
@@ -48,10 +45,7 @@ class EditLinkFragment @Inject constructor() : SjBasicFragment<FragmentEditLinkB
         val handlerMap = hashMapOf<Int, () -> Unit>(R.id.menu_save to ::saveVideo)
         binding.toolbar.setMenu(R.menu.toolbar_menu_edit, handlerMap)
 
-
-        settingViewModel.isPrivateMode.observe(viewLifecycleOwner) {
-            viewModel.isPrivateMode = it
-        }
+        applyPrivateToViewModel(viewModel)
 
         // show or hide video icon
         viewModel.bindingIsVideo.observe(viewLifecycleOwner

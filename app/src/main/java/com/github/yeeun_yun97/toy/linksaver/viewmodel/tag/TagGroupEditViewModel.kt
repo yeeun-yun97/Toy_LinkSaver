@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroupWithTags
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagRepository
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjBaseViewModelImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,20 +13,19 @@ import javax.inject.Inject
 @HiltViewModel
 class TagGroupEditViewModel @Inject constructor(
     private val tagRepo : SjTagRepository
-) : ViewModel() {
-
+) : SjBaseViewModelImpl() {
 
     var gid: Int = 1
         set(value) {
             field = value
-            loadTagGroup()
+            refreshData()
         }
 
     private val _tagGroup = MutableLiveData<SjTagGroupWithTags>()
     val tagGroup: LiveData<SjTagGroupWithTags> get() = _tagGroup
     val bindingTags: LiveData<List<SjTag>> = Transformations.map(tagGroup) { it.tags }
 
-    fun loadTagGroup() {
+    override fun refreshData() {
         viewModelScope.launch(Dispatchers.IO) {
             val result = tagRepo.selectTagGroupByGid(gid)
             _tagGroup.postValue(result)
@@ -42,7 +42,7 @@ class TagGroupEditViewModel @Inject constructor(
             deleteRefs.join()
             val deleteTag = launch { tagRepo.deleteTag(tag.tid) }
             deleteTag.join()
-            loadTagGroup()
+            refreshData()
         }
     }
 
@@ -58,7 +58,7 @@ class TagGroupEditViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val job = launch { tagRepo.insertTag(name, gid) }
             job.join()
-            loadTagGroup()
+            refreshData()
         }
     }
 
@@ -66,9 +66,11 @@ class TagGroupEditViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val job = launch { tagRepo.updateTag(tag) }
             job.join()
-            loadTagGroup()
+            refreshData()
         }
     }
+
+
 
 
 }

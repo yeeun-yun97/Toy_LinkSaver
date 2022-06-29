@@ -5,19 +5,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListTagGroupBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.TagGroupListAdapter
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.ListGroupViewModel
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
 import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagGroupDialogFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.SettingViewModel
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjUsePrivateModeFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.TagGroupEditViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ListGroupFragment @Inject constructor() : SjBasicFragment<FragmentListTagGroupBinding>() {
+class ListGroupFragment @Inject constructor() : SjUsePrivateModeFragment<FragmentListTagGroupBinding>() {
     private val viewModel: ListGroupViewModel by activityViewModels()
-    private val settingViewModel: SettingViewModel by activityViewModels()
 
     private val editGroupFragment = EditTagInGroupFragment()
     private val editGroupViewModel: TagGroupEditViewModel by activityViewModels()
@@ -33,7 +31,8 @@ class ListGroupFragment @Inject constructor() : SjBasicFragment<FragmentListTagG
 
     override fun onStart() {
         super.onStart()
-        viewModel.isPrivateMode = settingViewModel.isPrivateMode.value ?: false
+        //TODO WHY?
+//        viewModel.isPrivateMode = settingViewModel.isPrivateMode.value ?: false
         viewModel.refreshData()
     }
 
@@ -41,9 +40,7 @@ class ListGroupFragment @Inject constructor() : SjBasicFragment<FragmentListTagG
         // set binding variable
         binding.viewModel = viewModel
 
-        settingViewModel.isPrivateMode.observe(viewLifecycleOwner){
-            viewModel.isPrivateMode  = it
-        }
+        applyPrivateToViewModel(viewModel)
 
         // set toolbar menu
         val handlerMap = hashMapOf<Int, () -> Unit>(

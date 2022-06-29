@@ -2,7 +2,8 @@ package com.github.yeeun_yun97.toy.linksaver.viewmodel.tag
 
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagRepository
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.SjBaseViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjBaseViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjUsePrivateModeViewModelImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ListGroupViewModel @Inject constructor(
     private val tagRepo : SjTagRepository
-) : SjBaseViewModel() {
+) : SjUsePrivateModeViewModelImpl() {
     // data binding live data
     val bindingTagGroups = tagRepo.tagGroupsWithoutDefault
     val bindingBasicTagGroup = tagRepo.defaultTagGroup

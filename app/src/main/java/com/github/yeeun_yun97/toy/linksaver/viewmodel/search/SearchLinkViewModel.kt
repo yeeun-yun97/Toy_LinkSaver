@@ -8,7 +8,8 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjLinkRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjSearchSetRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagRepository
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.SjBaseViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjBaseViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjUsePrivateModeViewModelImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,7 +25,7 @@ class SearchLinkViewModel @Inject constructor(
     private val searchSetRepo: SjSearchSetRepository,
     private val linkRepo: SjLinkRepository,
     private val tagRepo: SjTagRepository
-) : SjBaseViewModel() {
+) : SjUsePrivateModeViewModelImpl() {
 
     // mode
     private lateinit var mode: ListMode

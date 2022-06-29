@@ -9,6 +9,7 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.VideoData
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjVideoRepository
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjYoutubeExtractListener
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjYoutubeExtractor
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjUsePrivateModeViewModelAndroidImpl
 import com.google.android.exoplayer2.MediaItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -17,16 +18,10 @@ import javax.inject.Inject
 class ListVideoViewModel @Inject constructor(
     application: Application,
     private val videoRepo : SjVideoRepository
-) : AndroidViewModel(application) {
+) : SjUsePrivateModeViewModelAndroidImpl(application) {
     // setting preview start and end
     private val START_MS: Long = 1000
     private val END_MS: Long = 16000
-
-    var isPrivateMode = false
-    set(value){
-        field = value
-        refreshData()
-    }
 
     // liveDataList
     private val _playList = MutableLiveData(mutableListOf<MediaItem>())
@@ -39,7 +34,7 @@ class ListVideoViewModel @Inject constructor(
         }
     }
 
-    fun refreshData() {
+    override fun refreshData() {
         if (isPrivateMode) {
             videoRepo.postVideosPublic()
         } else {

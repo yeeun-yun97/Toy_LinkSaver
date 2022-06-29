@@ -11,9 +11,8 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinksAndDomainsWithTags
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.LinkSearchListAdapter
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjUsePrivateModeFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.detail_link.DetailLinkFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.SettingViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.detail_link.DetailLinkViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,9 +21,8 @@ import javax.inject.Inject
 
 // FIXME 바텀 내비를 클릭하여 들어갈 시, 이미지가 사라지는 오류가 있음
 @AndroidEntryPoint
-class ListLinkFragment @Inject constructor() : SjBasicFragment<FragmentListLinkBinding>() {
-    private val searchViewModel: SearchLinkViewModel by activityViewModels()
-    private val settingViewModel: SettingViewModel by activityViewModels()
+class ListLinkFragment @Inject constructor() : SjUsePrivateModeFragment<FragmentListLinkBinding>() {
+    private val viewModel: SearchLinkViewModel by activityViewModels()
 
     // fragments
     private val detailFragment = DetailLinkFragment()
@@ -43,17 +41,16 @@ class ListLinkFragment @Inject constructor() : SjBasicFragment<FragmentListLinkB
     override fun onStart() {
         super.onStart()
         viewUtil.state = DataState.LOADING
-        searchViewModel.isPrivateMode=settingViewModel.isPrivateMode.value ?: false
-        searchViewModel.refreshData()
+            //WHY?
+        //searchViewModel.isPrivateMode=settingViewModel.isPrivateMode.value ?: false
+        viewModel.refreshData()
     }
 
     override fun onCreateView() {
         // set binding variable
-        binding.viewModel = searchViewModel
+        binding.viewModel = viewModel
 
-        settingViewModel.isPrivateMode.observe(viewLifecycleOwner){
-            searchViewModel.isPrivateMode = it
-        }
+        applyPrivateToViewModel(viewModel)
 
         // set recycler view
         initRecyclerView()
@@ -69,7 +66,7 @@ class ListLinkFragment @Inject constructor() : SjBasicFragment<FragmentListLinkB
         setOnClickListeners()
 
         // set adapter list
-        searchViewModel.links.observe(viewLifecycleOwner) {
+        viewModel.links.observe(viewLifecycleOwner) {
             if (it != null) setAdapterList(it)
         }
     }
@@ -98,7 +95,7 @@ class ListLinkFragment @Inject constructor() : SjBasicFragment<FragmentListLinkB
     override fun setOnClickListeners() {
         binding.floatingActionView.setOnClickListener { startEditActivity() }
         binding.searchEditText.setOnClickListener { moveToSearchFragment() }
-        binding.cancelSearchSetImageView.setOnClickListener { searchViewModel.clearSearchSet() }
+        binding.cancelSearchSetImageView.setOnClickListener { viewModel.clearSearchSet() }
     }
 
     private fun moveToSearchFragment() {

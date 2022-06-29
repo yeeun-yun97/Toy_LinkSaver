@@ -17,15 +17,14 @@ import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSearchBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.SearchSetAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.SettingViewModel
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjUsePrivateModeFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SearchFragment @Inject constructor() : SjBasicFragment<FragmentSearchBinding>() {
+class SearchFragment @Inject constructor() : SjUsePrivateModeFragment<FragmentSearchBinding>() {
     private val searchViewModel: SearchLinkViewModel by activityViewModels()
-    private val settingViewModel: SettingViewModel by activityViewModels()
 
     // drawable resources
     private val deleteIcon by lazy {
@@ -80,7 +79,7 @@ class SearchFragment @Inject constructor() : SjBasicFragment<FragmentSearchBindi
 
     override fun onResume() {
         super.onResume()
-        searchViewModel.isPrivateMode = settingViewModel.isPrivateMode.value!!
+        //searchViewModel.isPrivateMode = settingViewModel.isPrivateMode.value!!
         searchViewModel.refreshData()
     }
 
@@ -88,9 +87,7 @@ class SearchFragment @Inject constructor() : SjBasicFragment<FragmentSearchBindi
         //set binding
         binding.viewModel = searchViewModel
 
-        settingViewModel.isPrivateMode.observe(viewLifecycleOwner) {
-            searchViewModel.isPrivateMode = it
-        }
+        applyPrivateToViewModel(searchViewModel)
 
         // set auto focus on Search Field
         binding.searchEditText.requestFocus()

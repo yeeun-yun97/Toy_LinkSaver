@@ -12,9 +12,8 @@ import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListVideoBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.VideoListAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.VideoViewHolder
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjUsePrivateModeFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.detail_link.DetailLinkFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.SettingViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.detail_link.DetailLinkViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.playlist.ListVideoViewModel
 import com.google.android.exoplayer2.C
@@ -27,12 +26,12 @@ import javax.inject.Inject
 
 // FIXME 스크롤 내릴 때는 괜찮은데 올릴 때 오류남.
 @AndroidEntryPoint
-class ListVideoFragment @Inject constructor() : SjBasicFragment<FragmentListVideoBinding>() {
+class ListVideoFragment @Inject constructor() :
+    SjUsePrivateModeFragment<FragmentListVideoBinding>() {
     private val viewModel: ListVideoViewModel by activityViewModels()
-    private val settingViewModel: SettingViewModel by viewModels()
 
-    private val detailFragment : DetailLinkFragment = DetailLinkFragment()
-    private val detailViewModel : DetailLinkViewModel by activityViewModels()
+    private val detailFragment: DetailLinkFragment = DetailLinkFragment()
+    private val detailViewModel: DetailLinkViewModel by activityViewModels()
 
     // control view visibility
     private lateinit var viewUtil: ViewVisibilityUtil
@@ -49,9 +48,7 @@ class ListVideoFragment @Inject constructor() : SjBasicFragment<FragmentListVide
         val handlerMap = hashMapOf<Int, () -> Unit>(R.id.menu_playlist to ::moveToPlaylistFragment)
         binding.toolbar.setMenu(R.menu.toolbar_menu_video_list, handlerMap = handlerMap)
 
-        settingViewModel.isPrivateMode.observe(viewLifecycleOwner){
-            viewModel.isPrivateMode = it
-        }
+        applyPrivateToViewModel(viewModel)
 
         // player
         _player = ExoPlayer.Builder(requireContext()).build()
@@ -102,7 +99,8 @@ class ListVideoFragment @Inject constructor() : SjBasicFragment<FragmentListVide
     override fun onStart() {
         super.onStart()
         viewModel.refreshData()
-        viewModel.isPrivateMode = settingViewModel.isPrivateMode.value ?: false
+        //TODO WHY?
+        //viewModel.isPrivateMode = settingViewModel.isPrivateMode.value ?: false
         binding.videoRecyclerView.scrollToPosition(0)
     }
 

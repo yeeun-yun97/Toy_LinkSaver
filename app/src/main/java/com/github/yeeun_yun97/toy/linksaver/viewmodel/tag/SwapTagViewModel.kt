@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroupWithTags
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagRepository
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjBaseViewModelImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SwapTagViewModel @Inject constructor(
     private val tagRepo : SjTagRepository
-) : ViewModel() {
+) : SjBaseViewModelImpl() {
     var targetGid: Int = -1
     val selectedBasicTags = mutableListOf<SjTag>()
     val selectedTargetTags = mutableListOf<SjTag>()
@@ -28,23 +29,22 @@ class SwapTagViewModel @Inject constructor(
 
     fun setTargetTagGroupByGid(gid: Int) {
         this.targetGid = gid
-        loadTargetTagGroup()
+        refreshData()
     }
 
-    private fun loadTargetTagGroup() {
+    override fun refreshData() {
         viewModelScope.launch(Dispatchers.IO) {
             val result = tagRepo.selectTagGroupByGid(targetGid)
             _bindingTargetTagGroup.postValue(result)
         }
     }
 
-
     // move tags and save
     fun moveSelectedTargetTagsToBasicGroup() {
         viewModelScope.launch(Dispatchers.IO) {
             val updateJob = launch { tagRepo.updateTagsToGid(selectedTargetTags,1) }
             updateJob.join()
-            loadTargetTagGroup()
+            refreshData()
             clearLists()
         }
     }
@@ -53,7 +53,7 @@ class SwapTagViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val updateJob = launch { tagRepo.updateTagsToGid(selectedBasicTags,targetGid) }
             updateJob.join()
-            loadTargetTagGroup()
+            refreshData()
             clearLists()
         }
     }
@@ -62,6 +62,8 @@ class SwapTagViewModel @Inject constructor(
         selectedBasicTags.clear()
         selectedTargetTags.clear()
     }
+
+
 
 
 }

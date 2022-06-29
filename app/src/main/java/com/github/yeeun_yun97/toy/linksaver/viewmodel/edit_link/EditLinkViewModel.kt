@@ -7,7 +7,8 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.*
 import com.github.yeeun_yun97.toy.linksaver.data.repository.SjNetworkRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjLinkRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagRepository
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.SjBaseViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjBaseViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjUsePrivateModeViewModelImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -19,7 +20,7 @@ class EditLinkViewModel @Inject constructor(
     private val tagRepo: SjTagRepository,
     private val linkRepo: SjLinkRepository,
     private val networkRepository: SjNetworkRepository,
-) : SjBaseViewModel() {
+) : SjUsePrivateModeViewModelImpl() {
     var lid: Int? = null
         set(value) {
             field = value
