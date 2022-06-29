@@ -1,5 +1,6 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.personal
 
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
@@ -19,7 +20,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class PersonalSettingFragment @Inject constructor() : SjBasicFragment<FragmentPersonalSettingBinding>() {
-    private val viewModel: SettingViewModel by viewModels()
+    private val viewModel: SettingViewModel by activityViewModels()
     override fun layoutId(): Int = R.layout.fragment_personal_setting
 
     override fun onCreateView() {
