@@ -10,9 +10,14 @@ import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjVideoReposito
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjYoutubeExtractListener
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjYoutubeExtractor
 import com.google.android.exoplayer2.MediaItem
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-
-class ListVideoViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class ListVideoViewModel @Inject constructor(
+    application: Application,
+    private val videoRepo : SjVideoRepository
+) : AndroidViewModel(application) {
     // setting preview start and end
     private val START_MS: Long = 1000
     private val END_MS: Long = 16000
@@ -22,10 +27,6 @@ class ListVideoViewModel(application: Application) : AndroidViewModel(applicatio
         field = value
         refreshData()
     }
-
-    // repository
-    val videoRepo = SjVideoRepository.getInstance()
-
 
     // liveDataList
     private val _playList = MutableLiveData(mutableListOf<MediaItem>())

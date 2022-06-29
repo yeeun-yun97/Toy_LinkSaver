@@ -4,11 +4,16 @@ import androidx.lifecycle.*
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroupWithTags
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TagGroupEditViewModel : ViewModel() {
-    private val tagRepo = SjTagRepository.getInstance()
+@HiltViewModel
+class TagGroupEditViewModel @Inject constructor(
+    private val tagRepo : SjTagRepository
+) : ViewModel() {
+
 
     var gid: Int = 1
         set(value) {

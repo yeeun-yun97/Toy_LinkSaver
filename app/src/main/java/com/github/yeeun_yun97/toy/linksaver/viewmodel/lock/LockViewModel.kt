@@ -13,16 +13,16 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LockViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
-    val repository: SjDataStoreRepository = SjDataStoreRepository.getInstance()
-
+class LockViewModel @Inject constructor(
+    application: Application,
+    private val repository: SjDataStoreRepository
+) : AndroidViewModel(application) {
     private val _bindingPassword1 = MutableLiveData("")
     private val _bindingPassword2 = MutableLiveData("")
     private val _bindingPassword3 = MutableLiveData("")
     private val _bindingPassword4 = MutableLiveData("")
     private val _bindingPassword5 = MutableLiveData("")
     private val _bindingPassword6 = MutableLiveData("")
-
     val bindingPassword1: LiveData<String> get() = _bindingPassword1
     val bindingPassword2: LiveData<String> get() = _bindingPassword2
     val bindingPassword3: LiveData<String> get() = _bindingPassword3

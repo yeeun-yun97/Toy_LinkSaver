@@ -5,13 +5,16 @@ import androidx.lifecycle.viewModelScope
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjDomainRepository
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.SjBaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DomainViewModel : SjBaseViewModel() {
-    private val domainRepo = SjDomainRepository.getInstance()
-
+@HiltViewModel
+class DomainViewModel @Inject constructor(
+    private val domainRepo : SjDomainRepository
+) : SjBaseViewModel() {
     var did = -1
         set(value) {
             field = value

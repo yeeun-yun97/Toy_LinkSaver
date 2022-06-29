@@ -1,25 +1,25 @@
 package com.github.yeeun_yun97.toy.linksaver.viewmodel.edit_link
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.yeeun_yun97.toy.linksaver.data.model.*
 import com.github.yeeun_yun97.toy.linksaver.data.repository.SjNetworkRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjLinkRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagRepository
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.SjBaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class EditLinkViewModel : SjBaseViewModel() {
-    // repo
-    private val tagRepo = SjTagRepository.getInstance()
-    private val linkRepo = SjLinkRepository.getInstance()
-    private val networkRepository = SjNetworkRepository.newInstance()
-
+@HiltViewModel
+class EditLinkViewModel @Inject constructor(
+    private val tagRepo: SjTagRepository,
+    private val linkRepo: SjLinkRepository,
+    private val networkRepository: SjNetworkRepository,
+) : SjBaseViewModel() {
     var lid: Int? = null
         set(value) {
             field = value
@@ -127,8 +127,8 @@ class EditLinkViewModel : SjBaseViewModel() {
 
 
     // handle tag selection
-    fun selectTag(tag: SjTag)=targetTags.add(tag)
-    fun unselectTag(tag: SjTag) =targetTags.remove(tag)
+    fun selectTag(tag: SjTag) = targetTags.add(tag)
+    fun unselectTag(tag: SjTag) = targetTags.remove(tag)
     fun isTagSelected(tag: SjTag) = targetTags.contains(tag)
 
 

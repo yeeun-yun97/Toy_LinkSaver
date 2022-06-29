@@ -7,13 +7,15 @@ import androidx.lifecycle.viewModelScope
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroupWithTags
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagRepository
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.basic.BasicViewModelWithRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SwapTagViewModel : ViewModel() {
-    private val tagRepo = SjTagRepository.getInstance()
-
+@HiltViewModel
+class SwapTagViewModel @Inject constructor(
+    private val tagRepo : SjTagRepository
+) : ViewModel() {
     var targetGid: Int = -1
     val selectedBasicTags = mutableListOf<SjTag>()
     val selectedTargetTags = mutableListOf<SjTag>()
