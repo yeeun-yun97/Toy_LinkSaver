@@ -42,7 +42,7 @@ class SearchLinkViewModel @Inject constructor(
     val links = linkRepo.links
     val bindingSearchSets = searchSetRepo.searchSetList
 
-    val defaultTags = tagRepo.defaultTagGroup
+    val defaultTags = tagRepo.defaultGroup
     val tagGroups = tagRepo.tagGroupsWithoutDefault
 
     init {
@@ -60,6 +60,10 @@ class SearchLinkViewModel @Inject constructor(
         refreshLinks()
         refreshSearchSets()
         refreshTags()
+        refreshDefaultTags()
+    }
+    private fun refreshDefaultTags(){
+        tagRepo.postDefaultTagGroup()
     }
 
     private fun refreshTags() {

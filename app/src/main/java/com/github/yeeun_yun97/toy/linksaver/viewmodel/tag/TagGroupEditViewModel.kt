@@ -38,12 +38,7 @@ class TagGroupEditViewModel @Inject constructor(
     // delete tag
     fun deleteTag(tag: SjTag) {
         viewModelScope.launch(Dispatchers.IO) {
-            val deleteRefs = launch {
-                tagRepo.deleteSearchTagCrossRefsByTid(tag.tid)
-                tagRepo.deleteLinkTagCrossRefsByTid(tag.tid)
-            }
-            deleteRefs.join()
-            val deleteTag = launch { tagRepo.deleteTag(tag.tid) }
+            val deleteTag = tagRepo.deleteTagByTid(tag.tid)
             deleteTag.join()
             refreshData()
         }
@@ -59,8 +54,7 @@ class TagGroupEditViewModel @Inject constructor(
 
     private fun createTag(name: String, gid: Int = 1) {
         viewModelScope.launch(Dispatchers.IO) {
-            val job =  tagRepo.insertTag(name = name, gid = gid)
-            job.join()
+            tagRepo.insertTag(name = name, gid = gid).join()
             refreshData()
         }
     }

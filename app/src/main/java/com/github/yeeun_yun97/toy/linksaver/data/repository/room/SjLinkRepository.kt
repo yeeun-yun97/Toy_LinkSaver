@@ -86,8 +86,8 @@ class SjLinkRepository @Inject constructor(
     // insert
     fun insertLinkAndTags(domain: SjDomain?, newLink: SjLink, tags: List<SjTag>) =
         CoroutineScope(Dispatchers.IO).launch {
-            if (domain != null) newLink.did = domain.did
-            val lid = async { dao.insertLink(newLink).toInt() }
+            val updatedLink = newLink.copy(did = domain?.did ?: 1)
+            val lid = async { dao.insertLink(updatedLink).toInt() }
 
             //insert crossRef after newLink insert
             insertLinkTagCrossRefs(lid.await(), tags)
@@ -106,8 +106,8 @@ class SjLinkRepository @Inject constructor(
     fun updateLinkAndTags(domain: SjDomain?, link: SjLink, tags: MutableList<SjTag>) {
         Log.d("링크 업데이트", tags.toString())
         CoroutineScope(Dispatchers.IO).launch {
-            if (domain != null) link.did = domain.did
-            dao.updateLink(link)
+            val updatedLink = if (domain != null) link.copy(did = domain.did) else link
+            dao.updateLink(updatedLink)
 
             //update tags:: delete all and insert all
             val deleteJob = launch { dao.deleteLinkTagCrossRefsByLid(link.lid) }

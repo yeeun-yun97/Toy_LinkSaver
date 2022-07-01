@@ -23,10 +23,38 @@ class SjTestDataUtil {
             SjTagGroup(3, "비밀 그룹", true),
         )
 
+        val testTagGroupsNotDefault = listOf(
+            testTagGroups[1],
+            testTagGroups[2]
+        )
+
+        val testTagGroupsNotDefaultPublic = listOf(
+            testTagGroups[2]
+        )
+
         val testTags = listOf(
             SjTag(1, "기본", gid = 1),
-            SjTag(2, "일반", gid = 2),
-            SjTag(3, "비밀", gid = 3)
+            SjTag(2, "기본2", gid = 1),
+            SjTag(3, "기본3", gid = 1),
+            SjTag(4, "일반", gid = 2),
+            SjTag(5, "일반2", gid = 2),
+            SjTag(6, "비밀", gid = 3),
+            SjTag(7, "비밀2", gid = 3),
+            SjTag(8, "비밀3", gid = 3)
+        )
+
+        val testTagsDefault = listOf(
+            testTags[0],
+            testTags[1],
+            testTags[2],
+        )
+
+        val testTagsNotDefault = listOf(
+            testTags[3],
+            testTags[4],
+            testTags[5],
+            testTags[6],
+            testTags[7]
         )
 
         val testAllLinks = listOf(
@@ -75,9 +103,15 @@ class SjTestDataUtil {
 
         val testSearchSets = listOf(
             Pair(SjSearch(1, "유투브"), listOf(1)),
-            Pair(SjSearch(2, "비밀"), listOf(1)),
+            Pair(SjSearch(2, "비밀"), listOf(1,2)),
             Pair(SjSearch(3, "네이버"), listOf(1)),
             Pair(SjSearch(4, "유네이버투브"), listOf(0)),
+        )
+
+        val testSearchSetsPublic= listOf(
+            testSearchSets[0],
+            testSearchSets[2],
+            testSearchSets[3],
         )
 
         suspend fun insertDatas(
@@ -86,22 +120,22 @@ class SjTestDataUtil {
             tagRepo: SjTagRepository,
             searchSetRepo: SjSearchSetRepository
         ) {
-
+            for (search in testSearchSets) searchSetRepo.insertSearchSet(
+                search.first.sid,
+                search.first.keyword,
+                search.second
+            )
             for (domain in testDomain) domainRepo.insertDomain(domain)
             for (group in testTagGroups)
                 tagRepo.insertTagGroup(
                     gid = group.gid,
                     name = group.name,
                     isPrivate = group.isPrivate
-                )
+                ).join()
             for (tag in testTags) tagRepo.insertTag(tag.tid, tag.name, tag.gid).join()
             for (link in testAllLinks) linkRepo.insertLinkAndTags(null, link.first, link.second)
                 .join()
-            for (search in testSearchSets) searchSetRepo.insertSearchSet(
-                search.first.sid,
-                search.first.keyword,
-                search.second
-            )
+
         }
     }
 }

@@ -11,26 +11,27 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ListGroupViewModel @Inject constructor(
-    private val tagRepo : SjTagRepository
+    private val tagRepo: SjTagRepository
 ) : SjUsePrivateModeViewModelImpl() {
     // data binding live data
     val bindingTagGroups = tagRepo.tagGroupsWithoutDefault
-    val bindingBasicTagGroup = tagRepo.defaultTagGroup
+    val bindingBasicTagGroup = tagRepo.defaultGroup
 
     override fun refreshData() {
         when (isPrivateMode) {
             true -> tagRepo.postTagGroupsPublicNotDefault()
             false -> tagRepo.postTagGroupsNotDefault()
         }
+        tagRepo.postDefaultTagGroup()
     }
 
     fun editTagGroup(name: String, isPrivate: Boolean, group: SjTagGroup?) =
         CoroutineScope(Dispatchers.IO).launch {
             val job = launch {
                 if (group == null) {
-                    tagRepo.insertTagGroup(name = name, isPrivate = isPrivate)
+                    tagRepo.insertTagGroup(name = name, isPrivate = isPrivate).join()
                 } else {
-                    tagRepo.updateTagGroup(group.copy(name = name, isPrivate = isPrivate))
+                    tagRepo.updateTagGroup(group.copy(name = name, isPrivate = isPrivate)).join()
                 }
             }
             job.join()

@@ -18,7 +18,9 @@ class SjTagRepository @Inject constructor(
 ) {
     private val _tagGroupsWithoutDefault = MutableLiveData<List<SjTagGroupWithTags>>()
     val tagGroupsWithoutDefault: LiveData<List<SjTagGroupWithTags>> get() = _tagGroupsWithoutDefault
-    val defaultTagGroup = dao.getDefaultTagGroupData()
+
+    private val _defaultGroup = MutableLiveData<SjTagGroupWithTags>()
+    val defaultGroup: LiveData<SjTagGroupWithTags> get() = _defaultGroup
 
     // manage liveData
     fun postTagGroupsNotDefault() =
@@ -33,6 +35,12 @@ class SjTagRepository @Inject constructor(
             _tagGroupsWithoutDefault.postValue(data)
         }
 
+    fun postDefaultTagGroup() =
+        CoroutineScope(Dispatchers.IO).launch {
+            val data = dao.selectDefaultTagGroup()
+            _defaultGroup.postValue(data)
+        }
+
 
     // select
     suspend fun selectTagByTid(tid: Int): SjTag = dao.selectTagByTid(tid)
@@ -42,36 +50,35 @@ class SjTagRepository @Inject constructor(
 
 
     // insert
-    suspend fun insertTagGroup(gid :Int = 0, name: String, isPrivate: Boolean) =
-        dao.insertTagGroup(SjTagGroup(gid = gid, name = name, isPrivate = isPrivate))
-
-
-    private fun insertTag(newTag: SjTag) =
+    suspend fun insertTagGroup(gid: Int = 0, name: String, isPrivate: Boolean) =
         CoroutineScope(Dispatchers.IO).launch {
-            dao.insertTag(newTag)
+            dao.insertTagGroup(SjTagGroup(gid = gid, name = name, isPrivate = isPrivate))
         }
 
-    fun insertTag(tid :Int = 0, name: String, gid: Int = 1) = insertTag(SjTag(tid = tid, name = name, gid = gid))
+    fun insertTag(tid: Int = 0, name: String, gid: Int = 1) =
+        CoroutineScope(Dispatchers.IO).launch {
+            dao.insertTag(SjTag(tid = tid, name = name, gid = gid))
+        }
 
     //  update
     suspend fun updateTag(tag: SjTag) {
         dao.updateTag(tag)
     }
 
-    suspend fun updateTagsToGid(tags: List<SjTag>, gid: Int) {
-        for (tag in tags) tag.gid = gid
+    suspend fun updateTagGroup(tagGroup: SjTagGroup) =
+        CoroutineScope(Dispatchers.IO).launch {
+            dao.updateTagGroup(tagGroup)
+        }
 
-        dao.updateTags(*tags.toTypedArray())
-
-    }
-
-    suspend fun updateTagGroup(tagGroup: SjTagGroup) {
-        dao.updateTagGroup(tagGroup)
-    }
-
+    suspend fun updateTagsToGid(tags: List<SjTag>, gid: Int) =
+        CoroutineScope(Dispatchers.IO).launch {
+            val tagList = mutableListOf<SjTag>()
+            for (tag in tags) tagList.add(tag.copy(gid=gid))
+            dao.updateTags(*tagList.toTypedArray())
+        }
 
     // delete
-    fun deleteTagGroupByGid(gid: Int) {
+    fun deleteTagGroupByGid(gid: Int) =
         CoroutineScope(Dispatchers.IO).launch {
             // change tags related to group to basic group
             val job = launch { dao.updateTagsMoveToDefaultTagGroupByGid(gid) }
@@ -80,20 +87,22 @@ class SjTagRepository @Inject constructor(
             // delete group
             dao.deleteTagGroupByGid(gid)
         }
-    }
 
-    suspend fun deleteLinkTagCrossRefsByTid(tid: Int) {
+    suspend fun deleteTagByTid(tid: Int) =
+        CoroutineScope(Dispatchers.IO).launch {
+            launch {
+                deleteSearchTagCrossRefsByTid(tid)
+                deleteLinkTagCrossRefsByTid(tid)
+            }.join()
+            launch {
+                dao.deleteTagByTid(tid)
+            }.join()
+        }
+
+    private suspend fun deleteLinkTagCrossRefsByTid(tid: Int) =
         dao.deleteLinkTagCrossRefsByTid(tid)
-    }
 
-    suspend fun deleteSearchTagCrossRefsByTid(tid: Int) {
+    private suspend fun deleteSearchTagCrossRefsByTid(tid: Int) =
         dao.deleteSearchTagCrossRefsByTid(tid)
-    }
-
-    suspend fun deleteTag(tid: Int) {
-        // wait and delete
-        dao.deleteTagByTid(tid)
-    }
-
 
 }

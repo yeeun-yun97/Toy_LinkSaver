@@ -28,7 +28,7 @@ class EditLinkViewModel @Inject constructor(
 
     // model list
     val tagGroups = tagRepo.tagGroupsWithoutDefault
-    val tagDefaultGroup = tagRepo.defaultTagGroup
+    val tagDefaultGroup = tagRepo.defaultGroup
 
     // default type
     private val defaultType = ELinkType.link
@@ -49,15 +49,16 @@ class EditLinkViewModel @Inject constructor(
 
     init {
         bindingName.observeForever {
-            targetLink.name = it
+            targetLink = targetLink.copy(name = it)
         }
 
         bindingIsVideo.observeForever {
-            targetLink.type =
-                when (it) {
+            targetLink = targetLink.copy(
+                type = when (it) {
                     true -> ELinkType.video
                     false -> ELinkType.link
                 }
+            )
         }
     }
 
@@ -67,12 +68,17 @@ class EditLinkViewModel @Inject constructor(
         } else {
             tagRepo.postTagGroupsNotDefault()
         }
+        refreshDefaultGroup()
+    }
+
+    private fun refreshDefaultGroup() {
+        tagRepo.postDefaultTagGroup()
     }
 
     // when create new with url address
     fun createLinkByUrl(url: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            targetLink.url = url
+            targetLink = targetLink.copy(url=url)
             _bindingUrl.postValue(url)
 
             // load title of url site
@@ -84,7 +90,7 @@ class EditLinkViewModel @Inject constructor(
             // load preview of url site
             launch {
                 val preview = networkRepository.getPreviewOf(url)
-                targetLink.preview = preview
+                targetLink = targetLink.copy(preview=preview)
                 _previewImage.postValue(preview)
             }
         }
@@ -122,7 +128,10 @@ class EditLinkViewModel @Inject constructor(
     }
 
     fun createTag(name: String) {
-        tagRepo.insertTag(name = name)
+        viewModelScope.launch(Dispatchers.IO) {
+            tagRepo.insertTag(name = name).join()
+            refreshDefaultGroup()
+        }
     }
 
 

@@ -32,10 +32,10 @@ class DomainViewModel @Inject constructor(
     init {
         // handle user change data
         bindingDomainName.observeForever {
-            targetDomain.name = it
+            targetDomain = targetDomain.copy(name=it)
         }
         bindingDomainUrl.observeForever {
-            targetDomain.url = it
+            targetDomain = targetDomain.copy(url=it)
         }
     }
 

@@ -9,9 +9,9 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroupWithTags
 @Dao
 interface SjTagDao {
     // select data list
-    @Transaction
-    @Query("SELECT * FROM SjTagGroup WHERE gid= 1")
-    fun getDefaultTagGroupData(): LiveData<SjTagGroupWithTags>
+//    @Transaction
+//    @Query("SELECT * FROM SjTagGroup WHERE gid= 1")
+//    fun getDefaultTagGroupData(): LiveData<SjTagGroupWithTags>
 
     @Transaction
     @Query("SELECT * FROM SjTagGroup WHERE gid != 1 ORDER BY name")
@@ -21,6 +21,10 @@ interface SjTagDao {
     @Transaction
     @Query("SELECT * FROM SjTagGroup WHERE gid != 1 AND is_private = 0 ORDER BY name")
     suspend fun selectTagGroupsPublicNotDefault(): List<SjTagGroupWithTags>
+
+    @Transaction
+    @Query("SELECT * FROM SjTagGroup WHERE gid = 1")
+    suspend fun selectDefaultTagGroup(): SjTagGroupWithTags
 
 
     // select single

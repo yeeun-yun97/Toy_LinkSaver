@@ -24,8 +24,8 @@ class Converters {
 )
 data class SjDomain(
     @PrimaryKey(autoGenerate = true) val did: Int = 0,
-    @ColumnInfo(name = "name") var name: String,
-    @ColumnInfo(name = "url") var url: String
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "url") val url: String
 )
 
 @Entity(primaryKeys = ["did", "tid"])
@@ -43,35 +43,35 @@ data class DomainTagCrossRef(
 )
 data class SjLink(
     @PrimaryKey(autoGenerate = true) val lid: Int = 0,
-    @ColumnInfo(name = "name") var name: String,
-    @ColumnInfo(name = "did") var did: Int,
-    @ColumnInfo(name = "url") var url: String,
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "did") val did: Int,
+    @ColumnInfo(name = "url") val url: String,
 
-    @ColumnInfo(name = "icon", defaultValue = "") var icon: String = "",
-    @ColumnInfo(name = "preview", defaultValue = "") var preview: String = "",
+    @ColumnInfo(name = "icon", defaultValue = "") val icon: String = "",
+    @ColumnInfo(name = "preview", defaultValue = "") val preview: String = "",
     @ColumnInfo(name = "type", defaultValue = "link")
     @TypeConverters(Converters::class)
-    var type: ELinkType = ELinkType.link,
+    val type: ELinkType = ELinkType.link,
 )
 
 @Entity(indices = [Index(value = ["name"], unique = true)])
 data class SjTagGroup(
     @PrimaryKey(autoGenerate = true) val gid: Int = 0,
-    @ColumnInfo(name = "name") var name: String,
-    @ColumnInfo(name = "is_private") var isPrivate: Boolean,
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "is_private") val isPrivate: Boolean,
 )
 
 @Entity(indices = [Index(value = ["name"], unique = true)])
 data class SjTag(
     @PrimaryKey(autoGenerate = true) val tid: Int = 0,
-    @ColumnInfo(name = "name") var name: String,
-    @ColumnInfo(name = "gid") var gid: Int = 1
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "gid") val gid: Int = 1
 )
 
 @Entity(indices = [Index(value = ["keyword"])])
 data class SjSearch(
     @PrimaryKey(autoGenerate = true) val sid: Int = 0,
-    @ColumnInfo(name = "keyword") var keyword: String
+    @ColumnInfo(name = "keyword") val keyword: String
 )
 
 
@@ -140,7 +140,7 @@ data class SjTagGroupWithTags(
     @Relation(
         parentColumn = "gid",
         entityColumn = "gid",
-    ) var tags: List<SjTag>
+    ) val tags: List<SjTag>
 )
 
 class LinkModelUtil {

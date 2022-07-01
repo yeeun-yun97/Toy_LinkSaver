@@ -14,14 +14,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SwapTagViewModel @Inject constructor(
-    private val tagRepo : SjTagRepository
+    private val tagRepo: SjTagRepository
 ) : SjBaseViewModelImpl() {
     var targetGid: Int = -1
     val selectedBasicTags = mutableListOf<SjTag>()
     val selectedTargetTags = mutableListOf<SjTag>()
 
     //bindingVariable
-    private val _bindingBasicTagGroup = tagRepo.defaultTagGroup
+    private val _bindingBasicTagGroup = tagRepo.defaultGroup
     private val _bindingTargetTagGroup = MutableLiveData<SjTagGroupWithTags>()
     val bindingBasicTagGroup: LiveData<SjTagGroupWithTags> get() = _bindingBasicTagGroup
     val bindingTargetTagGroup: LiveData<SjTagGroupWithTags> get() = _bindingTargetTagGroup
@@ -35,14 +35,14 @@ class SwapTagViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val result = tagRepo.selectTagGroupByGid(targetGid)
             _bindingTargetTagGroup.postValue(result)
+            tagRepo.postDefaultTagGroup()
         }
     }
 
     // move tags and save
     fun moveSelectedTargetTagsToBasicGroup() {
         viewModelScope.launch(Dispatchers.IO) {
-            val updateJob = launch { tagRepo.updateTagsToGid(selectedTargetTags,1) }
-            updateJob.join()
+            tagRepo.updateTagsToGid(selectedTargetTags, 1).join()
             refreshData()
             clearLists()
         }
@@ -50,19 +50,16 @@ class SwapTagViewModel @Inject constructor(
 
     fun moveSelectedBasicTagsToTargetGroup() {
         viewModelScope.launch(Dispatchers.IO) {
-            val updateJob = launch { tagRepo.updateTagsToGid(selectedBasicTags,targetGid) }
-            updateJob.join()
+            tagRepo.updateTagsToGid(selectedBasicTags, targetGid).join()
             refreshData()
             clearLists()
         }
     }
 
-    private fun clearLists(){
+    private fun clearLists() {
         selectedBasicTags.clear()
         selectedTargetTags.clear()
     }
-
-
 
 
 }
