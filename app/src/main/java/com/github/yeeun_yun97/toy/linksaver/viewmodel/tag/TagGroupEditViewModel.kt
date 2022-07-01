@@ -59,7 +59,7 @@ class TagGroupEditViewModel @Inject constructor(
 
     private fun createTag(name: String, gid: Int = 1) {
         viewModelScope.launch(Dispatchers.IO) {
-            val job = launch { tagRepo.insertTag(name = name, gid = gid) }
+            val job =  tagRepo.insertTag(name = name, gid = gid)
             job.join()
             refreshData()
         }
