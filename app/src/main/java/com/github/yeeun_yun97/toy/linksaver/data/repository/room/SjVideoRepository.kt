@@ -11,27 +11,17 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.VideoData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class SjVideoRepository private constructor() {
-    private val dao: SjLinkDao = SjDatabaseUtil.getLinkDao()
-
+@Singleton
+class SjVideoRepository @Inject constructor(private val dao: SjLinkDao) {
     private val videoType = ELinkType.video.name
 
     // for video list fragment
     private val _linksVideo = MutableLiveData<List<SjLinksAndDomainsWithTags>>()
-    val linksVideo: LiveData<List<VideoData>> = Transformations.switchMap(_linksVideo) { convertToVideoData(it) }
-
-    companion object {
-        // singleton object
-        private lateinit var repo: SjVideoRepository
-
-        fun getInstance(): SjVideoRepository {
-            if (!this::repo.isInitialized) {
-                repo = SjVideoRepository()
-            }
-            return repo
-        }
-    }
+    val linksVideo: LiveData<List<VideoData>> =
+        Transformations.switchMap(_linksVideo) { convertToVideoData(it) }
 
     // manage liveData
     fun postVideosPublic() =

@@ -11,24 +11,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class SjLinkRepository private constructor() {
-    private val dao: SjLinkDao = SjDatabaseUtil.getLinkDao()
-
+@Singleton
+class SjLinkRepository @Inject constructor(
+    private val dao: SjLinkDao
+) {
     private val _links = MutableLiveData<List<SjLinksAndDomainsWithTags>>()
     val links: LiveData<List<SjLinksAndDomainsWithTags>> get() = _links
 
-    companion object {
-        // singleton object
-        private lateinit var repo: SjLinkRepository
-
-        fun getInstance(): SjLinkRepository {
-            if (!this::repo.isInitialized) {
-                repo = SjLinkRepository()
-            }
-            return repo
-        }
-    }
 
     // manage liveData
     fun postLinksPublic() =

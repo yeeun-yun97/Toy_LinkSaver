@@ -10,26 +10,16 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroupWithTags
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class SjTagRepository private constructor() {
-    private val dao: SjTagDao = SjDatabaseUtil.getTagDao()
-
+@Singleton
+class SjTagRepository @Inject constructor(
+    private val dao: SjTagDao
+) {
     private val _tagGroupsWithoutDefault = MutableLiveData<List<SjTagGroupWithTags>>()
     val tagGroupsWithoutDefault: LiveData<List<SjTagGroupWithTags>> get() = _tagGroupsWithoutDefault
     val defaultTagGroup = dao.getDefaultTagGroupData()
-
-    companion object {
-        // singleton object
-        private lateinit var repo: SjTagRepository
-
-        fun getInstance(): SjTagRepository {
-            if (!this::repo.isInitialized) {
-                repo = SjTagRepository()
-            }
-            return repo
-        }
-    }
-
 
     // manage liveData
     fun postTagGroupsNotDefault() =
@@ -53,16 +43,16 @@ class SjTagRepository private constructor() {
 
 
     // insert
-    suspend fun insertTagGroup(name: String, isPrivate: Boolean) {
-        dao.insertTagGroup(SjTagGroup(name = name, isPrivate = isPrivate))
-    }
+    suspend fun insertTagGroup(gid :Int = 0, name: String, isPrivate: Boolean) =
+        dao.insertTagGroup(SjTagGroup(gid = gid, name = name, isPrivate = isPrivate))
+
 
     private fun insertTag(newTag: SjTag) =
         CoroutineScope(Dispatchers.IO).launch {
             dao.insertTag(newTag)
         }
 
-    fun insertTag(name: String, gid: Int = 1) = insertTag(SjTag(name = name, gid = gid))
+    fun insertTag(tid :Int = 0, name: String, gid: Int = 1) = insertTag(SjTag(tid = tid, name = name, gid = gid))
 
     //  update
     suspend fun updateTag(tag: SjTag) {

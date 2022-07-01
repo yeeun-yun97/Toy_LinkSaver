@@ -11,24 +11,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class SjSearchSetRepository private constructor() {
-    private val dao: SjSearchSetDao = SjDatabaseUtil.getSearchSetDao()
-
+@Singleton
+class SjSearchSetRepository @Inject constructor(
+    private val dao: SjSearchSetDao
+) {
     private val _searchSetList = MutableLiveData<List<SjSearchWithTags>>()
     val searchSetList: LiveData<List<SjSearchWithTags>> get() = _searchSetList
-
-    companion object {
-        // singleton object
-        private lateinit var repo: SjSearchSetRepository
-
-        fun getInstance(): SjSearchSetRepository {
-            if (!this::repo.isInitialized) {
-                repo = SjSearchSetRepository()
-            }
-            return repo
-        }
-    }
 
     // manage liveData
     fun postSearchSetPublic() =
@@ -42,7 +33,7 @@ class SjSearchSetRepository private constructor() {
         }
 
     // insert
-    fun insertSearchSet(keyword: String, tids: List<Int>) =
+    fun insertSearchSet(sid: Int = 0, keyword: String, tids: List<Int>) =
         CoroutineScope(Dispatchers.IO).launch {
             // if there is conflict, delete
             val deleteConflictJob = launch {
@@ -56,7 +47,7 @@ class SjSearchSetRepository private constructor() {
             // insert new searchSet
             val newSearchSetSid = async {
                 deleteConflictJob.join()
-                dao.insertSearchSet(SjSearch(keyword = keyword)).toInt()
+                dao.insertSearchSet(SjSearch(sid = sid, keyword = keyword)).toInt()
             }
 
             // insert TagCrossRef after insert
