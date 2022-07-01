@@ -3,46 +3,63 @@ package com.github.yeeun_yun97.toy.linksaver.test.repository
 import androidx.lifecycle.LiveData
 import com.github.yeeun_yun97.toy.linksaver.data.SjTestDataUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjSearchWithTags
+import com.github.yeeun_yun97.toy.linksaver.test.SjBaseTest
 import dagger.hilt.android.testing.HiltAndroidTest
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import org.junit.Assert
 import org.junit.Test
 
 @HiltAndroidTest
-class SearchRepositoryTest : SjRepositoryBaseTest<SjSearchWithTags>() {
-    override fun targetLiveData(): LiveData<List<SjSearchWithTags>> = searchSetRepo.searchSetList
+class SearchRepositoryTest : SjBaseTest() {
+    private lateinit var searchSets: LiveData<List<SjSearchWithTags>>
 
-    @Test
-    fun listAllSearchSets() {
-        assertLiveDataUpdatedSize(
-            ::postAllSearchSets,
-            SjTestDataUtil.testSearchSets.size
-        )
+    override fun before() {
+        super.before()
+        searchSets = searchSetRepo.searchSetList
+
     }
+
     private fun postAllSearchSets() = searchSetRepo.postAllSearchSet()
-
-    @Test
-    fun listSearchSetsPublic() {
-        assertLiveDataUpdatedSize(
-            ::postSearchSetsPublic,
-            SjTestDataUtil.testSearchSetsPublic.size
-        )
-    }
     private fun postSearchSetsPublic() = searchSetRepo.postSearchSetPublic()
 
     @Test
-    fun deleteAll() {
-        assertLiveDataUpdatedSize(
-            ::postAllAfterDelete,
-            0
-        )
-    }
-    private fun postAllAfterDelete() =
-        CoroutineScope(Dispatchers.IO).launch {
-            searchSetRepo.deleteAllSearchSet().join()
-            searchSetRepo.postAllSearchSet().join()
+    fun listAllSearchSets() {
+        runBlocking(Dispatchers.Main) {
+            insertBaseData().join()
+            val result = getValueOrThrow(searchSets, ::postAllSearchSets)
+            Assert.assertEquals(
+                SjTestDataUtil.testSearchSets.size,
+                result.size
+            )
         }
+    }
 
+
+    @Test
+    fun listSearchSetsPublic() {
+        runBlocking(Dispatchers.Main) {
+            insertBaseData().join()
+            val result = getValueOrThrow(searchSets, ::postSearchSetsPublic)
+            Assert.assertEquals(
+                SjTestDataUtil.testSearchSetsPublic.size,
+                result.size
+            )
+        }
+    }
+
+
+    @Test
+    fun deleteAll() {
+        runBlocking(Dispatchers.Main) {
+            insertBaseData().join()
+            searchSetRepo.deleteAllSearchSet().join()
+            val result = getValueOrThrow(searchSets, ::postAllSearchSets)
+            Assert.assertEquals(
+                0,
+                result.size
+            )
+        }
+    }
 
 }
