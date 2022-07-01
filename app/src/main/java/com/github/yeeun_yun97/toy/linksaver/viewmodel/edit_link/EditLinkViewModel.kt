@@ -122,7 +122,7 @@ class EditLinkViewModel @Inject constructor(
     }
 
     fun createTag(name: String) {
-        tagRepo.insertTag(name)
+        tagRepo.insertTag(name = name)
     }
 
 

@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TagGroupEditViewModel @Inject constructor(
-    private val tagRepo : SjTagRepository
+    private val tagRepo: SjTagRepository
 ) : SjBaseViewModelImpl() {
 
     var gid: Int = 1
@@ -59,7 +59,7 @@ class TagGroupEditViewModel @Inject constructor(
 
     private fun createTag(name: String, gid: Int = 1) {
         viewModelScope.launch(Dispatchers.IO) {
-            val job = launch { tagRepo.insertTag(name, gid) }
+            val job = launch { tagRepo.insertTag(name = name, gid = gid) }
             job.join()
             refreshData()
         }
@@ -72,8 +72,6 @@ class TagGroupEditViewModel @Inject constructor(
             refreshData()
         }
     }
-
-
 
 
 }

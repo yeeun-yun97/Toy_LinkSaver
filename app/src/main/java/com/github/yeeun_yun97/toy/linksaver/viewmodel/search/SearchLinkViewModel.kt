@@ -126,7 +126,7 @@ class SearchLinkViewModel @Inject constructor(
             Log.d("모드 변경", "Search")
             this.mode = ListMode.MODE_SEARCH
             refreshLinks()
-            searchSetRepo.insertSearchSet(bindingSearchWord.value!!, _tids)
+            searchSetRepo.insertSearchSet(keyword = bindingSearchWord.value!!, tids = _tids)
         }
     }
 

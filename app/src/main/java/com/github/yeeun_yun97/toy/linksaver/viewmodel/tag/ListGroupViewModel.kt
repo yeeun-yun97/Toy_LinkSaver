@@ -28,7 +28,7 @@ class ListGroupViewModel @Inject constructor(
         CoroutineScope(Dispatchers.IO).launch {
             val job = launch {
                 if (group == null) {
-                    tagRepo.insertTagGroup(name, isPrivate)
+                    tagRepo.insertTagGroup(name = name, isPrivate = isPrivate)
                 } else {
                     tagRepo.updateTagGroup(group.copy(name = name, isPrivate = isPrivate))
                 }
