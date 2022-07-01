@@ -3,7 +3,6 @@ package com.github.yeeun_yun97.toy.linksaver.data.repository.room
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjSearchSetDao
-import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.SearchTagCrossRef
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjSearch
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjSearchWithTags

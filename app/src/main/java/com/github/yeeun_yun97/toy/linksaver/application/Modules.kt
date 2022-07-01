@@ -1,37 +1,45 @@
 package com.github.yeeun_yun97.toy.linksaver.application
 
-import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDomainDao
-import com.github.yeeun_yun97.toy.linksaver.data.dao.SjLinkDao
-import com.github.yeeun_yun97.toy.linksaver.data.dao.SjSearchSetDao
-import com.github.yeeun_yun97.toy.linksaver.data.dao.SjTagDao
-import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
+import android.content.Context
+import androidx.room.Room
+import com.github.yeeun_yun97.toy.linksaver.data.dao.*
+import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabase
 import com.github.yeeun_yun97.toy.linksaver.data.repository.SjDataStoreRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.SjNetworkRepository
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class DaoModule{
+class DatabaseModule {
     @Provides
     @Singleton
-    fun providesLinkDao() : SjLinkDao = SjDatabaseUtil.getLinkDao()
+    fun provideAppDatabase(@ApplicationContext context: Context) =
+        Room.databaseBuilder(
+            context,
+            SjDatabase::class.java,
+            "user_db"
+        ).fallbackToDestructiveMigration()
+            .build()
 
     @Provides
-    @Singleton
-    fun providesSearchSetDao() : SjSearchSetDao = SjDatabaseUtil.getSearchSetDao()
+    fun providesCountDao(db: SjDatabase) : SjCountDao = db.getCountDao()
 
     @Provides
-    @Singleton
-    fun providesDomainDao() : SjDomainDao = SjDatabaseUtil.getDomainDao()
+    fun providesLinkDao(db: SjDatabase) : SjLinkDao = db.getLinkDao()
 
     @Provides
-    @Singleton
-    fun providesTagDao() : SjTagDao = SjDatabaseUtil.getTagDao()
+    fun providesSearchSetDao(db: SjDatabase) : SjSearchSetDao = db.getSearchSetDao()
+
+    @Provides
+    fun providesDomainDao(db: SjDatabase) : SjDomainDao = db.getDomainDao()
+
+    @Provides
+    fun providesTagDao(db: SjDatabase) : SjTagDao = db.getTagDao()
 }
 
 @Module
