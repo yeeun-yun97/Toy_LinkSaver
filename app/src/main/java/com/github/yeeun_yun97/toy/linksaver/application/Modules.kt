@@ -1,5 +1,10 @@
 package com.github.yeeun_yun97.toy.linksaver.application
 
+import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDomainDao
+import com.github.yeeun_yun97.toy.linksaver.data.dao.SjLinkDao
+import com.github.yeeun_yun97.toy.linksaver.data.dao.SjSearchSetDao
+import com.github.yeeun_yun97.toy.linksaver.data.dao.SjTagDao
+import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabaseUtil
 import com.github.yeeun_yun97.toy.linksaver.data.repository.SjDataStoreRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.SjNetworkRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.*
@@ -11,26 +16,22 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class RoomRepoModule {
+class DaoModule{
     @Provides
     @Singleton
-    fun providesLinkRepo(): SjLinkRepository = SjLinkRepository.getInstance()
+    fun providesLinkDao() : SjLinkDao = SjDatabaseUtil.getLinkDao()
 
     @Provides
     @Singleton
-    fun providesDomainRepo(): SjDomainRepository = SjDomainRepository.getInstance()
+    fun providesSearchSetDao() : SjSearchSetDao = SjDatabaseUtil.getSearchSetDao()
 
     @Provides
     @Singleton
-    fun providesSearchSetRepo(): SjSearchSetRepository = SjSearchSetRepository.getInstance()
+    fun providesDomainDao() : SjDomainDao = SjDatabaseUtil.getDomainDao()
 
     @Provides
     @Singleton
-    fun providesTagRepo(): SjTagRepository = SjTagRepository.getInstance()
-
-    @Provides
-    @Singleton
-    fun providesVideoRepo(): SjVideoRepository = SjVideoRepository.getInstance()
+    fun providesTagDao() : SjTagDao = SjDatabaseUtil.getTagDao()
 }
 
 @Module
