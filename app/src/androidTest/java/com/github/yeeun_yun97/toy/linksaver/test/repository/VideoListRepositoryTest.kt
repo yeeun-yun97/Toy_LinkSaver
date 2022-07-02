@@ -11,7 +11,7 @@ import org.junit.Assert
 import org.junit.Test
 
 @HiltAndroidTest
-class VideoRepositoryTest : SjBaseTest() {
+class VideoListRepositoryTest : SjBaseTest() {
     private lateinit var videos: LiveData<List<VideoData>>
 
     override fun before() {

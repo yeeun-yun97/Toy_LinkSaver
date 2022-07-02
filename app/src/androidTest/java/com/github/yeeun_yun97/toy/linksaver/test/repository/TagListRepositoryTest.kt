@@ -12,7 +12,7 @@ import org.junit.Assert
 import org.junit.Test
 
 @HiltAndroidTest
-class TagRepositoryTest : SjBaseTest() {
+class TagListRepositoryTest : SjBaseTest() {
     private lateinit var tagGroupsNotDefault: LiveData<List<SjTagGroupWithTags>>
     private lateinit var defaultTagGroup: LiveData<SjTagGroupWithTags>
 

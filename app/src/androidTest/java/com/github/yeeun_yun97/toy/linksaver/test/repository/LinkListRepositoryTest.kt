@@ -12,7 +12,7 @@ import org.junit.Assert
 import org.junit.Test
 
 @HiltAndroidTest
-class LinkRepositoryTest : SjBaseTest() {
+class LinkListRepositoryTest : SjBaseTest() {
     private lateinit var links: LiveData<List<SjLinksAndDomainsWithTags>>
 
     override fun before() {
@@ -186,20 +186,20 @@ class LinkRepositoryTest : SjBaseTest() {
     }
 
 
-    @Test
-    fun deleteLinkByLid() {
-        runBlocking(Dispatchers.Main) {
-            insertBaseData().join()
-
-            val targetLink = SjTestDataUtil.testLinks[0]
-            linkRepo.deleteLinkByLid(targetLink.first.lid).join()
-
-            val result = getValueOrThrow(links, ::postAllLinks)
-            Assert.assertEquals(
-                SjTestDataUtil.testLinks.size - 1, result.size
-            )
-        }
-    }
+//    @Test
+//    fun deleteLinkByLid() {
+//        runBlocking(Dispatchers.Main) {
+//            insertBaseData().join()
+//
+//            val targetLink = SjTestDataUtil.testLinks[0]
+//            linkRepo.deleteLinkByLid(targetLink.first.lid).join()
+//
+//            val result = getValueOrThrow(links, ::postAllLinks)
+//            Assert.assertEquals(
+//                SjTestDataUtil.testLinks.size - 1, result.size
+//            )
+//        }
+//    }
 
 
 }

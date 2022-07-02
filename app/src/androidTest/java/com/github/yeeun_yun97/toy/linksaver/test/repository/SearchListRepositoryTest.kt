@@ -11,7 +11,7 @@ import org.junit.Assert
 import org.junit.Test
 
 @HiltAndroidTest
-class SearchRepositoryTest : SjBaseTest() {
+class SearchListRepositoryTest : SjBaseTest() {
     private lateinit var searchSets: LiveData<List<SjSearchWithTags>>
 
     override fun before() { searchSets = searchSetRepo.searchSetList }
