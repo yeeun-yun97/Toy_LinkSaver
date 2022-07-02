@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.test.core.app.ActivityScenario.launch
 import com.github.yeeun_yun97.toy.linksaver.data.SjTestDataUtil
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabase
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjDomainRepository
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjLinkRepository
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjSearchSetRepository
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.*
 import dagger.hilt.android.testing.HiltAndroidRule
 import kotlinx.coroutines.*
 import org.junit.Assert
@@ -29,37 +26,20 @@ abstract class SjBaseTest {
     lateinit var domainRepo: SjDomainRepository
     lateinit var tagRepo: SjTagRepository
     lateinit var searchSetRepo: SjSearchSetRepository
+    lateinit var videoRepo: SjVideoRepository
 
     @Before
     fun init() {
         hiltRule.inject()
         linkRepo = SjLinkRepository(db.getLinkDao())
+        videoRepo = SjVideoRepository(db.getLinkDao())
         domainRepo = SjDomainRepository(db.getDomainDao())
         tagRepo = SjTagRepository(db.getTagDao())
         searchSetRepo = SjSearchSetRepository(db.getSearchSetDao())
         before()
     }
 
-    protected open fun before() {}
-
-    protected fun <T> testPostingLiveData(
-        liveData: LiveData<List<T>>,
-        postFunction: () -> Job,
-        expectedSize: Int,
-        timeout: Long = 1500
-    ) =
-        runBlocking(Dispatchers.Main) {
-            launch {
-                SjTestDataUtil.insertDatas(
-                    linkRepo,
-                    domainRepo,
-                    tagRepo,
-                    searchSetRepo
-                )
-            }.join()
-            val result = getValueOrThrow(liveData, postFunction, timeout)
-            Assert.assertEquals(expectedSize, result.size)
-        }
+    protected abstract fun before()
 
     protected suspend fun insertBaseData() =
         CoroutineScope(Dispatchers.IO).launch {
@@ -70,7 +50,6 @@ abstract class SjBaseTest {
                 searchSetRepo
             )
         }
-
 
     protected suspend fun <T> getValueOrThrow(
         liveData: LiveData<T>,

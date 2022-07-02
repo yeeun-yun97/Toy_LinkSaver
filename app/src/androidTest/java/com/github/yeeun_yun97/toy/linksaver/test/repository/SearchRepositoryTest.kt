@@ -14,11 +14,7 @@ import org.junit.Test
 class SearchRepositoryTest : SjBaseTest() {
     private lateinit var searchSets: LiveData<List<SjSearchWithTags>>
 
-    override fun before() {
-        super.before()
-        searchSets = searchSetRepo.searchSetList
-
-    }
+    override fun before() { searchSets = searchSetRepo.searchSetList }
 
     private fun postAllSearchSets() = searchSetRepo.postAllSearchSet()
     private fun postSearchSetsPublic() = searchSetRepo.postSearchSetPublic()

@@ -19,7 +19,6 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.*
     ]
 )
 abstract class SjDatabase : RoomDatabase() {
-    abstract fun getDao(): SjDao
     abstract fun getLinkDao(): SjLinkDao
     abstract fun getCountDao(): SjCountDao
     abstract fun getTagDao(): SjTagDao

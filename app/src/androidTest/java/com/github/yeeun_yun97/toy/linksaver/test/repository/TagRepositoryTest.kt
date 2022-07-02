@@ -17,17 +17,14 @@ class TagRepositoryTest : SjBaseTest() {
     private lateinit var defaultTagGroup: LiveData<SjTagGroupWithTags>
 
     override fun before() {
-        super.before()
         tagGroupsNotDefault = tagRepo.tagGroupsWithoutDefault
         defaultTagGroup = tagRepo. defaultGroup
-
     }
 
     // update repository liveData function
     private fun postAllTags() = tagRepo.postTagGroupsNotDefault()
     private fun postTagsPublic() = tagRepo.postTagGroupsPublicNotDefault()
     private fun postDefaultTags() = tagRepo.postDefaultTagGroup()
-
 
     @Test
     fun listAllTags() {
@@ -122,7 +119,7 @@ class TagRepositoryTest : SjBaseTest() {
         runBlocking(Dispatchers.Main) {
             insertBaseData().join()
             val deleteTarget = SjTestDataUtil.testTagGroupsNotDefault[0]
-            Log.d("deleteTarget","${deleteTarget}")
+            Log.d("deleteTarget","$deleteTarget")
             tagRepo.deleteTagGroupByGid(deleteTarget.gid).join()
 
             // check target group deleted
