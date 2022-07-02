@@ -14,7 +14,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SjSearchSetRepository @Inject constructor(
+class SjSearchSetListRepository @Inject constructor(
     private val dao: SjSearchSetDao
 ) {
     private val _searchSetList = MutableLiveData<List<SjSearchWithTags>>()

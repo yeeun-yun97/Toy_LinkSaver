@@ -6,7 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import com.github.yeeun_yun97.toy.linksaver.data.model.LinkDetailValue
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjLinkRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjLinkListRepository
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjBaseViewModelImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +16,7 @@ import javax.inject.Inject
 //TODO livedata 레포로 아직 안 옮김
 @HiltViewModel
 class DetailLinkViewModel @Inject constructor(
-    private val linkRepo : SjLinkRepository
+    private val linkRepo : SjLinkListRepository
 ) : SjBaseViewModelImpl() {
 
     var lid: Int? = null

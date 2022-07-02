@@ -14,7 +14,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SjVideoRepository @Inject constructor(private val dao: SjLinkDao) {
+class SjVideoListRepository @Inject constructor(private val dao: SjLinkDao) {
     private val videoType = ELinkType.video.name
 
     // for video list fragment

@@ -1,13 +1,11 @@
 package com.github.yeeun_yun97.toy.linksaver.test
 
 import androidx.lifecycle.LiveData
-import androidx.test.core.app.ActivityScenario.launch
 import com.github.yeeun_yun97.toy.linksaver.data.SjTestDataUtil
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabase
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.*
 import dagger.hilt.android.testing.HiltAndroidRule
 import kotlinx.coroutines.*
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import java.util.concurrent.TimeoutException
@@ -22,20 +20,20 @@ abstract class SjBaseTest {
     @Named("test_db")
     lateinit var db: SjDatabase
 
-    lateinit var linkRepo: SjLinkRepository
-    lateinit var domainRepo: SjDomainRepository
-    lateinit var tagRepo: SjTagRepository
-    lateinit var searchSetRepo: SjSearchSetRepository
-    lateinit var videoRepo: SjVideoRepository
+    lateinit var linkRepo: SjLinkListRepository
+    lateinit var domainRepo: SjDomainListRepository
+    lateinit var tagRepo: SjTagListRepository
+    lateinit var searchSetRepo: SjSearchSetListRepository
+    lateinit var videoRepo: SjVideoListRepository
 
     @Before
     fun init() {
         hiltRule.inject()
-        linkRepo = SjLinkRepository(db.getLinkDao())
-        videoRepo = SjVideoRepository(db.getLinkDao())
-        domainRepo = SjDomainRepository(db.getDomainDao())
-        tagRepo = SjTagRepository(db.getTagDao())
-        searchSetRepo = SjSearchSetRepository(db.getSearchSetDao())
+        linkRepo = SjLinkListRepository(db.getLinkDao())
+        videoRepo = SjVideoListRepository(db.getLinkDao())
+        domainRepo = SjDomainListRepository(db.getDomainDao())
+        tagRepo = SjTagListRepository(db.getTagDao())
+        searchSetRepo = SjSearchSetListRepository(db.getSearchSetDao())
         before()
     }
 

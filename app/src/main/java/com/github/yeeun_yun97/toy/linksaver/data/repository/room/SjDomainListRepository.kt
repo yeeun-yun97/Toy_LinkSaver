@@ -11,7 +11,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SjDomainRepository @Inject constructor(
+class SjDomainListRepository @Inject constructor(
     private val dao : SjDomainDao
 ) {
     val _domains = MutableLiveData<List<SjDomain>>()

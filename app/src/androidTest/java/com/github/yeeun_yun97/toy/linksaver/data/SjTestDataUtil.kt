@@ -1,10 +1,10 @@
 package com.github.yeeun_yun97.toy.linksaver.data
 
 import com.github.yeeun_yun97.toy.linksaver.data.model.*
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjDomainRepository
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjLinkRepository
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjSearchSetRepository
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjDomainListRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjLinkListRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjSearchSetListRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagListRepository
 
 class SjTestDataUtil {
 
@@ -193,10 +193,10 @@ class SjTestDataUtil {
             }
 
         suspend fun insertDatas(
-            linkRepo: SjLinkRepository,
-            domainRepo: SjDomainRepository,
-            tagRepo: SjTagRepository,
-            searchSetRepo: SjSearchSetRepository
+            linkRepo: SjLinkListRepository,
+            domainRepo: SjDomainListRepository,
+            tagRepo: SjTagListRepository,
+            searchSetRepo: SjSearchSetListRepository
         ) {
             for (search in testSearchSets) searchSetRepo.insertSearchSet(
                 search.first.sid,

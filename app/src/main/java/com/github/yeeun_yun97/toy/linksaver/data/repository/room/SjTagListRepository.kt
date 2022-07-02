@@ -13,7 +13,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SjTagRepository @Inject constructor(
+class SjTagListRepository @Inject constructor(
     private val dao: SjTagDao
 ) {
     private val _tagGroupsWithoutDefault = MutableLiveData<List<SjTagGroupWithTags>>()
