@@ -145,9 +145,9 @@ class EditLinkViewModel @Inject constructor(
     fun saveVideo() {
         viewModelScope.launch {
             if (targetLink.lid != 0) {
-                linkRepo.updateLinkAndTags(targetDomain, targetLink, targetTags)
+                linkRepo.updateLinkAndTags(targetDomain, targetLink, targetTags).join()
             } else {
-                linkRepo.insertLinkAndTags(targetDomain, targetLink, targetTags)
+                linkRepo.insertLinkAndTags(targetDomain, targetLink, targetTags).join()
             }
         }
 

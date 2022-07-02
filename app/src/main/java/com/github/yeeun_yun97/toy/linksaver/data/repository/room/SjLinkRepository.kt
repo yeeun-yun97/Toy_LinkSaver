@@ -1,6 +1,5 @@
 package com.github.yeeun_yun97.toy.linksaver.data.repository.room
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjLinkDao
@@ -32,7 +31,7 @@ class SjLinkRepository @Inject constructor(
             _links.postValue(dao.selectAllLinks())
         }
 
-    fun postLinksPublicByKeywordAndTids(
+    fun postLinksByKeywordAndTidsPublic(
         keyword: String,
         tids: List<Int>
     ) =
@@ -103,8 +102,7 @@ class SjLinkRepository @Inject constructor(
 
 
     // update
-    fun updateLinkAndTags(domain: SjDomain?, link: SjLink, tags: MutableList<SjTag>) {
-        Log.d("링크 업데이트", tags.toString())
+    fun updateLinkAndTags(domain: SjDomain?, link: SjLink, tags: List<SjTag>) =
         CoroutineScope(Dispatchers.IO).launch {
             val updatedLink = if (domain != null) link.copy(did = domain.did) else link
             dao.updateLink(updatedLink)
@@ -117,7 +115,6 @@ class SjLinkRepository @Inject constructor(
             }
             insertJob.join()
         }
-    }
 
 
     // delete

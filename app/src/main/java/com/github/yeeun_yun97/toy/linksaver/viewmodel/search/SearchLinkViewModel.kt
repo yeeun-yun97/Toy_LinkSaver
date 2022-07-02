@@ -94,7 +94,7 @@ class SearchLinkViewModel @Inject constructor(
             }
             ListMode.MODE_SEARCH -> {
                 when (isPrivateMode) {
-                    true -> linkRepo.postLinksPublicByKeywordAndTids(
+                    true -> linkRepo.postLinksByKeywordAndTidsPublic(
                         bindingSearchWord.value!!,
                         _tids
                     )

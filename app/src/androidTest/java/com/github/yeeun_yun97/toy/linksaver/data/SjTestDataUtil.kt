@@ -40,7 +40,7 @@ class SjTestDataUtil {
             SjTag(5, "일반2", gid = 2),
             SjTag(6, "비밀", gid = 3),
             SjTag(7, "비밀2", gid = 3),
-            SjTag(8, "비밀3", gid = 3)
+            SjTag(8, "비밀3", gid = 3),
         )
 
         val testTagsDefault = listOf(
@@ -57,58 +57,75 @@ class SjTestDataUtil {
             testTags[7]
         )
 
-        val testAllLinks = listOf(
+        val testLinks = listOf(
             Pair(
                 SjLink(
-                    lid = 1,
-                    name = "네이버",
-                    url = "https://www.naver.com/",
-                    did = 1,
+                    lid = 1, did = 1,
+                    name = "네이버", url = "https://www.naver.com/",
                     type = ELinkType.link
                 ), listOf(testTags[1], testTags[0])
             ),
             Pair(
                 SjLink(
-                    lid = 2,
-                    name = "유투브",
-                    url = "https://www.youtube.com/",
-                    did = 1,
+                    lid = 2, did = 1,
+                    name = "유투브", url = "https://www.youtube.com/",
                     type = ELinkType.video
                 ), listOf(testTags[0], testTags[2])
             ),
             Pair(
                 SjLink(
-                    lid = 3,
-                    name = "네이버_비밀",
-                    url = "https://www.naver.com/",
-                    did = 1,
+                    lid = 3, did = 1,
+                    name = "네이버_비밀", url = "https://www.naver.com/",
                     type = ELinkType.link
-                ), listOf(testTags[0])
+                ), listOf(testTags[6])
             ),
             Pair(
                 SjLink(
-                    lid = 4,
-                    name = "유투브_비밀",
-                    url = "https://www.youtube.com/",
-                    did = 1,
+                    lid = 4, did = 1,
+                    name = "유투브_비밀", url = "https://www.youtube.com/",
                     type = ELinkType.video
-                ), listOf(testTags[1], testTags[2])
+                ), listOf(testTags[1], testTags[5])
+            ),
+
+
+            Pair(
+                SjLink(
+                    lid = 5, did = 1,
+                    name = "검색용 링크", url = "https://www.youtube.com/",
+                    type = ELinkType.video
+                ), listOf(testTags[0], testTags[1], testTags[3])
+            ),
+            Pair(
+                SjLink(
+                    lid = 6, did = 1,
+                    name = "이 링크를 검색하세요", url = "https://www.youtube.com/",
+                    type = ELinkType.link
+                ), listOf(testTags[0], testTags[3])
+            ),
+            Pair(
+                SjLink(
+                    lid = 7, did = 1,
+                    name = "비밀용 검색", url = "https://www.youtube.com/",
+                    type = ELinkType.video
+                ), listOf(testTags[0], testTags[3], testTags[5])
             ),
         )
 
         val testLinksPublic = listOf(
-            testAllLinks[0],
-            testAllLinks[2]
+            testLinks[0],
+            testLinks[1],
+            testLinks[4],
+            testLinks[5]
         )
 
         val testSearchSets = listOf(
             Pair(SjSearch(1, "유투브"), listOf(1)),
-            Pair(SjSearch(2, "비밀"), listOf(1,2)),
+            Pair(SjSearch(2, "비밀"), listOf(1, 2)),
             Pair(SjSearch(3, "네이버"), listOf(1)),
             Pair(SjSearch(4, "유네이버투브"), listOf(0)),
         )
 
-        val testSearchSetsPublic= listOf(
+        val testSearchSetsPublic = listOf(
             testSearchSets[0],
             testSearchSets[2],
             testSearchSets[3],
@@ -133,7 +150,7 @@ class SjTestDataUtil {
                     isPrivate = group.isPrivate
                 ).join()
             for (tag in testTags) tagRepo.insertTag(tag.tid, tag.name, tag.gid).join()
-            for (link in testAllLinks) linkRepo.insertLinkAndTags(null, link.first, link.second)
+            for (link in testLinks) linkRepo.insertLinkAndTags(null, link.first, link.second)
                 .join()
 
         }
