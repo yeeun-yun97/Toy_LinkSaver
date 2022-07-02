@@ -6,7 +6,7 @@ import androidx.fragment.app.viewModels
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentLockBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.lock.LockViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.LockViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

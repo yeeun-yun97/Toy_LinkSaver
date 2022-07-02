@@ -10,7 +10,7 @@ import com.github.yeeun_yun97.toy.linksaver.ui.component.LinkPasteBottomSheet
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjClipboard
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjUtil
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.edit_link.EditLinkViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.EditLinkViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

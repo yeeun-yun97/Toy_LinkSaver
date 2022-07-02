@@ -8,8 +8,8 @@ import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListTagGroupBind
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.TagGroupListAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagGroupDialogFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjUsePrivateModeFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.ListGroupViewModel
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.TagGroupEditViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.ListGroupViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.TagGroupEditViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.viewmodel.search
+package com.github.yeeun_yun97.toy.linksaver.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData

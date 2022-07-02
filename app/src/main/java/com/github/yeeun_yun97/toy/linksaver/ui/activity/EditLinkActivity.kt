@@ -7,7 +7,7 @@ import com.github.yeeun_yun97.toy.linksaver.databinding.ActivityPlainBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.basic.SjBasicActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.edit_link.EditLinkFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.edit_link.EditLinkPasteFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.edit_link.EditLinkViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.EditLinkViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

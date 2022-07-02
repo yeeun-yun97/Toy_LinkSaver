@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.viewmodel.tag
+package com.github.yeeun_yun97.toy.linksaver.viewmodel
 
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagRepository

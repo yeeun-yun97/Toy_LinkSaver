@@ -8,7 +8,7 @@ import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagDialogFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.component.TagValue
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.TagGroupEditViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.TagGroupEditViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

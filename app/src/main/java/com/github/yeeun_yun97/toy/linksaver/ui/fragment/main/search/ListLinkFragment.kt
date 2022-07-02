@@ -13,8 +13,8 @@ import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.LinkSearchListAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjUsePrivateModeFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.detail_link.DetailLinkFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.detail_link.DetailLinkViewModel
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.DetailLinkViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.SearchLinkViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -9,7 +9,7 @@ import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSwapTagGroupBind
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.component.TagValue
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.SwapTagViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.SwapTagViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
