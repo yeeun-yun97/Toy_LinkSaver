@@ -13,8 +13,8 @@ import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.LinkSearchListAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjUsePrivateModeFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.detail_link.DetailLinkFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.DetailLinkViewModel
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.SearchLinkViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.LinkSingleViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.edit.SearchLinkViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +29,7 @@ class ListLinkFragment @Inject constructor() : SjUsePrivateModeFragment<Fragment
 
     // fragments
     private val detailFragment = DetailLinkFragment()
-    private val detailViewModel: DetailLinkViewModel by activityViewModels()
+    private val detailViewModel: LinkSingleViewModel by activityViewModels()
     private val searchFragment = SearchFragment()
 
     // control view visibility

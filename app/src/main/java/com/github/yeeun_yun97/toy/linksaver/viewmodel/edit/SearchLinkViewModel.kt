@@ -1,13 +1,13 @@
-package com.github.yeeun_yun97.toy.linksaver.viewmodel
+package com.github.yeeun_yun97.toy.linksaver.viewmodel.edit
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjLinkListRepository
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjSearchSetListRepository
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagListRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.link.SjListLinkRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.search.SjSearchSetRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.tag.SjListTagGroupRepository
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjUsePrivateModeViewModelImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -21,9 +21,9 @@ enum class ListMode {
 
 @HiltViewModel
 class SearchLinkViewModel @Inject constructor(
-    private val searchSetRepo: SjSearchSetListRepository,
-    private val linkRepo: SjLinkListRepository,
-    private val tagRepo: SjTagListRepository
+    private val searchSetRepo: SjSearchSetRepository,
+    private val linkRepo: SjListLinkRepository,
+    private val tagRepo: SjListTagGroupRepository
 ) : SjUsePrivateModeViewModelImpl() {
 
     // mode

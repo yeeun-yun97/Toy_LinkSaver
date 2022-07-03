@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.viewmodel
+package com.github.yeeun_yun97.toy.linksaver.viewmodel.app
 
 import android.app.Application
 import androidx.lifecycle.LiveData
@@ -14,12 +14,10 @@ class SettingViewModel @Inject constructor(
     private val repository: SjDataStoreRepository
 ) : SjBaseAndroidViewModelImpl(application) {
     val passwordFlow = repository.getPassword(application.applicationContext)
-    val privateFlow = repository.isPrivateMode(application.applicationContext)
-    val isPrivateMode: LiveData<Boolean> = privateFlow.asLiveData()
+    val isPrivateMode: LiveData<Boolean> = repository.isPrivateMode(application.applicationContext).asLiveData()
 
-    fun setPrivateMode(isPrivateMode: Boolean) {
+    fun setPrivateMode(isPrivateMode: Boolean) =
         repository.setPrivateMode(getApplication<Application>().applicationContext, isPrivateMode)
-    }
 
     override fun refreshData() {}
 

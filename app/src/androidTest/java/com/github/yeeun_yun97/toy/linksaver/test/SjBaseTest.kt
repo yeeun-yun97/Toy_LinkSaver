@@ -3,7 +3,15 @@ package com.github.yeeun_yun97.toy.linksaver.test
 import androidx.lifecycle.LiveData
 import com.github.yeeun_yun97.toy.linksaver.data.SjTestDataUtil
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabase
+import com.github.yeeun_yun97.toy.linksaver.data.repository.SjNetworkRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.*
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.link.SjEditLinkRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.link.SjListLinkRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.link.SjListVideoRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.link.SjViewLinkRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.search.SjSearchSetRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.tag.SjListTagGroupRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.tag.SjViewTagGroupRepository
 import dagger.hilt.android.testing.HiltAndroidRule
 import kotlinx.coroutines.*
 import org.junit.Before
@@ -18,22 +26,34 @@ abstract class SjBaseTest {
 
     @Inject
     @Named("test_db")
-    lateinit var db: SjDatabase
+    protected lateinit var db: SjDatabase
 
-    lateinit var linkRepo: SjLinkListRepository
-    lateinit var domainRepo: SjDomainListRepository
-    lateinit var tagRepo: SjTagListRepository
-    lateinit var searchSetRepo: SjSearchSetListRepository
-    lateinit var videoRepo: SjVideoListRepository
+    protected lateinit var linkListRepo: SjListLinkRepository
+    protected lateinit var linkRepo: SjViewLinkRepository
+    protected lateinit var domainListRepo: SjDomainListRepository
+    protected lateinit var tagListRepo: SjListTagGroupRepository
+    protected lateinit var tagGroupRepo: SjViewTagGroupRepository
+    protected lateinit var searchSetListRepo: SjSearchSetRepository
+    protected lateinit var videoListRepo: SjListVideoRepository
+    protected lateinit var countRepo: SjCountRepository
+    protected lateinit var networkRepo: SjNetworkRepository
+    protected lateinit var editLinkRepo: SjEditLinkRepository
+
+    protected val ERROR_MESSAGE_LIVEDATA_NULL = "LiveData has null value"
 
     @Before
     fun init() {
         hiltRule.inject()
-        linkRepo = SjLinkListRepository(db.getLinkDao())
-        videoRepo = SjVideoListRepository(db.getLinkDao())
-        domainRepo = SjDomainListRepository(db.getDomainDao())
-        tagRepo = SjTagListRepository(db.getTagDao())
-        searchSetRepo = SjSearchSetListRepository(db.getSearchSetDao())
+        networkRepo = SjNetworkRepository.newInstance()
+        linkListRepo = SjListLinkRepository(db.getLinkDao())
+        linkRepo = SjViewLinkRepository(db.getLinkDao())
+        videoListRepo = SjListVideoRepository(db.getLinkDao())
+        domainListRepo = SjDomainListRepository(db.getDomainDao())
+        tagListRepo = SjListTagGroupRepository(db.getTagDao())
+        tagGroupRepo = SjViewTagGroupRepository(db.getTagDao())
+        searchSetListRepo = SjSearchSetRepository(db.getSearchSetDao())
+        countRepo = SjCountRepository(db.getCountDao(), db.getDomainDao(), db.getTagDao())
+        editLinkRepo = SjEditLinkRepository(db.getLinkDao())
         before()
     }
 
@@ -42,16 +62,17 @@ abstract class SjBaseTest {
     protected suspend fun insertBaseData() =
         CoroutineScope(Dispatchers.IO).launch {
             SjTestDataUtil.insertDatas(
-                linkRepo,
-                domainRepo,
-                tagRepo,
-                searchSetRepo
+                editLinkRepo,
+                domainListRepo,
+                tagListRepo,
+                tagGroupRepo,
+                searchSetListRepo
             )
         }
 
     protected suspend fun <T> getValueOrThrow(
         liveData: LiveData<T>,
-        postFunction: (() -> Any),
+        postFunction: (() -> Any)? = null,
         timeout: Long = 3000
     ): T {
         var result: T? = null
@@ -59,11 +80,13 @@ abstract class SjBaseTest {
             result = it
         }
 
-        val postJob = postFunction()
-        if (postJob is Job) postJob.join()
+        if (postFunction != null) {
+            val postJob = postFunction()
+            if (postJob is Job) postJob.join()
+        }
         delay(timeout)
 
-        if (result == null) throw TimeoutException("LiveData has null value")
+        if (result == null) throw TimeoutException(ERROR_MESSAGE_LIVEDATA_NULL)
         else return result!!
     }
 

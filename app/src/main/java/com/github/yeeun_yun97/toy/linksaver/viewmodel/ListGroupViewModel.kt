@@ -1,7 +1,7 @@
 package com.github.yeeun_yun97.toy.linksaver.viewmodel
 
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagListRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.tag.SjListTagGroupRepository
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjUsePrivateModeViewModelImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -11,36 +11,35 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ListGroupViewModel @Inject constructor(
-    private val tagRepo: SjTagListRepository
+    private val tagListRepo: SjListTagGroupRepository
 ) : SjUsePrivateModeViewModelImpl() {
     // data binding live data
-    val bindingTagGroups = tagRepo.tagGroupsWithoutDefault
-    val bindingBasicTagGroup = tagRepo.defaultGroup
+    val bindingTagGroups = tagListRepo.tagGroupsWithoutDefault
+    val bindingBasicTagGroup = tagListRepo.defaultGroup
 
     override fun refreshData() {
         when (isPrivateMode) {
-            true -> tagRepo.postTagGroupsPublicNotDefault()
-            false -> tagRepo.postTagGroupsNotDefault()
+            true -> tagListRepo.postTagGroupsPublicNotDefault()
+            false -> tagListRepo.postTagGroupsNotDefault()
         }
-        tagRepo.postDefaultTagGroup()
+        tagListRepo.postDefaultTagGroup()
     }
 
     fun editTagGroup(name: String, isPrivate: Boolean, group: SjTagGroup?) =
         CoroutineScope(Dispatchers.IO).launch {
-            val job = launch {
-                if (group == null) {
-                    tagRepo.insertTagGroup(name = name, isPrivate = isPrivate).join()
-                } else {
-                    tagRepo.updateTagGroup(group.copy(name = name, isPrivate = isPrivate)).join()
-                }
+            if (group == null) {
+                tagListRepo.insertTagGroup(name = name, isPrivate = isPrivate).join()
+            } else {
+                tagListRepo.updateTagGroup(group.copy(name = name, isPrivate = isPrivate)).join()
             }
-            job.join()
             refreshData()
         }
 
-    fun deleteTagGroup(gid: Int) {
-        tagRepo.deleteTagGroupByGid(gid)
-    }
+    fun deleteTagGroup(gid: Int) =
+        CoroutineScope(Dispatchers.IO).launch {
+            tagListRepo.deleteTagGroupByGid(gid).join()
+            refreshData()
+        }
 
 
 }

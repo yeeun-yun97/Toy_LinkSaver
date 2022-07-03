@@ -1,19 +1,14 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.personal
 
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SettingItemValue
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentPersonalSettingBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.SettingListAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.SettingViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.app.SettingViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -27,11 +22,8 @@ class PersonalSettingFragment @Inject constructor() : SjBasicFragment<FragmentPe
         binding.settingRecyclerView.adapter = adapter
         adapter.setList(getSettingList())
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            val settingValue = async { viewModel.privateFlow.first() }
-            launch(Dispatchers.Main) {
-                binding.hidePrivateSwitch.isChecked = settingValue.await()
-            }
+        viewModel.isPrivateMode.observe(viewLifecycleOwner){
+            binding.hidePrivateSwitch.isChecked = it
         }
 
         binding.hidePrivateSwitch.setOnCheckedChangeListener { compoundButton, isChecked ->

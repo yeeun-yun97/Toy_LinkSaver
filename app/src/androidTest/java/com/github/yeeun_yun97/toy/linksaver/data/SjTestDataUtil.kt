@@ -1,10 +1,11 @@
 package com.github.yeeun_yun97.toy.linksaver.data
 
 import com.github.yeeun_yun97.toy.linksaver.data.model.*
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjDomainListRepository
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjLinkListRepository
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjSearchSetListRepository
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagListRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.*
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.link.SjEditLinkRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.search.SjSearchSetRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.tag.SjListTagGroupRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.tag.SjViewTagGroupRepository
 
 class SjTestDataUtil {
 
@@ -193,10 +194,11 @@ class SjTestDataUtil {
             }
 
         suspend fun insertDatas(
-            linkRepo: SjLinkListRepository,
+            editLinkRepo: SjEditLinkRepository,
             domainRepo: SjDomainListRepository,
-            tagRepo: SjTagListRepository,
-            searchSetRepo: SjSearchSetListRepository
+            listTagGroupRepo: SjListTagGroupRepository,
+            tagRepo: SjViewTagGroupRepository,
+            searchSetRepo: SjSearchSetRepository
         ) {
             for (search in testSearchSets) searchSetRepo.insertSearchSet(
                 search.first.sid,
@@ -205,13 +207,13 @@ class SjTestDataUtil {
             )
             for (domain in testDomain) domainRepo.insertDomain(domain)
             for (group in testTagGroups)
-                tagRepo.insertTagGroup(
+                listTagGroupRepo.insertTagGroup(
                     gid = group.gid,
                     name = group.name,
                     isPrivate = group.isPrivate
                 ).join()
             for (tag in testTags) tagRepo.insertTag(tag.tid, tag.name, tag.gid).join()
-            for (link in testLinks) linkRepo.insertLinkAndTags(null, link.first, link.second)
+            for (link in testLinks) editLinkRepo.insertLinkAndTags(null, link.first, link.second)
                 .join()
 
         }

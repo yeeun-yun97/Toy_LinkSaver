@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.data.repository.room
+package com.github.yeeun_yun97.toy.linksaver.data.repository.room.link
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,7 +14,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SjVideoListRepository @Inject constructor(private val dao: SjLinkDao) {
+class SjListVideoRepository @Inject constructor(private val dao: SjLinkDao) {
     private val videoType = ELinkType.video.name
 
     // for video list fragment

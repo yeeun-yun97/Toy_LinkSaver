@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.test.repository
+package com.github.yeeun_yun97.toy.linksaver.test.repository.link
 
 import androidx.lifecycle.LiveData
 import com.github.yeeun_yun97.toy.linksaver.data.SjTestDataUtil
@@ -11,15 +11,15 @@ import org.junit.Assert
 import org.junit.Test
 
 @HiltAndroidTest
-class VideoListRepositoryTest : SjBaseTest() {
+class ListVideoRepoTest : SjBaseTest() {
     private lateinit var videos: LiveData<List<VideoData>>
 
     override fun before() {
-        videos = videoRepo.linksVideo
+        videos = videoListRepo.linksVideo
     }
 
-    private fun postVideosPublic() = videoRepo.postVideosPublic()
-    private fun postAllVideos() = videoRepo.postAllVideos()
+    private fun postVideosPublic() = videoListRepo.postVideosPublic()
+    private fun postAllVideos() = videoListRepo.postAllVideos()
 
     @Test
     fun listAllVideos() {

@@ -7,13 +7,13 @@ import com.github.yeeun_yun97.toy.linksaver.databinding.ActivityPlainBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.basic.SjBasicActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.edit_link.EditLinkFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.edit_link.EditLinkPasteFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.EditLinkViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.edit.LinkEditViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class EditLinkActivity : SjBasicActivity<ActivityPlainBinding>() {
-    private val editViewModel: EditLinkViewModel by viewModels()
+    private val editViewModel: LinkEditViewModel by viewModels()
 
     @Inject lateinit var editPasteFragment : EditLinkPasteFragment
     @Inject lateinit var editFragment : EditLinkFragment
@@ -25,8 +25,8 @@ class EditLinkActivity : SjBasicActivity<ActivityPlainBinding>() {
         val lid = intent.getIntExtra("lid", -1)
         val url = intent.getStringExtra("url") ?: ""
         when {
-            lid != -1 -> editViewModel.setLinkByLid(lid)
-            url.isNotEmpty() -> editViewModel.createLinkByUrl(url)
+            lid != -1 -> editViewModel.lid = lid
+            url.isNotEmpty() -> editViewModel.url = url
             else -> return editPasteFragment
         }
         return editFragment

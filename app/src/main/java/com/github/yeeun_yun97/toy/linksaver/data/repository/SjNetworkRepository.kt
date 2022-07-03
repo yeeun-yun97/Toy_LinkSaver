@@ -27,12 +27,10 @@ class SjNetworkRepository private constructor() {
     private val OG_TYPE = "og:type"
 
     private val client = OkHttpClient()
-    private val _siteTitle = MutableLiveData<String>()
-    val siteTitle: LiveData<String> get() = _siteTitle
 
     companion object {
         //singleton object
-        lateinit var networkRepository: SjNetworkRepository
+        private lateinit var networkRepository: SjNetworkRepository
 
         fun newInstance(): SjNetworkRepository {
             if (!this::networkRepository.isInitialized) {
@@ -89,26 +87,6 @@ class SjNetworkRepository private constructor() {
             근데 이건 오류가 아니고, 아직 입력중인 것일 수도 있는 심각하지 않은 문제다.
              */
             return ""
-        }
-    }
-
-    fun postTitleOf(url: String) {
-        if (url.isEmpty() || !url.startsWith("http")) return
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val request = Request.Builder().url(url).build()
-                client.newCall(request).execute().use { response ->
-                    if (!response.isSuccessful) Log.e("Error", "UnExpected code $response")
-                    val html = Jsoup.parse(response.body!!.string())
-                    Log.d("loadTitle", html.title())
-                    _siteTitle.postValue(html.title())
-                }
-            } catch (e: Exception) {
-                /*
-                유저가 입력한 url이 완벽하지 않아서 오류가 날 수도 있다.
-                근데 이건 오류가 아니고, 아직 입력중인 것일 수도 있는 심각하지 않은 문제다.
-                 */
-            }
         }
     }
 

@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.test.repository
+package com.github.yeeun_yun97.toy.linksaver.test.repository.search
 
 import androidx.lifecycle.LiveData
 import com.github.yeeun_yun97.toy.linksaver.data.SjTestDataUtil
@@ -11,13 +11,13 @@ import org.junit.Assert
 import org.junit.Test
 
 @HiltAndroidTest
-class SearchListRepositoryTest : SjBaseTest() {
+class SearchSetRepoTest : SjBaseTest() {
     private lateinit var searchSets: LiveData<List<SjSearchWithTags>>
 
-    override fun before() { searchSets = searchSetRepo.searchSetList }
+    override fun before() { searchSets = searchSetListRepo.searchSetList }
 
-    private fun postAllSearchSets() = searchSetRepo.postAllSearchSet()
-    private fun postSearchSetsPublic() = searchSetRepo.postSearchSetPublic()
+    private fun postAllSearchSets() = searchSetListRepo.postAllSearchSet()
+    private fun postSearchSetsPublic() = searchSetListRepo.postSearchSetPublic()
 
     @Test
     fun listAllSearchSets() {
@@ -49,7 +49,7 @@ class SearchListRepositoryTest : SjBaseTest() {
     fun deleteAll() {
         runBlocking(Dispatchers.Main) {
             insertBaseData().join()
-            searchSetRepo.deleteAllSearchSet().join()
+            searchSetListRepo.deleteAllSearchSet().join()
             val result = getValueOrThrow(searchSets, ::postAllSearchSets)
             Assert.assertEquals(
                 0,

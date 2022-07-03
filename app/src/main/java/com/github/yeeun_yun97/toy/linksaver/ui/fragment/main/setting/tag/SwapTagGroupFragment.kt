@@ -34,7 +34,7 @@ class SwapTagGroupFragment @Inject constructor() : SjBasicFragment<FragmentSwapT
 
         // handle arguments
         val gid = requireArguments().getInt("gid", -1)
-        viewModel.setTargetTagGroupByGid(gid)
+        viewModel.gid = gid
 
         // set binding variable
         binding.viewModel = viewModel
@@ -85,7 +85,7 @@ class SwapTagGroupFragment @Inject constructor() : SjBasicFragment<FragmentSwapT
             for (tag in it.tags) {
                 val chip = SjTagChip(requireContext())
                 chip.setTagValue(TagValue(tag))
-                chip.setCheckableMode(targetOnCheckedListener,false)
+                chip.setCheckableMode(targetOnCheckedListener, false)
                 binding.include.tagChipGroup.addView(chip)
             }
         }

@@ -1,11 +1,11 @@
-package com.github.yeeun_yun97.toy.linksaver.viewmodel
+package com.github.yeeun_yun97.toy.linksaver.viewmodel.app
 
 import android.app.Application
 import android.util.SparseArray
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.model.VideoData
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjVideoListRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.link.SjListVideoRepository
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjYoutubeExtractListener
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjYoutubeExtractor
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjUsePrivateModeViewModelAndroidImpl
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ListVideoViewModel @Inject constructor(
     application: Application,
-    private val videoRepo : SjVideoListRepository
+    private val videoRepo : SjListVideoRepository
 ) : SjUsePrivateModeViewModelAndroidImpl(application) {
     // setting preview start and end
     private val START_MS: Long = 1000

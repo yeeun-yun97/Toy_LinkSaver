@@ -1,9 +1,8 @@
-package com.github.yeeun_yun97.toy.linksaver.test.repository
+package com.github.yeeun_yun97.toy.linksaver.test.repository.link
 
 import androidx.lifecycle.LiveData
 import com.github.yeeun_yun97.toy.linksaver.data.SjTestDataUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjLinksAndDomainsWithTags
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.test.SjBaseTest
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.Dispatchers
@@ -12,11 +11,11 @@ import org.junit.Assert
 import org.junit.Test
 
 @HiltAndroidTest
-class LinkListRepositoryTest : SjBaseTest() {
+class ListLinkRepoTest : SjBaseTest() {
     private lateinit var links: LiveData<List<SjLinksAndDomainsWithTags>>
 
     override fun before() {
-        links = linkRepo.links
+        links = linkListRepo.links
     }
 
     private val keyword = "검색"
@@ -32,16 +31,16 @@ class LinkListRepositoryTest : SjBaseTest() {
         }
 
     private fun postAllLinks() =
-        linkRepo.postAllLinks()
+        linkListRepo.postAllLinks()
 
     private fun postLinksPublic() =
-        linkRepo.postLinksPublic()
+        linkListRepo.postLinksPublic()
 
     private fun postLinksByKeywordAndTidsPublic() =
-        linkRepo.postLinksByKeywordAndTidsPublic(keyword, tids)
+        linkListRepo.postLinksByKeywordAndTidsPublic(keyword, tids)
 
     private fun postLinksByKeywordAndTids() =
-        linkRepo.postLinksByKeywordAndTids(keyword, tids)
+        linkListRepo.postLinksByKeywordAndTids(keyword, tids)
 
     @Test
     fun listAllLinks() {
@@ -156,50 +155,6 @@ class LinkListRepositoryTest : SjBaseTest() {
             Assert.assertEquals(assertedResultCount, result.size)
         }
     }
-
-    @Test
-    fun updateLinkAndTags() {
-        runBlocking(Dispatchers.Main) {
-            insertBaseData().join()
-
-            val targetLink = SjTestDataUtil.testLinks[2].first
-            val updateName = "*쿨한 링크 이름*"
-            val updateTags = listOf(
-                SjTestDataUtil.testTags[4],
-                SjTestDataUtil.testTags[1]
-            )
-            val updatedLink = targetLink.copy(name = updateName)
-            linkRepo.updateLinkAndTags(null, updatedLink, updateTags).join()
-
-            val result = getValueOrThrow(links, ::postAllLinks)
-            for (link in result) {
-                if (link.link.lid == targetLink.lid) {
-                    Assert.assertEquals(updateName, link.link.name)
-                    val tempTags = mutableListOf<SjTag>()
-                    tempTags.addAll(link.tags)
-                    tempTags.removeAll(updateTags)
-                    Assert.assertEquals(true,tempTags.isEmpty())
-                    break
-                }
-            }
-        }
-    }
-
-
-//    @Test
-//    fun deleteLinkByLid() {
-//        runBlocking(Dispatchers.Main) {
-//            insertBaseData().join()
-//
-//            val targetLink = SjTestDataUtil.testLinks[0]
-//            linkRepo.deleteLinkByLid(targetLink.first.lid).join()
-//
-//            val result = getValueOrThrow(links, ::postAllLinks)
-//            Assert.assertEquals(
-//                SjTestDataUtil.testLinks.size - 1, result.size
-//            )
-//        }
-//    }
 
 
 }

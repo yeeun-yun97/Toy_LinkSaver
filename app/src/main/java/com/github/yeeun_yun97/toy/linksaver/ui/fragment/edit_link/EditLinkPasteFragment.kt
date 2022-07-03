@@ -10,13 +10,13 @@ import com.github.yeeun_yun97.toy.linksaver.ui.component.LinkPasteBottomSheet
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjClipboard
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjUtil
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.EditLinkViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.edit.LinkEditViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class EditLinkPasteFragment @Inject constructor() : SjBasicFragment<FragmentEditPasteBinding>() {
-    private val editViewModel: EditLinkViewModel by activityViewModels()
+    private val editViewModel: LinkEditViewModel by activityViewModels()
 
     @Inject lateinit var editFragment : EditLinkFragment
 
@@ -67,7 +67,7 @@ class EditLinkPasteFragment @Inject constructor() : SjBasicFragment<FragmentEdit
     private fun moveToPreviewFragment(text: String) {
         if (SjUtil.checkUrlPrefix(text)) {
             bottomSheet.dismiss()
-            editViewModel.createLinkByUrl(text)
+            editViewModel.url=text
             moveToOtherFragment(editFragment)
         } else {
             Toast.makeText(requireContext(), "url 형식이 아닙니다.", Toast.LENGTH_LONG).show()

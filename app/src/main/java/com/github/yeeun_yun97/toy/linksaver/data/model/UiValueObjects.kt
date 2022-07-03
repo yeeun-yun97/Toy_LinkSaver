@@ -10,7 +10,7 @@ data class SettingItemValue(
 data class LinkDetailValue(
     val lid: Int,
     val name: String,
-    val fullUrl: String,
+    val url: String,
     val preview: String,
     val isVideo: Boolean,
     val isYoutubeVideo: Boolean,

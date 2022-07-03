@@ -1,12 +1,10 @@
 package com.github.yeeun_yun97.toy.linksaver.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroupWithTags
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjTagListRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.tag.SjViewTagGroupRepository
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjBaseViewModelImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TagGroupEditViewModel @Inject constructor(
-    private val tagRepo: SjTagListRepository
+    private val repo: SjViewTagGroupRepository
 ) : SjBaseViewModelImpl() {
 
     var gid: Int = 1
@@ -24,21 +22,17 @@ class TagGroupEditViewModel @Inject constructor(
             refreshData()
         }
 
-    private val _tagGroup = MutableLiveData<SjTagGroupWithTags>()
-    val tagGroup: LiveData<SjTagGroupWithTags> get() = _tagGroup
+    val tagGroup= repo.targetTagGroup
     val bindingTags: LiveData<List<SjTag>> = Transformations.map(tagGroup) { it.tags }
 
     override fun refreshData() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = tagRepo.selectTagGroupByGid(gid)
-            _tagGroup.postValue(result)
-        }
+        repo.postTargetTagGroup(gid!!)
     }
 
     // delete tag
     fun deleteTag(tag: SjTag) {
         viewModelScope.launch(Dispatchers.IO) {
-            val deleteTag = tagRepo.deleteTagByTid(tag.tid)
+            val deleteTag = repo.deleteTagByTid(tag.tid)
             deleteTag.join()
             refreshData()
         }
@@ -54,14 +48,14 @@ class TagGroupEditViewModel @Inject constructor(
 
     private fun createTag(name: String, gid: Int = 1) {
         viewModelScope.launch(Dispatchers.IO) {
-            tagRepo.insertTag(name = name, gid = gid).join()
+            repo.insertTag(name = name, gid = gid).join()
             refreshData()
         }
     }
 
     private fun updateTag(tag: SjTag) {
         viewModelScope.launch(Dispatchers.IO) {
-            val job = launch { tagRepo.updateTag(tag) }
+            val job = launch { repo.updateTag(tag) }
             job.join()
             refreshData()
         }

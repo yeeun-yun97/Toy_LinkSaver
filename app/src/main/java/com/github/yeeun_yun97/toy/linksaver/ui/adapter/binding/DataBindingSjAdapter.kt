@@ -52,7 +52,7 @@ class DataBindingSjAdapter {
             if (linkDetailValue != null)
                 view.setPreview(
                     linkDetailValue.isVideo,
-                    linkDetailValue.fullUrl,
+                    linkDetailValue.url,
                     linkDetailValue.preview
                 )
         }

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.DetailLinkViewModel" />
+            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.LinkSingleViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

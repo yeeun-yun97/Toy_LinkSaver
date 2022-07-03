@@ -12,13 +12,13 @@ import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentDetailLinkBindin
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjUtil
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.DetailLinkViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.LinkSingleViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailLinkFragment @Inject constructor() : SjBasicFragment<FragmentDetailLinkBinding>() {
-    private val viewModel: DetailLinkViewModel by activityViewModels()
+    private val viewModel: LinkSingleViewModel by activityViewModels()
 
     override fun layoutId(): Int = R.layout.fragment_detail_link
 
@@ -67,7 +67,7 @@ class DetailLinkFragment @Inject constructor() : SjBasicFragment<FragmentDetailL
     }
 
     private fun startWebBrowser() {
-        val url = viewModel.link.value?.fullUrl
+        val url = viewModel.link.value?.url
         if (url is String) {
             if (SjUtil.checkUrlPrefix(url)) {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))

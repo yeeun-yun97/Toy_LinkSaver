@@ -20,7 +20,7 @@ import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.app_info.Ap
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.domain.ListDomainFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.personal.PersonalSettingFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.tag.ListGroupFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.SettingViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.app.SettingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first

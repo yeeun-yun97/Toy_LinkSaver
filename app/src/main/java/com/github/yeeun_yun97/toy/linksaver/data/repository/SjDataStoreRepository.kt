@@ -58,13 +58,12 @@ private constructor() {
         return exampleCounterFlow
     }
 
-    fun setPrivateMode(context: Context, isPrivateMode: Boolean) {
+    fun setPrivateMode(context: Context, isPrivateMode: Boolean) =
         CoroutineScope(Dispatchers.IO).launch {
             val EXAMPLE_COUNTER = booleanPreferencesKey(PRIVATE_KEY)
             context.dataStore.edit { settings ->
                 settings[EXAMPLE_COUNTER] = isPrivateMode
             }
         }
-    }
 
 }

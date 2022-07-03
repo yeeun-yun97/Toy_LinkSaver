@@ -6,6 +6,7 @@ import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDomainDao
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjTagDao
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjCountRepository
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,27 +22,14 @@ const val RESULT_CANCELED = 2
 class LinkSaverApplication : Application() {
 
     @Inject
-    lateinit var countDao : SjCountDao
-
-    @Inject
-    lateinit var domainDao : SjDomainDao
-
-    @Inject
-    lateinit var tagDao : SjTagDao
+    lateinit var countRepo: SjCountRepository
 
     override fun onCreate() {
         super.onCreate()
         // insert initial Data
         CoroutineScope(Dispatchers.IO).launch {
-            val countDomain = async { countDao.getDomainCount() }
-            if (countDomain.await() == 0) {
-                domainDao.insertDomain(SjDomain(did = 1, name = "-", url = ""))
-            }
-
-            val countTagGroup = async { countDao.getTagGroupCount() }
-            if (countTagGroup.await() == 0) {
-                tagDao.insertTagGroup(SjTagGroup(gid = 1, name = "-", isPrivate = false))
-            }
+            countRepo.insertDefaultDomainIfNotExists()
+            countRepo.insertDefaultGroupIfNotExists()
         }
     }
 }
