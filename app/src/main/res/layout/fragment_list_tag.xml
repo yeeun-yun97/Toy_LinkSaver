@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.TagGroupEditViewModel" />
+            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.EditTagsInGroupViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

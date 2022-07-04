@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.viewmodel
+package com.github.yeeun_yun97.toy.linksaver.viewmodel.tag
 
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.tag.SjListTagGroupRepository
@@ -19,7 +19,7 @@ class ListGroupViewModel @Inject constructor(
 
     override fun refreshData() {
         when (isPrivateMode) {
-            true -> tagListRepo.postTagGroupsPublicNotDefault()
+            true -> tagListRepo.postTagGroupsNotDefaultPublic()
             false -> tagListRepo.postTagGroupsNotDefault()
         }
         tagListRepo.postDefaultTagGroup()

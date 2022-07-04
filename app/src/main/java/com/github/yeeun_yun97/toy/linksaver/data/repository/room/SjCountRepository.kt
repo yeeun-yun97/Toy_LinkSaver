@@ -45,6 +45,9 @@ constructor(
     suspend fun getTagCount() =
         countDao.getTagCount()
 
+    suspend fun getSearchSetCount() =
+            countDao.getSearchSetCount()
+
     suspend fun getLinkTagCrossRefCount() =
         countDao.getLinkTagCrossRefCount()
 

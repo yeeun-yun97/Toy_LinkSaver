@@ -8,8 +8,8 @@ import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListTagGroupBind
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.TagGroupListAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagGroupDialogFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjUsePrivateModeFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.ListGroupViewModel
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.TagGroupEditViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.ListGroupViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.EditTagsInGroupViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -18,7 +18,7 @@ class ListGroupFragment @Inject constructor() : SjUsePrivateModeFragment<Fragmen
     private val viewModel: ListGroupViewModel by activityViewModels()
 
     private val editGroupFragment = EditTagInGroupFragment()
-    private val editGroupViewModel: TagGroupEditViewModel by activityViewModels()
+    private val editGroupViewModel: EditTagsInGroupViewModel by activityViewModels()
 
     private val adapter = TagGroupListAdapter(
         deleteOperation = ::deleteGroupByGid,

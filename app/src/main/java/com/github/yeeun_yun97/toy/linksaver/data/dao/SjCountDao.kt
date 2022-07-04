@@ -24,5 +24,8 @@ interface SjCountDao {
     @Query("SELECT COUNT(*) FROM SearchTagCrossRef")
     suspend fun countAllSearchTagCrossRefs(): Int
 
+    @Query("SELECT COUNT(*) FROM SjSearch")
+    abstract fun getSearchSetCount(): Int
+
 
 }

@@ -2,7 +2,7 @@ package com.github.yeeun_yun97.toy.linksaver.test.viewModel
 
 import com.github.yeeun_yun97.toy.linksaver.data.SjTestDataUtil
 import com.github.yeeun_yun97.toy.linksaver.test.SjBaseTest
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.SwapTagViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.SwapTagViewModel
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking

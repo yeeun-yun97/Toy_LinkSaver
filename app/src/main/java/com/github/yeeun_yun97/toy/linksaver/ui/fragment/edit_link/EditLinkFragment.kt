@@ -11,13 +11,13 @@ import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditLinkBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagDialogFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjUsePrivateModeFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.edit.LinkEditViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.link.EditLinkViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class EditLinkFragment @Inject constructor() : SjUsePrivateModeFragment<FragmentEditLinkBinding>() {
-    private val viewModel: LinkEditViewModel by activityViewModels()
+    private val viewModel: EditLinkViewModel by activityViewModels()
     private val dialogFragment = EditTagDialogFragment(::createTag, null)
 
     private val onCheckListener =

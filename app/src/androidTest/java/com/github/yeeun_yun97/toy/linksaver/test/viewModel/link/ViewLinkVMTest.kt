@@ -1,9 +1,9 @@
-package com.github.yeeun_yun97.toy.linksaver.test.viewModel
+package com.github.yeeun_yun97.toy.linksaver.test.viewModel.link
 
 import com.github.yeeun_yun97.toy.linksaver.data.SjTestDataUtil
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.test.SjBaseTest
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.LinkSingleViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.link.ViewLinkViewModel
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -12,14 +12,14 @@ import org.junit.Assert
 import org.junit.Test
 
 @HiltAndroidTest
-class LinkSingleViewModelTest : SjBaseTest() {
-    private lateinit var viewModel: LinkSingleViewModel
+class ViewLinkVMTest : SjBaseTest() {
+    private lateinit var viewModel: ViewLinkViewModel
 
     private val targetLink = SjTestDataUtil.testLinks[3].first
     private val targetLinkTags = SjTestDataUtil.testLinks[3].second
 
     override fun before() {
-        viewModel = LinkSingleViewModel(linkRepo)
+        viewModel = ViewLinkViewModel(linkRepo)
     }
 
     @Test

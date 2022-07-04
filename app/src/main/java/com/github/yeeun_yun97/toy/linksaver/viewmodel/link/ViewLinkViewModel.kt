@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.viewmodel
+package com.github.yeeun_yun97.toy.linksaver.viewmodel.link
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
@@ -10,7 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class LinkSingleViewModel @Inject constructor(
+class ViewLinkViewModel @Inject constructor(
     private val linkRepo : SjViewLinkRepository
 ) : SjBaseViewModelImpl() {
 

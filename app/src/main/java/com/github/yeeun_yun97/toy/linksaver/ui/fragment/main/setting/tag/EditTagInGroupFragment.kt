@@ -8,13 +8,13 @@ import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagDialogFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.component.TagValue
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.TagGroupEditViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.EditTagsInGroupViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class EditTagInGroupFragment @Inject constructor() : SjBasicFragment<FragmentListTagBinding>() {
-    val viewModel: TagGroupEditViewModel by activityViewModels()
+    val viewModel: EditTagsInGroupViewModel by activityViewModels()
 
     // override methods
     override fun layoutId(): Int = R.layout.fragment_list_tag
@@ -53,7 +53,7 @@ class EditTagInGroupFragment @Inject constructor() : SjBasicFragment<FragmentLis
     }
 
     private fun editTag(name: String, tag: SjTag?) {
-        viewModel.editTag(tag, name)
+        viewModel.editTagToGroup(tag, name)
         viewModel.refreshData()
     }
 

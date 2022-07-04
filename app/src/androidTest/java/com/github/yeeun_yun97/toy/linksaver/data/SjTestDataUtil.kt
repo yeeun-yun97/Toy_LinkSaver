@@ -180,7 +180,17 @@ class SjTestDataUtil {
             Pair(SjSearch(2, "비밀"), listOf(1, 2)),
             Pair(SjSearch(3, "네이버"), listOf(1)),
             Pair(SjSearch(4, "유네이버투브"), listOf(0)),
+            Pair(SjSearch(5, "태그 없는 검색"), listOf()),
         )
+
+        val testSearchSetNoTags :List<SjSearch>
+        get(){
+            val result = mutableListOf<SjSearch>()
+            for (search in testSearchSets){
+                if(search.second.isEmpty()) result.add(search.first)
+            }
+            return result
+        }
 
         val testSearchSetsPublic: List<Pair<SjSearch, List<Int>>>
             get() {

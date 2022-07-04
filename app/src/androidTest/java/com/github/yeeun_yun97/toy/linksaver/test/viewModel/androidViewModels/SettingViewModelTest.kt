@@ -1,19 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.test.viewModel.android
-
-import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.github.yeeun_yun97.toy.linksaver.test.SjBaseTest
-import com.github.yeeun_yun97.toy.linksaver.ui.activity.MainActivity
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.app.SettingViewModel
-import dagger.hilt.android.testing.HiltAndroidTest
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
-import org.junit.Assert
-import org.junit.Rule
-import org.junit.Test
-import org.junit.runner.RunWith
-import javax.inject.Inject
+package com.github.yeeun_yun97.toy.linksaver.test.viewModel.androidViewModels
 
 //@HiltAndroidTest
 //@RunWith(AndroidJUnit4::class)

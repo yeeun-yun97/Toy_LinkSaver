@@ -54,7 +54,9 @@ abstract class SjBaseTest {
         searchSetListRepo = SjSearchSetRepository(db.getSearchSetDao())
         countRepo = SjCountRepository(db.getCountDao(), db.getDomainDao(), db.getTagDao())
         editLinkRepo = SjEditLinkRepository(db.getLinkDao())
-        before()
+        runBlocking(Dispatchers.Main) {
+            before()
+        }
     }
 
     protected abstract fun before()

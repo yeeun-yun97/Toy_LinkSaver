@@ -8,7 +8,7 @@ import com.github.yeeun_yun97.toy.linksaver.application.RESULT_SUCCESS
 import com.github.yeeun_yun97.toy.linksaver.databinding.ActivityPlainBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.basic.SjBasicActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.lock.LockFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.app.LockViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.androidViewModels.LockViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

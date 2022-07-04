@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.viewmodel.edit
+package com.github.yeeun_yun97.toy.linksaver.viewmodel.search
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -10,6 +10,7 @@ import com.github.yeeun_yun97.toy.linksaver.data.repository.room.search.SjSearch
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.tag.SjListTagGroupRepository
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjUsePrivateModeViewModelImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,7 +21,7 @@ enum class ListMode {
 }
 
 @HiltViewModel
-class SearchLinkViewModel @Inject constructor(
+class ListLinkBySearchViewModel @Inject constructor(
     private val searchSetRepo: SjSearchSetRepository,
     private val linkRepo: SjListLinkRepository,
     private val tagRepo: SjListTagGroupRepository
@@ -49,7 +50,7 @@ class SearchLinkViewModel @Inject constructor(
         initValuesAndSetModeAll()
     }
 
-    fun initValuesAndSetModeAll() {
+    private fun initValuesAndSetModeAll() {
         this.mode = ListMode.MODE_ALL
         this.bindingSearchWord.postValue("")
         _searchTagMap = mutableMapOf()
@@ -62,18 +63,15 @@ class SearchLinkViewModel @Inject constructor(
         refreshTags()
         refreshDefaultTags()
     }
-    private fun refreshDefaultTags(){
+
+    private fun refreshDefaultTags() {
         tagRepo.postDefaultTagGroup()
     }
 
     private fun refreshTags() {
         when (isPrivateMode) {
-            true -> {
-                tagRepo.postTagGroupsPublicNotDefault()
-            }
-            false -> {
-                tagRepo.postTagGroupsNotDefault()
-            }
+            true -> tagRepo.postTagGroupsNotDefaultPublic()
+            false -> tagRepo.postTagGroupsNotDefault()
         }
     }
 
@@ -122,17 +120,19 @@ class SearchLinkViewModel @Inject constructor(
     fun isSearchSetEmpty(): Boolean =
         bindingSearchWord.value!!.isEmpty() && _searchTagMap.isEmpty()
 
-    fun startSearchAndSaveIfNotEmpty() {
-        updateTags()
-        if (isSearchSetEmpty()) {
-            initValuesAndSetModeAll()
-        } else {
-            Log.d("모드 변경", "Search")
-            this.mode = ListMode.MODE_SEARCH
-            refreshLinks()
-            searchSetRepo.insertSearchSet(keyword = bindingSearchWord.value!!, tids = _tids)
+    fun startSearchAndSaveIfNotEmpty() =
+        CoroutineScope(Dispatchers.IO).launch {
+            updateTags()
+            if (isSearchSetEmpty()) {
+                initValuesAndSetModeAll()
+            } else {
+                Log.d("모드 변경", "Search")
+                mode = ListMode.MODE_SEARCH
+                refreshLinks()
+                searchSetRepo.insertSearchSet(keyword = bindingSearchWord.value!!, tids = _tids)
+                    .join()
+            }
         }
-    }
 
     fun clearSearchSet() {
         initValuesAndSetModeAll()

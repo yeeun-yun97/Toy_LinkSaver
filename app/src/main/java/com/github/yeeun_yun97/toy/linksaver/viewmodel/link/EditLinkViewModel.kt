@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.viewmodel.edit
+package com.github.yeeun_yun97.toy.linksaver.viewmodel.link
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LinkEditViewModel @Inject constructor(
+class EditLinkViewModel @Inject constructor(
     private val tagRepo: SjListTagGroupRepository,
     private val editLinkRepo: SjEditLinkRepository,
     private val networkRepository: SjNetworkRepository,
@@ -96,7 +96,7 @@ class LinkEditViewModel @Inject constructor(
 
     override fun refreshData() {
         if (isPrivateMode) {
-            tagRepo.postTagGroupsPublicNotDefault()
+            tagRepo.postTagGroupsNotDefaultPublic()
         } else {
             tagRepo.postTagGroupsNotDefault()
         }
@@ -107,12 +107,12 @@ class LinkEditViewModel @Inject constructor(
         tagRepo.postDefaultTagGroup()
     }
 
-    fun createTag(name: String) {
+    fun createTag(name: String) =
         viewModelScope.launch(Dispatchers.IO) {
             tagRepo.insertTagToDefaultGroup(name = name).join()
             refreshDefaultGroup()
         }
-    }
+
 
     // handle tag selection
     fun selectTag(tag: SjTag) = targetTags.add(tag)

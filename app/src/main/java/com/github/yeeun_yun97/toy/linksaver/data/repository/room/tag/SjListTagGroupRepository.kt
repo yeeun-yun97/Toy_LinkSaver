@@ -29,7 +29,7 @@ class SjListTagGroupRepository @Inject constructor(
             _tagGroupsWithoutDefault.postValue(data)
         }
 
-    fun postTagGroupsPublicNotDefault() =
+    fun postTagGroupsNotDefaultPublic() =
         CoroutineScope(Dispatchers.IO).launch {
             val data = dao.selectTagGroupsPublicNotDefault()
             _tagGroupsWithoutDefault.postValue(data)

@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.viewmodel
+package com.github.yeeun_yun97.toy.linksaver.viewmodel.tag
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
@@ -12,11 +12,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TagGroupEditViewModel @Inject constructor(
+class EditTagsInGroupViewModel @Inject constructor(
     private val repo: SjViewTagGroupRepository
 ) : SjBaseViewModelImpl() {
-
-    var gid: Int = 1
+    var gid: Int = 0
         set(value) {
             field = value
             refreshData()
@@ -26,7 +25,7 @@ class TagGroupEditViewModel @Inject constructor(
     val bindingTags: LiveData<List<SjTag>> = Transformations.map(tagGroup) { it.tags }
 
     override fun refreshData() {
-        repo.postTargetTagGroup(gid!!)
+        repo.postTargetTagGroup(gid)
     }
 
     // delete tag
@@ -38,15 +37,16 @@ class TagGroupEditViewModel @Inject constructor(
         }
     }
 
-    fun editTag(tag: SjTag? = null, name: String) {
+    // save tag
+    fun editTagToGroup(tag: SjTag? = null, name: String) {
         if (tag != null) {
             updateTag(tag.copy(name = name, gid = gid))
         } else {
-            createTag(name, gid)
+            createTag(name)
         }
     }
 
-    private fun createTag(name: String, gid: Int = 1) {
+    private fun createTag(name: String) {
         viewModelScope.launch(Dispatchers.IO) {
             repo.insertTag(name = name, gid = gid).join()
             refreshData()

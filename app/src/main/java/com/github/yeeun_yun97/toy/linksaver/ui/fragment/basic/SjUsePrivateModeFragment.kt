@@ -2,7 +2,7 @@ package com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic
 
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.activityViewModels
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.app.SettingViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.androidViewModels.SettingViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.base.SjUsePrivateModeViewModel
 
 abstract class SjUsePrivateModeFragment<T : ViewDataBinding> : SjBasicFragment<T>() {

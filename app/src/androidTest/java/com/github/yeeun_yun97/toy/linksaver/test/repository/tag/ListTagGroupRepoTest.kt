@@ -23,7 +23,7 @@ class ListTagGroupRepoTest : SjBaseTest() {
 
     // update repository liveData function
     private fun postAllTags() = tagListRepo.postTagGroupsNotDefault()
-    private fun postTagsPublic() = tagListRepo.postTagGroupsPublicNotDefault()
+    private fun postTagsPublic() = tagListRepo.postTagGroupsNotDefaultPublic()
     private fun postDefaultTags() = tagListRepo.postDefaultTagGroup()
 
     @Test

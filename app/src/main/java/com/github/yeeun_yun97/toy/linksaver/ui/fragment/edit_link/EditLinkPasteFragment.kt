@@ -10,13 +10,13 @@ import com.github.yeeun_yun97.toy.linksaver.ui.component.LinkPasteBottomSheet
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjClipboard
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjUtil
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.edit.LinkEditViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.link.EditLinkViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class EditLinkPasteFragment @Inject constructor() : SjBasicFragment<FragmentEditPasteBinding>() {
-    private val editViewModel: LinkEditViewModel by activityViewModels()
+    private val editViewModel: EditLinkViewModel by activityViewModels()
 
     @Inject lateinit var editFragment : EditLinkFragment
 

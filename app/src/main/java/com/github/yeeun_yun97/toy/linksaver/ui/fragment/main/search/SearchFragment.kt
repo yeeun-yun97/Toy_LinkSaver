@@ -17,13 +17,13 @@ import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSearchBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.SearchSetAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjUsePrivateModeFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.edit.SearchLinkViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.ListLinkBySearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment @Inject constructor() : SjUsePrivateModeFragment<FragmentSearchBinding>() {
-    private val searchViewModel: SearchLinkViewModel by activityViewModels()
+    private val searchViewModel: ListLinkBySearchViewModel by activityViewModels()
 
     // drawable resources
     private val deleteIcon by lazy {
@@ -55,11 +55,7 @@ class SearchFragment @Inject constructor() : SjUsePrivateModeFragment<FragmentSe
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            if (searchViewModel.isSearchSetEmpty()) {
-                searchViewModel.initValuesAndSetModeAll()
-            } else {
-                searchViewModel.startSearchAndSaveIfNotEmpty()
-            }
+            searchViewModel.startSearchAndSaveIfNotEmpty()
             popBack()
         }
     }

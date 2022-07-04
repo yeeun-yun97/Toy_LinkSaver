@@ -13,8 +13,8 @@ import com.github.yeeun_yun97.toy.linksaver.ui.activity.EditLinkActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.LinkSearchListAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjUsePrivateModeFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.detail_link.DetailLinkFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.LinkSingleViewModel
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.edit.SearchLinkViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.link.ViewLinkViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.search.ListLinkBySearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,11 +25,11 @@ import javax.inject.Inject
 // FIXME 바텀 내비를 클릭하여 들어갈 시, 이미지가 사라지는 오류가 있음
 @AndroidEntryPoint
 class ListLinkFragment @Inject constructor() : SjUsePrivateModeFragment<FragmentListLinkBinding>() {
-    private val viewModel: SearchLinkViewModel by activityViewModels()
+    private val viewModel: ListLinkBySearchViewModel by activityViewModels()
 
     // fragments
     private val detailFragment = DetailLinkFragment()
-    private val detailViewModel: LinkSingleViewModel by activityViewModels()
+    private val detailViewModel: ViewLinkViewModel by activityViewModels()
     private val searchFragment = SearchFragment()
 
     // control view visibility

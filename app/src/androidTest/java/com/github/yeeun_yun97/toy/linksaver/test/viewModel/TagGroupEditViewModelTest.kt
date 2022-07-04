@@ -2,7 +2,7 @@ package com.github.yeeun_yun97.toy.linksaver.test.viewModel
 
 import com.github.yeeun_yun97.toy.linksaver.data.SjTestDataUtil
 import com.github.yeeun_yun97.toy.linksaver.test.SjBaseTest
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.TagGroupEditViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.EditTagsInGroupViewModel
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -11,12 +11,12 @@ import org.junit.Test
 
 @HiltAndroidTest
 class TagGroupEditViewModelTest : SjBaseTest() {
-    private lateinit var viewModel: TagGroupEditViewModel
+    private lateinit var viewModel: EditTagsInGroupViewModel
 
     private val targetGroup = SjTestDataUtil.testTagGroupsNotDefault[1]
 
     override fun before() {
-        viewModel = TagGroupEditViewModel(tagGroupRepo)
+        viewModel = EditTagsInGroupViewModel(tagGroupRepo)
     }
 
     @Test
@@ -54,7 +54,7 @@ class TagGroupEditViewModelTest : SjBaseTest() {
 
             viewModel.gid = targetGroup.gid
             val name = "*쿨한 태그 이름*"
-            viewModel.editTag(null, name)
+            viewModel.editTagToGroup(null, name)
 
             val result = getValueOrThrow(viewModel.tagGroup)
             var found = false
@@ -77,7 +77,7 @@ class TagGroupEditViewModelTest : SjBaseTest() {
             val name = "*쿨한 태그 이름*"
             val data = getValueOrThrow(viewModel.tagGroup)
             val targetTag = data.tags[0]
-            viewModel.editTag(targetTag, name)
+            viewModel.editTagToGroup(targetTag, name)
 
             val result = getValueOrThrow(viewModel.tagGroup)
             var found = false

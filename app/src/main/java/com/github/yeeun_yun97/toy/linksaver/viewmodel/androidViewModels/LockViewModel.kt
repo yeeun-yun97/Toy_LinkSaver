@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.viewmodel.app
+package com.github.yeeun_yun97.toy.linksaver.viewmodel.androidViewModels
 
 import android.app.Application
 import androidx.lifecycle.LiveData
@@ -97,8 +97,6 @@ class LockViewModel @Inject constructor(
         _bindingPassword5.postValue("")
         _bindingPassword6.postValue("")
     }
-
-
 
 
 }

@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.edit.SearchLinkViewModel" />
+            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.search.ListLinkBySearchViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
