@@ -40,14 +40,13 @@ private constructor() {
         return exampleCounterFlow
     }
 
-    fun setPassword(context: Context, password: String) {
+    fun setPassword(context: Context, password: String) =
         CoroutineScope(Dispatchers.IO).launch {
             val EXAMPLE_COUNTER = stringPreferencesKey(PASSWORD_KEY)
             context.dataStore.edit { settings ->
                 settings[EXAMPLE_COUNTER] = password
             }
         }
-    }
 
     fun isPrivateMode(context: Context): Flow<Boolean> {
         val EXAMPLE_COUNTER = booleanPreferencesKey(PRIVATE_KEY)

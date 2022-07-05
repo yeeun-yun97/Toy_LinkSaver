@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.viewmodel.androidViewModels
+package com.github.yeeun_yun97.toy.linksaver.viewmodel.setting
 
 import android.app.Application
 import androidx.lifecycle.LiveData

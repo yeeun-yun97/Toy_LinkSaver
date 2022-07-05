@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.test.viewModel
+package com.github.yeeun_yun97.toy.linksaver.test.viewModel.tag
 
 import com.github.yeeun_yun97.toy.linksaver.data.SjTestDataUtil
 import com.github.yeeun_yun97.toy.linksaver.test.SjBaseTest
@@ -10,7 +10,7 @@ import org.junit.Assert
 import org.junit.Test
 
 @HiltAndroidTest
-class ListGroupViewModelTest : SjBaseTest() {
+class ListGroupVMTest : SjBaseTest() {
     private lateinit var viewModel: ListGroupViewModel
 
     override fun before() {

@@ -64,9 +64,9 @@ class LockViewModel @Inject constructor(
         }
     }
 
-    fun setPassword(password: String) {
+    fun setPassword(password: String) =
         repository.setPassword(getApplication<Application>().applicationContext, password)
-    }
+
 
     private fun getLiveData(): MutableLiveData<String> {
         return when (length) {

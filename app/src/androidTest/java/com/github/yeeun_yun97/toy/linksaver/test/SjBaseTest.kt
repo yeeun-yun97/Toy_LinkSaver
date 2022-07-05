@@ -1,8 +1,10 @@
 package com.github.yeeun_yun97.toy.linksaver.test
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import com.github.yeeun_yun97.toy.linksaver.data.SjTestDataUtil
 import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabase
+import com.github.yeeun_yun97.toy.linksaver.data.repository.SjDataStoreRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.SjNetworkRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.*
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.link.SjEditLinkRepository
@@ -28,6 +30,9 @@ abstract class SjBaseTest {
     @Named("test_db")
     protected lateinit var db: SjDatabase
 
+    @Inject
+    lateinit var application: Application
+
     protected lateinit var linkListRepo: SjListLinkRepository
     protected lateinit var linkRepo: SjViewLinkRepository
     protected lateinit var domainListRepo: SjDomainListRepository
@@ -36,8 +41,12 @@ abstract class SjBaseTest {
     protected lateinit var searchSetListRepo: SjSearchSetRepository
     protected lateinit var videoListRepo: SjListVideoRepository
     protected lateinit var countRepo: SjCountRepository
-    protected lateinit var networkRepo: SjNetworkRepository
     protected lateinit var editLinkRepo: SjEditLinkRepository
+
+    protected lateinit var networkRepo: SjNetworkRepository
+    protected lateinit var dataStoreRepo: SjDataStoreRepository
+
+
 
     protected val ERROR_MESSAGE_LIVEDATA_NULL = "LiveData has null value"
 
@@ -54,6 +63,7 @@ abstract class SjBaseTest {
         searchSetListRepo = SjSearchSetRepository(db.getSearchSetDao())
         countRepo = SjCountRepository(db.getCountDao(), db.getDomainDao(), db.getTagDao())
         editLinkRepo = SjEditLinkRepository(db.getLinkDao())
+        dataStoreRepo = SjDataStoreRepository.getInstance()
         runBlocking(Dispatchers.Main) {
             before()
         }

@@ -14,7 +14,7 @@ import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.VideoViewHolder
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjUsePrivateModeFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.detail_link.DetailLinkFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.link.ViewLinkViewModel
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.androidViewModels.ListVideoViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.link.ListVideoViewModel
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
