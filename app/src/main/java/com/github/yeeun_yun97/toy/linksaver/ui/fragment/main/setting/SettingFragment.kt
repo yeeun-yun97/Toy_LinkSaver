@@ -38,15 +38,7 @@ class SettingFragment @Inject constructor() : SjBasicFragment<FragmentSettingBin
     @Inject lateinit var domainFragment : ListDomainFragment
     @Inject lateinit var listShareFragment : ListShareFragment
 
-    private val activityResultLauncher: ActivityResultLauncher<Intent> =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == RESULT_SUCCESS) {
-            moveToPersonalSettingWithOutPassword()
-        } else if(it.resultCode == RESULT_FAILED) {
-            val messageDialog =  BasicDialogFragment("실패","비밀번호가 틀렸습니다.",null)
-            messageDialog.show(childFragmentManager,"비밀번호 틀림")
-        }
-    }
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     override fun layoutId(): Int = R.layout.fragment_setting
 
@@ -55,6 +47,16 @@ class SettingFragment @Inject constructor() : SjBasicFragment<FragmentSettingBin
         val adapter = SettingListAdapter()
         binding.settingRecyclerView.adapter = adapter
         adapter.setList(getSettingList())
+
+        activityResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if (it.resultCode == RESULT_SUCCESS) {
+                    moveToPersonalSettingWithOutPassword()
+                } else if(it.resultCode == RESULT_FAILED) {
+                   val messageDialog =  BasicDialogFragment("실패","비밀번호가 틀렸습니다.",null)
+                    messageDialog.show(childFragmentManager,"비밀번호 틀림")
+                }
+            }
     }
 
     private fun getSettingList(): List<SettingItemValue> {

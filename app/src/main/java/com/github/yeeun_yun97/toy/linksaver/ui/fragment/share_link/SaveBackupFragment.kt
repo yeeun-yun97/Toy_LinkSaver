@@ -24,10 +24,7 @@ import javax.inject.Inject
 class SaveBackupFragment @Inject constructor() : SjBasicFragment<FragmentSaveBackupBinding>() {
     private val viewModel: BackupViewModel by viewModels()
 
-    private val activityResultLauncher: ActivityResultLauncher<Intent> =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            handleActivityResult(it)
-        }
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     override fun layoutId(): Int = R.layout.fragment_save_backup
     override fun onCreateView() {
@@ -35,6 +32,11 @@ class SaveBackupFragment @Inject constructor() : SjBasicFragment<FragmentSaveBac
         binding.toolbar.setMenu(R.menu.toolbar_menu_edit, handlerMap)
 
         initRecyclerView()
+
+        activityResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                handleActivityResult(it)
+            }
     }
 
     override fun initRecyclerView() {
@@ -61,7 +63,7 @@ class SaveBackupFragment @Inject constructor() : SjBasicFragment<FragmentSaveBac
     private fun handleActivityResult(it: ActivityResult) {
 //        Toast.makeText(context, "성공 번호 체크, ${it.resultCode}", Toast.LENGTH_LONG).show()
         if (it.resultCode == -1) {
-           val uri =  it.data!!.data!!
+            val uri = it.data!!.data!!
             val outputStream = requireActivity().contentResolver.openOutputStream(uri)!!
             viewModel.write(outputStream)
             outputStream.close()
