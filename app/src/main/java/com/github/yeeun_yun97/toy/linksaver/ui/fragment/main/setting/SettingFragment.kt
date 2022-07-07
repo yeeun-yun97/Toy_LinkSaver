@@ -20,6 +20,7 @@ import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.app_info.Ap
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.domain.ListDomainFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.personal.PersonalSettingFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.tag.ListGroupFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.share_link.ListShareFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.setting.SettingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -32,11 +33,20 @@ class SettingFragment @Inject constructor() : SjBasicFragment<FragmentSettingBin
     private val viewModel: SettingViewModel by activityViewModels()
 
     @Inject lateinit var groupFragment : ListGroupFragment
-    @Inject lateinit var domainFragment : ListDomainFragment
     @Inject lateinit var appInfoFragment : AppInfoFragment
     @Inject lateinit var personalSettingFragment : PersonalSettingFragment
+    @Inject lateinit var domainFragment : ListDomainFragment
+    @Inject lateinit var listShareFragment : ListShareFragment
 
-    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+    private val activityResultLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == RESULT_SUCCESS) {
+            moveToPersonalSettingWithOutPassword()
+        } else if(it.resultCode == RESULT_FAILED) {
+            val messageDialog =  BasicDialogFragment("실패","비밀번호가 틀렸습니다.",null)
+            messageDialog.show(childFragmentManager,"비밀번호 틀림")
+        }
+    }
 
     override fun layoutId(): Int = R.layout.fragment_setting
 
@@ -45,26 +55,21 @@ class SettingFragment @Inject constructor() : SjBasicFragment<FragmentSettingBin
         val adapter = SettingListAdapter()
         binding.settingRecyclerView.adapter = adapter
         adapter.setList(getSettingList())
-
-        activityResultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                if (it.resultCode == RESULT_SUCCESS) {
-                    moveToPersonalSettingWithOutPassword()
-                } else if(it.resultCode == RESULT_FAILED) {
-                   val messageDialog =  BasicDialogFragment("실패","비밀번호가 틀렸습니다.",null)
-                    messageDialog.show(childFragmentManager,"비밀번호 틀림")
-                }
-            }
     }
 
     private fun getSettingList(): List<SettingItemValue> {
         return mutableListOf(
             SettingItemValue("사용자 설정", ::moveToPersonalSetting),
+            SettingItemValue("데이터 및 공유", ::moveToListShare),
             SettingItemValue("태그 그룹 목록", ::moveToViewTagGroups),
             SettingItemValue("도메인 목록", ::moveToViewDomains),
             SettingItemValue("플레이리스트", ::moveToViewPlayLists),
             SettingItemValue("앱 정보 보기", ::moveToViewData),
         )
+    }
+
+    private fun moveToListShare(){
+        moveToOtherFragment(listShareFragment)
     }
 
     private fun moveToPersonalSettingWithOutPassword() {

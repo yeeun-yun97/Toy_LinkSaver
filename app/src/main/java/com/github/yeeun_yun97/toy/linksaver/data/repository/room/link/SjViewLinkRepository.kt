@@ -25,7 +25,7 @@ class SjViewLinkRepository @Inject constructor(
             val vo = LinkDetailValue(
                 lid = entity.link.lid,
                 name = entity.link.name,
-                url = LinkModelUtil.getFullUrl(entity),
+                url = entity.link.url,
                 preview = entity.link.preview,
                 isVideo = when (entity.link.type) {
                     ELinkType.video -> true

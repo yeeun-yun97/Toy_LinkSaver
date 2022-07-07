@@ -44,6 +44,9 @@ class DatabaseModule {
     fun providesCountDao(db: SjDatabase) : SjCountDao = db.getCountDao()
 
     @Provides
+    fun providesShareDao(db: SjDatabase) : SjShareDao = db.getShareDao()
+
+    @Provides
     fun providesLinkDao(db: SjDatabase) : SjLinkDao = db.getLinkDao()
 
     @Provides
