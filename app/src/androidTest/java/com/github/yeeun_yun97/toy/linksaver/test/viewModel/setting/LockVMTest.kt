@@ -20,7 +20,7 @@ class LockVMTest : SjBaseTest() {
             append(num)
     }.toString()
 
-    override fun before() {
+    override suspend fun before() {
         viewModel = LockViewModel(application, dataStoreRepo)
     }
 

@@ -15,7 +15,7 @@ import org.junit.Test
 class ViewLinkRepoTest : SjBaseTest() {
     private lateinit var link: LiveData<LinkDetailValue>
 
-    override fun before() {
+    override suspend fun before() {
         link = linkRepo.link
     }
 

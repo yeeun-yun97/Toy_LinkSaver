@@ -15,7 +15,7 @@ class ViewTagGroupRepoTest : SjBaseTest() {
     private lateinit var targetTagGroup: LiveData<SjTagGroupWithTags>
     private lateinit var defaultTagGroup: LiveData<SjTagGroupWithTags>
 
-    override fun before() {
+    override suspend fun before() {
         targetTagGroup = tagGroupRepo.targetTagGroup
         defaultTagGroup = tagGroupRepo.defaultGroup
     }

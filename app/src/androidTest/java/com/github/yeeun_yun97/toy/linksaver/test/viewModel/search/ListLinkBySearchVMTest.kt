@@ -15,7 +15,7 @@ import org.junit.Test
 class ListLinkBySearchVMTest : SjBaseTest() {
     private lateinit var viewModel: ListLinkBySearchViewModel
 
-    override fun before() {
+    override suspend fun before() {
         viewModel = ListLinkBySearchViewModel(searchSetListRepo, linkListRepo, tagListRepo)
     }
 

@@ -15,7 +15,7 @@ class EditTagsInGroupVMTest : SjBaseTest() {
 
     private val targetGroup = SjTestDataUtil.testTagGroupsNotDefault[1]
 
-    override fun before() {
+    override suspend fun before() {
         viewModel = EditTagsInGroupViewModel(tagGroupRepo)
     }
 

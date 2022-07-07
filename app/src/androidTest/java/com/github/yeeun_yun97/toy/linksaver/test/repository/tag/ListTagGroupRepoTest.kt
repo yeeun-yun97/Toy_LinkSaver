@@ -16,7 +16,7 @@ class ListTagGroupRepoTest : SjBaseTest() {
     private lateinit var tagGroupsNotDefault: LiveData<List<SjTagGroupWithTags>>
     private lateinit var defaultTagGroup: LiveData<SjTagGroupWithTags>
 
-    override fun before() {
+    override suspend fun before() {
         tagGroupsNotDefault = tagListRepo.tagGroupsWithoutDefault
         defaultTagGroup = tagListRepo.defaultGroup
     }

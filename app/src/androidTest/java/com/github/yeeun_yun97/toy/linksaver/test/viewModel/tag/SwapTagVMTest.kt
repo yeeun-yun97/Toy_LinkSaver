@@ -16,7 +16,7 @@ class SwapTagVMTest : SjBaseTest() {
     private val targetGroup = SjTestDataUtil.testTagGroupsNotDefault[0]
 
 
-    override fun before() {
+    override suspend fun before() {
         viewModel = SwapTagViewModel(tagGroupRepo)
     }
 

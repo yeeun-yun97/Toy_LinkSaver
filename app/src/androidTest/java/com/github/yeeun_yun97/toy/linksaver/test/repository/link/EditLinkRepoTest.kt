@@ -15,7 +15,7 @@ class EditLinkRepoTest : SjBaseTest() {
     private val targetLink = SjTestDataUtil.testLinks[2].first
     private val targetUrl = "https://www.google.com/"
 
-    override fun before() {}
+    override suspend fun before() {}
 
     private fun postLinkByLid() = editLinkRepo.postLoadedLink(targetLink.lid)
     private fun createLinkByUrl() = editLinkRepo.postCreatedLink(targetUrl)

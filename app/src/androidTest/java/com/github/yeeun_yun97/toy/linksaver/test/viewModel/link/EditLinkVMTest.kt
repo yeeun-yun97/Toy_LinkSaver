@@ -16,7 +16,7 @@ class EditLinkVMTest : SjBaseTest() {
     private lateinit var viewModel: EditLinkViewModel
     private val targetLink = SjTestDataUtil.testLinks[2]
 
-    override fun before() {
+    override suspend fun before() {
         viewModel = EditLinkViewModel(
             tagListRepo,
             editLinkRepo,

@@ -46,8 +46,6 @@ abstract class SjBaseTest {
     protected lateinit var networkRepo: SjNetworkRepository
     protected lateinit var dataStoreRepo: SjDataStoreRepository
 
-
-
     protected val ERROR_MESSAGE_LIVEDATA_NULL = "LiveData has null value"
 
     @Before
@@ -69,7 +67,7 @@ abstract class SjBaseTest {
         }
     }
 
-    protected abstract fun before()
+    protected abstract suspend fun before()
 
     protected suspend fun insertBaseData() =
         CoroutineScope(Dispatchers.IO).launch {

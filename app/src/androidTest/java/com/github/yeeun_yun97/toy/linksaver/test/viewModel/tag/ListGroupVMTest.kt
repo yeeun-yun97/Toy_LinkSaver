@@ -13,7 +13,7 @@ import org.junit.Test
 class ListGroupVMTest : SjBaseTest() {
     private lateinit var viewModel: ListGroupViewModel
 
-    override fun before() {
+    override suspend fun before() {
         viewModel = ListGroupViewModel(tagListRepo)
     }
 

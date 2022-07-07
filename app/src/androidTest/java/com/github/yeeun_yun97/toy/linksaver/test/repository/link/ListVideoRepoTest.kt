@@ -14,7 +14,7 @@ import org.junit.Test
 class ListVideoRepoTest : SjBaseTest() {
     private lateinit var videos: LiveData<List<VideoData>>
 
-    override fun before() {
+    override suspend fun before() {
         videos = videoListRepo.linksVideo
     }
 

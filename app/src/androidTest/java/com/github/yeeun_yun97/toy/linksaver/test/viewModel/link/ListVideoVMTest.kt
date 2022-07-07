@@ -17,7 +17,7 @@ import org.junit.runner.RunWith
 class ListVideoVMTest : SjBaseTest() {
     private lateinit var viewModel: ListVideoViewModel
 
-    override fun before() {
+    override suspend fun before() {
         viewModel = ListVideoViewModel(application, videoListRepo)
     }
 

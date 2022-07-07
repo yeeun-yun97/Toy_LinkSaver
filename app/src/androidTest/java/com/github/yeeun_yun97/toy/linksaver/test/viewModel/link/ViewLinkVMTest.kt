@@ -18,7 +18,7 @@ class ViewLinkVMTest : SjBaseTest() {
     private val targetLink = SjTestDataUtil.testLinks[3].first
     private val targetLinkTags = SjTestDataUtil.testLinks[3].second
 
-    override fun before() {
+    override suspend fun before() {
         viewModel = ViewLinkViewModel(linkRepo)
     }
 

@@ -13,7 +13,7 @@ import org.junit.Test
 class SettingVMTest : SjBaseTest() {
     private lateinit var viewModel: SettingViewModel
 
-    override fun before() {
+    override suspend fun before() {
         viewModel = SettingViewModel(application,dataStoreRepo)
     }
 
