@@ -1,10 +1,13 @@
 package com.github.yeeun_yun97.toy.linksaver.data.repository.room.link
 
-import androidx.lifecycle.LiveData
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjLinkDao
 import com.github.yeeun_yun97.toy.linksaver.data.model.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,58 +15,78 @@ import javax.inject.Singleton
 class SjEditLinkRepository @Inject constructor(
     private val dao: SjLinkDao
 ) {
-    private val _editLink = MutableLiveData<SjLink>()
-    val editLink: LiveData<SjLink> get() = _editLink
-    private val _loadedLinkData = MutableLiveData<SjLinksAndDomainsWithTags>()
-    val loadedLinkData: LiveData<SjLinksAndDomainsWithTags> get() = _loadedLinkData
+    val linkName = MutableLiveData("")
+    val linkIsVideo = MutableLiveData(false)
+    val linkUrl = MutableLiveData("")
+    val linkPreview = MutableLiveData("")
+
+    private var targetLink: SjLink = SjLink(name = "", did = 1, url = "", type = ELinkType.link)
+    private var targetDomain = SjDomain(did = 1, name = "", url = "")
+    private val targetTags = mutableListOf<SjTag>()
+
 
     // manage liveData
     fun postLoadedLink(lid: Int) =
         CoroutineScope(Dispatchers.IO).launch {
             val entity = dao.selectLinkByLid(lid)
-            _loadedLinkData.postValue(entity)
-            _editLink.postValue(entity.link)
+            targetLink = entity.link
+            updateAllLiveDataByLink()
+            targetDomain = entity.domain
+            targetTags.clear()
+            targetTags.addAll(entity.tags)
         }
 
     fun postCreatedLink(url: String) =
         CoroutineScope(Dispatchers.IO).launch {
-            val link = SjLink(lid = 0, did = 1, name = "", url = url, type = ELinkType.link)
-            _editLink.postValue((link))
+            targetLink = SjLink(lid = 0, did = 1, name = "", url = url, type = ELinkType.link)
+            updateAllLiveDataByLink()
+            targetDomain = SjDomain(did = 1, name = "", url = "")
+            targetTags.clear()
         }
+
+    private fun updateAllLiveDataByLink(){
+        Log.d("Link name updated","by $targetLink")
+        linkName.postValue(targetLink.name)
+        linkIsVideo.postValue(targetLink.type == ELinkType.video)
+        linkPreview.postValue(targetLink.preview)
+        linkUrl.postValue(targetLink.url)
+    }
 
 
     fun updatePreview(preview: String) {
-        val link = editLink.value
-        if (link is SjLink) {
-            _editLink.postValue(editLink.value!!.copy(preview = preview))
-        }
+        targetLink = targetLink.copy(preview = preview)
+        linkPreview.postValue(preview)
     }
 
     fun updateName(name: String) {
-        val link = editLink.value
-        if (link is SjLink) {
-            _editLink.postValue(editLink.value!!.copy(name = name))
-        }
+        targetLink = targetLink.copy(name = name)
+        Log.d("Link name updated", "to $name")
+        linkName.postValue(name)
     }
 
     fun updateIsVideo(isVideo: Boolean) {
-        val link = editLink.value
-        if (link is SjLink) {
-            val type = when (isVideo) {
+        val type =
+            when (isVideo) {
                 true -> ELinkType.video
                 false -> ELinkType.link
             }
-            _editLink.postValue(editLink.value!!.copy(type = type))
-        }
+        targetLink = targetLink.copy(type = type)
+        linkIsVideo.postValue(isVideo)
     }
 
-    fun editLinkAndTags(targetDomain: SjDomain?, targetTags: List<SjTag>) =
+
+    // handle tag selection
+    fun selectTag(tag: SjTag) = targetTags.add(tag)
+    fun unselectTag(tag: SjTag) = targetTags.remove(tag)
+    fun isTagSelected(tag: SjTag) = targetTags.contains(tag)
+
+
+    fun saveLink() =
         CoroutineScope(Dispatchers.IO).launch {
-            val link = editLink.value!!
-            if (link.lid == 0) {
-                insertLinkAndTags(targetDomain, link, targetTags).join()
+            if (targetLink.lid == 0) {
+                insertLinkAndTags(targetDomain, targetLink, targetTags).join()
             } else {
-                updateLinkAndTags(targetDomain, link, targetTags).join()
+                updateLinkAndTags(targetDomain, targetLink, targetTags).join()
             }
         }
 
@@ -85,7 +108,6 @@ class SjEditLinkRepository @Inject constructor(
         dao.insertLinkTagCrossRefs(*linkTagCrossRefs.toTypedArray())
     }
 
-
     // update
     private fun updateLinkAndTags(domain: SjDomain?, link: SjLink, tags: List<SjTag>) =
         CoroutineScope(Dispatchers.IO).launch {
@@ -93,12 +115,8 @@ class SjEditLinkRepository @Inject constructor(
             dao.updateLink(updatedLink)
 
             //update tags:: delete all and insert all
-            val deleteJob = launch { dao.deleteLinkTagCrossRefsByLid(link.lid) }
-            val insertJob = launch {
-                deleteJob.join()
-                insertLinkTagCrossRefs(link.lid, tags)
-            }
-            insertJob.join()
+            launch { dao.deleteLinkTagCrossRefsByLid(link.lid) }.join()
+            launch { insertLinkTagCrossRefs(link.lid, tags) }.join()
         }
 
 

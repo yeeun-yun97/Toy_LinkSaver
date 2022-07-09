@@ -15,8 +15,11 @@ import javax.inject.Inject
 class EditLinkActivity : SjBasicActivity<ActivityPlainBinding>() {
     private val editViewModel: EditLinkViewModel by viewModels()
 
-    @Inject lateinit var editPasteFragment : EditLinkPasteFragment
-    @Inject lateinit var editFragment : EditLinkFragment
+    @Inject
+    lateinit var editPasteFragment: EditLinkPasteFragment
+
+    @Inject
+    lateinit var editFragment: EditLinkFragment
 
     override fun viewBindingInflate(inflater: LayoutInflater): ActivityPlainBinding =
         ActivityPlainBinding.inflate(layoutInflater)
@@ -24,12 +27,19 @@ class EditLinkActivity : SjBasicActivity<ActivityPlainBinding>() {
     override fun homeFragment(): Fragment {
         val lid = intent.getIntExtra("lid", -1)
         val url = intent.getStringExtra("url") ?: ""
-        when {
-            lid != -1 -> editViewModel.lid = lid
-            url.isNotEmpty() -> editViewModel.url = url
-            else -> return editPasteFragment
+        return when {
+            lid != -1 -> {
+                editViewModel.lid = lid
+                editFragment
+            }
+            url.isNotEmpty() -> {
+                editViewModel.url = url
+                editFragment
+            }
+            else -> {
+                editPasteFragment
+            }
         }
-        return editFragment
     }
 
     override fun onCreate() {}

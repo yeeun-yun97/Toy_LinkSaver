@@ -48,7 +48,8 @@ class EditLinkFragment @Inject constructor() : SjUsePrivateModeFragment<Fragment
         applyPrivateToViewModel(viewModel)
 
         // show or hide video icon
-        viewModel.bindingIsVideo.observe(viewLifecycleOwner
+        viewModel.bindingIsVideo.observe(
+            viewLifecycleOwner
         ) {
             binding.videoTypeIconImageView.visibility =
                 if (it) View.VISIBLE
@@ -71,6 +72,10 @@ class EditLinkFragment @Inject constructor() : SjUsePrivateModeFragment<Fragment
         viewModel.tagDefaultGroup.observe(viewLifecycleOwner) {
             setCheckableTagsToChipGroupChildren(it, viewModel.tagGroups.value)
         }
+
+        // userInput
+        viewModel.bindingName.observe(viewLifecycleOwner) { viewModel.updateName(it) }
+        viewModel.bindingIsVideo.observe(viewLifecycleOwner) { viewModel.updateIsVideo(it) }
 
         setOnClickListeners()
     }

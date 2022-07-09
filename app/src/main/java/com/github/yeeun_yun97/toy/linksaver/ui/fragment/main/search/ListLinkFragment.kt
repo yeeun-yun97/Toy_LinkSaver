@@ -44,8 +44,6 @@ class ListLinkFragment @Inject constructor() : SjUsePrivateModeFragment<Fragment
     override fun onStart() {
         super.onStart()
         viewUtil.state = DataState.LOADING
-            //WHY?
-        //searchViewModel.isPrivateMode=settingViewModel.isPrivateMode.value ?: false
         viewModel.refreshData()
     }
 

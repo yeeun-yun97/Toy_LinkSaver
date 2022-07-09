@@ -18,9 +18,10 @@ import javax.inject.Inject
 class EditLinkPasteFragment @Inject constructor() : SjBasicFragment<FragmentEditPasteBinding>() {
     private val editViewModel: EditLinkViewModel by activityViewModels()
 
-    @Inject lateinit var editFragment : EditLinkFragment
+    @Inject
+    lateinit var editFragment: EditLinkFragment
 
-    private val bottomSheet =LinkPasteBottomSheet.newInstance(::moveToPreviewFragment)
+    private val bottomSheet = LinkPasteBottomSheet.newInstance(::moveToPreviewFragment)
 
     override fun layoutId(): Int = R.layout.fragment_edit_paste
 
@@ -61,13 +62,13 @@ class EditLinkPasteFragment @Inject constructor() : SjBasicFragment<FragmentEdit
     }
 
     private fun showBottomSheet(url: String) {
-        bottomSheet.show(parentFragmentManager, "TAG",url)
+        bottomSheet.show(parentFragmentManager, "TAG", url)
     }
 
     private fun moveToPreviewFragment(text: String) {
         if (SjUtil.checkUrlPrefix(text)) {
             bottomSheet.dismiss()
-            editViewModel.url=text
+            editViewModel.url = text
             moveToOtherFragment(editFragment)
         } else {
             Toast.makeText(requireContext(), "url 형식이 아닙니다.", Toast.LENGTH_LONG).show()

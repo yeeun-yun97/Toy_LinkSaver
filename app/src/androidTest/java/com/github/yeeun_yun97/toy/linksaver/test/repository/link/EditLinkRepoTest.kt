@@ -55,7 +55,7 @@ class EditLinkRepoTest : SjBaseTest() {
 
             postLinkByLid().join()
             editLinkRepo.updateName(updateName)
-            editLinkRepo.editLinkAndTags(null, updateTags).join()
+            editLinkRepo.saveLink().join()
 
             val result = getValueOrThrow(editLinkRepo.loadedLinkData, ::postLinkByLid)
             Assert.assertEquals(updateName, result.link.name)

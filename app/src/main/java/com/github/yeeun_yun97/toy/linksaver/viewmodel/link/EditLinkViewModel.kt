@@ -2,9 +2,8 @@ package com.github.yeeun_yun97.toy.linksaver.viewmodel.link
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
-import com.github.yeeun_yun97.toy.linksaver.data.model.*
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.data.repository.SjNetworkRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.link.SjEditLinkRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.tag.SjListTagGroupRepository
@@ -37,37 +36,12 @@ class EditLinkViewModel @Inject constructor(
     // model list
     val tagGroups = tagRepo.tagGroupsWithoutDefault
     val tagDefaultGroup = tagRepo.defaultGroup
-    private val loadedLinkData = editLinkRepo.loadedLinkData
-
-    // Model to Save
-    private val targetLink = editLinkRepo.editLink
-    private var targetDomain = SjDomain(did = 1, name = "", url = "")
-    private val targetTags = mutableListOf<SjTag>()
 
     // binding live data
-    val bindingPreviewImage: LiveData<String> = Transformations.map(targetLink) { it.preview }
-    val bindingUrl: LiveData<String> get() = Transformations.map(targetLink) { it.url }
-    val bindingName = MutableLiveData("")
-    val bindingIsVideo = MutableLiveData<Boolean>()
-
-
-    init {
-        // user edit
-        bindingName.observeForever { editLinkRepo.updateName(it) }
-        bindingIsVideo.observeForever { editLinkRepo.updateIsVideo(it) }
-
-        // loaded link data
-        loadedLinkData.observeForever {
-            targetDomain = it.domain
-
-            targetTags.clear()
-            targetTags.addAll(it.tags)
-        }
-        targetLink.observeForever {
-            bindingName.postValue(it.name)
-            bindingIsVideo.postValue(it.type == ELinkType.video)
-        }
-    }
+    val bindingName: MutableLiveData<String> = editLinkRepo.linkName
+    val bindingIsVideo: MutableLiveData<Boolean> = editLinkRepo.linkIsVideo
+    val bindingUrl: LiveData<String> = editLinkRepo.linkUrl
+    val bindingPreviewImage: LiveData<String> = editLinkRepo.linkPreview
 
     private fun setLinkByLid(lid: Int) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -79,18 +53,20 @@ class EditLinkViewModel @Inject constructor(
     private fun createLinkByUrl(url: String) {
         viewModelScope.launch(Dispatchers.IO) {
             editLinkRepo.postCreatedLink(url).join()
-
             // load title of url site
-            launch {
+            val titleJob = launch {
                 val title = networkRepository.getTitleOf(url)
                 editLinkRepo.updateName(title)
-            }.join()
+            }
 
             // load preview of url site
-            launch {
+            val previewJob = launch {
                 val preview = networkRepository.getPreviewOf(url)
                 editLinkRepo.updatePreview(preview)
-            }.join()
+            }
+
+            titleJob.join()
+            previewJob.join()
         }
     }
 
@@ -113,15 +89,17 @@ class EditLinkViewModel @Inject constructor(
             refreshDefaultGroup()
         }
 
+    fun updateName(name: String) = editLinkRepo.updateName(name)
+    fun updateIsVideo(isVideo: Boolean) = editLinkRepo.updateIsVideo(isVideo)
 
     // handle tag selection
-    fun selectTag(tag: SjTag) = targetTags.add(tag)
-    fun unselectTag(tag: SjTag) = targetTags.remove(tag)
-    fun isTagSelected(tag: SjTag) = targetTags.contains(tag)
+    fun selectTag(tag: SjTag) = editLinkRepo.selectTag(tag)
+    fun unselectTag(tag: SjTag) = editLinkRepo.unselectTag(tag)
+    fun isTagSelected(tag: SjTag) = editLinkRepo.isTagSelected(tag)
 
     // save link
     fun saveLink() {
-        editLinkRepo.editLinkAndTags(targetDomain, targetTags)
+        editLinkRepo.saveLink()
     }
 
 

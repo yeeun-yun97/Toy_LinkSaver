@@ -40,7 +40,6 @@ class DetailLinkFragment @Inject constructor() : SjBasicFragment<FragmentDetailL
         binding.toolbar.setMenu(R.menu.toolbar_menu_detail_link, handlerMap)
 
         setOnClickListeners()
-
     }
 
     override fun setOnClickListeners() {
