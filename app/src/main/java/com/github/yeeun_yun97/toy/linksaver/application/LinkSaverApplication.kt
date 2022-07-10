@@ -1,16 +1,10 @@
 package com.github.yeeun_yun97.toy.linksaver.application
 
 import android.app.Application
-import com.github.yeeun_yun97.toy.linksaver.data.dao.SjCountDao
-import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDomainDao
-import com.github.yeeun_yun97.toy.linksaver.data.dao.SjTagDao
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
-import com.github.yeeun_yun97.toy.linksaver.data.repository.room.SjCountRepository
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.all.SjCountRepository
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

@@ -1,6 +1,6 @@
 package com.github.yeeun_yun97.toy.linksaver.data.repository.room.link
 
-import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjLinkDao
 import com.github.yeeun_yun97.toy.linksaver.data.model.*
@@ -17,8 +17,10 @@ class SjEditLinkRepository @Inject constructor(
 ) {
     val linkName = MutableLiveData("")
     val linkIsVideo = MutableLiveData(false)
-    val linkUrl = MutableLiveData("")
-    val linkPreview = MutableLiveData("")
+    private val _linkUrl = MutableLiveData("")
+    private val _linkPreview = MutableLiveData("")
+    val linkUrl: LiveData<String> = _linkUrl
+    val linkPreview: LiveData<String> = _linkPreview
 
     private var targetLink: SjLink = SjLink(name = "", did = 1, url = "", type = ELinkType.link)
     private var targetDomain = SjDomain(did = 1, name = "", url = "")
@@ -44,35 +46,24 @@ class SjEditLinkRepository @Inject constructor(
             targetTags.clear()
         }
 
-    private fun updateAllLiveDataByLink(){
-        Log.d("Link name updated","by $targetLink")
+    private fun updateAllLiveDataByLink() {
         linkName.postValue(targetLink.name)
         linkIsVideo.postValue(targetLink.type == ELinkType.video)
-        linkPreview.postValue(targetLink.preview)
-        linkUrl.postValue(targetLink.url)
+        _linkPreview.postValue(targetLink.preview)
+        _linkUrl.postValue(targetLink.url)
     }
 
 
     fun updatePreview(preview: String) {
+        _linkPreview.postValue(preview)
         targetLink = targetLink.copy(preview = preview)
-        linkPreview.postValue(preview)
     }
 
     fun updateName(name: String) {
-        targetLink = targetLink.copy(name = name)
-        Log.d("Link name updated", "to $name")
         linkName.postValue(name)
+        targetLink = targetLink.copy(name = name)
     }
 
-    fun updateIsVideo(isVideo: Boolean) {
-        val type =
-            when (isVideo) {
-                true -> ELinkType.video
-                false -> ELinkType.link
-            }
-        targetLink = targetLink.copy(type = type)
-        linkIsVideo.postValue(isVideo)
-    }
 
 
     // handle tag selection
@@ -83,6 +74,13 @@ class SjEditLinkRepository @Inject constructor(
 
     fun saveLink() =
         CoroutineScope(Dispatchers.IO).launch {
+            val type =
+                when (linkIsVideo.value ?: false) {
+                    true -> ELinkType.video
+                    false -> ELinkType.link
+                }
+            targetLink = targetLink.copy(name = linkName.value ?: "", type = type)
+
             if (targetLink.lid == 0) {
                 insertLinkAndTags(targetDomain, targetLink, targetTags).join()
             } else {

@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.data.repository.room
+package com.github.yeeun_yun97.toy.linksaver.data.repository.room.all
 
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjCountDao
 import com.github.yeeun_yun97.toy.linksaver.data.dao.SjDomainDao

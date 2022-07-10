@@ -7,6 +7,7 @@ import com.github.yeeun_yun97.toy.linksaver.data.db.SjDatabase
 import com.github.yeeun_yun97.toy.linksaver.data.repository.SjDataStoreRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.SjNetworkRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.*
+import com.github.yeeun_yun97.toy.linksaver.data.repository.room.all.SjCountRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.link.SjEditLinkRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.link.SjListLinkRepository
 import com.github.yeeun_yun97.toy.linksaver.data.repository.room.link.SjListVideoRepository

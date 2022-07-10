@@ -73,10 +73,6 @@ class EditLinkFragment @Inject constructor() : SjUsePrivateModeFragment<Fragment
             setCheckableTagsToChipGroupChildren(it, viewModel.tagGroups.value)
         }
 
-        // userInput
-        viewModel.bindingName.observe(viewLifecycleOwner) { viewModel.updateName(it) }
-        viewModel.bindingIsVideo.observe(viewLifecycleOwner) { viewModel.updateIsVideo(it) }
-
         setOnClickListeners()
     }
 

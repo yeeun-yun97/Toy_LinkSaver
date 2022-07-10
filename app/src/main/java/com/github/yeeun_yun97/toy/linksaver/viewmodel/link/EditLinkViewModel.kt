@@ -1,6 +1,5 @@
 package com.github.yeeun_yun97.toy.linksaver.viewmodel.link
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
@@ -40,8 +39,8 @@ class EditLinkViewModel @Inject constructor(
     // binding live data
     val bindingName: MutableLiveData<String> = editLinkRepo.linkName
     val bindingIsVideo: MutableLiveData<Boolean> = editLinkRepo.linkIsVideo
-    val bindingUrl: LiveData<String> = editLinkRepo.linkUrl
-    val bindingPreviewImage: LiveData<String> = editLinkRepo.linkPreview
+    val bindingUrl = editLinkRepo.linkUrl
+    val bindingPreviewImage = editLinkRepo.linkPreview
 
     private fun setLinkByLid(lid: Int) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -88,9 +87,6 @@ class EditLinkViewModel @Inject constructor(
             tagRepo.insertTagToDefaultGroup(name = name).join()
             refreshDefaultGroup()
         }
-
-    fun updateName(name: String) = editLinkRepo.updateName(name)
-    fun updateIsVideo(isVideo: Boolean) = editLinkRepo.updateIsVideo(isVideo)
 
     // handle tag selection
     fun selectTag(tag: SjTag) = editLinkRepo.selectTag(tag)
