@@ -19,10 +19,10 @@ class BackupViewModel @Inject constructor(
     application: Application,
     private val entitiesRepo: SjListAllRepository
 ) : SjBaseAndroidViewModelImpl(application) {
-    val groupList = entitiesRepo.groupList
-    val tagList = entitiesRepo.tagList
-    val domainList = entitiesRepo.domainList
-    val linkList = entitiesRepo.linkList
+    private val groupList = entitiesRepo.groupList
+    private val tagList = entitiesRepo.tagList
+    private val domainList = entitiesRepo.domainList
+    private val linkList = entitiesRepo.linkList
 
     private val groupKey = "그룹"
     private val tagKey = "태그"
@@ -68,40 +68,16 @@ class BackupViewModel @Inject constructor(
         return Gson().toJson(result)
     }
 
+    fun open(json:String){
+        val share = Gson().fromJson(json, SjShare::class.java)
+        for(group in share.groups){
+
+        }
+
+    }
+
     fun write(writer: OutputStream) {
         val data = collectModels()
         writer.write(data.toByteArray())
-    }
-
-//    fun saveModels() {
-//        val fileName = "backupFile.txt"
-//        val context = getApplication<Application>().applicationContext
-//
-//        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.Q){
-//            val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-//             addCategory(Intent.CATEGORY_OPENABLE)
-//             type= "json/text"
-//             putExtra(Intent.EXTRA_TITLE,fileName)
-//            }
-//            startActivityForResult(intent,CREATE_FILE)
-//        }
-//    }
-
-
-    fun save_() {
-        val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-        val file = File(dir, "linkTag")
-        if (!file.exists()) {
-            file.mkdir()
-        }
-        try {
-            val mFile = File(file, "backup")
-            val writer = FileWriter(mFile)
-            writer.append("test")
-            writer.flush()
-            writer.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
     }
 }

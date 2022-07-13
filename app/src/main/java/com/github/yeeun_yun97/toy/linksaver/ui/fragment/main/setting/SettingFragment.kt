@@ -36,7 +36,6 @@ class SettingFragment @Inject constructor() : SjBasicFragment<FragmentSettingBin
     @Inject lateinit var appInfoFragment : AppInfoFragment
     @Inject lateinit var personalSettingFragment : PersonalSettingFragment
     @Inject lateinit var domainFragment : ListDomainFragment
-    @Inject lateinit var listShareFragment : ListShareFragment
 
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
@@ -62,7 +61,6 @@ class SettingFragment @Inject constructor() : SjBasicFragment<FragmentSettingBin
     private fun getSettingList(): List<SettingItemValue> {
         return mutableListOf(
             SettingItemValue("사용자 설정", ::moveToPersonalSetting),
-            SettingItemValue("데이터 및 공유", ::moveToListShare),
             SettingItemValue("태그 그룹 목록", ::moveToViewTagGroups),
             SettingItemValue("도메인 목록", ::moveToViewDomains),
             SettingItemValue("플레이리스트", ::moveToViewPlayLists),
@@ -70,9 +68,7 @@ class SettingFragment @Inject constructor() : SjBasicFragment<FragmentSettingBin
         )
     }
 
-    private fun moveToListShare(){
-        moveToOtherFragment(listShareFragment)
-    }
+
 
     private fun moveToPersonalSettingWithOutPassword() {
         moveToOtherFragment(personalSettingFragment)

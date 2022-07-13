@@ -61,7 +61,6 @@ class SaveBackupFragment @Inject constructor() : SjBasicFragment<FragmentSaveBac
     }
 
     private fun handleActivityResult(it: ActivityResult) {
-//        Toast.makeText(context, "성공 번호 체크, ${it.resultCode}", Toast.LENGTH_LONG).show()
         if (it.resultCode == -1) {
             val uri = it.data!!.data!!
             val outputStream = requireActivity().contentResolver.openOutputStream(uri)!!
