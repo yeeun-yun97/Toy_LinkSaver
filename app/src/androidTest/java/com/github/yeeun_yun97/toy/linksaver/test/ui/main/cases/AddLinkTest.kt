@@ -24,6 +24,7 @@ class AddLinkTest : SjUiMainActivityTest() {
     lateinit var application: Application
 
     private val label = "구글"
+    private val updateLabel = "*쿨한 링크 이름*"
     private val url = "https://www.google.com/"
 
     @Before
@@ -35,39 +36,67 @@ class AddLinkTest : SjUiMainActivityTest() {
     }
 
     @Test
-    fun addLinkTest() {
-        // start creating
-        onView(withId(R.id.floatingActionView)).perform(click())
-        onView(withId(R.id.pasteImageView)).perform(click())
-        Thread.sleep(1000)
+    fun linkLifeCycleTest() {
+        pasteUrl()
         onView(withId(R.id.urlTextView)).check(matches(withText(url)))
-        onView(withId(R.id.nextButton)).perform(click())
 
-        // edit
-        Thread.sleep(1000)
-        onView(withId(R.id.nameEditText)).check(matches(isDisplayed()))
-        onView(withId(R.id.nameEditText)).perform(click())
-        onView(withId(R.id.nameEditText)).perform(replaceText(label))
+        /* move to editLink */onView(withId(R.id.nextButton)).perform(click())
+        sleep()
+        onView(withId(R.id.urlTextView)).check(matches(withText(url)))
+        setLinkName(label)
 
-        // save
-        onView(withId(R.id.menu_save)).perform(click())
-
-        // list check
-        Thread.sleep(1000)
+        /* move to listLink */onView(withId(R.id.menu_save)).perform(click())
+        sleep(1000)
         onView(withText(label)).check(matches(isDisplayed()))
 
-        // detail check
-        onView(withText(label)).perform(click())
+        /* move to detailLink */onView(withText(label)).perform(click())
         onView(withText(url)).check(matches(isDisplayed()))
         onView(withText(label)).check(matches(isDisplayed()))
 
-        // delete
-        openActionBarOverflowOrOptionsMenu(ApplicationProvider.getApplicationContext())
-        onView(withText("삭제하기")).perform(click())
-
-        // list check
+        /* move to listLink */deleteLink()
+        sleep()
         onView(withText(label)).check(doesNotExist())
+    }
 
+    @Test
+    fun editLinkTest() {
+        pasteUrl()
+
+        /* move to editLink */onView(withId(R.id.nextButton)).perform(click())
+        sleep()
+        setLinkName(label)
+
+        /* move to listLink */onView(withId(R.id.menu_save)).perform(click())
+        sleep(1000)
+
+        /* move to detailLink */onView(withText(label)).perform(click())
+        sleep()
+        editLink(updateLabel)
+
+        /* move to listLink */onView(withId(R.id.menu_save)).perform(click())
+        sleep(1000)
+        onView(withId(R.id.nameTextView)).check(matches(withText(updateLabel)))
+        deleteLink()
+    }
+
+
+    private fun pasteUrl() {
+        onView(withId(R.id.floatingActionView)).perform(click())
+        onView(withId(R.id.pasteImageView)).perform(click())
+    }
+
+    private fun setLinkName(linkName: String) {
+        onView(withId(R.id.nameEditText)).perform(click())
+        onView(withId(R.id.nameEditText)).perform(replaceText(linkName))
+    }
+
+    private fun deleteLink() {
+        openToolBarMenuAndClick("삭제하기")
+    }
+
+    private fun editLink(updateName: String) {
+        openToolBarMenuAndClick("수정하기")
+        setLinkName(updateName)
     }
 
 

@@ -23,8 +23,8 @@ abstract class SjUiBaseTest<T:Activity>{
     @Before
     fun setup(){ hiltRule.inject()}
 
-    protected fun sleep(){
-        Thread.sleep(500)
+    protected fun sleep(timeout:Long = 500){
+        Thread.sleep(timeout)
     }
 
 }
