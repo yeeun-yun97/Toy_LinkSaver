@@ -22,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:toolbarTitle="상세보기" />
 
-        <com.github.yeeun_yun97.toy.linksaver.ui.component.SjPreview
+        <com.github.yeeun_yun97.toy.linksaver.ui.component.customView.SjPreview
             android:id="@+id/previewPreview"
             android:layout_width="0dp"
             android:layout_height="200dp"

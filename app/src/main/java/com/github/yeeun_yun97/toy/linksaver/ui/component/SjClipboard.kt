@@ -8,7 +8,6 @@ import androidx.core.content.ContextCompat
 
 class SjClipboard private constructor() {
     companion object {
-
         fun getClipboardManager(context: Context): ClipboardManager {
             return ContextCompat.getSystemService(context, ClipboardManager::class.java)!!
         }
@@ -25,5 +24,6 @@ class SjClipboard private constructor() {
             )
         }
     }
+
 
 }

@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.ui.component
+package com.github.yeeun_yun97.toy.linksaver.ui.component.customView
 
 import android.annotation.SuppressLint
 import android.content.Context

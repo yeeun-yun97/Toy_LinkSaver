@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.ui.component
+package com.github.yeeun_yun97.toy.linksaver.ui.component.customView.dialog
 
 import android.app.AlertDialog
 import android.app.Dialog

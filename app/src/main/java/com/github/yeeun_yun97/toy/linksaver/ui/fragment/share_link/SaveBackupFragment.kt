@@ -1,20 +1,16 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment.share_link
 
-import android.app.Application
 import android.content.Intent
 import android.os.Build
-import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
-import com.github.yeeun_yun97.toy.linksaver.application.RESULT_FAILED
-import com.github.yeeun_yun97.toy.linksaver.application.RESULT_SUCCESS
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSaveBackupBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.ShareListAdapter
-import com.github.yeeun_yun97.toy.linksaver.ui.component.BasicDialogFragment
+import com.github.yeeun_yun97.clone.ynmodule.ui.component.YnConfirmBaseDialogFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.BackupViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -67,7 +63,7 @@ class SaveBackupFragment @Inject constructor() : SjBasicFragment<FragmentSaveBac
             viewModel.write(outputStream)
             outputStream.close()
         } else {
-            val messageDialog = BasicDialogFragment("실패", "백업 파일 저장에 실패하였습니다", null)
+            val messageDialog = YnConfirmBaseDialogFragment("실패", "백업 파일 저장에 실패하였습니다", null)
             messageDialog.show(childFragmentManager, "파일 저장 실패")
         }
     }

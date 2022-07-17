@@ -6,8 +6,8 @@ import android.widget.CompoundButton
 import androidx.fragment.app.viewModels
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSwapTagGroupBinding
-import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
-import com.github.yeeun_yun97.toy.linksaver.ui.component.TagValue
+import com.github.yeeun_yun97.toy.linksaver.ui.component.customView.SjTagChip
+import com.github.yeeun_yun97.toy.linksaver.ui.component.customView.TagValue
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.SwapTagViewModel
 import dagger.hilt.android.AndroidEntryPoint

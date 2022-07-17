@@ -1,4 +1,4 @@
-package com.github.yeeun_yun97.toy.linksaver.ui.component
+package com.github.yeeun_yun97.toy.linksaver.ui.component.customView
 
 import android.content.Context
 import android.util.AttributeSet

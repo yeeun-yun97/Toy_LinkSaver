@@ -5,9 +5,9 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.github.yeeun_yun97.toy.linksaver.data.model.LinkDetailValue
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
-import com.github.yeeun_yun97.toy.linksaver.ui.component.SjPreview
-import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
-import com.github.yeeun_yun97.toy.linksaver.ui.component.TagValue
+import com.github.yeeun_yun97.toy.linksaver.ui.component.customView.SjPreview
+import com.github.yeeun_yun97.toy.linksaver.ui.component.customView.SjTagChip
+import com.github.yeeun_yun97.toy.linksaver.ui.component.customView.TagValue
 import com.google.android.material.chip.ChipGroup
 
 class DataBindingSjAdapter {

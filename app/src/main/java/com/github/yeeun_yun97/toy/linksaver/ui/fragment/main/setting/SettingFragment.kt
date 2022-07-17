@@ -14,13 +14,12 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SettingItemValue
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentSettingBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.LockActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.SettingListAdapter
-import com.github.yeeun_yun97.toy.linksaver.ui.component.BasicDialogFragment
+import com.github.yeeun_yun97.clone.ynmodule.ui.component.YnConfirmBaseDialogFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.app_info.AppInfoFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.domain.ListDomainFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.personal.PersonalSettingFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.tag.ListGroupFragment
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.share_link.ListShareFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.setting.SettingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -52,7 +51,7 @@ class SettingFragment @Inject constructor() : SjBasicFragment<FragmentSettingBin
                 if (it.resultCode == RESULT_SUCCESS) {
                     moveToPersonalSettingWithOutPassword()
                 } else if(it.resultCode == RESULT_FAILED) {
-                   val messageDialog =  BasicDialogFragment("실패","비밀번호가 틀렸습니다.",null)
+                   val messageDialog =  YnConfirmBaseDialogFragment("실패","비밀번호가 틀렸습니다.",null)
                     messageDialog.show(childFragmentManager,"비밀번호 틀림")
                 }
             }

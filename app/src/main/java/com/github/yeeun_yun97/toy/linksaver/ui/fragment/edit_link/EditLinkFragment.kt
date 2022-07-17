@@ -8,8 +8,8 @@ import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroupWithTags
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditLinkBinding
-import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagDialogFragment
-import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
+import com.github.yeeun_yun97.toy.linksaver.ui.component.customView.dialog.EditTagDialogFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.component.customView.SjTagChip
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjUsePrivateModeFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.link.EditLinkViewModel
 import dagger.hilt.android.AndroidEntryPoint

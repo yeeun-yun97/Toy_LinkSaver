@@ -6,7 +6,7 @@ import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListTagGroupBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.TagGroupListAdapter
-import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagGroupDialogFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.component.customView.dialog.EditTagGroupDialogFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjUsePrivateModeFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.ListGroupViewModel
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.EditTagsInGroupViewModel

@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditPasteBinding
-import com.github.yeeun_yun97.toy.linksaver.ui.component.LinkPasteBottomSheet
+import com.github.yeeun_yun97.toy.linksaver.ui.component.customView.dialog.LinkPasteBottomSheet
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjClipboard
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjUtil
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
