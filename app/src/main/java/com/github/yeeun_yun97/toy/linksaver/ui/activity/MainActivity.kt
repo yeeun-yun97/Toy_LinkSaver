@@ -2,17 +2,19 @@ package com.github.yeeun_yun97.toy.linksaver.ui.activity
 
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
+import com.github.yeeun_yun97.clone.ynmodule.ui.activity.YnMainBaseActivity
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.ActivityMainBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.basic.SjBasicActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.playlist.ListVideoFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.ListLinkFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.SettingFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : SjBasicActivity<ActivityMainBinding>() {
+class MainActivity : YnMainBaseActivity<ActivityMainBinding>() {
 
     // 바텀 내비에 따라 부착할 fragment들.
     @Inject lateinit var linkFragment: ListLinkFragment
@@ -22,8 +24,11 @@ class MainActivity : SjBasicActivity<ActivityMainBinding>() {
     // bottom navigation selection id
     private var selectedItemId = 0
 
-    override fun viewBindingInflate(inflater: LayoutInflater): ActivityMainBinding =
-        ActivityMainBinding.inflate(inflater)
+    override fun viewBindingInflate(inflater: LayoutInflater): ActivityMainBinding = ActivityMainBinding.inflate(inflater)
+
+    override fun fragmentContainer(): Int = R.id.fragmentContainer
+
+    override fun getBottomNavi(): BottomNavigationView = binding.bottomNavigation
 
     override fun homeFragment(): Fragment {
         // 최초 부착할 프래그먼트와 바텀내비의 선택된 메뉴를 동기화.
@@ -32,31 +37,17 @@ class MainActivity : SjBasicActivity<ActivityMainBinding>() {
         return linkFragment
     }
 
-    override fun onCreate() {
-        // 바텀 내비 메뉴 선택시 프래그먼트 변경.
-        binding.bottomNavigation.setOnItemSelectedListener {
-            if (it.itemId != selectedItemId) {
-                selectedItemId = it.itemId
-                when (it.itemId) {
-                    R.id.linkItem -> {
-                        this.replaceFragmentTo(linkFragment)
-                        true
-                    }
-                    R.id.videoItem -> {
-                        this.replaceFragmentTo(videoFragment)
-                        true
-                    }
-                    R.id.settingItem -> {
-                        this.replaceFragmentTo(settingFragment)
-                        true
-                    }
-                    else -> false
-                }
-            } else {
-                false
-            }
-        }
+    override fun getBottomNaviHandlerMap(): Map<Int, () -> Unit> {
+        return mapOf<Int, () -> Unit>(
+            R.id.linkItem to ::moveToLinkFragment,
+            R.id.videoItem to ::moveToVideoFragment,
+            R.id.settingItem to ::moveToSettingFragment,
+        )
     }
+
+    private fun moveToLinkFragment() = this.replaceFragmentTo(linkFragment)
+    private fun moveToVideoFragment() = this.replaceFragmentTo(videoFragment)
+    private fun moveToSettingFragment() = this.replaceFragmentTo(settingFragment)
 
 
 }
