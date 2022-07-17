@@ -6,6 +6,7 @@ import com.github.yeeun_yun97.clone.ynmodule.ui.activity.YnMainBaseActivity
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.ActivityMainBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.activity.basic.SjBasicActivity
+import com.github.yeeun_yun97.toy.linksaver.ui.activity.basic.SjMainBasicActivity
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.playlist.ListVideoFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.ListLinkFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.SettingFragment
@@ -14,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : YnMainBaseActivity<ActivityMainBinding>() {
+class MainActivity : SjMainBasicActivity<ActivityMainBinding>() {
 
     // 바텀 내비에 따라 부착할 fragment들.
     @Inject lateinit var linkFragment: ListLinkFragment
@@ -25,8 +26,6 @@ class MainActivity : YnMainBaseActivity<ActivityMainBinding>() {
     private var selectedItemId = 0
 
     override fun viewBindingInflate(inflater: LayoutInflater): ActivityMainBinding = ActivityMainBinding.inflate(inflater)
-
-    override fun fragmentContainer(): Int = R.id.fragmentContainer
 
     override fun getBottomNavi(): BottomNavigationView = binding.bottomNavigation
 
@@ -44,6 +43,8 @@ class MainActivity : YnMainBaseActivity<ActivityMainBinding>() {
             R.id.settingItem to ::moveToSettingFragment,
         )
     }
+
+    override fun onCreate() {}
 
     private fun moveToLinkFragment() = this.replaceFragmentTo(linkFragment)
     private fun moveToVideoFragment() = this.replaceFragmentTo(videoFragment)
