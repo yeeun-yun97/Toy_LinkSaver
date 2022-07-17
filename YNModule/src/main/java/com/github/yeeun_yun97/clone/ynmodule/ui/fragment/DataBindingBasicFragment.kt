@@ -7,12 +7,10 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 
 abstract class DataBindingBasicFragment<T : ViewDataBinding> : Fragment() {
     private var _binding: T? = null
     protected val binding: T get() = _binding!!
-
 
     // override methods
     override fun onCreateView(
@@ -37,19 +35,6 @@ abstract class DataBindingBasicFragment<T : ViewDataBinding> : Fragment() {
     // Log TAG로 쓰거나 할 때 사용할 method: 편의
     protected fun getClassName(): String = this::javaClass.name
 
-
-    // parent fragment control methods
-    protected fun moveToOtherFragment(fragment:Fragment){
-        parentFragmentManager.commit{
-            replace(fragmentContainer(), fragment)
-            setReorderingAllowed(true)
-            addToBackStack(getClassName())
-        }
-    }
-
-    protected fun popBack(){ parentFragmentManager.popBackStack() }
-
-
     // abstract methods
     /** Fragment의 layout ID를 반환한다. */
     protected abstract fun layoutId(): Int
@@ -57,7 +42,5 @@ abstract class DataBindingBasicFragment<T : ViewDataBinding> : Fragment() {
     /** onCreate()에서 할 일이 있다면 여기서. */
     protected abstract fun onCreateView()
 
-    /** fragmentContainer의 layout id를 반환. */
-    abstract fun fragmentContainer(): Int
 
 }

@@ -3,6 +3,8 @@ package com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic
 import android.util.Log
 import android.widget.CompoundButton
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import com.github.yeeun_yun97.clone.ynmodule.ui.fragment.DataBindingBasicFragment
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
@@ -16,7 +18,16 @@ abstract class SjBasicFragment<T : ViewDataBinding> : DataBindingBasicFragment<T
     protected open fun initRecyclerView(){}
     protected open fun setOnClickListeners(){}
 
-    override fun fragmentContainer(): Int = R.id.fragmentContainer
+    // parent fragment control methods
+    protected fun moveToOtherFragment(fragment: Fragment){
+        parentFragmentManager.commit{
+            replace(R.id.fragmentContainer, fragment)
+            setReorderingAllowed(true)
+            addToBackStack(getClassName())
+        }
+    }
+
+    protected fun popBack(){ parentFragmentManager.popBackStack() }
 
     protected fun setTagsToChipGroupChildren(
         defaultGroup: SjTagGroupWithTags?,
