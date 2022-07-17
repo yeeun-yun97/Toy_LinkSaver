@@ -1,11 +1,11 @@
-package com.github.yeeun_yun97.toy.linksaver.ui.component
+package com.github.yeeun_yun97.clone.ynmodule.ui.component
 
 import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 
-class BasicDialogFragment(
+class YnConfirmBaseDialogFragment(
     private val title: String,
     private val message: String,
     private val okOperation: (() -> Unit)?
