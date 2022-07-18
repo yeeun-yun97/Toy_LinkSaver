@@ -4,5 +4,4 @@
         <item name="titleTextColor">?attr/colorOnPrimary</item>
         <item name="android:background">?attr/colorSurface</item>
     </style>
-
 </resources>

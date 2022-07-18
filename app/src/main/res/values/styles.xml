@@ -1,82 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="important2" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">16sp</item>
-        <item name="android:paddingVertical">10dp</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="important3" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="important4" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-    </style>
-
-    <style name="important6">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/gray</item>
-    </style>
-
     <style name="imageButton">
         <item name="android:scaleType">fitStart</item>
         <item name="android:padding">10dp</item>
     </style>
 
-
     <style name="small3">
         <item name="android:textSize">11sp</item>
         <item name="android:textStyle">bold</item>
     </style>
-
-    <style name="header1">
-        <item name="android:paddingVertical">20dp</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textSize">35sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="header2">
-        <item name="android:paddingVertical">15dp</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textSize">28sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="header3">
-        <item name="android:paddingVertical">10dp</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textSize">25sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="header4">
-        <item name="android:paddingVertical">8dp</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="header5">
-        <item name="android:paddingVertical">5dp</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textSize">18sp</item>
-    </style>
-
-    <style name="header6">
-        <item name="android:paddingVertical">3dp</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-
-
-
-
-
-
 </resources>
