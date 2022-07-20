@@ -39,6 +39,8 @@ log
 - junit
 - exoplayer
 - Glide
+- hilt
+- Espresso
 
 ## 내부 설계 소개
 ### Room DB
