@@ -14,8 +14,8 @@ android {
         applicationId "com.github.yeeun_yun97.toy.linksaver"
         minSdk 28
         targetSdk 32
-        versionCode 8
-        versionName "2.2"
+        versionCode 9
+        versionName "3.0"
 
         testInstrumentationRunner "com.github.yeeun_yun97.toy.linksaver.runner.SjTestRunner"
     }
