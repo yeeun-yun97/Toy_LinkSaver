@@ -2,10 +2,12 @@
 ## 개요
 - 태그기반으로 URL을 관리하는 Application
 - (시중의 비슷한 앱들은 디렉토리 방식으로 관리 -> 불편함을 태그 방식으로 해결하자.)
-### 버전 v 2.1  <a href ="https://play.google.com/store/apps/details?id=com.github.yeeun_yun97.toy.linksaver" target = "_blank" >플레이스토어</a> 
+### 버전 v 2.2  <a href ="https://play.google.com/store/apps/details?id=com.github.yeeun_yun97.toy.linksaver" target = "_blank" >플레이스토어</a> 
 log
-- 동영상 UI 약간 개선 (shimmer View 추가)
-- 신규설치 시 기본 tagGroup이 없어 발생하는 문제 해결
+- 데이터가 없을 때 안내 UI가 추가되었습니다. (동영상 목록, 태그 그룹, 태그)
+- 상세 보기 화면에서 썸네일을 눌러도 브라우저가 열리도록 변경하였습니다.
+- 동영상 목록 화면의 스크롤이 초기화되지 않는 문제를 해결하였습니다.
+- 검색 결과 화면에서 검색 취소하고 다시 전체를 보는 버튼을 추가하였습니다.
 ### 미리보기<a href ="https://github.com/yeeun-yun97/Toy_LinkSaver/blob/main/preview.md"> preview.md </a>
 
 
@@ -36,6 +38,9 @@ log
 - coroutine
 - junit
 - exoplayer
+- Glide
+- hilt
+- Espresso
 
 ## 내부 설계 소개
 ### Room DB

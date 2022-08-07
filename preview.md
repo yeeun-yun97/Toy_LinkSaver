@@ -1,7 +1,7 @@
 # LinkTag 실행 모습 보기
 실행 화면 캡쳐한 이미지들을 모아보았습니다.
     
-## UI 개선함
+<!-- ## UI 개선함
 ### :: 링크 검색화면 ::
 1.4 | 2.0 ~
 :-----:|:-----:
@@ -17,7 +17,7 @@
 :-----:|:-----:
 ![createLink_prev](https://user-images.githubusercontent.com/60867063/172390421-98461953-93d7-4064-8107-a83f87d09a3e.gif)   |   ![createLink](https://user-images.githubusercontent.com/60867063/172390464-161bc178-3656-4aea-a19f-1ac1fa912e85.gif)
 -------
-<br><br><br><br>
+<br><br><br><br> -->
 
 
 ## 기능 소개 - 검색 관리
