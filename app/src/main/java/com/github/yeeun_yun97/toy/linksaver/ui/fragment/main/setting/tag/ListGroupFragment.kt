@@ -1,27 +1,46 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.tag
 
-import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
+import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListTagGroupBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.TagGroupListAdapter
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.component.customView.dialog.EditTagGroupDialogFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjUsePrivateModeFragment
 import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.ListGroupViewModel
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
-import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
-import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagDialogFragment
-import com.github.yeeun_yun97.toy.linksaver.ui.component.EditTagGroupDialogFragment
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.tag.EditTagsInGroupViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class ListGroupFragment : SjBasicFragment<FragmentListTagGroupBinding>() {
-    val viewModel: ListGroupViewModel by activityViewModels()
+@AndroidEntryPoint
+class ListGroupFragment @Inject constructor() : SjUsePrivateModeFragment<FragmentListTagGroupBinding>() {
+    private val viewModel: ListGroupViewModel by activityViewModels()
+
+    private val editGroupFragment = EditTagInGroupFragment()
+    private val editGroupViewModel: EditTagsInGroupViewModel by activityViewModels()
+
+    private val adapter = TagGroupListAdapter(
+        deleteOperation = ::deleteGroupByGid,
+        editOperation = ::moveToEditTagGroupFragment,
+        renameOperation = ::showEditTagGroupDialogToEdit
+    )
 
     // override methods
     override fun layoutId(): Int = R.layout.fragment_list_tag_group
 
+    override fun onStart() {
+        super.onStart()
+        //TODO WHY?
+//        viewModel.isPrivateMode = settingViewModel.isPrivateMode.value ?: false
+        viewModel.refreshData()
+    }
+
     override fun onCreateView() {
         // set binding variable
         binding.viewModel = viewModel
+
+        applyPrivateToViewModel(viewModel)
 
         // set toolbar menu
         val handlerMap = hashMapOf<Int, () -> Unit>(
@@ -30,24 +49,18 @@ class ListGroupFragment : SjBasicFragment<FragmentListTagGroupBinding>() {
         binding.toolbar.setMenu(R.menu.toolbar_menu_tag, handlerMap = handlerMap)
 
         // set recyclerView
-        binding.tagGroupRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = TagGroupListAdapter(
-            deleteOperation = ::deleteGroupByGid,
-            editOperation = ::moveToEditTagGroupFragment,
-            renameOperation = ::showEditTagGroupDialogToEdit,
-        )
-        binding.tagGroupRecyclerView.adapter = adapter
-        viewModel.tagGroups.observe(viewLifecycleOwner, {
-            if (it.isNullOrEmpty()) {
-                binding.emptyGroup.visibility = View.VISIBLE
-            } else {
-                binding.emptyGroup.visibility = View.GONE
-            }
+        initRecyclerView()
+
+        viewModel.bindingTagGroups.observe(viewLifecycleOwner) {
             adapter.setList(it)
-        })
+        }
     }
 
-    // handle menu event
+    override fun initRecyclerView() {
+        binding.tagGroupRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.tagGroupRecyclerView.adapter = adapter
+    }
+
     private fun showEditTagGroupDialog() {
         val dialogFragment = EditTagGroupDialogFragment(::createTagGroup, null)
         dialogFragment.show(childFragmentManager, "새 태그 그룹 생성하기")
@@ -57,14 +70,14 @@ class ListGroupFragment : SjBasicFragment<FragmentListTagGroupBinding>() {
         viewModel.editTagGroup(name, isPrivate, group)
 
 
-    // handle recycler event
     private fun moveToEditTagGroupFragment(gid: Int) {
-        moveToOtherFragment(EditTagInGroupFragment.newInstance(gid))
+        editGroupViewModel.gid = gid
+        moveToOtherFragment(editGroupFragment)
     }
 
     private fun showEditTagGroupDialogToEdit(tagGroup: SjTagGroup) {
         val dialogFragment = EditTagGroupDialogFragment(::createTagGroup, tagGroup)
-        dialogFragment.show(childFragmentManager, "새 태그 그룹 생성하기")
+        dialogFragment.show(childFragmentManager, "태그 그룹 수정하기")
     }
 
     private fun deleteGroupByGid(gid: Int) {

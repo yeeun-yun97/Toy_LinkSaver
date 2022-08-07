@@ -66,7 +66,7 @@ class SjImageViewUtil {
                     .centerCrop()
                     .into(imageView)
                 Log.d("image loaded", "complete")
-                setBackgroundColor(fragment,imageView,imageUrl)
+//                setBackgroundColor(fragment,imageView,imageUrl)
             }
         }
 

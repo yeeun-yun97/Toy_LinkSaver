@@ -1,6 +1,5 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.setting.domain
 
-import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yeeun_yun97.toy.linksaver.R
@@ -8,9 +7,12 @@ import com.github.yeeun_yun97.toy.linksaver.data.model.SjDomain
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListDomainBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.DomainListAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.domain.DomainViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.DomainViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class ListDomainFragment : SjBasicFragment<FragmentListDomainBinding>() {
+@AndroidEntryPoint
+class ListDomainFragment @Inject constructor() : SjBasicFragment<FragmentListDomainBinding>() {
     val viewModel: DomainViewModel by activityViewModels()
 
 
@@ -29,16 +31,16 @@ class ListDomainFragment : SjBasicFragment<FragmentListDomainBinding>() {
         binding.recyclerView.adapter = adapter
 
         // set domain item list
-        viewModel.domains.observe(
-            viewLifecycleOwner, {
-                if (it.isEmpty()) {
-                    binding.include.emptyView.visibility = View.VISIBLE
-                } else {
-                    binding.include.emptyView.visibility = View.GONE
-                }
-                adapter.setList(it)
-            }
-        )
+//        viewModel.domains.observe(
+//            viewLifecycleOwner, {
+//                if (it.isEmpty()) {
+//                    binding.include.emptyView.visibility = View.VISIBLE
+//                } else {
+//                    binding.include.emptyView.visibility = View.GONE
+//                }
+//                adapter.setList(it)
+//            }
+//        )
     }
 
 

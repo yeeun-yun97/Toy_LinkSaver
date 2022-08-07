@@ -50,7 +50,6 @@ class CustomBasicToolbar(context: Context, attrs: AttributeSet?) : AppBarLayout(
         return if (function == null) {
             false
         } else {
-
             function()
             true
         }

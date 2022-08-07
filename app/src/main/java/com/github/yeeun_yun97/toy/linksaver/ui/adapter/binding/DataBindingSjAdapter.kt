@@ -3,9 +3,11 @@ package com.github.yeeun_yun97.toy.linksaver.ui.adapter.binding
 import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import com.github.yeeun_yun97.toy.linksaver.data.model.FullNameTagValue
+import com.github.yeeun_yun97.toy.linksaver.data.model.LinkDetailValue
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTag
-import com.github.yeeun_yun97.toy.linksaver.ui.component.SjTagChip
+import com.github.yeeun_yun97.toy.linksaver.ui.component.customView.SjPreview
+import com.github.yeeun_yun97.toy.linksaver.ui.component.customView.SjTagChip
+import com.github.yeeun_yun97.toy.linksaver.ui.component.customView.TagValue
 import com.google.android.material.chip.ChipGroup
 
 class DataBindingSjAdapter {
@@ -15,8 +17,9 @@ class DataBindingSjAdapter {
         fun setChipByList(view: ChipGroup, tags: List<SjTag>?) {
             view.removeAllViews()
             if (!tags.isNullOrEmpty()) {
-                for( tag in tags) {
-                    val chip = SjTagChip(view.context, tag)
+                for (tag in tags) {
+                    val chip = SjTagChip(view.context)
+                    chip.setTagValue(TagValue(tag))
                     chip.setViewMode()
                     view.addView(chip)
                 }
@@ -24,29 +27,34 @@ class DataBindingSjAdapter {
         }
 
         @JvmStatic
-        @BindingAdapter("chipValueList")
-        fun setChipByValueList(view: ChipGroup, tags: List<FullNameTagValue>?) {
-            view.removeAllViews()
-            if (!tags.isNullOrEmpty()) {
-                for(value in tags) {
-                    val chip = SjTagChip(view.context, value.tag)
-                    chip.setViewMode()
-                    chip.setText(value.fullName)
-                    view.addView(chip)
+        @BindingAdapter("visibilityByList")
+        fun setVisibilityByList(view: View, list: List<Any?>?) {
+            view.visibility =
+                when (list.isNullOrEmpty()) {
+                    true -> View.GONE
+                    false -> View.VISIBLE
                 }
-            }
         }
 
         @JvmStatic
-        @BindingAdapter("chipCheckableDataList")
-        fun setCheckableChipByList(view: ChipGroup, tags: List<SjTag>?) {
-            view.removeAllViews()
-            if (!tags.isNullOrEmpty()) {
-                for( tag in tags) {
-                    val chip = SjTagChip(view.context, tag)
-                    view.addView(chip)
+        @BindingAdapter("listEmptyView")
+        fun setEmptyViewByList(view: View, list: List<Any?>?) {
+            view.visibility =
+                when (list.isNullOrEmpty()) {
+                    true -> View.VISIBLE
+                    false -> View.GONE
                 }
-            }
+        }
+
+        @JvmStatic
+        @BindingAdapter("previewContent")
+        fun setPreviewByLinkDetailValue(view: SjPreview, linkDetailValue: LinkDetailValue?) {
+            if (linkDetailValue != null)
+                view.setPreview(
+                    linkDetailValue.isVideo,
+                    linkDetailValue.url,
+                    linkDetailValue.preview
+                )
         }
 
         @JvmStatic

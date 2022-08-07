@@ -3,16 +3,25 @@ package com.github.yeeun_yun97.toy.linksaver.ui.fragment.edit_link
 import android.content.ClipDescription
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditPasteBinding
-import com.github.yeeun_yun97.toy.linksaver.ui.component.LinkPasteBottomSheet
+import com.github.yeeun_yun97.toy.linksaver.ui.component.customView.dialog.LinkPasteBottomSheet
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjClipboard
 import com.github.yeeun_yun97.toy.linksaver.ui.component.SjUtil
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.link.EditLinkViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class EditLinkPasteFragment : SjBasicFragment<FragmentEditPasteBinding>() {
+@AndroidEntryPoint
+class EditLinkPasteFragment @Inject constructor() : SjBasicFragment<FragmentEditPasteBinding>() {
+    private val editViewModel: EditLinkViewModel by activityViewModels()
 
-    private var bottomSheet :LinkPasteBottomSheet? = null
+    @Inject
+    lateinit var editFragment: EditLinkFragment
+
+    private val bottomSheet = LinkPasteBottomSheet.newInstance(::moveToPreviewFragment)
 
     override fun layoutId(): Int = R.layout.fragment_edit_paste
 
@@ -53,14 +62,14 @@ class EditLinkPasteFragment : SjBasicFragment<FragmentEditPasteBinding>() {
     }
 
     private fun showBottomSheet(url: String) {
-        bottomSheet = LinkPasteBottomSheet.newInstance(url, ::moveToPreviewFragment)
-        bottomSheet!!.show(parentFragmentManager, "TAG")
+        bottomSheet.show(parentFragmentManager, "TAG", url)
     }
 
     private fun moveToPreviewFragment(text: String) {
         if (SjUtil.checkUrlPrefix(text)) {
-            bottomSheet?.dismiss()
-            moveToOtherFragment(EditLinkAndVideoFragment.newInstance(-1, text))
+            bottomSheet.dismiss()
+            editViewModel.url = text
+            moveToOtherFragment(editFragment)
         } else {
             Toast.makeText(requireContext(), "url 형식이 아닙니다.", Toast.LENGTH_LONG).show()
         }

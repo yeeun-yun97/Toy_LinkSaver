@@ -1,6 +1,5 @@
 package com.github.yeeun_yun97.toy.linksaver.ui.component
 
-import android.content.ClipData
 import android.content.ClipDescription
 import android.content.ClipboardManager
 import android.content.Context
@@ -9,7 +8,6 @@ import androidx.core.content.ContextCompat
 
 class SjClipboard private constructor() {
     companion object {
-
         fun getClipboardManager(context: Context): ClipboardManager {
             return ContextCompat.getSystemService(context, ClipboardManager::class.java)!!
         }
@@ -26,5 +24,6 @@ class SjClipboard private constructor() {
             )
         }
     }
+
 
 }

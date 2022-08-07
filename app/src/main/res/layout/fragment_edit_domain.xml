@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.domain.DomainViewModel" />
+            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.DomainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +23,7 @@
 
         <TextView
             android:id="@+id/urlTextView"
-            style="@style/header4"
+            style="@style/important5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="주소"
@@ -44,7 +44,7 @@
 
         <TextView
             android:id="@+id/nameTextView"
-            style="@style/header4"
+            style="@style/important5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"

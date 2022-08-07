@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.search.SearchLinkViewModel" />
+            type="com.github.yeeun_yun97.toy.linksaver.viewmodel.search.ListLinkBySearchViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,6 +19,7 @@
             android:id="@+id/emptySearchSetGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            listEmptyView="@{viewModel.bindingSearchSets}"
             app:constraint_referenced_ids="emptySearchSetImageView,emptySearchSetTextView" />
 
         <TextView

@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicAdapter
-import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicViewHolder
+import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.YnBaseAdapter
+import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.YnBaseViewHolder
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroup
 import com.github.yeeun_yun97.toy.linksaver.data.model.SjTagGroupWithTags
@@ -15,12 +15,19 @@ class TagGroupListAdapter(
     private val deleteOperation: (Int) -> Unit,
     private val editOperation: (Int) -> Unit,
     private val renameOperation: (SjTagGroup) -> Unit
-) : RecyclerBasicAdapter<SjTagGroupWithTags, TagGroupListViewHolder>() {
-    override fun onBindViewHolder(holder: TagGroupListViewHolder, item: SjTagGroupWithTags) {
+) : YnBaseAdapter<SjTagGroupWithTags, TagGroupListViewHolder>() {
+    override fun onBindViewHolder(
+        holder: TagGroupListViewHolder,
+        item: SjTagGroupWithTags,
+        position: Int
+    ) {
         holder.setItem(item, deleteOperation, editOperation, renameOperation)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagGroupListViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): TagGroupListViewHolder {
         val binding =
             ItemTagGroupBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TagGroupListViewHolder(binding)
@@ -28,7 +35,7 @@ class TagGroupListAdapter(
 }
 
 class TagGroupListViewHolder(binding: ItemTagGroupBinding) :
-    RecyclerBasicViewHolder<ItemTagGroupBinding>(binding) {
+    YnBaseViewHolder<ItemTagGroupBinding>(binding) {
 
     fun setItem(
         item: SjTagGroupWithTags,

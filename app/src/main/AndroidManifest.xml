@@ -3,6 +3,8 @@
     package="com.github.yeeun_yun97.toy.linksaver">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
 
@@ -23,6 +25,9 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.activity.EditLinkActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.LockActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.SplashActivity"

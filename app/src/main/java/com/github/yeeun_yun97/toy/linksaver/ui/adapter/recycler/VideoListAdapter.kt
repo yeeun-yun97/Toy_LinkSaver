@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicAdapter
-import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.RecyclerBasicViewHolder
+import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.YnBaseAdapter
+import com.github.yeeun_yun97.clone.ynmodule.ui.adapter.YnBaseViewHolder
 import com.github.yeeun_yun97.toy.linksaver.data.model.VideoData
 import com.github.yeeun_yun97.toy.linksaver.databinding.ItemVideoListDetailBinding
 import com.google.android.exoplayer2.ExoPlayer
@@ -17,22 +17,19 @@ class VideoListAdapter(
     private val player: ExoPlayer,
     private val detailOperation: (Int) -> Unit
 ) :
-    RecyclerBasicAdapter<VideoData, VideoViewHolder>() {
+    YnBaseAdapter<VideoData, VideoViewHolder>() {
     override fun onBindViewHolder(
         holder: VideoViewHolder,
-        item: VideoData
-    ) {
-    }
-
-    override fun onBindViewHolder(
-        holder: VideoViewHolder,
-        position: Int,
-        payloads: MutableList<Any>
+        item: VideoData,
+        position: Int
     ) {
         holder.setData(position, itemList[position], detailOperation)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): VideoViewHolder {
         val binding =
             ItemVideoListDetailBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return VideoViewHolder(player, binding)
@@ -40,7 +37,7 @@ class VideoListAdapter(
 }
 
 class VideoViewHolder(private val player: ExoPlayer, binding: ItemVideoListDetailBinding) :
-    RecyclerBasicViewHolder<ItemVideoListDetailBinding>(binding) {
+    YnBaseViewHolder<ItemVideoListDetailBinding>(binding) {
 
     private var index: Int = -1
     private lateinit var previewUrl: String

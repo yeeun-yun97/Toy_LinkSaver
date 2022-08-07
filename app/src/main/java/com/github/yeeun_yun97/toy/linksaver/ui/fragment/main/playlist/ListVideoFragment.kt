@@ -11,17 +11,26 @@ import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentListVideoBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.VideoListAdapter
 import com.github.yeeun_yun97.toy.linksaver.ui.adapter.recycler.VideoViewHolder
-import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
+import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjUsePrivateModeFragment
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.main.search.detail_link.DetailLinkFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.playlist.ListVideoViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.link.ViewLinkViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.link.ListVideoViewModel
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.common.collect.ImmutableSet
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
+// FIXME 스크롤 내릴 때는 괜찮은데 올릴 때 오류남.
+@AndroidEntryPoint
+class ListVideoFragment @Inject constructor() :
+    SjUsePrivateModeFragment<FragmentListVideoBinding>() {
     private val viewModel: ListVideoViewModel by activityViewModels()
+
+    private val detailFragment: DetailLinkFragment = DetailLinkFragment()
+    private val detailViewModel: ViewLinkViewModel by activityViewModels()
 
     // control view visibility
     private lateinit var viewUtil: ViewVisibilityUtil
@@ -37,6 +46,8 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
         // set toolbar
         val handlerMap = hashMapOf<Int, () -> Unit>(R.id.menu_playlist to ::moveToPlaylistFragment)
         binding.toolbar.setMenu(R.menu.toolbar_menu_video_list, handlerMap = handlerMap)
+
+        applyPrivateToViewModel(viewModel)
 
         // player
         _player = ExoPlayer.Builder(requireContext()).build()
@@ -66,25 +77,29 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
 
 
         // set view by liveData
-        viewModel.playList.observe(viewLifecycleOwner, {
+        viewModel.playList.observe(viewLifecycleOwner) {
             if (adapter.itemCount != 0) {
                 viewUtil.state = DataState.LOADED
                 setMediaItemsAndPrepare(it)
             }
-        })
-        viewModel.allVideoData.observe(viewLifecycleOwner, {
+        }
+
+        viewModel.videoDatas.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
                 viewUtil.state = DataState.LOADING
-                viewModel.loadPlayList()
             } else {
                 viewUtil.state = DataState.EMPTY
             }
             adapter.setList(it)
-        })
+        }
+
     }
 
     override fun onStart() {
         super.onStart()
+        viewModel.refreshData()
+        //TODO WHY?
+        //viewModel.isPrivateMode = settingViewModel.isPrivateMode.value ?: false
         binding.videoRecyclerView.scrollToPosition(0)
     }
 
@@ -138,7 +153,8 @@ class ListVideoFragment : SjBasicFragment<FragmentListVideoBinding>() {
     }
 
     private fun moveToDetailFragment(lid: Int) {
-        moveToOtherFragment(DetailLinkFragment.newInstance(lid))
+        detailViewModel.lid = lid
+        moveToOtherFragment(detailFragment)
     }
 
     private fun moveToPlaylistFragment() {

@@ -5,9 +5,12 @@ import androidx.fragment.app.viewModels
 import com.github.yeeun_yun97.toy.linksaver.R
 import com.github.yeeun_yun97.toy.linksaver.databinding.FragmentEditDomainBinding
 import com.github.yeeun_yun97.toy.linksaver.ui.fragment.basic.SjBasicFragment
-import com.github.yeeun_yun97.toy.linksaver.viewmodel.domain.DomainViewModel
+import com.github.yeeun_yun97.toy.linksaver.viewmodel.DomainViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class EditDomainFragment : SjBasicFragment<FragmentEditDomainBinding>() {
+@AndroidEntryPoint
+class EditDomainFragment @Inject constructor() : SjBasicFragment<FragmentEditDomainBinding>() {
     val viewModel: DomainViewModel by viewModels()
 
     companion object {
@@ -35,7 +38,7 @@ class EditDomainFragment : SjBasicFragment<FragmentEditDomainBinding>() {
     // load and set update data
     private fun loadUpdateData(arguments: Bundle) {
         val did = arguments.getInt("did")
-        viewModel.setDomain(did)
+        viewModel.did = did
     }
 
 
